@@ -9,8 +9,7 @@ import (
 )
 
 var (
-	ErrCommandEmpty  = errors.New("command is not set")
-	ErrPasswordEmpty = errors.New("password is not set")
+	ErrPasswordEmpty = errors.New("未设置密码，检查config.yaml中的password配置")
 )
 
 type ExecuteCloser interface {
@@ -45,9 +44,6 @@ func NewExecutor(address, password string, skipErrors bool) (*Executor, error) {
 }
 
 func (e *Executor) Execute(command string) (string, error) {
-	if command == "" {
-		return "", ErrCommandEmpty
-	}
 
 	response, err := e.client.Execute(command)
 

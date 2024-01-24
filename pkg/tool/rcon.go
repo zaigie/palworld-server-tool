@@ -3,7 +3,6 @@ package tool
 import (
 	"errors"
 	"fmt"
-	"log"
 	"regexp"
 	"strings"
 
@@ -14,7 +13,7 @@ import (
 func Info() (map[string]string, error) {
 	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
 	if err != nil {
-		log.Fatalln("Init failed:", err)
+		return nil, err
 	}
 	defer exec.Close()
 
@@ -40,7 +39,7 @@ func Info() (map[string]string, error) {
 func ShowPlayers() ([]map[string]string, error) {
 	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
 	if err != nil {
-		log.Fatalln("Init failed:", err)
+		return nil, err
 	}
 	defer exec.Close()
 
@@ -60,13 +59,12 @@ func ShowPlayers() ([]map[string]string, error) {
 		fields := strings.Split(line, ",")
 		dataMap := make(map[string]string)
 		for i, title := range titles {
+			value := "<null/err>"
 			if i < len(fields) {
-				dataMap[title] = fields[i]
+				value = fields[i]
 			}
+			dataMap[title] = value
 		}
-		// if len(dataMap) == 0 {
-		// 	continue
-		// }
 		result = append(result, dataMap)
 	}
 	return result, nil
@@ -75,7 +73,7 @@ func ShowPlayers() ([]map[string]string, error) {
 func KickPlayer(steamID string) error {
 	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
 	if err != nil {
-		log.Fatalln("Init failed:", err)
+		return err
 	}
 	defer exec.Close()
 
@@ -92,7 +90,7 @@ func KickPlayer(steamID string) error {
 func BanPlayer(steamID string) error {
 	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
 	if err != nil {
-		log.Fatalln("Init failed:", err)
+		return err
 	}
 	defer exec.Close()
 
@@ -109,7 +107,7 @@ func BanPlayer(steamID string) error {
 func Broadcast(message string) error {
 	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
 	if err != nil {
-		log.Fatalln("Init failed:", err)
+		return err
 	}
 	defer exec.Close()
 
@@ -128,7 +126,7 @@ func Broadcast(message string) error {
 func Shutdown(seconds int, message string) error {
 	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
 	if err != nil {
-		log.Fatalln("Init failed:", err)
+		return err
 	}
 	defer exec.Close()
 
@@ -148,7 +146,7 @@ func Shutdown(seconds int, message string) error {
 func DoExit() error {
 	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
 	if err != nil {
-		log.Fatalln("Init failed:", err)
+		return err
 	}
 	defer exec.Close()
 
