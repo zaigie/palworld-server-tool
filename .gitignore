@@ -22,3 +22,7 @@ go.work
 
 config.yaml
 dist/
+
+players.db
+
+main

@@ -62,6 +62,10 @@ func ShowPlayers() ([]map[string]string, error) {
 			value := "<null/err>"
 			if i < len(fields) {
 				value = fields[i]
+				if strings.Contains(value, "\u0000") {
+					// Usually \u0000 is an error
+					value = "<null/err>"
+				}
 			}
 			dataMap[title] = value
 		}
@@ -123,7 +127,7 @@ func Broadcast(message string) error {
 	return nil
 }
 
-func Shutdown(seconds int, message string) error {
+func Shutdown(seconds string, message string) error {
 	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
 	if err != nil {
 		return err
@@ -132,7 +136,7 @@ func Shutdown(seconds int, message string) error {
 
 	message = strings.ReplaceAll(message, " ", "_")
 
-	response, err := exec.Execute(fmt.Sprintf("Shutdown %d %s", seconds, message))
+	response, err := exec.Execute(fmt.Sprintf("Shutdown %s %s", seconds, message))
 	if err != nil {
 		return err
 	}
