@@ -17,13 +17,13 @@ build:
 .PHONY: build-all
 # 为所有平台构建
 build-all:
-	GOOS=windows GOARCH=386 go build -o ./dist/pst-cli_${GIT_TAG}_windows_x86 ./cmd/pst-cli/main.go
+	GOOS=windows GOARCH=386 go build -o ./dist/pst-cli_${GIT_TAG}_windows_x86.exe ./cmd/pst-cli/main.go
 	GOOS=linux GOARCH=amd64 go build -o ./dist/pst-cli_${GIT_TAG}_linux_amd64 ./cmd/pst-cli/main.go
 	GOOS=linux GOARCH=arm64 go build -o ./dist/pst-cli_${GIT_TAG}_linux_arm64 ./cmd/pst-cli/main.go
 	GOOS=darwin GOARCH=amd64 go build -o ./dist/pst-cli_${GIT_TAG}_macos_amd64 ./cmd/pst-cli/main.go
 	GOOS=darwin GOARCH=arm64 go build -o ./dist/pst-cli_${GIT_TAG}_macos_arm64 ./cmd/pst-cli/main.go
 	# pst-server
-	GOOS=windows GOARCH=386 go build -o ./dist/pst-server_${GIT_TAG}_windows_x86 ./cmd/pst-server/main.go
+	GOOS=windows GOARCH=386 go build -o ./dist/pst-server_${GIT_TAG}_windows_x86.exe ./cmd/pst-server/main.go
 	GOOS=linux GOARCH=amd64 go build -o ./dist/pst-server_${GIT_TAG}_linux_amd64 ./cmd/pst-server/main.go
 	GOOS=linux GOARCH=arm64 go build -o ./dist/pst-server_${GIT_TAG}_linux_arm64 ./cmd/pst-server/main.go
 	GOOS=darwin GOARCH=amd64 go build -o ./dist/pst-server_${GIT_TAG}_macos_amd64 ./cmd/pst-server/main.go
