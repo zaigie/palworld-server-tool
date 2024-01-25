@@ -16,6 +16,7 @@ import (
 )
 
 var cfgFile string
+var port string
 var db *sql.DB
 
 func initDB() *sql.DB {
@@ -52,6 +53,7 @@ func main() {
 	defer db.Close()
 
 	flag.StringVar(&cfgFile, "config", "", "config file")
+	flag.StringVar(&port, "port", "8080", "port")
 	flag.Parse()
 
 	initConfig(cfgFile)
@@ -65,7 +67,7 @@ func main() {
 	setupRoutes(router)
 
 	// 启动 HTTP 服务器
-	router.Run(":8080") // 监听在 8080 端口
+	router.Run(fmt.Sprintf(":%s", port)) // 监听在 8080 端口
 }
 
 func initConfig(cfg string) {

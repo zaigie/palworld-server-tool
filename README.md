@@ -17,7 +17,7 @@ timeout: 10
 REST 服务除了提供操作外，还额外增加了一个 sqlite 数据库，用来存历史玩家数据，并且每五分钟会定时查询一次在线玩家列表，更新最后在线时间。
 
 ```bash
-./pst-server
+./pst-server --port 8080
 ```
 
 ### 基本 URL
