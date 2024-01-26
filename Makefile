@@ -17,6 +17,7 @@ build:
 .PHONY: build-all
 # 为所有平台构建
 build-all:
+	rm -rf dist/ && mkdir -p dist/
 	GOOS=windows GOARCH=386 go build -o ./dist/pst-cli_${GIT_TAG}_windows_x86.exe ./cmd/pst-cli/main.go
 	GOOS=linux GOARCH=amd64 go build -o ./dist/pst-cli_${GIT_TAG}_linux_amd64 ./cmd/pst-cli/main.go
 	GOOS=linux GOARCH=arm64 go build -o ./dist/pst-cli_${GIT_TAG}_linux_arm64 ./cmd/pst-cli/main.go

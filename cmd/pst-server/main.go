@@ -184,19 +184,32 @@ func listPlayer(c *gin.Context) {
 
 	// 构建包含所有玩家信息的列表
 	allPlayers := make([]map[string]interface{}, 0)
+	currentLocalTime := time.Now().Local()
+	fmt.Println(currentLocalTime.Format("2006-01-02 15:04:05"))
 
 	for rows.Next() {
-		var name, steamID, playerUID, last_online string
-		if err := rows.Scan(&name, &steamID, &playerUID, &last_online); err != nil {
+		var name, steamID, playerUID, lastOnline string
+		if err := rows.Scan(&name, &steamID, &playerUID, &lastOnline); err != nil {
 			log.Println("Error reading player name:", err)
 			continue
 		}
+		lastOnlineTime, _ := time.ParseInLocation("2006-01-02 15:04:05", lastOnline, time.Local)
+		diff := currentLocalTime.Sub(lastOnlineTime)
+		if name == "全国可飞" {
+			fmt.Println(lastOnline)
+			fmt.Println(diff)
+		}
+		online := false
+		if diff < 5*time.Minute {
+			online = true
+		}
+
 		playerData := map[string]interface{}{
 			"name":        name,
 			"steamid":     steamID,
 			"playeruid":   playerUID,
-			"last_online": last_online,
-			"online":      false, // 默认设置为离线
+			"last_online": lastOnline,
+			"online":      online,
 		}
 		allPlayers = append(allPlayers, playerData)
 	}
