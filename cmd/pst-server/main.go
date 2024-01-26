@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"embed"
 	"flag"
 	"fmt"
 	"log"
@@ -18,6 +19,9 @@ import (
 var cfgFile string
 var port string
 var db *sql.DB
+
+//go:embed web/*
+var embeddedFiles embed.FS
 
 func initDB() *sql.DB {
 	var err error
@@ -63,8 +67,14 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
+	router.GET("/", func(c *gin.Context) {
+		c.Writer.WriteHeader(http.StatusOK)
+		file, _ := embeddedFiles.ReadFile("web/index.html")
+		c.Writer.Write(file)
+	})
+
 	// 设置路由
-	setupRoutes(router)
+	setupApiRoutes(router)
 
 	// 启动 HTTP 服务器
 	router.Run(fmt.Sprintf(":%s", port)) // 监听在 8080 端口
@@ -143,7 +153,7 @@ func scheduleTask(db *sql.DB) {
 	}
 }
 
-func setupRoutes(router *gin.Engine) {
+func setupApiRoutes(router *gin.Engine) {
 	// 定义路由和处理函数
 	router.GET("/server/info", getServerInfo)
 	router.GET("/player", listPlayer)
@@ -151,13 +161,12 @@ func setupRoutes(router *gin.Engine) {
 	router.POST("/player/:steamid/ban", banPlayer)
 	router.POST("/broadcast", broadcast)
 	router.POST("/server/shutdown", shutdownServer)
-	// router.POST("/server/doExit", exit)
 }
 
 func getServerInfo(c *gin.Context) {
 	info, err := tool.Info()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, info)
@@ -169,7 +178,7 @@ func listPlayer(c *gin.Context) {
 	if update == "true" {
 		getCurrentPlayers, err := tool.ShowPlayers()
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 			return
 		}
 		updatePlayerData(db, getCurrentPlayers)
@@ -177,7 +186,7 @@ func listPlayer(c *gin.Context) {
 	}
 	rows, err := db.Query("SELECT name,steamid,playeruid,strftime('%Y-%m-%d %H:%M:%S', last_online, 'localtime') AS last_online FROM players ORDER BY last_online DESC")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 	defer rows.Close()
@@ -185,7 +194,6 @@ func listPlayer(c *gin.Context) {
 	// 构建包含所有玩家信息的列表
 	allPlayers := make([]map[string]interface{}, 0)
 	currentLocalTime := time.Now().Local()
-	fmt.Println(currentLocalTime.Format("2006-01-02 15:04:05"))
 
 	for rows.Next() {
 		var name, steamID, playerUID, lastOnline string
@@ -195,10 +203,6 @@ func listPlayer(c *gin.Context) {
 		}
 		lastOnlineTime, _ := time.ParseInLocation("2006-01-02 15:04:05", lastOnline, time.Local)
 		diff := currentLocalTime.Sub(lastOnlineTime)
-		if name == "全国可飞" {
-			fmt.Println(lastOnline)
-			fmt.Println(diff)
-		}
 		online := false
 		if diff < 5*time.Minute {
 			online = true
@@ -237,7 +241,7 @@ func kickPlayer(c *gin.Context) {
 	}
 	err := tool.KickPlayer(steamID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "踢出成功"})
@@ -251,7 +255,7 @@ func banPlayer(c *gin.Context) {
 	}
 	err := tool.BanPlayer(steamID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "封禁成功"})
@@ -274,7 +278,7 @@ func broadcast(c *gin.Context) {
 	}
 	err = tool.Broadcast(request.Message)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "广播成功"})
@@ -297,17 +301,8 @@ func shutdownServer(c *gin.Context) {
 	}
 	err = tool.Shutdown(request.Seconds, request.Message)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "关闭服务器成功"})
 }
-
-// func exit(c *gin.Context) {
-// 	err := tool.DoExit()
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, gin.H{"message": "退出服务器成功"})
-// }
