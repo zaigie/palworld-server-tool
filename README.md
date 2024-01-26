@@ -14,12 +14,21 @@
 
 请在 [Releases](https://github.com/zaigie/palworld-server-tool/releases) 下载可执行文件
 
-## 问题
+## 如何开启私服 RCON
 
-> [!WARNING]
-> 如果玩家昵称中包含中文，则查询在线玩家列表会请求到超时时间 10s，且最后一名玩家信息可能显示不全，不全的信息没有实际意义，将会返回为字符串 `<null/err>`
+需要开启服务器的 RCON 功能，如果你的私服教程有写更好，没有的话，修改 `PalWorldSettings.ini` 文件
 
-## 可视化界面/REST 服务
+**也就是修改游戏内各种倍数、概率的那个文件**，里面最后的位置有如下：
+
+```txt
+RCONEnabled=true,RCONPort=25575
+```
+
+![RCON](./doc/img/rcon.png)
+
+请先关闭服务器，然后将 `RCONEnabled` 和 `RCONPort` 填写如上，再重启服务器即可
+
+## pst-server: 可视化工具
 
 ![Mobile](./doc/img/mobile.png)
 
@@ -68,7 +77,7 @@ tail -f server.log
 kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
 ```
 
-浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面
+**浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面**
 
 ### Windows
 
@@ -102,13 +111,16 @@ timeout: 10
 .\pst-server.exe --port 8080
 ```
 
-浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面
+**浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面**
 
-> 若要自己开发前端界面或用作它用请移步 [接口文档](./API.md)
+> [!WARNING]
+> 如果玩家昵称中包含中文，则查询在线玩家列表会请求到超时时间 10s，且最后一名玩家信息可能显示不全，不全的信息没有实际意义，将会按空字符串处理且不入库
+
+若要自己开发前端界面或用作它用请移步 [接口文档](./API.md)
 
 ---
 
-## 命令行工具
+## pst-cli: 命令行工具
 
 ```bash
 # 下载 pst-cli_{version}_{platform}_{arch} 文件并重命名
@@ -137,6 +149,8 @@ mv pst-cli_{version}_{platform}_{arch} pst-cli
 |          | 在线人数   | 4                 |
 +----------+------------+-------------------+
 ```
+
+> <null/err> 是帕鲁服务器的错误，待官方修复
 
 #### 踢出/封禁玩家
 
