@@ -14,16 +14,6 @@
 
 请在 [Releases](https://github.com/zaigie/palworld-server-tool/releases) 下载可执行文件
 
-## 配置文件
-
-第一次运行会自动生成 config.yaml 文件到可执行文件目录，请填写你的 RCON 服务所在 IP 及端口，以及设置的 AdminPassword
-
-```yaml
-host: 127.0.0.1:25575
-password:
-timeout: 10
-```
-
 ## 问题
 
 > [!WARNING]
@@ -35,163 +25,88 @@ timeout: 10
 
 服务使用 sqlite 数据库，用来存历史玩家数据，并且每五分钟会定时查询一次在线玩家列表，更新最后在线时间。
 
+### Linux
+
+1. 下载文件并重命名
+
 ```bash
 # 下载 pst-server_{version}_{platform}_{arch} 文件并重命名
-mv pst-server_{version}_{platform}_{arch} pst-server
-# 后台运行并将日志保存在 server.log
-nohup ./pst-server --port 8080 > server.log 2>&1 &
+mv pst-server_v0.2.0_linux_amd64 pst-server
 ```
 
-浏览器访问 http://127.0.0.1:8080 即可打开可视化界面
+2. **首次运行**，生成 `config.yaml` 和 `players.db` 文件
 
-> 在 Windows 中，请使用 Win+R 打开终端，`cd` 到你下载的可执行文件的目录，然后执行 `./pst-server_windows_x86.exe --port 8080`，并保持终端不要关闭
+```bash
+./pst-server
+```
 
-### 接口
+**然后 Ctrl + C 关闭程序**
 
-#### 服务器信息
+3. 修改 `config.yaml` 文件配置
 
-- **端点**: `/server/info`
-- **请求**:
-  ```bash
-  curl http://127.0.0.1:8080/server/info
-  ```
-- **描述**: 返回服务器名称与版本信息
-- **响应**
+> host 为服务器的 IP:RCON 端口
 
-  ```json
-  {
-    "name": "YeGame Group",
-    "version": "v0.1.3.0"
-  }
-  ```
+```yaml
+host: 127.0.0.1:25575
+password: { 这里写你的AdminPassword }
+timeout: 10
+```
 
-#### 玩家列表
+4. 后台运行
 
-- **端点**: `/player`
-- **请求**:
+```bash
+# 后台运行并将日志保存在 server.log
+nohup ./pst-server --port 8080 > server.log 2>&1 &
+# 查看日志
+tail -f server.log
+```
 
-  ```bash
-  curl http://127.0.0.1:8080/player
-  curl http://127.0.0.1:8080/player\?update\=true
-  ```
+5. 关闭后台程序
 
-- **查询参数**:
-  - `update`（可选）: 一个布尔值（`"true"`）表示是否在请求时从服务器更新玩家数据。默认为 false。
-- **描述**: 获取所有玩家的昵称、steamid、playeruid 和上次在线时间与当前在线情况（最后五分钟内在线也算作在线）。
-- **响应**:
+```bash
+# 关闭程序
+kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
+```
 
-  ```json
-  [
-    {
-      "last_online": "2024-01-26 13:43:33",
-      "name": "全国可飞",
-      "online": true,
-      "playeruid": "357689484",
-      "steamid": "xxx"
-    },
-    {
-      "last_online": "2024-01-26 13:43:33",
-      "name": "梵音丶",
-      "online": true,
-      "playeruid": "2144044083",
-      "steamid": "xxx"
-    },
-    {
-      "last_online": "2024-01-26 13:43:33",
-      "name": "DZ",
-      "online": true,
-      "playeruid": "850234947",
-      "steamid": "xxx"
-    },
-    {
-      "last_online": "2024-01-25 21:15:44",
-      "name": "宅记",
-      "online": false,
-      "playeruid": "1302283639",
-      "steamid": "xxx"
-    },
-    {
-      "last_online": "2024-01-25 21:06:53",
-      "name": "ikun",
-      "online": false,
-      "playeruid": "00000000",
-      "steamid": "<null/err>"
-    }
-  ]
-  ```
+浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面
 
-#### 踢出玩家
+### Windows
 
-- **端点**: `/player/:steamid/kick`
-- **请求**:
-  ```bash
-  curl -X POST http://127.0.0.1:8080/player/:steamid/kick
-  ```
-- **路径参数**:
-  - `steamid`: 要踢出的玩家的 SteamID/PlayerUID。
-- **描述**: 使用玩家的 SteamID/PlayerUID 将玩家从服务器踢出。
-- **响应**:
-  ```json
-  { "message": "踢出成功" }
-  ```
-  ```json
-  { "error": "Failed to Kick: {id}" }
-  ```
+1. 下载文件并重命名
 
-#### 封禁玩家
+将 pst-server_v0.2.0_windows_x86.exe 重命名为 pst-server.exe
 
-- **端点**: `/player/:steamid/ban`
-- **请求**:
-  ```bash
-  curl -X POST http://127.0.0.1:8080/player/:steamid/ban
-  ```
-- **路径参数**:
-  - `steamid`: 要封禁的玩家的 SteamID/PlayerUID。
-- **描述**: 使用玩家的 SteamID/PlayerUID 封禁玩家。
-- **响应**:
-  ```json
-  { "message": "封禁成功" }
-  ```
-  ```json
-  { "error": "Failed to Ban: {id}" }
-  ```
+2. 按下 `Win + R`，输入 `powershell` 打开 Powershell，通过 `cd` 命令到下载的可执行文件目录
 
-#### 广播消息
+3. **首次运行**，生成 `config.yaml` 和 `players.db` 文件
 
-- **端点**: `/broadcast`
-- **请求**:
-  ```bash
-  curl -X POST http://127.0.0.1:8080/broadcast -d '{"message": "Hello World"}'
-  ```
-- **请求体**:
-  - `message`: 要广播的消息，暂不支持中文！
-- **描述**: 向服务器上的所有玩家广播消息。
-- **响应**:
-  ```json
-  { "message": "广播成功" }
-  ```
-  ```json
-  { "error": "..." }
-  ```
+```powershell
+.\pst-server.exe
+```
 
-#### 关闭服务器
+**然后 Ctrl +C 关闭程序**
 
-- **端点**: `/server/shutdown`
-- **请求**:
-  ```bash
-  curl -X POST http://127.0.0.1:8080/shutdown -d '{"seconds": "60","message": "Shutdown in 60 sec"}'
-  ```
-- **请求体**:
-  - `seconds`: 服务器关闭之前的倒计时时间（默认值："60"）。
-  - `message`: 关闭前显示的消息。
-- **描述**: 安排一个带有自定义倒计时和消息的服务器关闭。
-- **响应**:
-  ```json
-  { "message": "关闭服务器成功" }
-  ```
-  ```json
-  { "error": "..." }
-  ```
+4. 记事本或编辑工具打开 `config.yaml` 文件，进行配置
+
+> host 为服务器的 IP:RCON 端口
+
+```yaml
+host: 127.0.0.1:25575
+password: { 这里写你的AdminPassword }
+timeout: 10
+```
+
+5. 持续运行
+
+```powershell
+.\pst-server.exe --port 8080
+```
+
+浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面
+
+> 若要自己开发前端界面或用作它用请移步 [接口文档](./API.md)
+
+---
 
 ## 命令行工具
 
