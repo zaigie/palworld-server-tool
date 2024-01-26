@@ -26,3 +26,5 @@ dist/
 players.db
 
 main
+
+.DS_Store

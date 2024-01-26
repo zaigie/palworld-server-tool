@@ -1,10 +1,20 @@
 # palworld-server-tool
 
-专注于管理 PalWorld 专用服务器的工具，有命令行版和 REST 服务版
+专注于管理 PalWorld 专用服务器，提供 REST 服务端和命令行工具
+
+基于官方提供的 RCON 命令（仅服务器可用的），添加了错误处理并实现了两个工具，实现功能如下：
+
+- [x] 获取服务器信息
+- [x] 玩家列表（历史玩家数据仅 pst-server）
+- [x] 踢出/封禁玩家
+- [x] 游戏内广播
+- [x] 平滑关闭服务器并广播消息
+
+请在 [Releases](https://github.com/zaigie/palworld-server-tool/releases) 下载可执行文件
 
 ## 配置文件
 
-第一次运行会自动生成 config.yaml 文件到可执行文件目录
+第一次运行会自动生成 config.yaml 文件到可执行文件目录，请填写你的 RCON 服务所在 IP 及端口，以及设置的 AdminPassword
 
 ```yaml
 host: 127.0.0.1:25575
@@ -15,26 +25,26 @@ timeout: 10
 ## 问题
 
 > [!WARNING]
-> 如果昵称中包含中文，则最后一名玩家信息可能显示不全，不全的信息没有实际意义，将会返回为字符串 `<null/err>`
+> 如果玩家昵称中包含中文，则查询在线玩家列表会请求到超时时间 10s，且最后一名玩家信息可能显示不全，不全的信息没有实际意义，将会返回为字符串 `<null/err>`
 
 ## REST 服务
 
-REST 服务除了提供操作外，还额外增加了一个 sqlite 数据库，用来存历史玩家数据，并且每五分钟会定时查询一次在线玩家列表，更新最后在线时间。
+除了提供接口操作外，还额外增加了一个 sqlite 数据库，用来存历史玩家数据，并且每五分钟会定时查询一次在线玩家列表，更新最后在线时间。
+
+> pst-server 目前只编译了 Linux 版本，如需其它平台请 git clone 编译
 
 ```bash
+# 下载 pst-server_{version}_{platform}_{arch} 文件并重命名
+mv pst-server_{version}_{platform}_{arch} pst-server
 ./pst-server --port 8080
 ```
 
-### 基本 URL
-
-所有 API 请求都发往基本 URL `http://<server-address>:8080`。请将 `<server-address>` 替换为实际的服务器地址。
-
-### 端点
+### 接口
 
 #### 服务器信息
 
 - **端点**: `/server/info`
-- **方法**:
+- **请求**:
   ```bash
   curl http://127.0.0.1:8080/server/info
   ```
@@ -59,7 +69,7 @@ REST 服务除了提供操作外，还额外增加了一个 sqlite 数据库，�
   ```
 
 - **查询参数**:
-  - `update`（可选）: 一个布尔值（`"true"`/`"false"`）表示是否在请求时从服务器更新玩家数据。默认为 false。
+  - `update`（可选）: 一个布尔值（`"true"`）表示是否在请求时从服务器更新玩家数据。默认为 false。
 - **描述**: 获取所有玩家的昵称、steamid、playeruid 和上次在线时间与当前在线情况（最后五分钟内在线也算作在线）。
 - **响应**:
 
@@ -177,6 +187,11 @@ REST 服务除了提供操作外，还额外增加了一个 sqlite 数据库，�
   ```
 
 ## 命令行工具
+
+```bash
+# 下载 pst-cli_{version}_{platform}_{arch} 文件并重命名
+mv pst-cli_{version}_{platform}_{arch} pst-cli
+```
 
 ### 玩家
 
