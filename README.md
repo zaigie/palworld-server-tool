@@ -1,6 +1,8 @@
 # palworld-server-tool
 
-通过 REST 接口或命令行工具管理幻兽帕鲁 / PalWorld 专用服务器，基于 RCON 实现
+通过 可视化界面及 REST 接口或命令行工具管理幻兽帕鲁 / PalWorld 专用服务器，基于 RCON 实现
+
+![PC](./doc/img/pc.png)
 
 基于官方提供的 RCON 命令（仅服务器可用的）实现功能如下：
 
@@ -27,17 +29,22 @@ timeout: 10
 > [!WARNING]
 > 如果玩家昵称中包含中文，则查询在线玩家列表会请求到超时时间 10s，且最后一名玩家信息可能显示不全，不全的信息没有实际意义，将会返回为字符串 `<null/err>`
 
-## REST 服务
+## 可视化界面/REST 服务
 
-除了提供接口操作外，还额外增加了一个 sqlite 数据库，用来存历史玩家数据，并且每五分钟会定时查询一次在线玩家列表，更新最后在线时间。
+![Mobile](./doc/img/mobile.png)
 
-> pst-server 目前只编译了 Linux 版本，如需其它平台请 git clone 编译
+服务使用 sqlite 数据库，用来存历史玩家数据，并且每五分钟会定时查询一次在线玩家列表，更新最后在线时间。
 
 ```bash
 # 下载 pst-server_{version}_{platform}_{arch} 文件并重命名
 mv pst-server_{version}_{platform}_{arch} pst-server
-./pst-server --port 8080
+# 后台运行并将日志保存在 server.log
+nohup ./pst-server --port 8080 > server.log 2>&1 &
 ```
+
+浏览器访问 http://127.0.0.1:8080 即可打开可视化界面
+
+> 在 Windows 中，请使用 Win+R 打开终端，`cd` 到你下载的可执行文件的目录，然后执行 `./pst-server_windows_x86.exe --port 8080`，并保持终端不要关闭
 
 ### 接口
 
