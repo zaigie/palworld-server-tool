@@ -175,7 +175,7 @@ func listPlayer(c *gin.Context) {
 		updatePlayerData(db, getCurrentPlayers)
 		currentPlayers = getCurrentPlayers
 	}
-	rows, err := db.Query("SELECT name,steamid,playeruid,strftime('%Y-%m-%d %H:%M:%S', last_online, 'localtime') AS last_online FROM players")
+	rows, err := db.Query("SELECT name,steamid,playeruid,strftime('%Y-%m-%d %H:%M:%S', last_online, 'localtime') AS last_online FROM players ORDER BY last_online DESC")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
