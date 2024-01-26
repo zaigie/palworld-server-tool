@@ -7,9 +7,9 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gorcon/rcon v1.3.4
 	github.com/jedib0t/go-pretty/v6 v6.5.3
-	github.com/mattn/go-sqlite3 v1.14.19
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
+	go.etcd.io/bbolt v1.3.8
 )
 
 require (

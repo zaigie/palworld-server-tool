@@ -1,8 +1,8 @@
 package main
 
 import (
-	"database/sql"
 	"embed"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -11,42 +11,46 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/pkg/tool"
+	"go.etcd.io/bbolt"
 )
 
-var cfgFile string
 var port string
-var db *sql.DB
 
 //go:embed web/*
 var embeddedFiles embed.FS
 
-func initDB() *sql.DB {
-	var err error
-	db, err := sql.Open("sqlite3", "./players.db")
+var db *bbolt.DB
+
+type Player struct {
+	Name       string    `json:"name"`
+	SteamID    string    `json:"steamid"`
+	PlayerUID  string    `json:"playeruid"`
+	LastOnline time.Time `json:"last_online"`
+}
+
+func initDB() *bbolt.DB {
+	db, err := bbolt.Open("players.db", 0600, &bbolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	createTableSQL := `CREATE TABLE IF NOT EXISTS players (
-        "name" TEXT NOT NULL PRIMARY KEY, 
-        "steamid" TEXT, 
-        "playeruid" TEXT, 
-        "last_online" DATETIME DEFAULT CURRENT_TIMESTAMP
-    );`
+	// 创建bucket
+	err = db.Update(func(tx *bbolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte("players"))
+		return err
+	})
 
-	_, err = db.Exec(createTableSQL)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err = db.Ping(); err != nil {
-		log.Fatalf("Error connecting to the database: %v", err)
-	}
 	return db
 }
+
+var rconAddr, rconPassword string
+var rconTimeout int
 
 func main() {
 
@@ -56,11 +60,13 @@ func main() {
 	}
 	defer db.Close()
 
-	flag.StringVar(&cfgFile, "config", "", "config file")
 	flag.StringVar(&port, "port", "8080", "port")
+	flag.StringVar(&rconAddr, "a", "127.0.0.1:25575", "rcon address")
+	flag.StringVar(&rconPassword, "p", "", "rcon password")
+	flag.IntVar(&rconTimeout, "t", 10, "rcon timeout")
 	flag.Parse()
 
-	initConfig(cfgFile)
+	initConfig()
 
 	go scheduleTask(db)
 
@@ -77,68 +83,62 @@ func main() {
 	setupApiRoutes(router)
 
 	// 启动 HTTP 服务器
-	router.Run(fmt.Sprintf(":%s", port)) // 监听在 8080 端口
+	router.Run(fmt.Sprintf(":%s", port)) // 监听端口
 }
 
-func initConfig(cfg string) {
-	if cfg != "" {
-		viper.SetConfigFile(cfg)
-		viper.SetConfigType("yaml")
-	} else {
-		viper.AddConfigPath(".")
-		viper.SetConfigName("config")
-		viper.SetConfigType("yaml")
-	}
-
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			viper.Set("host", "127.0.0.1:25575")
-			viper.Set("password", "")
-			viper.Set("timeout", 10)
-			viper.WriteConfigAs("config.yaml")
-		} else {
-			fmt.Println("config file was found but another error was produced")
-		}
-	}
+func initConfig() {
+	viper.Set("host", rconAddr)
+	viper.Set("password", rconPassword)
+	viper.Set("timeout", rconTimeout)
 }
 
-func updatePlayerData(db *sql.DB, players []map[string]string) {
-	for _, player := range players {
-		// 跳过特殊情况
-		if player["name"] == "<null/err>" {
-			continue
-		}
-
-		var dbSteamID, dbPlayerUID string
-		err := db.QueryRow("SELECT steamid, playeruid FROM players WHERE name = ?", player["name"]).Scan(&dbSteamID, &dbPlayerUID)
-		if err != nil && err != sql.ErrNoRows {
-			log.Println("Error checking player:", err)
-			continue
-		}
-
-		if err == sql.ErrNoRows {
-			// 新玩家，插入数据
-			_, err = db.Exec("INSERT INTO players (name, steamid, playeruid) VALUES (?, ?, ?)", player["name"], player["steamid"], player["playeruid"])
-		} else {
-			// 现有玩家，更新数据
-			updateSteamID := dbSteamID
-			updatePlayerUID := dbPlayerUID
-			if dbSteamID == "<null/err>" || strings.Contains(dbSteamID, "000000") {
-				updateSteamID = player["steamid"]
+func updatePlayerData(db *bbolt.DB, playersData []map[string]string) {
+	err := db.Update(func(tx *bbolt.Tx) error {
+		b := tx.Bucket([]byte("players"))
+		for _, playerData := range playersData {
+			if playerData["name"] == "<null/err>" {
+				continue
 			}
-			if dbPlayerUID == "<null/err>" || strings.Contains(dbPlayerUID, "000000") {
-				updatePlayerUID = player["playeruid"]
-			}
-			_, err = db.Exec("UPDATE players SET steamid = ?, playeruid = ?, last_online = CURRENT_TIMESTAMP WHERE name = ?", updateSteamID, updatePlayerUID, player["name"])
-		}
+			existingPlayerData := b.Get([]byte(playerData["name"]))
+			var player Player
+			if existingPlayerData != nil {
+				if err := json.Unmarshal(existingPlayerData, &player); err != nil {
+					return err
+				}
 
-		if err != nil {
-			log.Println("Error updating player:", err)
+				if player.SteamID == "<null/err>" || strings.Contains(player.SteamID, "000000") {
+					player.SteamID = playerData["steamid"]
+				}
+				if player.PlayerUID == "<null/err>" || strings.Contains(player.PlayerUID, "000000") {
+					player.PlayerUID = playerData["playeruid"]
+				}
+				player.LastOnline = time.Now()
+			} else {
+				player = Player{
+					Name:       playerData["name"],
+					SteamID:    playerData["steamid"],
+					PlayerUID:  playerData["playeruid"],
+					LastOnline: time.Now(),
+				}
+			}
+
+			serializedPlayer, err := json.Marshal(player)
+			if err != nil {
+				return err
+			}
+			if err := b.Put([]byte(player.Name), serializedPlayer); err != nil {
+				return err
+			}
 		}
+		return nil
+	})
+
+	if err != nil {
+		log.Println("Error updating player:", err)
 	}
 }
 
-func scheduleTask(db *sql.DB) {
+func scheduleTask(db *bbolt.DB) {
 	ticker := time.NewTicker(5 * time.Minute)
 	defer ticker.Stop()
 
@@ -184,38 +184,40 @@ func listPlayer(c *gin.Context) {
 		updatePlayerData(db, getCurrentPlayers)
 		currentPlayers = getCurrentPlayers
 	}
-	rows, err := db.Query("SELECT name,steamid,playeruid,strftime('%Y-%m-%d %H:%M:%S', last_online, 'localtime') AS last_online FROM players ORDER BY last_online DESC")
+	var players []Player
+	err := db.View(func(tx *bbolt.Tx) error {
+		b := tx.Bucket([]byte("players"))
+		return b.ForEach(func(k, v []byte) error {
+			var player Player
+			if err := json.Unmarshal(v, &player); err != nil {
+				return err
+			}
+			players = append(players, player)
+			return nil
+		})
+	})
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
-	defer rows.Close()
 
 	// 构建包含所有玩家信息的列表
 	allPlayers := make([]map[string]interface{}, 0)
-	currentLocalTime := time.Now().Local()
-
-	for rows.Next() {
-		var name, steamID, playerUID, lastOnline string
-		if err := rows.Scan(&name, &steamID, &playerUID, &lastOnline); err != nil {
-			log.Println("Error reading player name:", err)
-			continue
-		}
-		lastOnlineTime, _ := time.ParseInLocation("2006-01-02 15:04:05", lastOnline, time.Local)
-		diff := currentLocalTime.Sub(lastOnlineTime)
+	currentLocalTime := time.Now()
+	for _, player := range players {
+		diff := currentLocalTime.Sub(player.LastOnline)
 		online := false
 		if diff < 5*time.Minute {
 			online = true
 		}
-
-		playerData := map[string]interface{}{
-			"name":        name,
-			"steamid":     steamID,
-			"playeruid":   playerUID,
-			"last_online": lastOnline,
+		lastOnlineTimeStr := player.LastOnline.Format("2006-01-02 15:04:05")
+		allPlayers = append(allPlayers, map[string]interface{}{
+			"name":        player.Name,
+			"steamid":     player.SteamID,
+			"playeruid":   player.PlayerUID,
+			"last_online": lastOnlineTimeStr,
 			"online":      online,
-		}
-		allPlayers = append(allPlayers, playerData)
+		})
 	}
 
 	// 标记当前在线的玩家

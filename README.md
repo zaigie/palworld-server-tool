@@ -43,29 +43,20 @@ RCONEnabled=true,RCONPort=25575
 mv pst-server_v0.2.0_linux_amd64 pst-server
 ```
 
-2. **首次运行**，生成 `config.yaml` 和 `players.db` 文件
+2. 运行
 
 ```bash
-./pst-server
+# 和服务器部署在同一机器上
+./pst-server --port 8080 -p {你的 AdminPassword}
+# 和服务器不在同一机器上
+./pst-server --port 8080 -a {服务器IP:RCON端口} -p {你的 AdminPassword}
 ```
 
-**然后 Ctrl + C 关闭程序**
-
-3. 修改 `config.yaml` 文件配置
-
-> host 为服务器的 IP:RCON 端口
-
-```yaml
-host: 127.0.0.1:25575
-password: { 这里写你的AdminPassword }
-timeout: 10
-```
-
-4. 后台运行
+3. 后台运行
 
 ```bash
 # 后台运行并将日志保存在 server.log
-nohup ./pst-server --port 8080 > server.log 2>&1 &
+nohup ./pst-server --port 8080 -a 127.0.0.1:25575 -p {你的 AdminPassword} > server.log 2>&1 &
 # 查看日志
 tail -f server.log
 ```
@@ -87,29 +78,19 @@ kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
 
 2. 按下 `Win + R`，输入 `powershell` 打开 Powershell，通过 `cd` 命令到下载的可执行文件目录
 
-3. **首次运行**，生成 `config.yaml` 和 `players.db` 文件
+3. 持续运行，不要关闭窗口
 
-```powershell
-.\pst-server.exe
-```
+   - 和服务器部署在同一机器上
 
-**然后 Ctrl +C 关闭程序**
+   ```powershell
+   .\pst-server.exe --port 8080 -p {你的 AdminPassword}
+   ```
 
-4. 记事本或编辑工具打开 `config.yaml` 文件，进行配置
+   - 和服务器不在同一机器上
 
-> host 为服务器的 IP:RCON 端口
-
-```yaml
-host: 127.0.0.1:25575
-password: { 这里写你的AdminPassword }
-timeout: 10
-```
-
-5. 持续运行
-
-```powershell
-.\pst-server.exe --port 8080
-```
+   ```powershell
+   .\pst-server.exe --port 8080 -a {服务器IP:RCON端口} -p {你的 AdminPassword}
+   ```
 
 **浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面**
 
@@ -125,6 +106,14 @@ timeout: 10
 ```bash
 # 下载 pst-cli_{version}_{platform}_{arch} 文件并重命名
 mv pst-cli_{version}_{platform}_{arch} pst-cli
+```
+
+首次运行会自动生成 `config.yaml` ，修改文件
+
+```yaml
+host: 127.0.0.1:25575
+password: "你的 AdminPassword"
+timeout: 10
 ```
 
 ### 玩家

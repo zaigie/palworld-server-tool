@@ -18,15 +18,17 @@ build:
 # 为所有平台构建
 build-all:
 	rm -rf dist/ && mkdir -p dist/
-	GOOS=windows GOARCH=386 go build -o ./dist/pst-cli_${GIT_TAG}_windows_x86.exe ./cmd/pst-cli/main.go
-	GOOS=linux GOARCH=amd64 go build -o ./dist/pst-cli_${GIT_TAG}_linux_amd64 ./cmd/pst-cli/main.go
-	GOOS=linux GOARCH=arm64 go build -o ./dist/pst-cli_${GIT_TAG}_linux_arm64 ./cmd/pst-cli/main.go
-	GOOS=darwin GOARCH=amd64 go build -o ./dist/pst-cli_${GIT_TAG}_macos_amd64 ./cmd/pst-cli/main.go
-	GOOS=darwin GOARCH=arm64 go build -o ./dist/pst-cli_${GIT_TAG}_macos_arm64 ./cmd/pst-cli/main.go
+	GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_windows_x86.exe ./cmd/pst-cli/main.go
+	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_linux_amd64 ./cmd/pst-cli/main.go
+	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_linux_arm64 ./cmd/pst-cli/main.go
+	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_macos_amd64 ./cmd/pst-cli/main.go
+	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_macos_arm64 ./cmd/pst-cli/main.go
 	# pst-server
-	CGO_ENABLED=1 GOOS=linux GOARCH=amd64 CC=x86_64-linux-musl-gcc CGO_LDFLAGS="-static" go build -a -o ./dist/pst-server_${GIT_TAG}_linux_amd64 ./cmd/pst-server/main.go
-	CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=aarch64-linux-musl-gcc CGO_LDFLAGS="-static" go build -a -o ./dist/pst-server_${GIT_TAG}_linux_arm64 ./cmd/pst-server/main.go
-
+	GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_windows_x86.exe ./cmd/pst-server/main.go
+	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_linux_amd64 ./cmd/pst-server/main.go
+	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_linux_arm64 ./cmd/pst-server/main.go
+	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_macos_amd64 ./cmd/pst-server/main.go
+	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_macos_arm64 ./cmd/pst-server/main.go
 # show help
 help:
 	@echo ''
