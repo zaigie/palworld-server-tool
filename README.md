@@ -43,7 +43,7 @@ RCONEnabled=true,RCONPort=25575
 
 ```bash
 # 下载 pst-server_{version}_{platform}_{arch} 文件并重命名
-mv pst-server_v0.3.1_linux_amd64 pst-server
+mv pst-server_v0.3.2_linux_amd64 pst-server
 ```
 
 2. 运行
@@ -76,7 +76,8 @@ tail -f server.log
 kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
 ```
 
-**浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面**
+请通过浏览器访问 http://127.0.0.1:8080 或 http://{局域网 IP}:8080
+云服务器也可以访问 http://{服务器 IP}:8080
 
 > [!WARNING]
 > 如果你想变更工具服务运行的端口（默认 8080），则可以在命令上加上 --port 8000 来自定义
@@ -85,7 +86,7 @@ kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
 
 1. 下载文件并重命名
 
-将 pst-server_v0.3.1_windows_x86.exe 重命名为 pst-server.exe
+将 pst-server_v0.3.2_windows_x86.exe 重命名为 pst-server.exe
 
 2. 按下 `Win + R`，输入 `powershell` 打开 Powershell，通过 `cd` 命令到下载的可执行文件目录
 
@@ -103,7 +104,8 @@ kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
 .\pst-server.exe -a {服务器IP:RCON端口} -p {你的 AdminPassword}
 ```
 
-**浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面**
+请通过浏览器访问 http://127.0.0.1:8080 或 http://{局域网 IP}:8080
+云服务器也可以访问 http://{服务器 IP}:8080
 
 > [!WARNING]
 > 如果你想变更工具服务运行的端口（默认 8080），则可以在命令上加上 --port 8000 来自定义
