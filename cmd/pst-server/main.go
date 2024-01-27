@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"html/template"
 	"io"
 	"log"
 	"net"
@@ -78,10 +79,17 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
+	tmpl, err := template.ParseFS(embeddedFiles, "web/index.html")
+	if err != nil {
+		panic(err)
+	}
 	router.GET("/", func(c *gin.Context) {
 		c.Writer.WriteHeader(http.StatusOK)
-		file, _ := embeddedFiles.ReadFile("web/index.html")
-		c.Writer.Write(file)
+		err := tmpl.Execute(c.Writer, &gin.H{"adminPassword": rconPassword})
+		if err != nil {
+			fmt.Println(err)
+			c.Status(http.StatusInternalServerError)
+		}
 	})
 
 	// 设置路由
@@ -104,7 +112,7 @@ func main() {
 	latestTag, err := GetLatestTag("jokerwho/palworld-server-tool")
 	if err != nil {
 		fmt.Println("Error fetching latest tag:", err)
-		return
+		latestTag = "unknown"
 	}
 
 	fmt.Printf("当前版本: %s 最新版本: %s \n", version, latestTag)
