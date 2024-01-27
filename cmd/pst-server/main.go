@@ -79,7 +79,7 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
-	tmpl, err := template.ParseFS(embeddedFiles, "web/index.html")
+	tmpl, err := template.ParseFS(embeddedFiles, "web/index.tpl")
 	if err != nil {
 		panic(err)
 	}
