@@ -34,29 +34,37 @@ RCONEnabled=true,RCONPort=25575
 
 服务使用 sqlite 数据库，用来存历史玩家数据，并且每五分钟会定时查询一次在线玩家列表，更新最后在线时间。
 
+> [!CAUTION]
+> 由于数据库文件系统变更，**v0.3.0 以下版本**请删除原来的 `players.db`
+
 ### Linux
 
 1. 下载文件并重命名
 
 ```bash
 # 下载 pst-server_{version}_{platform}_{arch} 文件并重命名
-mv pst-server_v0.2.0_linux_amd64 pst-server
+mv pst-server_v0.3.1_linux_amd64 pst-server
 ```
 
 2. 运行
 
+如果和服务器部署在同一机器上
+
 ```bash
-# 和服务器部署在同一机器上
-./pst-server --port 8080 -p {你的 AdminPassword}
-# 和服务器不在同一机器上
-./pst-server --port 8080 -a {服务器IP:RCON端口} -p {你的 AdminPassword}
+./pst-server -p {你的 AdminPassword}
+```
+
+如果和服务器不在同一机器上
+
+```bash
+./pst-server -a {服务器IP:RCON端口} -p {你的 AdminPassword}
 ```
 
 3. 后台运行
 
 ```bash
 # 后台运行并将日志保存在 server.log
-nohup ./pst-server --port 8080 -a 127.0.0.1:25575 -p {你的 AdminPassword} > server.log 2>&1 &
+nohup ./pst-server -a 127.0.0.1:25575 -p {你的 AdminPassword} > server.log 2>&1 &
 # 查看日志
 tail -f server.log
 ```
@@ -70,32 +78,35 @@ kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
 
 **浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面**
 
+> [!WARNING]
+> 如果你想变更工具服务运行的端口（默认 8080），则可以在命令上加上 --port 8000 来自定义
+
 ### Windows
 
 1. 下载文件并重命名
 
-将 pst-server_v0.2.0_windows_x86.exe 重命名为 pst-server.exe
+将 pst-server_v0.3.1_windows_x86.exe 重命名为 pst-server.exe
 
 2. 按下 `Win + R`，输入 `powershell` 打开 Powershell，通过 `cd` 命令到下载的可执行文件目录
 
 3. 持续运行，不要关闭窗口
 
-   - 和服务器部署在同一机器上
+如果和服务器部署在同一机器上
 
-   ```powershell
-   .\pst-server.exe --port 8080 -p {你的 AdminPassword}
-   ```
+```powershell
+.\pst-server.exe -p {你的 AdminPassword}
+```
 
-   - 和服务器不在同一机器上
+如果和服务器不在同一机器上
 
-   ```powershell
-   .\pst-server.exe --port 8080 -a {服务器IP:RCON端口} -p {你的 AdminPassword}
-   ```
+```powershell
+.\pst-server.exe -a {服务器IP:RCON端口} -p {你的 AdminPassword}
+```
 
 **浏览器访问 http://<服务器 IP>:8080 即可打开可视化界面**
 
 > [!WARNING]
-> 如果玩家昵称中包含中文，则查询在线玩家列表会请求到超时时间 10s，且最后一名玩家信息可能显示不全，不全的信息没有实际意义，将会按空字符串处理且不入库
+> 如果你想变更工具服务运行的端口（默认 8080），则可以在命令上加上 --port 8000 来自定义
 
 若要自己开发前端界面或用作它用请移步 [接口文档](./API.md)
 

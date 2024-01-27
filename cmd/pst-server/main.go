@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sort"
 	"strings"
 	"time"
 
@@ -200,6 +201,11 @@ func listPlayer(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
+
+	// 按 LastOnline 倒序排序
+	sort.Slice(players, func(i, j int) bool {
+		return players[i].LastOnline.After(players[j].LastOnline)
+	})
 
 	// 构建包含所有玩家信息的列表
 	allPlayers := make([]map[string]interface{}, 0)
