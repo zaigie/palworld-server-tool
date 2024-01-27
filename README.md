@@ -54,20 +54,20 @@ mv pst-server_v0.3.2_linux_amd64 pst-server
 如果和服务器部署在同一机器上
 
 ```bash
-./pst-server -p {你的 AdminPassword}
+./pst-server -p AdminPassword
 ```
 
 如果和服务器不在同一机器上
 
 ```bash
-./pst-server -a {服务器IP:RCON端口} -p {你的 AdminPassword}
+./pst-server -a 服务器IP:RCON端口 -p AdminPassword
 ```
 
 3. 后台运行
 
 ```bash
 # 后台运行并将日志保存在 server.log
-nohup ./pst-server -a 127.0.0.1:25575 -p {你的 AdminPassword} > server.log 2>&1 &
+nohup ./pst-server -a 127.0.0.1:25575 -p AdminPassword > server.log 2>&1 &
 # 查看日志
 tail -f server.log
 ```
@@ -99,13 +99,13 @@ kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
 如果和服务器部署在同一机器上
 
 ```powershell
-.\pst-server.exe -p {你的 AdminPassword}
+.\pst-server.exe -p AdminPassword
 ```
 
 如果和服务器不在同一机器上
 
 ```powershell
-.\pst-server.exe -a {服务器IP:RCON端口} -p {你的 AdminPassword}
+.\pst-server.exe -a 服务器IP:RCON端口 -p AdminPassword
 ```
 
 请通过浏览器访问 http://127.0.0.1:8080 或 http://{局域网 IP}:8080
