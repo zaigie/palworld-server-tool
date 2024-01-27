@@ -24,11 +24,11 @@ build-all:
 	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_macos_amd64 ./cmd/pst-cli/main.go
 	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_macos_arm64 ./cmd/pst-cli/main.go
 	# pst-server
-	GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_windows_x86.exe ./cmd/pst-server/main.go
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_linux_amd64 ./cmd/pst-server/main.go
-	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_linux_arm64 ./cmd/pst-server/main.go
-	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_macos_amd64 ./cmd/pst-server/main.go
-	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-server_${GIT_TAG}_macos_arm64 ./cmd/pst-server/main.go
+	GOOS=windows GOARCH=386 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_windows_x86.exe ./cmd/pst-server/main.go
+	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_linux_amd64 ./cmd/pst-server/main.go
+	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_linux_arm64 ./cmd/pst-server/main.go
+	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_macos_amd64 ./cmd/pst-server/main.go
+	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_macos_arm64 ./cmd/pst-server/main.go
 # show help
 help:
 	@echo ''

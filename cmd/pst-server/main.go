@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"sort"
@@ -16,6 +17,8 @@ import (
 	"github.com/zaigie/palworld-server-tool/pkg/tool"
 	"go.etcd.io/bbolt"
 )
+
+var version string
 
 var port string
 
@@ -54,6 +57,16 @@ var rconAddr, rconPassword string
 var rconTimeout int
 
 func main() {
+
+	fmt.Println("幻兽帕鲁服务器管理工具运行中...")
+
+	latestTag, err := GetLatestTag("jokerwho/palworld-server-tool")
+	if err != nil {
+		fmt.Println("Error fetching latest tag:", err)
+		return
+	}
+
+	fmt.Printf("当前版本: %s 最新版本: %s \n", version, latestTag)
 
 	db = initDB()
 	if db == nil {
@@ -313,4 +326,34 @@ func shutdownServer(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "关闭服务器成功"})
+}
+
+type Tag struct {
+	Name string `json:"name"`
+}
+
+func GetLatestTag(repo string) (string, error) {
+	url := fmt.Sprintf("https://gitee.com/api/v5/repos/%s/tags", repo)
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var tags []Tag
+	err = json.Unmarshal(body, &tags)
+	if err != nil {
+		return "", err
+	}
+
+	if len(tags) > 0 {
+		return tags[len(tags)-1].Name, nil
+	}
+
+	return "", fmt.Errorf("no tags found")
 }
