@@ -181,17 +181,23 @@
       });
 
       const broadcastDialog = $("#broadcast-dialog")[0];
-      $("#broadcast").on("click", () => (
-        mdui.prompt({
-          headline: "请输入广播内容",
-          description: "将会在游戏内显示，暂不支持中文",
-          confirmText: "发布",
-          onConfirm: (content) => {
-            sendBroadcast(content);
-          },
-          onClose: () => { },
+      $("#broadcast").on("click", () => {
+        const authentication = promptInputPassword();
+        authentication.then((result) => {
+          if (!result) {
+            return;
+          }
+          mdui.prompt({
+            headline: "请输入广播内容",
+            description: "将会在游戏内显示，暂不支持中文",
+            confirmText: "发布",
+            onConfirm: (content) => {
+              sendBroadcast(content);
+            },
+            onClose: () => { },
+          })
         })
-      ));
+      });
     }
 
     function promptInputPassword() {
