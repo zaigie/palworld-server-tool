@@ -12,7 +12,10 @@
 - [x] 游戏内广播
 - [x] 平滑关闭服务器并广播消息
 
-请在 [Releases](https://github.com/zaigie/palworld-server-tool/releases) 下载可执行文件
+请在以下地址下载最新版可执行文件
+
+- [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
+- [(国内) Gitee Releases](https://gitee.com/jokerwho/palworld-server-tool/releases)
 
 ## 如何开启私服 RCON
 
@@ -77,6 +80,7 @@ kill $(ps aux | grep 'pst-server' | awk '{print $2}') | head -n 1
 ```
 
 请通过浏览器访问 http://127.0.0.1:8080 或 http://{局域网 IP}:8080
+
 云服务器也可以访问 http://{服务器 IP}:8080
 
 > [!WARNING]
