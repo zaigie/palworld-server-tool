@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"sort"
 	"strings"
@@ -58,16 +59,6 @@ var rconTimeout int
 
 func main() {
 
-	fmt.Println("幻兽帕鲁服务器管理工具运行中...")
-
-	latestTag, err := GetLatestTag("jokerwho/palworld-server-tool")
-	if err != nil {
-		fmt.Println("Error fetching latest tag:", err)
-		return
-	}
-
-	fmt.Printf("当前版本: %s 最新版本: %s \n", version, latestTag)
-
 	db = initDB()
 	if db == nil {
 		log.Fatal("Failed to initialize database")
@@ -95,6 +86,28 @@ func main() {
 
 	// 设置路由
 	setupApiRoutes(router)
+
+	// 打印信息
+	fmt.Println("幻兽帕鲁服务器管理工具运行中...")
+
+	ip, err := GetLocalIP()
+	if err != nil {
+		fmt.Println("Error fetching local IP:", err)
+		return
+	}
+	defaultAddr := fmt.Sprintf("http://127.0.0.1:%s", port)
+	localAddr := fmt.Sprintf("http://%s:%s", ip, port)
+	publicAddr := fmt.Sprintf("http://{你的服务器IP}:%s", port)
+	fmt.Printf("请通过浏览器访问 %s 或 %s \n", defaultAddr, localAddr)
+	fmt.Printf("云服务器也可以访问 %s \n", publicAddr)
+
+	latestTag, err := GetLatestTag("jokerwho/palworld-server-tool")
+	if err != nil {
+		fmt.Println("Error fetching latest tag:", err)
+		return
+	}
+
+	fmt.Printf("当前版本: %s 最新版本: %s \n", version, latestTag)
 
 	// 启动 HTTP 服务器
 	router.Run(fmt.Sprintf(":%s", port)) // 监听端口
@@ -356,4 +369,47 @@ func GetLatestTag(repo string) (string, error) {
 	}
 
 	return "", fmt.Errorf("no tags found")
+}
+
+func GetLocalIP() (string, error) {
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		return "", err
+	}
+
+	for _, iface := range interfaces {
+		if iface.Flags&net.FlagUp == 0 {
+			continue // 接口未激活
+		}
+		if iface.Flags&net.FlagLoopback != 0 {
+			continue // 回环接口
+		}
+
+		addrs, err := iface.Addrs()
+		if err != nil {
+			return "", err
+		}
+
+		for _, addr := range addrs {
+			var ip net.IP
+			switch v := addr.(type) {
+			case *net.IPNet:
+				ip = v.IP
+			case *net.IPAddr:
+				ip = v.IP
+			}
+
+			if ip == nil || ip.IsLoopback() {
+				continue
+			}
+			ip = ip.To4()
+			if ip == nil {
+				continue // 不是 IPv4 地址
+			}
+
+			return ip.String(), nil
+		}
+	}
+
+	return "", fmt.Errorf("cannot find local IP address")
 }
