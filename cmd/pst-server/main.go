@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
+	"github.com/zaigie/palworld-server-tool/pkg/config"
 	"github.com/zaigie/palworld-server-tool/pkg/tool"
 	"go.etcd.io/bbolt"
 )
@@ -55,8 +55,12 @@ func initDB() *bbolt.DB {
 	return db
 }
 
-var rconAddr, rconPassword string
-var rconTimeout int
+var conf *config.Config = &config.Config{
+	Host:     "127.0.0.1:25575",
+	Password: "",
+	Timeout:  10,
+	SavePath: "",
+}
 
 func main() {
 
@@ -67,12 +71,12 @@ func main() {
 	defer db.Close()
 
 	flag.StringVar(&port, "port", "8080", "port")
-	flag.StringVar(&rconAddr, "a", "127.0.0.1:25575", "rcon address")
-	flag.StringVar(&rconPassword, "p", "", "rcon password")
-	flag.IntVar(&rconTimeout, "t", 10, "rcon timeout")
+	flag.StringVar(&conf.Host, "a", "127.0.0.1:25575", "rcon address")
+	flag.StringVar(&conf.Password, "p", "", "rcon password")
+	flag.IntVar(&conf.Timeout, "t", 10, "rcon timeout")
 	flag.Parse()
 
-	initConfig()
+	config.Init(conf)
 
 	go scheduleTask(db)
 
@@ -85,7 +89,7 @@ func main() {
 	}
 	router.GET("/", func(c *gin.Context) {
 		c.Writer.WriteHeader(http.StatusOK)
-		err := tmpl.Execute(c.Writer, &gin.H{"adminPassword": rconPassword})
+		err := tmpl.Execute(c.Writer, &gin.H{"adminPassword": conf.Password})
 		if err != nil {
 			fmt.Println(err)
 			c.Status(http.StatusInternalServerError)
@@ -119,12 +123,6 @@ func main() {
 
 	// 启动 HTTP 服务器
 	router.Run(fmt.Sprintf(":%s", port)) // 监听端口
-}
-
-func initConfig() {
-	viper.Set("host", rconAddr)
-	viper.Set("password", rconPassword)
-	viper.Set("timeout", rconTimeout)
 }
 
 func updatePlayerData(db *bbolt.DB, playersData []map[string]string) {

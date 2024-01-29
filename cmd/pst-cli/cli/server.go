@@ -18,6 +18,23 @@ var serverCmd = &cobra.Command{
 	},
 }
 
+var infoCmd = &cobra.Command{
+	Use:     "info",
+	Short:   "获取服务器信息",
+	Example: `pst server info`,
+	Run: func(cmd *cobra.Command, args []string) {
+		s := spinner.New(spinner.CharSets[43], 100*time.Millisecond)
+		s.Prefix = "查询中 "
+		s.Start()
+		info, err := tool.Info()
+		s.Stop()
+		if err != nil {
+			log.Fatalln(err)
+		}
+		fmt.Println(info)
+	},
+}
+
 var shutdownCmd = &cobra.Command{
 	Use:     "shutdown",
 	Short:   "关闭服务器",
@@ -39,6 +56,8 @@ var shutdownCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(serverCmd)
+
+	serverCmd.AddCommand(infoCmd)
 
 	serverCmd.AddCommand(shutdownCmd)
 	shutdownCmd.PersistentFlags().IntP("seconds", "s", 60, "关闭时间(秒)")
