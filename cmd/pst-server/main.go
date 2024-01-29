@@ -20,14 +20,13 @@ import (
 	"go.etcd.io/bbolt"
 )
 
-var version string
-
+var version string = "Unknown"
 var port string
+var conf config.Config
+var db *bbolt.DB
 
 //go:embed web/*
 var embeddedFiles embed.FS
-
-var db *bbolt.DB
 
 type Player struct {
 	Name       string    `json:"name"`
@@ -55,13 +54,6 @@ func initDB() *bbolt.DB {
 	return db
 }
 
-var conf *config.Config = &config.Config{
-	Host:     "127.0.0.1:25575",
-	Password: "",
-	Timeout:  10,
-	SavePath: "",
-}
-
 func main() {
 
 	db = initDB()
@@ -74,9 +66,10 @@ func main() {
 	flag.StringVar(&conf.Host, "a", "127.0.0.1:25575", "rcon address")
 	flag.StringVar(&conf.Password, "p", "", "rcon password")
 	flag.IntVar(&conf.Timeout, "t", 10, "rcon timeout")
+	flag.StringVar(&conf.SavePath, "s", "", "save path")
 	flag.Parse()
 
-	config.Init(conf)
+	config.Init(&conf)
 
 	go scheduleTask(db)
 

@@ -8,12 +8,7 @@ import (
 )
 
 var cfgFile string
-var conf config.Config = config.Config{
-	Host:     "127.0.0.1:25575",
-	Password: "",
-	Timeout:  10,
-	SavePath: "",
-}
+var conf config.Config
 
 var rootCmd = &cobra.Command{
 	Use:   "pst",
@@ -34,5 +29,5 @@ func init() {
 }
 
 func initConfig() {
-	config.InitFile(cfgFile, conf)
+	config.InitFile(cfgFile, &conf)
 }

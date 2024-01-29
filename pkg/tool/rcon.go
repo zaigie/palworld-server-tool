@@ -10,23 +10,32 @@ import (
 	"github.com/zaigie/palworld-server-tool/internal/executor"
 )
 
+func executeCommand(command string) (*executor.Executor, string, error) {
+	exec, err := executor.NewExecutor(
+		viper.GetString("host"),
+		viper.GetString("password"),
+		viper.GetInt("timeout"), true)
+	if err != nil {
+		return nil, "", err
+	}
+
+	response, err := exec.Execute(command)
+	return exec, response, err
+}
+
 func Info() (map[string]string, error) {
-	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
+	exec, response, err := executeCommand("Info")
 	if err != nil {
 		return nil, err
 	}
 	defer exec.Close()
 
-	response, err := exec.Execute("Info")
-	if err != nil {
-		return nil, err
-	}
 	re := regexp.MustCompile(`\[(v[\d\.]+)\]\s*(.+)`)
 	matches := re.FindStringSubmatch(response)
 	if matches == nil || len(matches) < 3 {
 		return map[string]string{
-			"version": "unknown",
-			"name":    "unknown",
+			"version": "Unknown",
+			"name":    "Unknown",
 		}, nil
 	}
 	result := map[string]string{
@@ -37,27 +46,22 @@ func Info() (map[string]string, error) {
 }
 
 func ShowPlayers() ([]map[string]string, error) {
-	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
+	exec, response, err := executeCommand("ShowPlayers")
 	if err != nil {
 		return nil, err
 	}
 	defer exec.Close()
 
-	response, err := exec.Execute("ShowPlayers")
-	if err != nil {
-		return nil, err
-	}
-
 	lines := strings.Split(response, "\n")
 	titles := strings.Split(lines[0], ",")
-	result := make([]map[string]string, 0)
+	var result []map[string]string
 	for _, line := range lines[1:] {
 		line = strings.TrimSpace(line)
 		if line == "" {
 			continue
 		}
 		fields := strings.Split(line, ",")
-		dataMap := make(map[string]string)
+		playerData := make(map[string]string)
 		for i, title := range titles {
 			value := "<null/err>"
 			if i < len(fields) {
@@ -67,24 +71,20 @@ func ShowPlayers() ([]map[string]string, error) {
 					value = "<null/err>"
 				}
 			}
-			dataMap[title] = value
+			playerData[title] = value
 		}
-		result = append(result, dataMap)
+		result = append(result, playerData)
 	}
 	return result, nil
 }
 
 func KickPlayer(steamID string) error {
-	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
+	exec, response, err := executeCommand("KickPlayer " + steamID)
 	if err != nil {
 		return err
 	}
 	defer exec.Close()
 
-	response, err := exec.Execute("KickPlayer " + steamID)
-	if err != nil {
-		return err
-	}
 	if response != fmt.Sprintf("Kicked: %s", steamID) {
 		return errors.New(response)
 	}
@@ -92,16 +92,12 @@ func KickPlayer(steamID string) error {
 }
 
 func BanPlayer(steamID string) error {
-	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
+	exec, response, err := executeCommand("BanPlayer " + steamID)
 	if err != nil {
 		return err
 	}
 	defer exec.Close()
 
-	response, err := exec.Execute("BanPlayer " + steamID)
-	if err != nil {
-		return err
-	}
 	if response != fmt.Sprintf("Banned: %s", steamID) {
 		return errors.New(response)
 	}
@@ -109,18 +105,13 @@ func BanPlayer(steamID string) error {
 }
 
 func Broadcast(message string) error {
-	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
+	message = strings.ReplaceAll(message, " ", "_")
+	exec, response, err := executeCommand("Broadcast " + message)
 	if err != nil {
 		return err
 	}
 	defer exec.Close()
 
-	message = strings.ReplaceAll(message, " ", "_")
-
-	response, err := exec.Execute("Broadcast " + message)
-	if err != nil {
-		return err
-	}
 	if response != fmt.Sprintf("Broadcasted: %s", message) {
 		return errors.New(response)
 	}
@@ -128,18 +119,13 @@ func Broadcast(message string) error {
 }
 
 func Shutdown(seconds string, message string) error {
-	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
+	message = strings.ReplaceAll(message, " ", "_")
+	exec, response, err := executeCommand(fmt.Sprintf("Shutdown %s %s", seconds, message))
 	if err != nil {
 		return err
 	}
 	defer exec.Close()
 
-	message = strings.ReplaceAll(message, " ", "_")
-
-	response, err := exec.Execute(fmt.Sprintf("Shutdown %s %s", seconds, message))
-	if err != nil {
-		return err
-	}
 	if response != fmt.Sprintf("Shutdown: %s", message) {
 		// return errors.New(response)
 		return nil // HACK: Not Tested
@@ -148,19 +134,15 @@ func Shutdown(seconds string, message string) error {
 }
 
 func DoExit() error {
-	exec, err := executor.NewExecutor(viper.Get("host").(string), viper.Get("password").(string), true)
+	exec, response, err := executeCommand("DoExit")
 	if err != nil {
 		return err
 	}
 	defer exec.Close()
 
-	response, err := exec.Execute("DoExit")
-	if err != nil {
-		return err
-	}
 	if response != "Exited" {
 		// return errors.New(response)
-		return nil // Hack: Not Tested
+		return nil // HACK: Not Tested
 	}
 	return nil
 }

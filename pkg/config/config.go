@@ -20,7 +20,7 @@ func Init(config *Config) {
 	viper.Set("save_path", config.SavePath)
 }
 
-func InitFile(cfgFile string, conf Config) {
+func InitFile(cfgFile string, conf *Config) {
 	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
 		viper.SetConfigType("yaml")
@@ -33,7 +33,7 @@ func InitFile(cfgFile string, conf Config) {
 	err := viper.ReadInConfig()
 	if err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			Init(&conf)
+			Init(conf)
 			viper.WriteConfigAs("config.yaml")
 		} else {
 			fmt.Println("config file was found but another error was produced")
