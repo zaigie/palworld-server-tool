@@ -25,3 +25,9 @@ go.work
 /config.yaml
 
 .DS_Store
+
+dist
+
+/assets
+/favicon.ico
+/index.html

@@ -1,8 +1,11 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"fmt"
+	"io/fs"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -23,6 +26,12 @@ var (
 	cfgFile string
 	conf    config.Config
 )
+
+//go:embed assets/*
+var assets embed.FS
+
+//go:embed index.html
+var indexHTML embed.FS
 
 func setupFlags() {
 	flag.StringVar(&cfgFile, "config", "", "config file")
@@ -50,6 +59,14 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	router := api.RegisterRouter()
+
+	assetsFS, _ := fs.Sub(assets, "assets")
+	router.StaticFS("/assets", http.FS(assetsFS))
+	router.GET("/", func(c *gin.Context) {
+		c.Writer.WriteHeader(http.StatusOK)
+		file, _ := indexHTML.ReadFile("index.html")
+		c.Writer.Write(file)
+	})
 
 	localIp, err := system.GetLocalIP()
 	if err != nil {

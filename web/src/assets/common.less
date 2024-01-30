@@ -1,0 +1,173 @@
+// 重置样式
+#app {
+  font-weight: normal;
+  background: #ffffff;
+  height: 100vh;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+
+a {
+  color: #111;
+}
+
+html {
+  width: 100vw;
+  font-size: 16px;
+  background: #fff;
+  touch-action: pan-x pan-y;
+  /* 可以禁用双指缩放 */
+  zoom: reset;
+  /* 禁用IE缩放 */
+  // -moz-user-select: none; /* 禁用火狐的文本选择 */
+  // -webkit-user-select: none;
+  // -ms-user-select: none;
+  // user-select: none;
+  -webkit-text-size-adjust: 100%;
+  /* 禁用IOS文字大小随屏幕大小自适应 */
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow: overlay; //将滚动条背景改为透明
+  font-family: 'roboto ', sans-serif !important;
+}
+
+// 滚动条
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0);
+}
+
+// 滚动槽
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* 滚动条滑块 */
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 100px;
+  border: 2px solid transparent;
+  background-clip: content-box; //内容区裁剪
+
+  &:hover {
+    border: 2px solid transparent;
+    background: rgba(0, 0, 0, 0.8);
+    background-clip: content-box;
+  }
+}
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../font/roboto-regular.ttf');
+}
+
+// 动画——透明度
+.opac-enter-active,
+.opac-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.opac-enter-from,
+.opac-leave-to {
+  opacity: 0;
+}
+
+// 动画——顶部菜单——透明度+下移位移
+.opactop-enter-active,
+.opactop-leave-active {
+  margin-top: 0;
+  opacity: 1;
+  transition: 0.1s ease;
+}
+
+.opactop-enter-from,
+.opactop-leave-to {
+  opacity: 0;
+  margin-top: -40px;
+}
+
+// 动画——从右向左
+.opacright-enter-active {
+  margin-right: 0;
+  opacity: 1;
+  transition: 1s ease;
+}
+
+.opacright-leave-active {
+  margin-right: 0;
+  opacity: 1;
+}
+
+.opacright-enter-from,
+.opacright-leave-to {
+  opacity: 0;
+  margin-right: -50px;
+}
+
+// 动画——顶部菜单——透明度+上移位移
+.opacbot-enter-active {
+  margin-top: 0;
+  opacity: 1;
+  transition: 0.5s ease;
+}
+
+.opacbot-leave-active {
+  margin-top: 0;
+  opacity: 1;
+}
+
+.opacbot-enter-from,
+.opacbot-leave-to {
+  opacity: 0;
+  margin-top: 20px;
+}
+
+// 动画——缩放+透明度
+.scaleop-enter-active,
+.scaleop-leave-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: 0.4s ease;
+}
+
+.scaleop-enter-from,
+.scaleop-leave-to {
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+// 动画——缩放+延迟
+.scaledelay-enter-active,
+.scaledelay-leave-active {
+  transform: scale(1);
+  transition-delay: 1;
+  transition: 0.4s ease;
+}
+
+.scaledelay-enter-from,
+.scaledelay-leave-to {
+  transform: scale(0.5);
+}
+
+// 动画—loading
+.fadf-enter-active,
+.fadf-leave-active {
+  transition: opacity 1s ease;
+}
+
+.fadf-enter-from,
+.fadf-leave-to {
+  opacity: 0;
+}
