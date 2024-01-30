@@ -20,11 +20,8 @@
 # Go workspace file
 go.work
 
-config.yaml
-dist/
+*.db
 
-players.db
-
-main
+/config.yaml
 
 .DS_Store

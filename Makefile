@@ -11,24 +11,17 @@ init:
 # 构建
 build:
 	rm -rf dist/ && mkdir -p dist/
-	go build -o ./dist/pst-cli ./cmd/pst-cli/main.go
-	go build -o ./dist/pst-server ./cmd/pst-server/main.go
+	go build -o ./dist/manager main.go
 
 .PHONY: build-all
 # 为所有平台构建
 build-all:
 	rm -rf dist/ && mkdir -p dist/
-	GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_windows_x86.exe ./cmd/pst-cli/main.go
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_linux_amd64 ./cmd/pst-cli/main.go
-	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_linux_arm64 ./cmd/pst-cli/main.go
-	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_macos_amd64 ./cmd/pst-cli/main.go
-	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-cli_${GIT_TAG}_macos_arm64 ./cmd/pst-cli/main.go
-	# pst-server
-	GOOS=windows GOARCH=386 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_windows_x86.exe ./cmd/pst-server/main.go
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_linux_amd64 ./cmd/pst-server/main.go
-	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_linux_arm64 ./cmd/pst-server/main.go
-	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_macos_amd64 ./cmd/pst-server/main.go
-	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/pst-server_${GIT_TAG}_macos_arm64 ./cmd/pst-server/main.go
+	GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o ./dist/pst-${GIT_TAG}_windows_x86.exe main.go
+	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-${GIT_TAG}_linux_amd64 main.go
+	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-${GIT_TAG}_linux_arm64 main.go
+	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-${GIT_TAG}_darwin_amd64 main.go
+	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-${GIT_TAG}_darwin_arm64 main.go
 # show help
 help:
 	@echo ''

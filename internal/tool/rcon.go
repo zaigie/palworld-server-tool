@@ -7,14 +7,16 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
+	"github.com/zaigie/palworld-server-tool/internal/database"
 	"github.com/zaigie/palworld-server-tool/internal/executor"
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 )
 
 func executeCommand(command string) (*executor.Executor, string, error) {
 	exec, err := executor.NewExecutor(
-		viper.GetString("host"),
-		viper.GetString("password"),
-		viper.GetInt("timeout"), true)
+		viper.GetString("rcon.address"),
+		viper.GetString("rcon.password"),
+		viper.GetInt("rcon.timeout"), true) // TODO: 此处替换成接收参数，实际为不同服务器的数据库配置
 	if err != nil {
 		return nil, "", err
 	}
@@ -45,37 +47,50 @@ func Info() (map[string]string, error) {
 	return result, nil
 }
 
-func ShowPlayers() ([]map[string]string, error) {
+func ShowPlayers() ([]database.PlayerRcon, error) {
 	exec, response, err := executeCommand("ShowPlayers")
 	if err != nil {
 		return nil, err
 	}
 	defer exec.Close()
 
-	lines := strings.Split(response, "\n")
-	titles := strings.Split(lines[0], ",")
-	var result []map[string]string
-	for _, line := range lines[1:] {
+	playersRcon := make([]database.PlayerRcon, 0)
+
+	lines := strings.Split(response, "\n")[1:]
+	for _, line := range lines {
 		line = strings.TrimSpace(line)
 		if line == "" {
 			continue
 		}
 		fields := strings.Split(line, ",")
-		playerData := make(map[string]string)
-		for i, title := range titles {
-			value := "<null/err>"
-			if i < len(fields) {
-				value = fields[i]
-				if strings.Contains(value, "\u0000") {
-					// Usually \u0000 is an error
-					value = "<null/err>"
-				}
-			}
-			playerData[title] = value
+		if len(fields) < 3 {
+			continue
 		}
-		result = append(result, playerData)
+		// HACK: could be changed
+		nickname := fields[0]
+		playerUid := fields[1]
+		steamId := fields[2]
+		if strings.Contains(nickname, "\u0000") {
+			logger.Warnf("%s is not a completed player name, will be ignored\n", nickname)
+			continue
+		}
+		if strings.Contains(playerUid, "\u0000") {
+			logger.Warnf("%s player_uid contains no-ascii case error\n", nickname)
+			playerUid = ""
+		}
+		if strings.Contains(steamId, "\u0000") {
+			logger.Warnf("%s steam_id contains no-ascii case error\n", nickname)
+			steamId = ""
+		}
+		playerRcon := database.PlayerRcon{
+			Nickname:  nickname,
+			PlayerUid: playerUid,
+			SteamId:   steamId,
+		}
+		playersRcon = append(playersRcon, playerRcon)
 	}
-	return result, nil
+
+	return playersRcon, nil
 }
 
 func KickPlayer(steamID string) error {
