@@ -71,15 +71,15 @@ func ShowPlayers() ([]database.PlayerRcon, error) {
 		playerUid := fields[1]
 		steamId := fields[2]
 		if strings.Contains(nickname, "\u0000") {
-			logger.Warnf("%s is not a completed player name, will be ignored\n", nickname)
+			logger.Warnf("nickname %s contains no-ascii, cloud be not completed\n", nickname)
+			nickname = strings.ReplaceAll(nickname, "\u0000", "")
+		}
+		if strings.Contains(playerUid, "\u0000") || strings.Contains(playerUid, "000000") {
+			logger.Warnf("%s player_uid contains no-ascii case error, will be ignored\n", nickname)
 			continue
 		}
-		if strings.Contains(playerUid, "\u0000") {
-			logger.Warnf("%s player_uid contains no-ascii case error\n", nickname)
-			playerUid = ""
-		}
-		if strings.Contains(steamId, "\u0000") {
-			logger.Warnf("%s steam_id contains no-ascii case error\n", nickname)
+		if strings.Contains(steamId, "\u0000") || strings.Contains(steamId, "000000") {
+			logger.Warnf("%s steam_id contains no-ascii case error, set to empty\n", nickname)
 			steamId = ""
 		}
 		playerRcon := database.PlayerRcon{
