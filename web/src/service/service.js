@@ -1,5 +1,5 @@
-import { useFetch } from '@vueuse/core'
-import router from '@/router'
+import { useFetch } from "@vueuse/core";
+import router from "@/router";
 
 class Service {
   /**
@@ -11,27 +11,27 @@ class Service {
   fetch(url) {
     return useFetch(`${url}`, {
       beforeFetch({ options }) {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem("token");
         options.headers = {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...options.headers,
-          'Remote-Ip-Address': localStorage.getItem('ip') || '127.0.0.1'
-        }
+          "Remote-Ip-Address": localStorage.getItem("ip") || "127.0.0.1",
+        };
         return {
-          options
-        }
+          options,
+        };
       },
       onFetchError(context) {
         if (context.response.status === 401) {
-          localStorage.remove('token')
-          router.push({
-            name: 'login'
-          })
+          localStorage.remove("token");
+          // router.push({
+          //   name: 'login'
+          // })
         }
-        return context
-      }
-    })
+        return context;
+      },
+    });
   }
 
   /**
@@ -41,16 +41,16 @@ class Service {
    * @return {string} - The generated query string.
    */
   generateQuery(credential) {
-    const entries = Object.entries(credential)
+    const entries = Object.entries(credential);
     return entries
       .reduce((accumulation, [key, value]) => {
         if (value) {
-          accumulation.push(`${key}=${value}`)
+          accumulation.push(`${key}=${value}`);
         }
-        return accumulation
+        return accumulation;
       }, [])
-      .join('&')
+      .join("&");
   }
 }
 
-export default Service
+export default Service;
