@@ -89,6 +89,9 @@ func ListPlayers(db *bbolt.DB) ([]database.TersePlayer, error) {
 	err := db.View(func(tx *bbolt.Tx) error {
 		b := tx.Bucket([]byte("players"))
 		return b.ForEach(func(k, v []byte) error {
+			if strings.Contains(string(k), "000000") {
+				return nil
+			}
 			var player database.TersePlayer
 			if err := json.Unmarshal(v, &player); err != nil {
 				return err
