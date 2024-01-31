@@ -6,16 +6,20 @@ import {
   ContentCopyFilled,
   SettingsPowerRound,
 } from "@vicons/material";
-import { GameController, LogOut, Ban } from "@vicons/ionicons5";
+import { GameController, LogOut, Ban, LanguageSharp } from "@vicons/ionicons5";
 import { BroadcastTower } from "@vicons/fa";
 import { CrownFilled } from "@vicons/antd";
-import { computed, onMounted, ref, h, defineComponent } from "vue";
+import { computed, onMounted, ref, h } from "vue";
 import { NTag, NButton, NAvatar, useMessage, useDialog } from "naive-ui";
+import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
 import pageStore from "@/stores/model/page.js";
-import router from "@/router";
 import dayjs from "dayjs";
-import skillsMap from "@/assets/skill.json";
+import skillDescMap from "@/assets/skillDesc.json";
+import palZHTypes from "@/assets/zhTypes.json";
+import palZHSkills from "@/assets/zhSkills.json";
+
+const { t, locale } = useI18n();
 
 const message = useMessage();
 const dialog = useDialog();
@@ -35,9 +39,32 @@ const guildList = ref([]);
 const playerInfo = ref({});
 const guildInfo = ref({});
 const skillTypeList = ref([]);
+const languageOptions = ref([]);
 
 const isLogin = ref(false);
 const authToken = ref("");
+
+const handleSelectLanguage = (key) => {
+  message.info(t("message.changelanguage"));
+  if (key === "zh") {
+    localStorage.setItem("locale", "zh");
+    // locale.value = "zh";
+  } else {
+    localStorage.setItem("locale", "en");
+    // locale.value = "en";
+  }
+  setTimeout(() => {
+    location.reload();
+  }, 1000);
+};
+
+const getSkillTypeList = () => {
+  if (locale.value === "zh") {
+    return Object.values(palZHSkills);
+  } else if (locale.value === "en") {
+    return Object.keys(palZHSkills);
+  }
+};
 
 const getPalAvatar = (name) => {
   return new URL(`../assets/pal/${name}.png`, import.meta.url).href;
@@ -67,10 +94,13 @@ const getGuildList = async () => {
 const getPlayerInfo = async (player_uid) => {
   const { data } = await new ApiService().getPlayer({ playerUid: player_uid });
   playerInfo.value = data.value;
-  playerInfo.value.pals.forEach((pal) => {
-    skillTypeList.value = skillTypeList.value.concat(pal.skills);
-  });
-  skillTypeList.value = [...new Set(skillTypeList.value)];
+  if (locale.value === "zh") {
+    playerInfo.value.pals.forEach((pal) => {
+      pal.skills = pal.skills.map((skill) => {
+        return palZHSkills[skill];
+      });
+    });
+  }
 };
 
 const getGuildInfo = async (admin_player_uid) => {
@@ -128,7 +158,7 @@ const createPlayerPalsColumns = () => {
       },
     },
     {
-      title: "Type",
+      title: t("pal.type"),
       key: "type",
       // defaultSortOrder: 'ascend',
       sorter: "default",
@@ -157,14 +187,19 @@ const createPlayerPalsColumns = () => {
               },
             },
             {
-              default: () => row.type,
+              default: () =>
+                locale.value === "zh"
+                  ? palZHTypes[row.type]
+                    ? palZHTypes[row.type]
+                    : row.type
+                  : row.type,
             }
           ),
         ];
       },
     },
     {
-      title: "Level",
+      title: t("pal.level"),
       key: "level",
       width: 70,
       defaultSortOrder: "descend",
@@ -174,7 +209,7 @@ const createPlayerPalsColumns = () => {
       },
     },
     {
-      title: "Skills",
+      title: t("pal.skills"),
       key: "skills",
       render(row) {
         const skills = row.skills.map((skill) => {
@@ -194,7 +229,6 @@ const createPlayerPalsColumns = () => {
         });
         return skills;
       },
-      // defaultFilterOptionValues: ['London', 'New York'],
       filterOptions: skillTypeList.value.map((value) => ({
         label: value,
         value,
@@ -213,7 +247,7 @@ const createPlayerPalsColumns = () => {
             size: "small",
             onClick: () => showPalDetail(row),
           },
-          { default: () => "Detail" }
+          { default: () => t("button.detail") }
         );
       },
     },
@@ -222,15 +256,15 @@ const createPlayerPalsColumns = () => {
 
 const copyText = async (text) => {
   if (!navigator.clipboard) {
-    message.error("Your browser does not support this feature!");
+    message.error(t("message.copyfail"));
     return;
   }
 
   try {
     await navigator.clipboard.writeText(text);
-    message.success("Copy success!");
+    message.success(t("message.copysuccess"));
   } catch (err) {
-    message.error("Failed to copy: " + err);
+    message.error(t("message.copyerr", { err: err }));
   }
 };
 
@@ -244,14 +278,14 @@ const handleLogin = () => {
     })
     .then((res) => {
       if (res.statusCode.value === 401) {
-        message.error("Password error!");
+        message.error(t("message.autherr"));
         password.value = "";
         return;
       }
       let token = res.data.value.token;
       localStorage.setItem(PALWORLD_TOKEN, token);
       authToken.value = token;
-      message.success("Login success!");
+      message.success(t("message.authsuccess"));
       showLoginModal.value = false;
       isLogin.value = true;
     });
@@ -259,15 +293,15 @@ const handleLogin = () => {
 
 const handelPlayerAction = async (type) => {
   if (!checkAuthToken()) {
-    message.error("Please login first!");
+    message.error($t("message.requireauth"));
     showLoginModal.value = true;
     return;
   }
   dialog.warning({
-    title: `${type} player`,
-    content: `Are you sure to ${type} this player?`,
-    positiveText: "Confirm",
-    negativeText: "Cancel",
+    title: type === "ban" ? t("message.bantitle") : t("message.kicktitle"),
+    content: type === "ban" ? t("message.banwarn") : t("message.kickwarn"),
+    positiveText: t("button.confirm"),
+    negativeText: t("button.cancel"),
     onPositiveClick: () => {
       if (type === "ban") {
         new ApiService()
@@ -276,9 +310,9 @@ const handelPlayerAction = async (type) => {
           })
           .then((res) => {
             if (res.statusCode.value === 200) {
-              message.success("Ban success!");
+              message.success(t("message.bansuccess"));
             } else {
-              message.error("Ban failed!");
+              message.error(t("message.banfail"));
             }
           });
       } else if (type === "kick") {
@@ -288,10 +322,10 @@ const handelPlayerAction = async (type) => {
           })
           .then((res) => {
             if (res.statusCode.value === 200) {
-              message.success("Kick success!");
+              message.success(t("message.kicksuccess"));
             } else {
               console.log(res);
-              message.error("Kick failed!");
+              message.error(t("message.kickfail"));
             }
           });
       }
@@ -307,7 +341,7 @@ const handleStartBrodcast = () => {
   if (checkAuthToken()) {
     showBroadcastModal.value = true;
   } else {
-    message.error("Please login first!");
+    message.error(t("message.requireauth"));
     showLoginModal.value = true;
   }
 };
@@ -318,11 +352,11 @@ const handleBroadcast = async () => {
     })
     .then((res) => {
       if (res.statusCode.value === 200) {
-        message.success("Broadcast success!");
+        message.success(t("message.broadcastsuccess"));
         showBroadcastModal.value = false;
         bradcastText.value = "";
       } else {
-        message.error("Broadcast failed!");
+        message.error(t("message.broadcastfail"));
       }
     });
 };
@@ -338,25 +372,24 @@ const doShutdown = async () => {
 const handleShutdown = () => {
   if (checkAuthToken()) {
     dialog.warning({
-      title: "Warning",
-      content:
-        "This will shut down the server after 60 seconds and send a broadcast.",
-      positiveText: "Yes",
-      negativeText: "No",
+      title: t("message.warn"),
+      content: t("message.shutdowntip"),
+      positiveText: t("button.confirm"),
+      negativeText: t("button.cancel"),
       onPositiveClick: () => {
         doShutdown().then((res) => {
           if (res.statusCode.value === 200) {
-            message.success("Success!");
+            message.success(t("message.shutdownsuccess"));
             return;
           } else {
-            message.error("Failed!");
+            message.error(t("message.shutdownfail"));
           }
         });
       },
       onNegativeClick: () => {},
     });
   } else {
-    message.error("Please login first!");
+    message.error(t("message.requireauth"));
     showLoginModal.value = true;
   }
 };
@@ -390,24 +423,58 @@ const checkAuthToken = () => {
 };
 
 onMounted(async () => {
+  locale.value = localStorage.getItem("locale");
+  languageOptions.value = [
+    {
+      label: "简体中文",
+      key: "zh",
+      disabled: locale.value == "zh",
+    },
+    {
+      label: "English",
+      key: "en",
+      disabled: locale.value == "en",
+    },
+  ];
+  skillTypeList.value = getSkillTypeList();
   loading.value = true;
   checkAuthToken();
   await getServerInfo();
   await getPlayerList();
   loading.value = false;
+  setInterval(() => {
+    getPlayerList();
+  }, 60000);
 });
 </script>
 
 <template>
   <div class="home-page">
     <div class="bg-#fff flex justify-between items-center p-3">
-      <span class="line-clamp-1" :class="smallScreen ? 'text-lg' : 'text-2xl'"
-        >PalWorld Server Tool</span
-      >
       <n-space>
+        <span
+          class="line-clamp-1"
+          :class="smallScreen ? 'text-lg' : 'text-2xl'"
+          >{{ $t("title") }}</span
+        >
         <n-tag type="default" size="large">{{
           serverInfo.name + " " + serverInfo.version
         }}</n-tag>
+      </n-space>
+
+      <n-space>
+        <n-dropdown
+          trigger="hover"
+          :options="languageOptions"
+          @select="handleSelectLanguage"
+        >
+          <n-button type="default" secondary strong circle>
+            <template #icon>
+              <n-icon><LanguageSharp /></n-icon>
+            </template>
+          </n-button>
+        </n-dropdown>
+
         <n-button
           type="primary"
           secondary
@@ -420,7 +487,7 @@ onMounted(async () => {
               <AdminPanelSettingsOutlined />
             </n-icon>
           </template>
-          Auth Admin
+          {{ $t("button.auth") }}
         </n-button>
         <n-tag v-else type="success" size="large" round>
           <template #icon>
@@ -428,7 +495,7 @@ onMounted(async () => {
               <AdminPanelSettingsOutlined />
             </n-icon>
           </template>
-          Authenticated
+          {{ $t("status.authenticated") }}
         </n-tag>
       </n-space>
     </div>
@@ -449,7 +516,7 @@ onMounted(async () => {
                     <GameController />
                   </n-icon>
                 </template>
-                Players
+                {{ $t("button.players") }}
               </n-button>
               <n-button
                 @click="toGuilds"
@@ -463,7 +530,7 @@ onMounted(async () => {
                     <SupervisedUserCircleRound />
                   </n-icon>
                 </template>
-                Guilds
+                {{ $t("button.guilds") }}
               </n-button>
             </n-button-group>
             <n-space v-if="isLogin">
@@ -480,7 +547,7 @@ onMounted(async () => {
                     <BroadcastTower />
                   </n-icon>
                 </template>
-                Broadcast
+                {{ $t("button.broadcast") }}
               </n-button>
               <n-button
                 size="large"
@@ -495,7 +562,7 @@ onMounted(async () => {
                     <SettingsPowerRound />
                   </n-icon>
                 </template>
-                Shutdown
+                {{ $t("button.shutdown") }}
               </n-button>
             </n-space>
           </n-layout-header>
@@ -529,8 +596,8 @@ onMounted(async () => {
                       >
                         {{
                           isPlayerOnline(player.last_online)
-                            ? "Online"
-                            : "Offline"
+                            ? $t("status.online")
+                            : $t("status.offline")
                         }}
                       </n-tag>
                       <n-tag class="ml-2" type="primary" size="small" round>
@@ -540,7 +607,7 @@ onMounted(async () => {
                     </div>
                     <span
                       class="inline-block mt-1 rounded-full bg-#ddd text-xs px-2 py-0.5"
-                      >Last Online:
+                      >{{ $t("status.last_online") }}:
                       {{ displayLastOnline(player.last_online) }}</span
                     >
                   </div>
@@ -596,8 +663,8 @@ onMounted(async () => {
                       round
                       >{{
                         isPlayerOnline(playerInfo.last_online)
-                          ? "Online"
-                          : "Offline"
+                          ? $t("status.online")
+                          : $t("status.offline")
                       }}</n-tag
                     >
                     <n-button
@@ -693,7 +760,13 @@ onMounted(async () => {
                   </n-tag>
                 </template>
                 <template #header>
-                  {{ palDetail.type }}
+                  {{
+                    locale === "zh"
+                      ? palZHTypes[palDetail.type]
+                        ? palZHTypes[palDetail.type]
+                        : palDetail.type
+                      : palDetail.type
+                  }}
                 </template>
                 <n-space class="mb-2" justify="center">
                   <n-avatar
@@ -706,12 +779,12 @@ onMounted(async () => {
                   <n-tag v-if="palDetail.is_boss" type="success" round
                     >Boss</n-tag
                   >
-                  <n-tag v-else-if="palDetail.is_lucky" type="warning" round
-                    >Lucky</n-tag
-                  >
-                  <n-tag v-else-if="palDetail.is_tower" type="error" round
-                    >Tower</n-tag
-                  >
+                  <n-tag v-else-if="palDetail.is_lucky" type="warning" round>{{
+                    $t("pal.lucky")
+                  }}</n-tag>
+                  <n-tag v-else-if="palDetail.is_tower" type="error" round>{{
+                    $t("pal.tower")
+                  }}</n-tag>
                 </n-space>
                 <n-space vertical>
                   <n-progress
@@ -730,23 +803,35 @@ onMounted(async () => {
                           <n-statistic label="Exp" :value="palDetail.exp" />
                         </n-gi> -->
                     <n-gi>
-                      <n-statistic label="Ranged" :value="palDetail.ranged" />
+                      <n-statistic
+                        :label="$t('pal.ranged')"
+                        :value="palDetail.ranged"
+                      />
                     </n-gi>
                     <n-gi>
-                      <n-statistic label="Defense" :value="palDetail.defense" />
+                      <n-statistic
+                        :label="$t('pal.defense')"
+                        :value="palDetail.defense"
+                      />
                     </n-gi>
                     <n-gi>
-                      <n-statistic label="Melee" :value="palDetail.melee" />
+                      <n-statistic
+                        :label="$t('pal.melee')"
+                        :value="palDetail.melee"
+                      />
                     </n-gi>
                     <n-gi>
-                      <n-statistic label="Rank" :value="palDetail.rank" />
+                      <n-statistic
+                        :label="$t('pal.rank')"
+                        :value="palDetail.rank"
+                      />
                     </n-gi>
                   </n-grid>
                 </n-space>
                 <n-space vertical>
                   <div v-for="skill in palDetail.skills" :key="skill">
                     <n-tag type="warning">{{ skill }}</n-tag>
-                    : {{ skillsMap[skill] }}
+                    : {{ skillDescMap[locale][skill] }}
                   </div>
                 </n-space>
               </n-modal>
@@ -803,7 +888,7 @@ onMounted(async () => {
                           type="error"
                           size="small"
                         >
-                          Master
+                          {{ $t("status.master") }}
                         </n-tag>
                       </n-space>
                     </n-list-item></n-list
@@ -834,7 +919,7 @@ onMounted(async () => {
                     <Ban />
                   </n-icon>
                 </template>
-                Ban
+                {{ $t("button.ban") }}
               </n-button>
               <n-button
                 @click="handelPlayerAction('kick')"
@@ -849,7 +934,7 @@ onMounted(async () => {
                     <LogOut />
                   </n-icon>
                 </template>
-                Kick
+                {{ $t("button.kick") }}
               </n-button>
             </n-flex>
           </n-layout-footer>
@@ -878,7 +963,7 @@ onMounted(async () => {
     footer-style="padding: 12px;"
     content-style="padding: 12px;"
     header-style="padding: 12px;"
-    title="Login"
+    :title="$t('modal.auth')"
     size="huge"
     :bordered="false"
     :segmented="segmented"
@@ -902,11 +987,11 @@ onMounted(async () => {
               password = '';
             }
           "
-          >Cancel</n-button
+          >{{ $t("button.cancel") }}</n-button
         >
-        <n-button class="ml-3 w-40" type="primary" @click="handleLogin"
-          >Confirm</n-button
-        >
+        <n-button class="ml-3 w-40" type="primary" @click="handleLogin">{{
+          $t("button.confirm")
+        }}</n-button>
       </div>
     </template>
   </n-modal>
@@ -919,7 +1004,7 @@ onMounted(async () => {
     footer-style="padding: 12px;"
     content-style="padding: 12px;"
     header-style="padding: 12px;"
-    title="Broadcast"
+    :title="$t('modal.broadcast')"
     size="huge"
     :bordered="false"
     :segmented="segmented"
@@ -941,11 +1026,11 @@ onMounted(async () => {
               password = '';
             }
           "
-          >Cancel</n-button
+          >{{ $t("button.cancel") }}</n-button
         >
-        <n-button class="ml-3 w-40" type="primary" @click="handleBroadcast"
-          >Confirm</n-button
-        >
+        <n-button class="ml-3 w-40" type="primary" @click="handleBroadcast">{{
+          $t("button.confirm")
+        }}</n-button>
       </div>
     </template>
   </n-modal>
