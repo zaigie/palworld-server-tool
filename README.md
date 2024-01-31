@@ -162,6 +162,13 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli.exe`
 
+你也可以直接鼠标右键——“属性”，查看路径和文件名，再将它们拼接起来。（存档文件路径和工具路径同理）
+
+![](./docs/img/windows_path.png)
+
+> [!WARNING]
+> 请不要直接将复制的路径粘贴到 `config.yaml` 中，而是需要在所有的 '\' 前面再加一个 '\'，像下面展示的一样
+
 ```yaml
 web: # web 相关配置
   password: "" # web 管理模式密码
@@ -172,8 +179,8 @@ rcon: # RCON 相关配置
   timeout: 5 # 请求 RCON 超时时间，推荐 <= 5
   sync_interval: 60 # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
 save: # 存档文件解析相关配置
-  path: "C:\path\to\you\Level.sav" # 存档文件路径
-  decode_path: "C:\path\to\your\sav_cli.exe" # 存档解析工具路径，一般和 pst 在同一目录
+  path: "C:\\path\\to\\you\\Level.sav" # 存档文件路径
+  decode_path: "C:\\path\\to\\your\\sav_cli.exe" # 存档解析工具路径，一般和 pst 在同一目录
   sync_interval: 600 # 定时从存档获取数据的间隔，单位秒，推荐 >= 600
 ```
 

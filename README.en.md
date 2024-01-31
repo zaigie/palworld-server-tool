@@ -161,6 +161,13 @@ Find the `config.yaml` file in the extracted directory and modify it according t
 
 For `decode_path`, it's typically the pst directory plus `sav_cli.exe`.
 
+You can also right-click - "Properties", view the path and file name, and then concatenate them. (Same for archive file path and tool path)
+
+![](./docs/img/windows_path.png)
+
+> [!WARNING]
+> Instead of pasting the copied path directly into `config.yaml`, add another '\' in front of all '\', as shown below
+
 ```yaml
 web: # web configuration
   password: "" # web management mode password
@@ -171,8 +178,8 @@ rcon: # RCON configuration
   timeout: 5 # RCON request timeout, recommended <= 5
   sync_interval: 60 # Interval for syncing online player status with RCON service, in seconds
 save: # Save file parsing configuration
-  path: "C:\path\to\you\Level.sav" # Save file path
-  decode_path: "C:\path\to\your\sav_cli.exe" # Save file parsing tool path, usually in the same directory as pst
+  path: "C:\\path\\to\\you\\Level.sav" # Save file path
+  decode_path: "C:\\path\\to\\your\\sav_cli.exe" # Save file parsing tool path, usually in the same directory as pst
   sync_interval: 600 # Interval for syncing data from save file, in seconds, recommended >= 600
 ```
 
