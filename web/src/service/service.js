@@ -11,7 +11,7 @@ class Service {
   fetch(url) {
     return useFetch(`${url}`, {
       beforeFetch({ options }) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("palworld_token");
         options.headers = {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

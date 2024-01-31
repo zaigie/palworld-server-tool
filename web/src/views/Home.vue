@@ -220,8 +220,18 @@ const createPlayerPalsColumns = () => {
   ];
 };
 
-const copyText = (text) => {
-  copy(text);
+const copyText = async (text) => {
+  if (!navigator.clipboard) {
+    message.error("Your browser does not support this feature!");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    message.success("Copy success!");
+  } catch (err) {
+    message.error("Failed to copy: " + err);
+  }
 };
 
 // login
@@ -247,6 +257,48 @@ const handleLogin = () => {
     });
 };
 
+const handelPlayerAction = async (type) => {
+  if (!checkAuthToken()) {
+    message.error("Please login first!");
+    showLoginModal.value = true;
+    return;
+  }
+  dialog.warning({
+    title: `${type} player`,
+    content: `Are you sure to ${type} this player?`,
+    positiveText: "Confirm",
+    negativeText: "Cancel",
+    onPositiveClick: () => {
+      if (type === "ban") {
+        new ApiService()
+          .banPlayer({
+            playerUid: playerInfo.value.player_uid,
+          })
+          .then((res) => {
+            if (res.statusCode.value === 200) {
+              message.success("Ban success!");
+            } else {
+              message.error("Ban failed!");
+            }
+          });
+      } else if (type === "kick") {
+        new ApiService()
+          .kickPlayer({
+            playerUid: playerInfo.value.player_uid,
+          })
+          .then((res) => {
+            if (res.statusCode.value === 200) {
+              message.success("Kick success!");
+            } else {
+              console.log(res);
+              message.error("Kick failed!");
+            }
+          });
+      }
+    },
+  });
+};
+
 // broadcast
 const showBroadcastModal = ref(false);
 const broadcastText = ref("");
@@ -259,8 +311,27 @@ const handleStartBrodcast = () => {
     showLoginModal.value = true;
   }
 };
-const handleBroadcast = () => {
-  // broadcast check
+const handleBroadcast = async () => {
+  const { data } = await new ApiService()
+    .sendBroadcast({
+      message: broadcastText.value,
+    })
+    .then((res) => {
+      if (res.statusCode.value === 200) {
+        message.success("Broadcast success!");
+        showBroadcastModal.value = false;
+        bradcastText.value = "";
+      } else {
+        message.error("Broadcast failed!");
+      }
+    });
+};
+
+const doShutdown = async () => {
+  return await new ApiService().shutdownServer({
+    seconds: 60,
+    message: "Server Will Shutdown After 60 Seconds",
+  });
 };
 
 // shutdown
@@ -268,15 +339,21 @@ const handleShutdown = () => {
   if (checkAuthToken()) {
     dialog.warning({
       title: "Warning",
-      content: "Are you sure it's off?",
+      content:
+        "This will shut down the server after 60 seconds and send a broadcast.",
       positiveText: "Yes",
       negativeText: "No",
       onPositiveClick: () => {
-        message.success("Yes");
+        doShutdown().then((res) => {
+          if (res.statusCode.value === 200) {
+            message.success("Success!");
+            return;
+          } else {
+            message.error("Failed!");
+          }
+        });
       },
-      onNegativeClick: () => {
-        message.error("No");
-      },
+      onNegativeClick: () => {},
     });
   } else {
     message.error("Please login first!");
@@ -498,7 +575,7 @@ onMounted(async () => {
               :native-scrollbar="false"
             >
               <n-card :bordered="false" v-if="playerInfo.nickname">
-                <n-page-header subtitle="From the Guild of PalWorld">
+                <n-page-header>
                   <n-grid :cols="6">
                     <n-gi
                       v-for="status in Object.entries(playerInfo.status_point)"
@@ -523,6 +600,19 @@ onMounted(async () => {
                           : "Offline"
                       }}</n-tag
                     >
+                    <n-button
+                      @click="copyText(playerInfo.player_uid)"
+                      class="ml-3"
+                      type="info"
+                      size="small"
+                      icon-placement="right"
+                      ghost
+                    >
+                      UID: {{ playerInfo.player_uid }}
+                      <template #icon>
+                        <n-icon><ContentCopyFilled /></n-icon>
+                      </template>
+                    </n-button>
                   </template>
                   <template #avatar>
                     <n-avatar :src="avatar" round></n-avatar>
@@ -706,6 +796,15 @@ onMounted(async () => {
                         <n-tag :bordered="false" type="info" size="small">
                           UID: {{ player.player_uid }}
                         </n-tag>
+                        <n-tag
+                          v-if="
+                            player.player_uid === guildInfo.admin_player_uid
+                          "
+                          type="error"
+                          size="small"
+                        >
+                          Master
+                        </n-tag>
                       </n-space>
                     </n-list-item></n-list
                   >
@@ -722,7 +821,14 @@ onMounted(async () => {
             style="height: 64px"
           >
             <n-flex justify="end">
-              <n-button type="error" size="large" secondary strong round>
+              <n-button
+                @click="handelPlayerAction('ban')"
+                type="error"
+                size="large"
+                secondary
+                strong
+                round
+              >
                 <template #icon>
                   <n-icon>
                     <Ban />
@@ -730,7 +836,14 @@ onMounted(async () => {
                 </template>
                 Ban
               </n-button>
-              <n-button type="warning" size="large" secondary strong round>
+              <n-button
+                @click="handelPlayerAction('kick')"
+                type="warning"
+                size="large"
+                secondary
+                strong
+                round
+              >
                 <template #icon>
                   <n-icon>
                     <LogOut />

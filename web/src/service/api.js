@@ -9,8 +9,9 @@ class ApiService extends Service {
   async getServerInfo() {
     return this.fetch(`/api/server`).get().json();
   }
-  async sendBroadcast() {
-    return this.fetch(`/api/server/broadcast`).post().json();
+  async sendBroadcast(param) {
+    let data = param;
+    return this.fetch(`/api/server/broadcast`).post(data).json();
   }
   async shutdownServer(param) {
     let data = param;
