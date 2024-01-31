@@ -149,6 +149,9 @@ Access via browser at http://127.0.0.1:8080 or http://{Local Network IP}:8080
 
 Access at http://{Server IP}:8080 after opening firewall and security group in cloud servers.
 
+> [!WARNING]
+> If you open the file for the first time, nothing will be displayed. Please **wait until the first sav archive synchronization is complete**
+
 ### Windows
 
 #### Download and Extract
@@ -211,6 +214,9 @@ If you see the preceding interface, it indicates that the operation is successfu
 Access via browser at http://127.0.0.1:8080 or http://{Local Network IP}:8080
 
 Access at http://{Server IP}:8080 after opening firewall and security group in cloud servers.
+
+> [!WARNING]
+> If you open the file for the first time, nothing will be displayed. Please **wait until the first sav archive synchronization is complete**
 
 ## REST API Document
 
