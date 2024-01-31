@@ -2,25 +2,20 @@
 import {
   AdminPanelSettingsOutlined,
   SupervisedUserCircleRound,
-  SupervisedUserCircleOutlined,
+  GroupWorkRound,
   ContentCopyFilled,
-  PauseCircleOutlineFilled,
+  SettingsPowerRound,
 } from "@vicons/material";
-import {
-  GameController,
-  GameControllerOutline,
-  LogOut,
-  Ban,
-} from "@vicons/ionicons5";
+import { GameController, LogOut, Ban } from "@vicons/ionicons5";
 import { BroadcastTower } from "@vicons/fa";
-import { GatewayUserAccess } from "@vicons/carbon";
 import { CrownFilled } from "@vicons/antd";
 import { computed, onMounted, ref, h, defineComponent } from "vue";
-import { NTag, NButton, useMessage, useDialog } from "naive-ui";
+import { NTag, NButton, NAvatar, useMessage, useDialog } from "naive-ui";
 import ApiService from "@/service/api";
 import pageStore from "@/stores/model/page.js";
 import router from "@/router";
 import dayjs from "dayjs";
+import skillsMap from "@/assets/skill.json";
 
 const message = useMessage();
 const dialog = useDialog();
@@ -34,12 +29,22 @@ const smallScreen = computed(() => pageWidth.value < 1024);
 
 const loading = ref(false);
 const serverInfo = ref({});
+const currentDisplay = ref("players");
 const playerList = ref([]);
+const guildList = ref([]);
 const playerInfo = ref({});
+const guildInfo = ref({});
 const skillTypeList = ref([]);
 
 const isLogin = ref(false);
 const authToken = ref("");
+
+const getPalAvatar = (name) => {
+  return new URL(`../assets/pal/${name}.png`, import.meta.url).href;
+};
+const getUnknowPalAvatar = () => {
+  return new URL("../assets/pal/Unknown.png", import.meta.url).href;
+};
 
 // get data
 const getServerInfo = async () => {
@@ -54,6 +59,10 @@ const getPlayerList = async () => {
   playerList.value = data.value;
   await getPlayerInfo(playerList.value[0].player_uid);
 };
+const getGuildList = async () => {
+  const { data } = await new ApiService().getGuildList();
+  guildList.value = data.value;
+};
 
 const getPlayerInfo = async (player_uid) => {
   const { data } = await new ApiService().getPlayer({ playerUid: player_uid });
@@ -62,6 +71,26 @@ const getPlayerInfo = async (player_uid) => {
     skillTypeList.value = skillTypeList.value.concat(pal.skills);
   });
   skillTypeList.value = [...new Set(skillTypeList.value)];
+};
+
+const getGuildInfo = async (admin_player_uid) => {
+  const { data } = await new ApiService().getGuild({
+    adminPlayerUid: admin_player_uid,
+  });
+  guildInfo.value = data.value;
+};
+
+const showPalDetailModal = ref(false);
+const palDetail = ref({});
+
+const showPalDetail = (pal) => {
+  palDetail.value = pal;
+  showPalDetailModal.value = true;
+};
+const dataRowProps = (row) => {
+  return {
+    onClick: () => showPalDetail(row),
+  };
 };
 
 const isPlayerOnline = (last_online) => {
@@ -74,6 +103,10 @@ const displayLastOnline = (last_online) => {
   return dayjs(last_online).format("YYYY-MM-DD HH:mm:ss");
 };
 
+const displayHP = (hp, max_hp) => {
+  return (hp / 1000).toFixed(0) + "/" + (max_hp / 1000).toFixed(0);
+};
+
 const percentageHP = (hp, max_hp) => {
   if (max_hp === 0) {
     return 0;
@@ -84,31 +117,61 @@ const percentageHP = (hp, max_hp) => {
 const createPlayerPalsColumns = () => {
   return [
     {
+      title: "",
+      key: "",
+      render(row) {
+        return h(NAvatar, {
+          size: "small",
+          src: getPalAvatar(row.type),
+          fallbackSrc: getUnknowPalAvatar(),
+        });
+      },
+    },
+    {
       title: "Type",
       key: "type",
       // defaultSortOrder: 'ascend',
       sorter: "default",
+      render(row) {
+        return [
+          h(
+            NTag,
+            {
+              style: {
+                marginRight: "6px",
+              },
+              type: row.gender == "Male" ? "primary" : "error",
+              bordered: false,
+            },
+            {
+              default: () => (row.gender == "Male" ? "♂" : "♀"),
+            }
+          ),
+          h(
+            "div",
+            {
+              style: {
+                display: "inline-block",
+                color: row.is_lucky ? "darkorange" : "black",
+                fontWeight: row.is_lucky ? "bold" : "normal",
+              },
+            },
+            {
+              default: () => row.type,
+            }
+          ),
+        ];
+      },
     },
     {
       title: "Level",
       key: "level",
+      width: 70,
       defaultSortOrder: "descend",
       sorter: "default",
       render(row) {
         return "Lv." + row.level;
       },
-    },
-    {
-      title: "Melee",
-      key: "melee",
-      // defaultSortOrder: 'descend',
-      sorter: "default",
-    },
-    {
-      title: "Defense",
-      key: "defense",
-      // defaultSortOrder: 'descend',
-      sorter: "default",
     },
     {
       title: "Skills",
@@ -121,7 +184,7 @@ const createPlayerPalsColumns = () => {
               style: {
                 marginRight: "6px",
               },
-              type: "info",
+              type: "warning",
               bordered: false,
             },
             {
@@ -141,14 +204,14 @@ const createPlayerPalsColumns = () => {
       },
     },
     {
-      title: "Action",
+      title: "",
       key: "actions",
       render(row) {
         return h(
           NButton,
           {
             size: "small",
-            onClick: () => sendMail(row),
+            onClick: () => showPalDetail(row),
           },
           { default: () => "Detail" }
         );
@@ -165,7 +228,23 @@ const copyText = (text) => {
 const showLoginModal = ref(false);
 const password = ref("");
 const handleLogin = () => {
-  // login check
+  const context = new ApiService()
+    .login({
+      password: password.value,
+    })
+    .then((res) => {
+      if (res.statusCode.value === 401) {
+        message.error("Password error!");
+        password.value = "";
+        return;
+      }
+      let token = res.data.value.token;
+      localStorage.setItem(PALWORLD_TOKEN, token);
+      authToken.value = token;
+      message.success("Login success!");
+      showLoginModal.value = false;
+      isLogin.value = true;
+    });
 };
 
 // broadcast
@@ -205,6 +284,21 @@ const handleShutdown = () => {
   }
 };
 
+const toPlayers = async () => {
+  if (currentDisplay.value === "players") {
+    return;
+  }
+  await getPlayerList();
+  currentDisplay.value = "players";
+};
+const toGuilds = async () => {
+  if (currentDisplay.value === "guilds") {
+    return;
+  }
+  await getGuildList();
+  currentDisplay.value = "guilds";
+};
+
 /**
  * check auth token
  */
@@ -233,35 +327,46 @@ onMounted(async () => {
       <span class="line-clamp-1" :class="smallScreen ? 'text-lg' : 'text-2xl'"
         >PalWorld Server Tool</span
       >
-      <n-button
-        type="primary"
-        secondary
-        strong
-        @click="showLoginModal = true"
-        v-if="!isLogin"
-      >
-        <template #icon>
-          <n-icon>
-            <AdminPanelSettingsOutlined />
-          </n-icon>
-        </template>
-        Auth Admin
-      </n-button>
-      <n-tag v-else type="success" size="large" round>
-        <template #icon>
-          <n-icon>
-            <AdminPanelSettingsOutlined />
-          </n-icon>
-        </template>
-        Authenticated
-      </n-tag>
+      <n-space>
+        <n-tag type="default" size="large">{{
+          serverInfo.name + " " + serverInfo.version
+        }}</n-tag>
+        <n-button
+          type="primary"
+          secondary
+          strong
+          @click="showLoginModal = true"
+          v-if="!isLogin"
+        >
+          <template #icon>
+            <n-icon>
+              <AdminPanelSettingsOutlined />
+            </n-icon>
+          </template>
+          Auth Admin
+        </n-button>
+        <n-tag v-else type="success" size="large" round>
+          <template #icon>
+            <n-icon>
+              <AdminPanelSettingsOutlined />
+            </n-icon>
+          </template>
+          Authenticated
+        </n-tag>
+      </n-space>
     </div>
     <div class="w-full">
       <div class="rounded-lg" v-if="!loading && playerList.length > 0">
         <n-layout style="height: calc(100vh - 64px)" has-sider>
           <n-layout-header class="p-3 flex justify-between h-16" bordered>
             <n-button-group size="large">
-              <n-button type="primary" secondary strong round>
+              <n-button
+                @click="toPlayers"
+                :type="currentDisplay === 'players' ? 'primary' : 'tertiary'"
+                secondary
+                strong
+                round
+              >
                 <template #icon>
                   <n-icon>
                     <GameController />
@@ -269,7 +374,13 @@ onMounted(async () => {
                 </template>
                 Players
               </n-button>
-              <n-button type="tertiary" secondary strong round>
+              <n-button
+                @click="toGuilds"
+                :type="currentDisplay === 'guilds' ? 'primary' : 'tertiary'"
+                secondary
+                strong
+                round
+              >
                 <template #icon>
                   <n-icon>
                     <SupervisedUserCircleRound />
@@ -278,9 +389,10 @@ onMounted(async () => {
                 Guilds
               </n-button>
             </n-button-group>
-            <n-button-group size="large">
+            <n-space v-if="isLogin">
               <n-button
-                type="primary"
+                size="large"
+                type="success"
                 secondary
                 strong
                 round
@@ -291,9 +403,11 @@ onMounted(async () => {
                     <BroadcastTower />
                   </n-icon>
                 </template>
+                Broadcast
               </n-button>
               <n-button
-                type="warning"
+                size="large"
+                type="error"
                 secondary
                 strong
                 round
@@ -301,11 +415,12 @@ onMounted(async () => {
               >
                 <template #icon>
                   <n-icon>
-                    <PauseCircleOutlineFilled />
+                    <SettingsPowerRound />
                   </n-icon>
                 </template>
+                Shutdown
               </n-button>
-            </n-button-group>
+            </n-space>
           </n-layout-header>
           <n-layout position="absolute" style="top: 64px" has-sider>
             <n-layout-sider
@@ -314,7 +429,7 @@ onMounted(async () => {
               :native-scrollbar="false"
               bordered
             >
-              <n-list hoverable clickable>
+              <n-list v-if="currentDisplay === 'players'" hoverable clickable>
                 <n-list-item
                   v-for="player in playerList"
                   :key="player.player_uid"
@@ -354,8 +469,34 @@ onMounted(async () => {
                   </div>
                 </n-list-item>
               </n-list>
+              <n-list v-if="currentDisplay === 'guilds'" hoverable clickable>
+                <n-list-item
+                  v-for="guild in guildList"
+                  :key="guild.admin_player_uid"
+                  @click="getGuildInfo(guild.admin_player_uid)"
+                >
+                  <template #prefix>
+                    <n-avatar
+                      :style="{ color: 'white', backgroundColor: 'darkorange' }"
+                      round
+                    >
+                      <n-icon>
+                        <GroupWorkRound />
+                      </n-icon>
+                    </n-avatar>
+                  </template>
+                  <n-tag type="primary" size="small" round>
+                    Lv.{{ guild.base_camp_level }}
+                  </n-tag>
+                  <span class="pl-2 font-bold">{{ guild.name }}</span>
+                </n-list-item>
+              </n-list>
             </n-layout-sider>
-            <n-layout content-style="padding: 24px;" :native-scrollbar="false">
+            <n-layout
+              v-if="currentDisplay === 'players'"
+              content-style="padding: 24px;"
+              :native-scrollbar="false"
+            >
               <n-card :bordered="false" v-if="playerInfo.nickname">
                 <n-page-header subtitle="From the Guild of PalWorld">
                   <n-grid :cols="6">
@@ -384,17 +525,7 @@ onMounted(async () => {
                     >
                   </template>
                   <template #avatar>
-                    <n-avatar
-                      :style="{
-                        color: 'white',
-                        backgroundColor: '#f56a00',
-                        borderRadius: '10px',
-                      }"
-                    >
-                      <n-icon>
-                        <GatewayUserAccess />
-                      </n-icon>
-                    </n-avatar>
+                    <n-avatar :src="avatar" round></n-avatar>
                   </template>
                   <template #extra>
                     <n-space>
@@ -421,8 +552,8 @@ onMounted(async () => {
                     :fill-border-radius="0"
                     >HP:
                     {{
-                      percentageHP(playerInfo.hp, playerInfo.max_hp)
-                    }}%</n-progress
+                      displayHP(playerInfo.hp, playerInfo.max_hp)
+                    }}</n-progress
                   >
                   <n-progress
                     type="line"
@@ -438,25 +569,154 @@ onMounted(async () => {
                     :fill-border-radius="0"
                     >SHIELD:
                     {{
-                      percentageHP(
-                        playerInfo.shield_hp,
-                        playerInfo.shield_max_hp
-                      )
-                    }}%</n-progress
+                      displayHP(playerInfo.shield_hp, playerInfo.shield_max_hp)
+                    }}</n-progress
                   >
                 </n-space>
                 <n-data-table
                   class="mt-5"
                   size="small"
                   :columns="createPlayerPalsColumns()"
+                  :row-props="dataRowProps"
                   :data="playerInfo.pals"
-                  :pagination="pagination"
                   :bordered="false"
+                  striped
                 />
+              </n-card>
+              <n-modal
+                v-model:show="showPalDetailModal"
+                preset="card"
+                :style="{ width: '90%', maxWidth: '400px' }"
+                size="huge"
+                :bordered="false"
+                :segmented="{ content: 'soft', footer: 'soft' }"
+              >
+                <template #header-extra>
+                  <n-tag class="mr-2" type="primary" round>
+                    Lv.{{ palDetail.level }}
+                  </n-tag>
+                  <n-tag
+                    :type="palDetail.gender === 'Male' ? 'primary' : 'error'"
+                    round
+                  >
+                    {{ palDetail.gender === "Male" ? "♂" : "♀" }}
+                  </n-tag>
+                </template>
+                <template #header>
+                  {{ palDetail.type }}
+                </template>
+                <n-space class="mb-2" justify="center">
+                  <n-avatar
+                    :size="64"
+                    :src="getPalAvatar(palDetail.type)"
+                    :fallback-src="getUnknowPalAvatar()"
+                  ></n-avatar>
+                </n-space>
+                <n-space class="mb-2" justify="center">
+                  <n-tag v-if="palDetail.is_boss" type="success" round
+                    >Boss</n-tag
+                  >
+                  <n-tag v-else-if="palDetail.is_lucky" type="warning" round
+                    >Lucky</n-tag
+                  >
+                  <n-tag v-else-if="palDetail.is_tower" type="error" round
+                    >Tower</n-tag
+                  >
+                </n-space>
+                <n-space vertical>
+                  <n-progress
+                    type="line"
+                    status="error"
+                    indicator-placement="inside"
+                    :percentage="percentageHP(palDetail.hp, palDetail.max_hp)"
+                    :height="24"
+                    :border-radius="4"
+                    :fill-border-radius="0"
+                    >HP:
+                    {{ displayHP(palDetail.hp, palDetail.max_hp) }}</n-progress
+                  >
+                  <n-grid cols="4">
+                    <!-- <n-gi>
+                          <n-statistic label="Exp" :value="palDetail.exp" />
+                        </n-gi> -->
+                    <n-gi>
+                      <n-statistic label="Ranged" :value="palDetail.ranged" />
+                    </n-gi>
+                    <n-gi>
+                      <n-statistic label="Defense" :value="palDetail.defense" />
+                    </n-gi>
+                    <n-gi>
+                      <n-statistic label="Melee" :value="palDetail.melee" />
+                    </n-gi>
+                    <n-gi>
+                      <n-statistic label="Rank" :value="palDetail.rank" />
+                    </n-gi>
+                  </n-grid>
+                </n-space>
+                <n-space vertical>
+                  <div v-for="skill in palDetail.skills" :key="skill">
+                    <n-tag type="warning">{{ skill }}</n-tag>
+                    : {{ skillsMap[skill] }}
+                  </div>
+                </n-space>
+              </n-modal>
+            </n-layout>
+
+            <n-layout
+              v-if="currentDisplay === 'guilds'"
+              content-style="padding: 24px;"
+              :native-scrollbar="false"
+            >
+              <n-card :bordered="false" v-if="guildInfo.name">
+                <n-page-header>
+                  <template #title>
+                    {{ guildInfo.name }}
+                  </template>
+                  <template #avatar>
+                    <n-avatar
+                      :style="{ color: 'white', backgroundColor: 'darkorange' }"
+                      round
+                    >
+                      <n-icon>
+                        <GroupWorkRound />
+                      </n-icon>
+                    </n-avatar>
+                  </template>
+                  <template #extra>
+                    <n-space>
+                      <n-tag type="primary" size="large" round strong>
+                        Lv.{{ guildInfo.base_camp_level }}
+                        <template #icon>
+                          <n-icon :component="CrownFilled" />
+                        </template>
+                      </n-tag>
+                    </n-space>
+                  </template>
+                  <template #footer> </template>
+                </n-page-header>
+                <n-space vertical>
+                  <n-list hoverable clickable>
+                    <n-list-item
+                      v-for="player in guildInfo.players"
+                      :key="player.player_uid"
+                    >
+                      <n-space size="large" style="margin-top: 4px">
+                        <n-avatar :src="avatar" round></n-avatar>
+                        {{ player.nickname }}
+                        <n-tag :bordered="false" type="info" size="small">
+                          UID: {{ player.player_uid }}
+                        </n-tag>
+                      </n-space>
+                    </n-list-item></n-list
+                  >
+                </n-space>
               </n-card>
             </n-layout>
           </n-layout>
           <n-layout-footer
+            v-if="
+              currentDisplay === 'players' && isLogin && playerInfo.player_uid
+            "
             class="pt-3 pr-3 bg-transparent"
             position="absolute"
             style="height: 64px"
@@ -480,16 +740,19 @@ onMounted(async () => {
               </n-button>
             </n-flex>
           </n-layout-footer>
+          <!-- <n-layout
+            v-if="!loading && playerList.length === 0"
+            class="w-full h-25 flex justify-center items-center"
+          >
+            <n-empty description="什么都没有"> </n-empty>
+          </n-layout>
+          <n-layout
+            v-if="loading"
+            class="w-full h-25 flex justify-center items-center"
+          >
+            <n-spin size="small" />
+          </n-layout> -->
         </n-layout>
-      </div>
-      <div
-        v-if="!loading && playerList.length === 0"
-        class="w-full h-25 flex justify-center items-center"
-      >
-        <n-empty description="什么都没有"> </n-empty>
-      </div>
-      <div v-if="loading" class="w-full h-25 flex justify-center items-center">
-        <n-spin size="small" />
       </div>
     </div>
   </div>

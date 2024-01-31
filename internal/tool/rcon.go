@@ -16,7 +16,7 @@ func executeCommand(command string) (*executor.Executor, string, error) {
 	exec, err := executor.NewExecutor(
 		viper.GetString("rcon.address"),
 		viper.GetString("rcon.password"),
-		viper.GetInt("rcon.timeout"), true) // TODO: 此处替换成接收参数，实际为不同服务器的数据库配置
+		viper.GetInt("rcon.timeout"), true)
 	if err != nil {
 		return nil, "", err
 	}

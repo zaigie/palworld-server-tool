@@ -24,10 +24,11 @@ class Service {
       },
       onFetchError(context) {
         if (context.response.status === 401) {
-          localStorage.remove("token");
+          localStorage.clear();
           // router.push({
           //   name: 'login'
           // })
+          return context;
         }
         return context;
       },
