@@ -54,6 +54,8 @@
 
 ## 功能截图
 
+https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4efe-8274-15df261d50b4
+
 ![](./docs/img/pst-zh-2.png)
 
 ![](./docs/img/pst-zh-3.png)

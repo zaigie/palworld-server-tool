@@ -53,6 +53,8 @@ Download the latest executable files at:
 
 ## Function screenshot
 
+https://github.com/zaigie/palworld-server-tool/assets/17232619/42d4c5db-8799-4962-b762-ae22eebbfeb9
+
 ![](./docs/img/pst-en-2.png)
 
 ![](./docs/img/pst-en-3.png)
