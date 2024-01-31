@@ -9,4 +9,4 @@ rcon:
 save:
   path: ""
   decode_path: ""
-  sync_interval: 300
+  sync_interval: 600

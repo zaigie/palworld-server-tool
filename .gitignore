@@ -27,6 +27,7 @@ go.work
 .DS_Store
 
 dist
+module
 
 /assets
 /favicon.ico
