@@ -47,6 +47,9 @@
 
 ## 下载
 
+> [!CAUTION]
+> 解析 `Level.sav` 存档的任务需要在**短时间（1-3 分钟）耗费较大的系统内存**（常常是 4GB~6GB），这部分内存会在执行完解析任务后释放，因此你至少需要确保你的服务器有充足的内存！若不满足条件仍需使用，你可以考虑在个人电脑上通过配置 [rsync](https://github.com/WayneD/rsync) 自动同步存档文件来运行
+
 请在以下地址下载最新版可执行文件
 
 - [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
@@ -77,9 +80,6 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 请**先关闭服务器再作修改**，你需要设置一个 AdminPassword，然后将 `RCONEnabled` 和 `RCONPort` 填写如上，再重启服务器即可。
 
 ## 安装部署
-
-> [!CAUTION]
-> 解析 `Level.sav` 存档的任务需要在**短时间耗费较大的系统内存**（常常是 4GB~6GB），因此你至少需要确保你的服务器有充足的内存！若不满足条件仍需使用，你可以考虑在个人电脑上通过配置 [rsync](https://github.com/WayneD/rsync) 自动同步存档文件来运行
 
 ### Linux
 

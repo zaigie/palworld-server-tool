@@ -47,6 +47,9 @@ Due to limited maintenance and development staff, we welcome front-end, back-end
 
 ## Download
 
+> [!CAUTION]
+> The task of parsing `Level.sav` requires **significant system memory (often 4GB~6GB) in a short period (about 1~3min)** , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory! If not, consider syncing the save files to your personal computer via [rsync](https://github.com/WayneD/rsync) for running.
+
 Download the latest executable files at:
 
 - [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
@@ -76,9 +79,6 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 Please **shut down the server before making modifications**. Set an AdminPassword, and fill in `RCONEnabled` and `RCONPort` as shown above. Then restart the server.
 
 ## Installation and Deployment
-
-> [!CAUTION]
-> The task of parsing `Level.sav` requires **significant system memory in a short period** (often 4GB~6GB). Ensure your server has enough memory! If not, consider syncing the save files to your personal computer via [rsync](https://github.com/WayneD/rsync) for running.
 
 ### Linux
 
