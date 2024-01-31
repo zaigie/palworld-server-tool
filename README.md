@@ -84,8 +84,8 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 #### 下载解压
 
 ```bash
-# 下载 pst_{version}_{platform}_{arch}.tar 文件并解压到 pst 目录
-tar -xf pst_v0.4.0_linux_amd64.tar -C pst
+# 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
+mkdir -p pst && tar -xzf pst_v0.4.0_linux_amd64.tar.gz -C pst
 ```
 
 #### 配置

@@ -39,7 +39,7 @@ build-all:
 
 	cp script/start.bat dist/windows_x86/start.bat
 
-	cd dist && zip -p -r ${PREFIX}_windows_x86.zip windows_x86 && tar -czf ${PREFIX}_linux_amd64.tar.gz linux_amd64 && tar -czf ${PREFIX}_linux_arm64.tar.gz linux_arm64 && tar -czf ${PREFIX}_darwin_arm64.tar.gz darwin_arm64 && cd ..
+	cd dist && zip -p -r ${PREFIX}_windows_x86.zip windows_x86/* && tar -czf ${PREFIX}_linux_amd64.tar.gz linux_amd64/* && tar -czf ${PREFIX}_linux_arm64.tar.gz linux_arm64/* && tar -czf ${PREFIX}_darwin_arm64.tar.gz darwin_arm64/* && cd ..
 # show help
 help:
 	@echo ''

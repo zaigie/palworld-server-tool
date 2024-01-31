@@ -83,8 +83,8 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
 #### Download and Extract
 
 ```bash
-# Download pst_{version}_{platform}_{arch}.tar and extract to the pst directory
-tar -xf pst_v0.4.0_linux_amd64.tar -C pst
+# Download pst_{version}_{platform}_{arch}.tar.gz and extract to the pst directory
+mkdir -p pst && tar -xzf pst_v0.4.0_linux_amd64.tar.gz -C pst
 ```
 
 #### Configuration
