@@ -173,7 +173,7 @@ You can also right-click - "Properties", view the path and file name, and then c
 ![](./docs/img/windows_path.png)
 
 > [!WARNING]
-> Instead of pasting the copied path directly into `config.yaml`, add another '\' in front of all '\', as shown below
+> Instead of pasting the copied path directly into `config.yaml`, add another '\\' in front of all '\\', as shown below
 
 ```yaml
 web: # web configuration
