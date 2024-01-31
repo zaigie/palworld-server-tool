@@ -1,0 +1,12 @@
+web:
+  password: ""
+  port: 8080
+rcon:
+  address: "127.0.0.1:25575"
+  password: ""
+  timeout: 5
+  sync_interval: 60
+save:
+  path: ""
+  decode_path: ""
+  sync_interval: 600
