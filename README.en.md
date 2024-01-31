@@ -48,7 +48,7 @@ Due to limited maintenance and development staff, we welcome front-end, back-end
 ## Download
 
 > [!CAUTION]
-> The task of parsing `Level.sav` requires **significant system memory (often 4GB~6GB) in a short period (about 1~3min)** , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory! If not, consider syncing the save files to your personal computer via [rsync](https://github.com/WayneD/rsync) for running.
+> The task of parsing `Level.sav` requires **significant system memory (often 4GB-6GB) in a short period (about 1-3min)** , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory! If not, consider syncing the save files to your personal computer via [rsync](https://github.com/WayneD/rsync) for running.
 
 Download the latest executable files at:
 
