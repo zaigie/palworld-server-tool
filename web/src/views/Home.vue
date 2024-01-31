@@ -969,7 +969,7 @@ onMounted(async () => {
     :segmented="segmented"
   >
     <div>
-      <span class="block pb-2">You need to log in before you can operate.</span>
+      <span class="block pb-2">{{ $t("message.authdesc") }}</span>
       <n-input
         type="password"
         show-password-on="click"
