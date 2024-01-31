@@ -11,6 +11,9 @@ dependencies:
   '@vicons/carbon':
     specifier: ^0.12.0
     version: 0.12.0
+  '@vicons/fa':
+    specifier: ^0.12.0
+    version: 0.12.0
   '@vicons/fluent':
     specifier: ^0.12.0
     version: 0.12.0
@@ -1150,6 +1153,10 @@ packages:
 
   /@vicons/carbon@0.12.0:
     resolution: {integrity: sha512-kCOgr/ZOhZzoiFLJ8pwxMa2TMxrkCUOA22qExPabus35F4+USqzcsxaPoYtqRd9ROOYiHrSqwapak/ywF0D9bg==}
+    dev: false
+
+  /@vicons/fa@0.12.0:
+    resolution: {integrity: sha512-g2PIeJLsTHUjt6bK63LxqC0uYQB7iu+xViJOxvp1s8b9/akpXVPVWjDTTsP980/0KYyMMe4U7F/aUo7wY+MsXA==}
     dev: false
 
   /@vicons/fluent@0.12.0:
