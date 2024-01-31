@@ -1,32 +1,32 @@
 <script setup>
-import { zhCN, dateZhCN } from 'naive-ui'
-import pageStore from '@/stores/model/page.js'
-import { onMounted } from 'vue'
+import { zhCN, dateZhCN } from "naive-ui";
+import pageStore from "@/stores/model/page.js";
+import { onMounted } from "vue";
 
 const themeOverrides = {
   common: {
-    primaryColor: '#4098fc',
-    primaryColorHover: '#4098fc'
-  }
-}
+    primaryColor: "#4098fc",
+    primaryColorHover: "#4098fc",
+  },
+};
 
 // 移动端适配
 // 监听窗口宽度变化
 let getScreenWidth = function () {
-  let scrollWidth = document.documentElement.clientWidth || window.innerWidth
-  pageStore().setScreenWidth(scrollWidth)
-}
+  let scrollWidth = document.documentElement.clientWidth || window.innerWidth;
+  pageStore().setScreenWidth(scrollWidth);
+};
 
 onMounted(() => {
-  getScreenWidth()
+  getScreenWidth();
   window.onresize = function () {
-    getScreenWidth()
-  }
-})
+    getScreenWidth();
+  };
+});
 </script>
 
 <template>
-  <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme-overrides="themeOverrides">
+  <n-config-provider :theme-overrides="themeOverrides">
     <n-dialog-provider>
       <n-notification-provider>
         <n-message-provider>
