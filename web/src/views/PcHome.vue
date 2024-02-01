@@ -108,6 +108,12 @@ const getPlayerInfo = async (player_uid) => {
       });
     });
   }
+  nextTick(() => {
+    const playerInfoEL = document.getElementById("player-info");
+    if (playerInfoEL) {
+      playerInfoEL.scrollIntoView({ behavior: "smooth" });
+    }
+  });
 };
 
 const getGuildInfo = async (admin_player_uid) => {
@@ -635,7 +641,11 @@ onMounted(async () => {
               v-if="currentDisplay === 'players'"
               :native-scrollbar="false"
             >
-              <n-card :bordered="false" v-if="playerInfo.nickname">
+              <n-card
+                id="player-info"
+                :bordered="false"
+                v-if="playerInfo.nickname"
+              >
                 <n-page-header>
                   <n-grid :cols="6">
                     <n-gi
