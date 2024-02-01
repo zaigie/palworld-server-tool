@@ -43,7 +43,7 @@ Features implemented using official RCON commands (available only for servers):
 - [x] In-game broadcasting
 - [x] Smooth server shutdown with broadcast message
 
-This tool uses bblot for single file storage, fetching and saving data from RCON and Level.sav files via scheduled tasks. It provides a simple visual interface and REST API for easy management and development.
+This tool uses bbolt for single file storage, fetching and saving data from RCON and Level.sav files via scheduled tasks. It provides a simple visual interface and REST API for easy management and development.
 
 Due to limited maintenance and development staff, we welcome front-end, back-end developers, and even data engineers to submit PRs!
 
@@ -157,6 +157,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 > [!WARNING]
 > If you open the file for the first time, nothing will be displayed. Please **wait until the first sav archive synchronization is complete**
+> If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter, the default is 600s (10min).
 
 ### Windows
 
