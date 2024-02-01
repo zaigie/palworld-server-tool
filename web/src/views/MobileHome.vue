@@ -37,6 +37,8 @@ const guildInfo = ref({});
 const skillTypeList = ref([]);
 const languageOptions = ref([]);
 
+const contentRef = ref(null);
+
 const isLogin = ref(false);
 const authToken = ref("");
 
@@ -101,6 +103,7 @@ const getPlayerInfo = async (player_uid) => {
     });
   }
   isShowDetail.value = true;
+  contentRef.value.scrollTo(0, 0);
 };
 
 const getGuildInfo = async (admin_player_uid) => {
@@ -109,6 +112,7 @@ const getGuildInfo = async (admin_player_uid) => {
   });
   guildInfo.value = data.value;
   isShowDetail.value = true;
+  contentRef.value.scrollTo(0, 0);
 };
 
 const showPalDetailModal = ref(false);
@@ -388,6 +392,7 @@ const toPlayers = async () => {
   await getPlayerList();
   currentDisplay.value = "players";
   isShowDetail.value = false;
+  contentRef.value.scrollTo(0, 0);
 };
 const toGuilds = async () => {
   if (currentDisplay.value === "guilds") {
@@ -396,9 +401,11 @@ const toGuilds = async () => {
   await getGuildList();
   currentDisplay.value = "guilds";
   isShowDetail.value = false;
+  contentRef.value.scrollTo(0, 0);
 };
 const returnList = () => {
   isShowDetail.value = false;
+  contentRef.value.scrollTo(0, 0);
 };
 
 /**
@@ -571,7 +578,7 @@ onMounted(async () => {
               </n-button-group>
             </div>
           </n-layout-header>
-          <n-layout position="absolute" style="top: 64px">
+          <n-layout position="absolute" style="top: 64px" ref="contentRef">
             <div v-if="!isShowDetail">
               <!-- list -->
               <n-list v-if="currentDisplay === 'players'" hoverable clickable>
