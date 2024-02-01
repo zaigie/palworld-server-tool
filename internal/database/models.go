@@ -4,9 +4,9 @@ import "time"
 
 type Pal struct {
 	Level     int32    `json:"level"`
-	Exp       int32    `json:"exp"`
-	Hp        int32    `json:"hp"`
-	MaxHp     int32    `json:"max_hp"`
+	Exp       int64    `json:"exp"`
+	Hp        int64    `json:"hp"`
+	MaxHp     int64    `json:"max_hp"`
 	Type      string   `json:"type"`
 	Gender    string   `json:"gender"`
 	IsLucky   bool     `json:"is_lucky"`
@@ -36,11 +36,11 @@ type TersePlayer struct {
 	PlayerUid      string           `json:"player_uid"`
 	Nickname       string           `json:"nickname"`
 	Level          int32            `json:"level"`
-	Exp            int32            `json:"exp"`
-	Hp             int32            `json:"hp"`
-	MaxHp          int32            `json:"max_hp"`
-	ShieldHp       int32            `json:"shield_hp"`
-	ShieldMaxHp    int32            `json:"shield_max_hp"`
+	Exp            int64            `json:"exp"`
+	Hp             int64            `json:"hp"`
+	MaxHp          int64            `json:"max_hp"`
+	ShieldHp       int64            `json:"shield_hp"`
+	ShieldMaxHp    int64            `json:"shield_max_hp"`
 	MaxStatusPoint int32            `json:"max_status_point"`
 	StatusPoint    map[string]int32 `json:"status_point"`
 	FullStomach    float64          `json:"full_stomach"`

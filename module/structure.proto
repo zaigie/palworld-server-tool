@@ -4,9 +4,9 @@ package sav;
 
 message Pal {
     int32 level = 1;
-    int32 exp = 2;
-    int32 hp = 3;
-    int32 max_hp = 4;
+    int64 exp = 2;
+    int64 hp = 3;
+    int64 max_hp = 4;
     string type = 5;
     string gender = 6;
     bool is_lucky = 7;
@@ -24,11 +24,11 @@ message Player {
     string player_uid = 1;
     string nickname = 2;
     int32 level = 3;
-    int32 exp = 4;
-    int32 hp = 5;
-    int32 max_hp = 6;
-    int32 shield_hp = 7;
-    int32 shield_max_hp = 8;
+    int64 exp = 4;
+    int64 hp = 5;
+    int64 max_hp = 6;
+    int64 shield_hp = 7;
+    int64 shield_max_hp = 8;
     int32 max_status_point = 9;
     map<string, int32> status_point = 10;
     double full_stomach = 11;
