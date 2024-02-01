@@ -26,6 +26,8 @@
 
 ![PC](./docs/img/pst-en-1.png)
 
+The mobile interface is adapting
+
 Features and roadmap based on parsing of `Level.sav` save files:
 
 - [x] Complete player data
@@ -50,7 +52,7 @@ Due to limited maintenance and development staff, we welcome front-end, back-end
 ## Download
 
 > [!CAUTION]
-> The task of parsing `Level.sav` requires **significant system memory (often 4GB-6GB) in a short period (about 1-3min)** , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory! If not, consider syncing the save files to your personal computer via [rsync](https://github.com/WayneD/rsync) for running.
+> The task of parsing `Level.sav` requires **significant system memory (often 4GB-6GB) in a short period (about 1-3min)** , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory! If not, consider syncing the save files to your personal computer via [rsync](https://github.com/WayneD/rsync) for running.**The file synchronization Agent tool between the tool and the host will be develop later to achieve deployment separation.**
 
 Download the latest executable files at:
 
@@ -228,4 +230,4 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 ## LICENSE
 
-According to the [Apache2.0 LICENSE](LICENSE) authorization, any commercial behavior must be informed!
+According to the [Apache2.0 LICENSE](LICENSE) authorization, any reprints please indicate in the README and document section! Any commercial behavior must be informed!
