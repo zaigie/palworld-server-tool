@@ -1,0 +1,12 @@
+{
+  "terminal.integrated.env.osx": {
+    "PYTHONPATH": "${PYTHONPATH}:${workspaceFolder}/module/"
+  },
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${PYTHONPATH}:${workspaceFolder}/module/"
+  },
+  "terminal.integrated.env.windows": {
+    "PYTHONPATH": "${PYTHONPATH};${workspaceFolder}/module/"
+  },
+  "pylint.cwd": "${workspaceFolder}/module/"
+}

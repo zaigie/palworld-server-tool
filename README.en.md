@@ -47,8 +47,6 @@ This tool uses bbolt for single file storage, fetching and saving data from RCON
 
 Due to limited maintenance and development staff, we welcome front-end, back-end developers, and even data engineers to submit PRs!
 
-> `sav_cli` is not open source for some reason, but will be closed and open source in the near future.
-
 ## Download
 
 > [!CAUTION]

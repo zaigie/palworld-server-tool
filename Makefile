@@ -27,10 +27,10 @@ build-all:
 	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/linux_arm64/pst main.go
 	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/darwin_arm64/pst main.go
 
-	cp module/sav_cli_windows_x86.exe dist/windows_x86/sav_cli.exe
-	cp module/sav_cli_linux_amd64 dist/linux_amd64/sav_cli
-	cp module/sav_cli_linux_arm64 dist/linux_arm64/sav_cli
-	cp module/sav_cli_darwin_arm64 dist/darwin_arm64/sav_cli
+	cp module/dist/sav_cli_windows_x86.exe dist/windows_x86/sav_cli.exe
+	cp module/dist/sav_cli_linux_amd64 dist/linux_amd64/sav_cli
+	cp module/dist/sav_cli_linux_arm64 dist/linux_arm64/sav_cli
+	cp module/dist/sav_cli_darwin_arm64 dist/darwin_arm64/sav_cli
 
 	cp test/config.yaml dist/windows_x86/config.yaml
 	cp test/config.yaml dist/linux_amd64/config.yaml

@@ -1,1 +1,2 @@
 *.vue linguist-vendored
+lib/* linguist-vendored
