@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/auth"
 	"github.com/zaigie/palworld-server-tool/internal/database"
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 )
 
 type Sturcture struct {
@@ -38,6 +39,7 @@ func ConversionLoading(file string) error {
 	}
 
 	if strings.HasPrefix(file, "http://") || strings.HasPrefix(file, "https://") {
+		logger.Infof("downloading Level.sav from %s\n", file)
 		tmpFile, err = downloadFile(file)
 		if err != nil {
 			return errors.New("error downloading file: " + err.Error())
