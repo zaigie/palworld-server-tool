@@ -18,7 +18,7 @@
 
 ![PC](./docs/img/pst-zh-1.png)
 
-移动端界面适配中
+> 目前移动端适配良好，可查看下面 [功能截图](#功能截图)
 
 基于 `Level.sav` 存档文件解析实现的功能及路线图：
 
@@ -42,7 +42,11 @@
 ## 下载
 
 > [!CAUTION]
-> 解析 `Level.sav` 存档的任务需要在**短时间（1-3 分钟）耗费较大的系统内存**（常常是 4GB~6GB），这部分内存会在执行完解析任务后释放，因此你至少需要确保你的服务器有充足的内存！若不满足条件仍需使用，你可以考虑在个人电脑上通过配置 [rsync](https://github.com/WayneD/rsync) 自动同步存档文件来运行。**后面会开发工具和主机之间的文件同步 Agent 工具，实现部署分离**。
+> 解析 `Level.sav` 存档的任务需要在**短时间（1-3 分钟）耗费较大的系统内存**（常常是 4GB~6GB），这部分内存会在执行完解析任务后释放，因此你至少需要确保你的服务器有充足的内存！
+>
+> 若不满足条件仍需使用，提供了 `pst-agent` 部署在游戏服务器，而将 `pst` 部署在 PC 或者其它有足够内存执行解析任务的服务器。
+>
+> ==> [pst-agent 方式部署教程](./README.agent.md)
 
 请在以下地址下载最新版可执行文件
 
@@ -53,11 +57,19 @@
 
 https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4efe-8274-15df261d50b4
 
-![](./docs/img/pst-zh-2.png)
+### 桌面端
+
+|                              |                              |
+| :--------------------------: | :--------------------------: |
+| ![](./docs/img/pst-zh-2.png) | ![](./docs/img/pst-zh-4.png) |
 
 ![](./docs/img/pst-zh-3.png)
 
-![](./docs/img/pst-zh-4.png)
+### 移动端
+
+<p align="center">
+<img src="./docs/img/pst-zh-m-1.png" width="30%" /><img src="./docs/img/pst-zh-m-2.png" width="30%" /><img src="./docs/img/pst-zh-m-3.png" width="30%" />
+</p>
 
 ## 如何开启私服 RCON
 
@@ -75,13 +87,21 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ## 安装部署
 
+这里**默认为将 pst 工具和游戏服务器放在同一台物理机上**，在一些情况下你可能不想要它们部署在同一机器上：
+
+- 需要单独部署在其它服务器
+- 只需要部署在本地个人电脑
+- 游戏服务器性能较弱不满足，采用上述两种方案之一
+
+**请参考 [pst-agent 方式部署教程](./README.agent.md)**
+
 ### Linux
 
 #### 下载解压
 
 ```bash
 # 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
-mkdir -p pst && tar -xzf pst_v0.4.2_linux_amd64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
 ```
 
 #### 配置
@@ -155,7 +175,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 #### 下载解压
 
-解压 `pst_v0.4.2_windows_x86.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
+解压 `pst_v0.5.0_windows_x86.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
 
 #### 配置
 
