@@ -1,0 +1,16 @@
+FROM golang:1.21 as builder
+
+WORKDIR /app
+ADD . .
+
+RUN go build -ldflags="-s -w" -o ./dist/pst-agent main.go
+
+FROM scratch as runtime
+
+WORKDIR /app
+
+# 映射宿主机存档目录
+
+COPY --from=builder /app/dist/pst-agent /app/pst-agent
+
+ENTRYPOINT [ "pst-agent" ]
