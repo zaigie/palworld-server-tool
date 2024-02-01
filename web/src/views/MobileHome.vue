@@ -129,7 +129,7 @@ const dataRowProps = (row) => {
 };
 
 const isPlayerOnline = (last_online) => {
-  return dayjs() - dayjs(last_online) < 60000;
+  return dayjs() - dayjs(last_online) < 120000;
 };
 const displayLastOnline = (last_online) => {
   if (dayjs(last_online).year() < 1970) {
@@ -498,7 +498,11 @@ onMounted(async () => {
     <div class="w-full">
       <div class="rounded-lg" v-if="!loading && playerList.length > 0">
         <n-layout style="height: calc(100vh - 72px)" has-sider>
-          <n-layout-header class="h-16 flex flex-col justify-between" bordered>
+          <n-layout-header
+            class="flex flex-col justify-between"
+            :class="isLogin ? 'h-16' : 'h-10'"
+            bordered
+          >
             <div v-if="isLogin" class="flex justify-center items-center px-3">
               <n-button
                 size="small"

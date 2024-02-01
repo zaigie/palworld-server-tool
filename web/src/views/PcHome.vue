@@ -137,7 +137,7 @@ const dataRowProps = (row) => {
 };
 
 const isPlayerOnline = (last_online) => {
-  return dayjs() - dayjs(last_online) < 60000;
+  return dayjs() - dayjs(last_online) < 120000;
 };
 const displayLastOnline = (last_online) => {
   if (dayjs(last_online).year() < 1970) {
