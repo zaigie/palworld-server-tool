@@ -157,6 +157,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 > [!WARNING]
 > If you open the file for the first time, nothing will be displayed. Please **wait until the first sav archive synchronization is complete**
+>
 > If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter, the default is 600s (10min).
 
 ### Windows
@@ -224,6 +225,8 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 > [!WARNING]
 > If you open the file for the first time, nothing will be displayed. Please **wait until the first sav archive synchronization is complete**
+>
+> If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter, the default is 600s (10min).
 
 ## REST API Document
 
