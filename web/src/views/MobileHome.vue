@@ -301,16 +301,19 @@ const handelPlayerAction = async (type) => {
     positiveText: t("button.confirm"),
     negativeText: t("button.cancel"),
     onPositiveClick: async () => {
-      const { data, statusCode } = await new ApiService().banPlayer({
-        playerUid: playerInfo.value.player_uid,
-      });
       if (type === "ban") {
+        const { data, statusCode } = await new ApiService().banPlayer({
+          playerUid: playerInfo.value.player_uid,
+        });
         if (statusCode.value === 200) {
           message.success(t("message.bansuccess"));
         } else {
           message.error(t("message.banfail", { err: data.value?.error }));
         }
       } else if (type === "kick") {
+        const { data, statusCode } = await new ApiService().kickPlayer({
+          playerUid: playerInfo.value.player_uid,
+        });
         if (statusCode.value === 200) {
           message.success(t("message.kicksuccess"));
         } else {
