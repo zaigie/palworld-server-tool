@@ -77,6 +77,9 @@ func main() {
 	logger.Infof("Listening on http://127.0.0.1:%d or http://%s:%d\n", viper.GetInt("web.port"), localIp, viper.GetInt("web.port"))
 	logger.Infof("Swagger on http://127.0.0.1:%d/swagger/index.html\n", viper.GetInt("web.port"))
 
+	go task.RconSync(db)
+	go task.SavSync()
+
 	go task.Schedule(db)
 	defer task.Shutdown()
 
