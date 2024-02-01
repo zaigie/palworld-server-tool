@@ -24,16 +24,23 @@ type EmptyResponse struct{}
 func Logger() gin.HandlerFunc {
 	return gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
 		if !strings.HasPrefix(param.Path, "/swagger/") && !strings.HasPrefix(param.Path, "/assets/") {
-			// your custom format
-			return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
-				param.ClientIP,
-				param.TimeStamp.Format(time.RFC1123),
-				param.Method,
-				param.Path,
-				param.Request.Proto,
-				param.StatusCode,
+			var statusColor, methodColor, resetColor string
+			if param.IsOutputColor() {
+				statusColor = param.StatusCodeColor()
+				methodColor = param.MethodColor()
+				resetColor = param.ResetColor()
+			}
+
+			if param.Latency > time.Minute {
+				param.Latency = param.Latency.Truncate(time.Second)
+			}
+			return fmt.Sprintf("[GIN] %v |%s %3d %s| %13v | %15s |%s %-7s %s %#v\n%s",
+				param.TimeStamp.Format("2006/01/02 - 15:04:05"),
+				statusColor, param.StatusCode, resetColor,
 				param.Latency,
-				param.Request.UserAgent(),
+				param.ClientIP,
+				methodColor, param.Method, resetColor,
+				param.Path,
 				param.ErrorMessage,
 			)
 		}
@@ -43,7 +50,7 @@ func Logger() gin.HandlerFunc {
 
 func RegisterRouter() *gin.Engine {
 	r := gin.New()
-	r.Use(Logger(), gin.Recovery())
+	r.Use(Logger(), gin.Recovery(), gin.Logger())
 
 	r.POST("/api/login", loginHandler)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
