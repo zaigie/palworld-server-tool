@@ -275,24 +275,21 @@ const copyText = async (text) => {
 // login
 const showLoginModal = ref(false);
 const password = ref("");
-const handleLogin = () => {
-  const context = new ApiService()
-    .login({
-      password: password.value,
-    })
-    .then((res) => {
-      if (res.statusCode.value === 401) {
-        message.error(t("message.autherr"));
-        password.value = "";
-        return;
-      }
-      let token = res.data.value.token;
-      localStorage.setItem(PALWORLD_TOKEN, token);
-      authToken.value = token;
-      message.success(t("message.authsuccess"));
-      showLoginModal.value = false;
-      isLogin.value = true;
-    });
+const handleLogin = async () => {
+  const { data, statusCode } = await new ApiService().login({
+    password: password.value,
+  });
+  if (statusCode.value === 401) {
+    message.error(t("message.autherr"));
+    password.value = "";
+    return;
+  }
+  let token = data.value.token;
+  localStorage.setItem(PALWORLD_TOKEN, token);
+  authToken.value = token;
+  message.success(t("message.authsuccess"));
+  showLoginModal.value = false;
+  isLogin.value = true;
 };
 
 const handelPlayerAction = async (type) => {
@@ -306,32 +303,23 @@ const handelPlayerAction = async (type) => {
     content: type === "ban" ? t("message.banwarn") : t("message.kickwarn"),
     positiveText: t("button.confirm"),
     negativeText: t("button.cancel"),
-    onPositiveClick: () => {
+    onPositiveClick: async () => {
+      const { statusCode } = await new ApiService().banPlayer({
+        playerUid: playerInfo.value.player_uid,
+      });
       if (type === "ban") {
-        new ApiService()
-          .banPlayer({
-            playerUid: playerInfo.value.player_uid,
-          })
-          .then((res) => {
-            if (res.statusCode.value === 200) {
-              message.success(t("message.bansuccess"));
-            } else {
-              message.error(t("message.banfail"));
-            }
-          });
+        if (statusCode.value === 200) {
+          message.success(t("message.bansuccess"));
+        } else {
+          message.error(t("message.banfail"));
+        }
       } else if (type === "kick") {
-        new ApiService()
-          .kickPlayer({
-            playerUid: playerInfo.value.player_uid,
-          })
-          .then((res) => {
-            if (res.statusCode.value === 200) {
-              message.success(t("message.kicksuccess"));
-            } else {
-              console.log(res);
-              message.error(t("message.kickfail"));
-            }
-          });
+        if (statusCode.value === 200) {
+          message.success(t("message.kicksuccess"));
+        } else {
+          console.log(res);
+          message.error(t("message.kickfail"));
+        }
       }
     },
   });
@@ -350,19 +338,16 @@ const handleStartBrodcast = () => {
   }
 };
 const handleBroadcast = async () => {
-  const { data } = await new ApiService()
-    .sendBroadcast({
-      message: broadcastText.value,
-    })
-    .then((res) => {
-      if (res.statusCode.value === 200) {
-        message.success(t("message.broadcastsuccess"));
-        showBroadcastModal.value = false;
-        bradcastText.value = "";
-      } else {
-        message.error(t("message.broadcastfail"));
-      }
-    });
+  const { statusCode } = await new ApiService().sendBroadcast({
+    message: broadcastText.value,
+  });
+  if (statusCode.value === 200) {
+    message.success(t("message.broadcastsuccess"));
+    showBroadcastModal.value = false;
+    broadcastText.value = "";
+  } else {
+    message.error(t("message.broadcastfail"));
+  }
 };
 
 const doShutdown = async () => {
@@ -380,15 +365,14 @@ const handleShutdown = () => {
       content: t("message.shutdowntip"),
       positiveText: t("button.confirm"),
       negativeText: t("button.cancel"),
-      onPositiveClick: () => {
-        doShutdown().then((res) => {
-          if (res.statusCode.value === 200) {
-            message.success(t("message.shutdownsuccess"));
-            return;
-          } else {
-            message.error(t("message.shutdownfail"));
-          }
-        });
+      onPositiveClick: async () => {
+        const { statusCode } = await doShutdown();
+        if (statusCode.value === 200) {
+          message.success(t("message.shutdownsuccess"));
+          return;
+        } else {
+          message.error(t("message.shutdownfail"));
+        }
       },
       onNegativeClick: () => {},
     });
