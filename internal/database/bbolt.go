@@ -1,6 +1,7 @@
 package database
 
 import (
+	"sync"
 	"time"
 
 	"github.com/zaigie/palworld-server-tool/internal/logger"
@@ -8,6 +9,7 @@ import (
 )
 
 var db *bbolt.DB
+var dbMutex sync.Mutex
 
 func InitDB() *bbolt.DB {
 	db_, err := bbolt.Open("pst.db", 0600, &bbolt.Options{Timeout: 1 * time.Second})
@@ -34,9 +36,10 @@ func InitDB() *bbolt.DB {
 }
 
 func GetDB() *bbolt.DB {
+	dbMutex.Lock()
+	defer dbMutex.Unlock()
 	if db == nil {
 		db = InitDB()
 	}
-	// logger.Debugf("GetDB: %p\n", db)
 	return db
 }
