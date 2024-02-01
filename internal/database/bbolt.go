@@ -9,9 +9,13 @@ import (
 
 var db *bbolt.DB
 
-func createBuckets(db *bbolt.DB) {
+func InitDB() *bbolt.DB {
+	db_, err := bbolt.Open("pst.db", 0600, &bbolt.Options{Timeout: 1 * time.Second})
+	if err != nil {
+		logger.Panic(err)
+	}
 	// players
-	err := db.Update(func(tx *bbolt.Tx) error {
+	err = db_.Update(func(tx *bbolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte("players"))
 		return err
 	})
@@ -19,27 +23,20 @@ func createBuckets(db *bbolt.DB) {
 		logger.Panic(err)
 	}
 	// guilds
-	err = db.Update(func(tx *bbolt.Tx) error {
+	err = db_.Update(func(tx *bbolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte("guilds"))
 		return err
 	})
 	if err != nil {
 		logger.Panic(err)
 	}
-}
-
-func InitDB() *bbolt.DB {
-	db, err := bbolt.Open("pst.db", 0600, &bbolt.Options{Timeout: 1 * time.Second})
-	if err != nil {
-		logger.Panic(err)
-	}
-	createBuckets(db)
-	return db
+	return db_
 }
 
 func GetDB() *bbolt.DB {
 	if db == nil {
 		db = InitDB()
 	}
+	// logger.Debugf("GetDB: %p\n", db)
 	return db
 }
