@@ -46,7 +46,7 @@
 >
 > 若不满足条件仍需使用，提供了 `pst-agent` 部署在游戏服务器，而将 `pst` 部署在 PC 或者其它有足够内存执行解析任务的服务器。
 >
-> ==> [pst-agent 方式部署教程](./README.agent.md)
+> ==> [pst-agent 部署教程](./README.agent.md)
 
 请在以下地址下载最新版可执行文件
 
@@ -93,7 +93,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 - 只需要部署在本地个人电脑
 - 游戏服务器性能较弱不满足，采用上述两种方案之一
 
-**请参考 [pst-agent 方式部署教程](./README.agent.md)**
+**请参考 [pst-agent 部署教程](./README.agent.md)**
 
 ### Linux
 
