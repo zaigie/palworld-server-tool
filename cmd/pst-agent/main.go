@@ -23,6 +23,7 @@ func main() {
 	flag.StringVar(&file, "f", "", "Level.sav file location")
 	flag.Parse()
 
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	r.GET("/sync", func(c *gin.Context) {
