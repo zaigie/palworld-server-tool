@@ -301,21 +301,20 @@ const handelPlayerAction = async (type) => {
     positiveText: t("button.confirm"),
     negativeText: t("button.cancel"),
     onPositiveClick: async () => {
-      const { statusCode } = await new ApiService().banPlayer({
+      const { data, statusCode } = await new ApiService().banPlayer({
         playerUid: playerInfo.value.player_uid,
       });
       if (type === "ban") {
         if (statusCode.value === 200) {
           message.success(t("message.bansuccess"));
         } else {
-          message.error(t("message.banfail"));
+          message.error(t("message.banfail", { err: data.value?.error }));
         }
       } else if (type === "kick") {
         if (statusCode.value === 200) {
           message.success(t("message.kicksuccess"));
         } else {
-          console.log(res);
-          message.error(t("message.kickfail"));
+          message.error(t("message.kickfail", { err: data.value?.error }));
         }
       }
     },
@@ -335,7 +334,7 @@ const handleStartBrodcast = () => {
   }
 };
 const handleBroadcast = async () => {
-  const { statusCode } = await new ApiService().sendBroadcast({
+  const { data, statusCode } = await new ApiService().sendBroadcast({
     message: broadcastText.value,
   });
   if (statusCode.value === 200) {
@@ -343,7 +342,7 @@ const handleBroadcast = async () => {
     showBroadcastModal.value = false;
     broadcastText.value = "";
   } else {
-    message.error(t("message.broadcastfail"));
+    message.error(t("message.broadcastfail", { err: data.value?.error }));
   }
 };
 
@@ -363,12 +362,12 @@ const handleShutdown = () => {
       positiveText: t("button.confirm"),
       negativeText: t("button.cancel"),
       onPositiveClick: async () => {
-        const { statusCode } = await doShutdown();
+        const { data, statusCode } = await doShutdown();
         if (statusCode.value === 200) {
           message.success(t("message.shutdownsuccess"));
           return;
         } else {
-          message.error(t("message.shutdownfail"));
+          message.error(t("message.shutdownfail", { err: data.value?.error }));
         }
       },
       onNegativeClick: () => {},
