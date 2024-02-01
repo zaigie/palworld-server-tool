@@ -5,10 +5,14 @@ After=palserver.service
 
 [Service]
 Type=simple
-User=root          # change to your custom user
-#MemoryMax=15G     # you can limit physical memory usage here
-Restart=on-failure # server restart mode
-RestartSec=30s     # restart sec
+# change to your custom user
+User=root
+# server restart mode
+Restart=on-failure
+# restart sec
+RestartSec=30s
+# path to your pst/pst-agent dir
+WorkingDirectory=/path/to
 # path to your pst/pst-agent executable location
 ExecStart=/path/to/pst
 
