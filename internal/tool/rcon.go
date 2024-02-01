@@ -40,9 +40,14 @@ func Info() (map[string]string, error) {
 			"name":    "Unknown",
 		}, nil
 	}
+	name := matches[2]
+	if strings.Contains(name, "\u0000") {
+		name = strings.ReplaceAll(name, "\u0000", "")
+		name += "..."
+	}
 	result := map[string]string{
 		"version": matches[1],
-		"name":    matches[2],
+		"name":    name,
 	}
 	return result, nil
 }
