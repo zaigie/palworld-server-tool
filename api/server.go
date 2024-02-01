@@ -30,12 +30,12 @@ type ShutdownRequest struct {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	ServerInfo
-//	@Failure		500	{object}	ErrorResponse
+//	@Failure		400	{object}	ErrorResponse
 //	@Router			/api/server [get]
 func getServer(c *gin.Context) {
 	info, err := tool.Info()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	// TODO: add system psutil info
@@ -55,7 +55,6 @@ func getServer(c *gin.Context) {
 //	@Success		200			{object}	SuccessResponse
 //	@Failure		400			{object}	ErrorResponse
 //	@Failure		401			{object}	ErrorResponse
-//	@Failure		500			{object}	ErrorResponse
 //	@Router			/api/server/broadcast [post]
 func publishBroadcast(c *gin.Context) {
 	var req BroadcastRequest
@@ -68,7 +67,7 @@ func publishBroadcast(c *gin.Context) {
 		return
 	}
 	if err := tool.Broadcast(req.Message); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true})
@@ -87,7 +86,6 @@ func publishBroadcast(c *gin.Context) {
 //	@Success		200			{object}	SuccessResponse
 //	@Failure		400			{object}	ErrorResponse
 //	@Failure		401			{object}	ErrorResponse
-//	@Failure		500			{object}	ErrorResponse
 //	@Router			/api/server/shutdown [post]
 func shutdownServer(c *gin.Context) {
 	var req ShutdownRequest
@@ -103,7 +101,7 @@ func shutdownServer(c *gin.Context) {
 		req.Seconds = "60"
 	}
 	if err := tool.Shutdown(req.Seconds, req.Message); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true})
