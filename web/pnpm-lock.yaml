@@ -23,6 +23,9 @@ dependencies:
   '@vicons/material':
     specifier: ^0.12.0
     version: 0.12.0
+  '@vicons/tabler':
+    specifier: ^0.12.0
+    version: 0.12.0
   '@vitejs/plugin-vue-jsx':
     specifier: ^3.1.0
     version: 3.1.0(vite@5.0.12)(vue@3.4.15)
@@ -1193,6 +1196,10 @@ packages:
 
   /@vicons/material@0.12.0:
     resolution: {integrity: sha512-chv1CYAl8P32P3Ycwgd5+vw/OFNc2mtkKdb1Rw4T5IJmKy6GVDsoUKV3N2l208HATn7CCQphZtuPDdsm7K2kmA==}
+    dev: false
+
+  /@vicons/tabler@0.12.0:
+    resolution: {integrity: sha512-3+wUFuxb7e8OzZ8Wryct1pzfA2vyoF4lwW98O9s27ZrfCGaJGNmqG+q8A7vQ92Mf+COCgxpK+rhNPTtTvaU6qw==}
     dev: false
 
   /@vitejs/plugin-vue-jsx@3.1.0(vite@5.0.12)(vue@3.4.15):
