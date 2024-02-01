@@ -80,13 +80,15 @@ const getServerInfo = async () => {
   const { data } = await new ApiService().getServerInfo();
   serverInfo.value = data.value;
 };
-const getPlayerList = async () => {
+const getPlayerList = async (is_update_info = true) => {
   const { data } = await new ApiService().getPlayerList({
     order_by: "last_online",
     desc: true,
   });
   playerList.value = data.value;
-  await getPlayerInfo(playerList.value[0].player_uid);
+  if (is_update_info && playerList.value.length > 0) {
+    getPlayerInfo(playerList.value[0].player_uid);
+  }
 };
 const getGuildList = async () => {
   const { data } = await new ApiService().getGuildList();
@@ -445,7 +447,7 @@ onMounted(async () => {
   await getPlayerList();
   loading.value = false;
   setInterval(() => {
-    getPlayerList();
+    getPlayerList(false);
   }, 60000);
 });
 </script>
