@@ -1,5 +1,5 @@
 [Unit]
-Description=Palworld Server
+Description=PalWorld Server
 After=network.target
 
 [Service]
