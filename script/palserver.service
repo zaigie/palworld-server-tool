@@ -4,10 +4,14 @@ After=network.target
 
 [Service]
 Type=simple
-User=root          # change to your custom user
-#MemoryMax=15G     # you can limit physical memory usage here
-Restart=on-failure # server restart mode
-RestartSec=30s     # restart sec
+# change to your custom user
+User=root
+# you can limit physical memory usage here
+#MemoryMax=15G
+# server restart mode
+Restart=on-failure
+# restart sec
+RestartSec=30s
 # use multi thread optimize
 ExecStart=/path/to/Steam/steamapps/common/PalServer/PalServer.sh -useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS
 # default start command
