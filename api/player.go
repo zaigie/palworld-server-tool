@@ -8,7 +8,6 @@ import (
 	"github.com/zaigie/palworld-server-tool/internal/database"
 	"github.com/zaigie/palworld-server-tool/internal/tool"
 	"github.com/zaigie/palworld-server-tool/service"
-	"go.etcd.io/bbolt"
 )
 
 type PlayerOrderBy string
@@ -40,7 +39,7 @@ func putPlayers(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := service.PutPlayers(c.MustGet("db").(*bbolt.DB), players); err != nil {
+	if err := service.PutPlayers(database.GetDB(), players); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -64,7 +63,7 @@ func putPlayers(c *gin.Context) {
 func listPlayers(c *gin.Context) {
 	orderBy := c.Query("order_by")
 	desc := c.Query("desc")
-	players, err := service.ListPlayers(c.MustGet("db").(*bbolt.DB))
+	players, err := service.ListPlayers(database.GetDB())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -103,7 +102,7 @@ func listPlayers(c *gin.Context) {
 //	@Failure		404			{object}	EmptyResponse
 //	@Router			/api/player/{player_uid} [get]
 func getPlayer(c *gin.Context) {
-	player, err := service.GetPlayer(c.MustGet("db").(*bbolt.DB), c.Param("player_uid"))
+	player, err := service.GetPlayer(database.GetDB(), c.Param("player_uid"))
 	if err != nil {
 		if err == service.ErrNoRecord {
 			c.JSON(http.StatusNotFound, gin.H{})
