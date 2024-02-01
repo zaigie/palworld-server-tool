@@ -6,7 +6,7 @@ import argparse
 from urllib.parse import urljoin
 
 from structurer import convert_sav, structure_player, structure_guild
-from lib.logger import log
+from logger import log
 
 
 if __name__ == "__main__":

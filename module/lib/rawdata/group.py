@@ -8,7 +8,7 @@ def decode(
 ) -> dict[str, Any]:
     if type_name != "MapProperty":
         raise Exception(f"Expected MapProperty, got {type_name}")
-    value = reader.property(type_name, size, path, allow_custom=False)
+    value = reader.property(type_name, size, path, nested_caller_path=path)
     # Decode the raw bytes and replace the raw data
     group_map = value["value"]
     for group in group_map:

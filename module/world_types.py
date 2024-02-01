@@ -1,6 +1,6 @@
 from enum import Enum
 from uuid import UUID
-from lib.logger import log
+from logger import log
 
 
 def hexuid_to_decimal(uuid):
@@ -392,7 +392,14 @@ class Pal:
         ]
 
     def trans_skill(self, skill_values):
-        return [PalSkills[skill].value for skill in skill_values]
+        skills = []
+        for skill in skill_values:
+            if skill in PalSkills.__members__:
+                skills.append(PalSkills[skill].value)
+            else:
+                skills.append(skill)
+                log(f"Unknown skill {skill}", "WARN")
+        return skills
 
     def to_dict(self):
         return {
