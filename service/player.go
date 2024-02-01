@@ -15,11 +15,17 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 		for _, p := range players {
 			existingPlayerData := b.Get([]byte(p.PlayerUid))
 			if existingPlayerData != nil {
-				// Rcon data already has this player
 				var existingPlayer database.Player
 				if err := json.Unmarshal(existingPlayerData, &existingPlayer); err != nil {
 					return err
 				}
+
+				if p.Exp < existingPlayer.Exp && p.Level < existingPlayer.Level {
+					// Players with corrupted saves will have two player_uid
+					continue
+				}
+
+				// Rcon data already has this player
 				if existingPlayer.SteamId != "" {
 					p.SteamId = existingPlayer.SteamId
 				}
