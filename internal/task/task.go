@@ -14,6 +14,7 @@ import (
 var s gocron.Scheduler
 
 func RconSync(db *bbolt.DB) {
+	logger.Info("Scheduling Rcon sync...\n")
 	playersRcon, err := tool.ShowPlayers()
 	if err != nil {
 		logger.Error(err)
@@ -22,15 +23,16 @@ func RconSync(db *bbolt.DB) {
 	if err != nil {
 		logger.Error(err)
 	}
-	logger.Info("Rcon sync success\n")
+	logger.Info("Rcon sync done\n")
 }
 
 func SavSync() {
+	logger.Info("Scheduling Sav sync...\n")
 	err := tool.ConversionLoading(viper.GetString("save.path"))
 	if err != nil {
 		logger.Error(err)
 	}
-	logger.Info("Sav sync success\n")
+	logger.Info("Sav sync done\n")
 }
 
 func Schedule(db *bbolt.DB) {

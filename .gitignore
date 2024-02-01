@@ -31,3 +31,7 @@ dist
 /assets
 /favicon.ico
 /index.html
+
+*.sav
+*.sav.json
+structure.json
