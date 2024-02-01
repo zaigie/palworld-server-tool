@@ -43,19 +43,24 @@ if __name__ == "__main__":
         player_url = urljoin(args.request, "player")
         guild_url = urljoin(args.request, "guild")
         log(f"Put players to {player_url} with Players: {len(players)}")
-        requests.put(
+        player_res = requests.put(
             player_url,
             headers={"Authorization": f"Bearer {args.token}"},
             json=players,
             timeout=10,
         )
+        if player_res.status_code != 200:
+            log(f"Put Players data error: {player_res.text}")
+
         log(f"Put guilds to {guild_url} with Guilds: {len(guilds)}")
-        requests.put(
+        guild_res = requests.put(
             guild_url,
             headers={"Authorization": f"Bearer {args.token}"},
             json=guilds,
             timeout=10,
         )
+        if guild_res.status_code != 200:
+            log(f"Put Guilds data error: {guild_res.text}")
 
     try:
         if args.clear:
