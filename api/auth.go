@@ -41,7 +41,7 @@ func loginHandler(c *gin.Context) {
 	})
 	tokenString, err := token.SignedString(auth.SecretKey)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not generate token"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "could not generate token"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"token": tokenString})

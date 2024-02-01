@@ -15,7 +15,7 @@ build:
 	go build -o ./dist/pst main.go
 
 .PHONY: build-all
-# 为所有平台构建
+# 为所有平台构建，确保 module/dist 中有所有平台的 sav_cli
 build-all:
 	rm -rf dist/ && mkdir -p dist/
 
@@ -26,6 +26,11 @@ build-all:
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/linux_amd64/pst main.go
 	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/linux_arm64/pst main.go
 	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/darwin_arm64/pst main.go
+
+	GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_windows_x86.exe ./cmd/pst-agent/main.go
+	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_linux_amd64 ./cmd/pst-agent/main.go
+	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_linux_arm64 ./cmd/pst-agent/main.go
+	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_darwin_arm64 ./cmd/pst-agent/main.go
 
 	cp module/dist/sav_cli_windows_x86.exe dist/windows_x86/sav_cli.exe
 	cp module/dist/sav_cli_linux_amd64 dist/linux_amd64/sav_cli

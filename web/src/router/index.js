@@ -6,39 +6,8 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => import("../views/Home.vue"),
+      component: () => import("@/views/Home.vue"),
     },
-    // {
-    //   path: "/",
-    //   name: "home",
-    //   component: () => import("../views/HomePage.vue"),
-    // },
-    // {
-    //   path: '/admin',
-    //   name: 'admin',
-    //   component: () => import('@/views/AdminSystem/AdminSystem.vue')
-    //   // beforeEnter: async (to, from, next) => {
-    //   //   const token = localStorage.getItem('token')
-    //   //   if (!token) {
-    //   //     next({ name: 'login' })
-    //   //   } else {
-    //   //     next()
-    //   //   }
-    //   // }
-    // },
-    // {
-    //   path: '/login',
-    //   name: 'login',
-    //   component: () => import('@/views/LoginPage.vue')
-    //   // beforeEnter: async (to, from, next) => {
-    //   //   const token = localStorage.getItem('token')
-    //   //   if (!token) {
-    //   //     next()
-    //   //   } else {
-    //   //     next({ name: from.name })
-    //   //   }
-    //   // }
-    // }
   ],
 });
 

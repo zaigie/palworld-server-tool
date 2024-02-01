@@ -1,11 +1,13 @@
 package api
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/zaigie/palworld-server-tool/internal/auth"
-	"github.com/zaigie/palworld-server-tool/internal/database"
 )
 
 type SuccessResponse struct {
@@ -18,17 +20,29 @@ type ErrorResponse struct {
 
 type EmptyResponse struct{}
 
-func DatabaseMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		db := database.GetDB()
-		c.Set("db", db)
-		c.Next()
-	}
+func Logger() gin.HandlerFunc {
+	return gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+		if !strings.HasPrefix(param.Path, "/swagger/") && !strings.HasPrefix(param.Path, "/assets/") {
+			statusColor := param.StatusCodeColor()
+			methodColor := param.MethodColor()
+			resetColor := param.ResetColor()
+			return fmt.Sprintf("[GIN] %v |%s %3d %s| %13v | %15s |%s %-7s %s %#v\n%s",
+				param.TimeStamp.Format("2006/01/02 - 15:04:05"),
+				statusColor, param.StatusCode, resetColor,
+				param.Latency,
+				param.ClientIP,
+				methodColor, param.Method, resetColor,
+				param.Path,
+				param.ErrorMessage,
+			)
+		}
+		return ""
+	})
 }
 
 func RegisterRouter() *gin.Engine {
-	r := gin.Default()
-	r.Use(DatabaseMiddleware())
+	r := gin.New()
+	r.Use(Logger(), gin.Recovery())
 
 	r.POST("/api/login", loginHandler)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

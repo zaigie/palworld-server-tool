@@ -10,6 +10,7 @@ class Service {
    */
   fetch(url) {
     return useFetch(`${url}`, {
+      updateDataOnError: true,
       beforeFetch({ options }) {
         const token = localStorage.getItem("palworld_token");
         options.headers = {

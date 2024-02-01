@@ -4,13 +4,16 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/auth"
 	"github.com/zaigie/palworld-server-tool/internal/database"
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 )
 
 type Sturcture struct {
@@ -27,14 +30,25 @@ func getSavCli() (string, error) {
 }
 
 func ConversionLoading(file string) error {
+	var tmpFile string
+	var err error
+
 	savCli, err := getSavCli()
 	if err != nil {
 		return errors.New("error getting executable path: " + err.Error())
 	}
 
-	tmpFile, err := copyFileToTemp(file)
-	if err != nil {
-		return errors.New("error copying file to temporary directory: " + err.Error())
+	if strings.HasPrefix(file, "http://") || strings.HasPrefix(file, "https://") {
+		logger.Infof("downloading Level.sav from %s\n", file)
+		tmpFile, err = downloadFile(file)
+		if err != nil {
+			return errors.New("error downloading file: " + err.Error())
+		}
+	} else {
+		tmpFile, err = copyFileToTemp(file)
+		if err != nil {
+			return errors.New("error copying file to temporary directory: " + err.Error())
+		}
 	}
 	defer os.Remove(tmpFile)
 
@@ -57,6 +71,27 @@ func ConversionLoading(file string) error {
 	}
 
 	return nil
+}
+
+func downloadFile(url string) (string, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	tmpFile, err := os.CreateTemp("", "Level.sav")
+	if err != nil {
+		return "", err
+	}
+	defer tmpFile.Close()
+
+	_, err = io.Copy(tmpFile, resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return tmpFile.Name(), nil
 }
 
 func copyFileToTemp(srcFileName string) (string, error) {

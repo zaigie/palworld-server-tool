@@ -10,23 +10,15 @@
 </p>
 
 <p align='center'>
-<a href="#">
-  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/zaigie/palworld-server-tool?style=for-the-badge">
-</a>&nbsp;&nbsp;
-<a href="#">
-  <img alt="Go" src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white">
-</a>&nbsp;&nbsp;
-<a href="#">
-  <img alt="Python" src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue">
-</a>&nbsp;&nbsp;
-<a href="#">
-  <img alt="Vue" src="https://img.shields.io/badge/Vue%20js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D">
-</a>&nbsp;&nbsp;
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/zaigie/palworld-server-tool?style=for-the-badge">&nbsp;&nbsp;
+<img alt="Go" src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white">&nbsp;&nbsp;
+<img alt="Python" src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue">&nbsp;&nbsp;
+<img alt="Vue" src="https://img.shields.io/badge/Vue%20js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D">
 </p>
 
 ![PC](./docs/img/pst-en-1.png)
 
-The mobile interface is adapting
+> The current mobile adaptation is good, you can view [Function Screenshot](#function-screenshot)
 
 Features and roadmap based on parsing of `Level.sav` save files:
 
@@ -50,7 +42,11 @@ Due to limited maintenance and development staff, we welcome front-end, back-end
 ## Download
 
 > [!CAUTION]
-> The task of parsing `Level.sav` requires **significant system memory (often 4GB-6GB) in a short period (about 1-3min)** , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory! If not, consider syncing the save files to your personal computer via [rsync](https://github.com/WayneD/rsync) for running.**The file synchronization Agent tool between the tool and the host will be develop later to achieve deployment separation.**
+> The task of parsing `Level.sav` requires **significant system memory (often 4GB-6GB) in a short period (about 1-3min)** , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory!
+>
+> If the conditions are not met and still needed, the `pst-agent` is deployed on the game server, and the `pst` is deployed on a PC or other server with enough memory to perform the parsing task.
+>
+> ==> [pst-agent deployment tutorial](./README.agent.en.md)
 
 Download the latest executable files at:
 
@@ -60,11 +56,19 @@ Download the latest executable files at:
 
 https://github.com/zaigie/palworld-server-tool/assets/17232619/42d4c5db-8799-4962-b762-ae22eebbfeb9
 
-![](./docs/img/pst-en-2.png)
+### Desktop
+
+|                              |                              |
+| :--------------------------: | :--------------------------: |
+| ![](./docs/img/pst-en-2.png) | ![](./docs/img/pst-en-4.png) |
 
 ![](./docs/img/pst-en-3.png)
 
-![](./docs/img/pst-en-4.png)
+### Mobile
+
+<p align="center">
+<img src="./docs/img/pst-en-m-1.png" width="30%" /><img src="./docs/img/pst-en-m-2.png" width="30%" /><img src="./docs/img/pst-en-m-3.png" width="30%" />
+</p>
 
 ## How to Enable RCON for Private Servers
 
@@ -82,13 +86,21 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
 
 ## Installation and Deployment
 
+Rimer believes that by **putting the pst tool and the game server on the same physical machine**, there are some situations where you might not want to deploy them on the same machine:
+
+- Must be deployed separately on another server
+- Only need to deploy on a local PC
+- The game server performance is weak and not satisfied, using one of the above two schemes
+
+Please refer to [pst-agent deployment tutorial](./README.agent.en.md)
+
 ### Linux
 
 #### Download and Extract
 
 ```bash
 # Download pst_{version}_{platform}_{arch}.tar.gz and extract to the pst directory
-mkdir -p pst && tar -xzf pst_v0.4.1_linux_amd64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
 ```
 
 #### Configuration
@@ -162,7 +174,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 #### Download and Extract
 
-Extract `pst_v0.4.1_windows_x86.zip` to any directory (recommend naming the folder `pst`).
+Extract `pst_v0.5.0_windows_x86.zip` to any directory (recommend naming the folder `pst`).
 
 #### Configuration
 
