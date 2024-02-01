@@ -91,7 +91,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ```bash
 # 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
-mkdir -p pst && tar -xzf pst_v0.4.0_linux_amd64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.4.1_linux_amd64.tar.gz -C pst
 ```
 
 #### 配置
@@ -165,7 +165,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 #### 下载解压
 
-解压 `pst_v0.4.0_windows_x86.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
+解压 `pst_v0.4.1_windows_x86.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
 
 #### 配置
 

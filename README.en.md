@@ -90,7 +90,7 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
 
 ```bash
 # Download pst_{version}_{platform}_{arch}.tar.gz and extract to the pst directory
-mkdir -p pst && tar -xzf pst_v0.4.0_linux_amd64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.4.1_linux_amd64.tar.gz -C pst
 ```
 
 #### Configuration
@@ -164,7 +164,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 #### Download and Extract
 
-Extract `pst_v0.4.0_windows_x86.zip` to any directory (recommend naming the folder `pst`).
+Extract `pst_v0.4.1_windows_x86.zip` to any directory (recommend naming the folder `pst`).
 
 #### Configuration
 
