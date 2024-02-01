@@ -300,7 +300,10 @@ class Player:
             s["StatusName"]["value"]: s["StatusPoint"]["value"]
             for s in data["GotStatusPointList"]["value"]["values"]
         }
-        self.full_stomach = round(float(data["FullStomach"]["value"]), 2)
+        full_stomach = (
+            float(data["FullStomach"]["value"]) if data.get("FullStomach") else 0
+        )
+        self.full_stomach = round(full_stomach, 2)
         self.pals = []
 
         self.__order = [
