@@ -17,7 +17,7 @@ def decode(
 ) -> dict[str, Any]:
     if type_name != "MapProperty":
         raise Exception(f"Expected MapProperty, got {type_name}")
-    value = reader.property(type_name, size, path, allow_custom=False)
+    value = reader.property(type_name, size, path, nested_caller_path=path)
     # module map
     module_map = value["value"]
     for module in module_map:

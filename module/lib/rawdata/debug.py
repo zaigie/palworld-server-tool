@@ -8,7 +8,7 @@ def decode(
 ) -> dict[str, Any]:
     if type_name != "ArrayProperty":
         raise Exception(f"Expected ArrayProperty, got {type_name}")
-    value = reader.property(type_name, size, path, allow_custom=False)
+    value = reader.property(type_name, size, path, nested_caller_path=path)
     debug_bytes = value["value"]["values"]
     if len(debug_bytes) > 0:
         debug_str = "".join(f"{b:02x}" for b in debug_bytes)

@@ -243,10 +243,12 @@ class FArchiveReader:
         return properties
 
     def property(
-        self, type_name: str, size: int, path: str, allow_custom: bool = True
+        self, type_name: str, size: int, path: str, nested_caller_path: str = ""
     ) -> dict[str, Any]:
         value = {}
-        if allow_custom and path in self.custom_properties:
+        if path in self.custom_properties and (
+            path is not nested_caller_path or nested_caller_path == ""
+        ):
             value = self.custom_properties[path][0](self, type_name, size, path)
             value["custom_type"] = path
         elif type_name == "StructProperty":

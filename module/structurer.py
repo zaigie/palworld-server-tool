@@ -10,7 +10,7 @@ from lib.palsav import decompress_sav_to_gvas
 from lib.paltypes import PALWORLD_CUSTOM_PROPERTIES, PALWORLD_TYPE_HINTS
 
 from world_types import Player, Pal, Guild
-from lib.logger import log
+from logger import log
 
 
 def convert_sav(file):

@@ -98,7 +98,7 @@ const getPlayerInfo = async (player_uid) => {
   if (locale.value === "zh") {
     playerInfo.value.pals.forEach((pal) => {
       pal.skills = pal.skills.map((skill) => {
-        return palZHSkills[skill];
+        return palZHSkills[skill] ? palZHSkills[skill] : skill;
       });
     });
   }
@@ -914,7 +914,12 @@ onMounted(async () => {
                   <n-space vertical>
                     <div v-for="skill in palDetail.skills" :key="skill">
                       <n-tag type="warning">{{ skill }}</n-tag>
-                      : {{ skillDescMap[locale][skill] }}
+                      :
+                      {{
+                        skillDescMap[locale][skill]
+                          ? skillDescMap[locale][skill]
+                          : "Unknown"
+                      }}
                     </div>
                   </n-space>
                 </n-modal>
