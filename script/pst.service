@@ -1,0 +1,16 @@
+[Unit]
+Description=PalWorld Server Tool
+# Should start after PalWorld Server
+After=palserver.service
+
+[Service]
+Type=simple
+User=root          # change to your custom user
+#MemoryMax=15G     # you can limit physical memory usage here
+Restart=on-failure # server restart mode
+RestartSec=30s     # restart sec
+# path to your pst/pst-agent executable location
+ExecStart=/path/to/pst
+
+[Install]
+WantedBy=multi-user.target
