@@ -15,7 +15,7 @@ build:
 	go build -o ./dist/pst main.go
 
 .PHONY: build-all
-# 为所有平台构建
+# 为所有平台构建，确保 module/dist 中有所有平台的 sav_cli
 build-all:
 	rm -rf dist/ && mkdir -p dist/
 
