@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zaigie/palworld-server-tool/internal/database"
 	"github.com/zaigie/palworld-server-tool/service"
-	"go.etcd.io/bbolt"
 )
 
 // putGuilds godoc
@@ -32,7 +31,7 @@ func putGuilds(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := service.PutGuilds(c.MustGet("db").(*bbolt.DB), guilds); err != nil {
+	if err := service.PutGuilds(database.GetDB(), guilds); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -50,7 +49,7 @@ func putGuilds(c *gin.Context) {
 //	@Failure		400	{object}	ErrorResponse
 //	@Router			/api/guild [get]
 func listGuilds(c *gin.Context) {
-	guilds, err := service.ListGuilds(c.MustGet("db").(*bbolt.DB))
+	guilds, err := service.ListGuilds(database.GetDB())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -75,7 +74,7 @@ func listGuilds(c *gin.Context) {
 //	@Failure		404					{object}	EmptyResponse
 //	@Router			/api/guild/{admin_player_uid} [get]
 func getGuild(c *gin.Context) {
-	guild, err := service.GetGuild(c.MustGet("db").(*bbolt.DB), c.Param("admin_player_uid"))
+	guild, err := service.GetGuild(database.GetDB(), c.Param("admin_player_uid"))
 	if err != nil {
 		if err == service.ErrNoRecord {
 			c.JSON(http.StatusNotFound, gin.H{})

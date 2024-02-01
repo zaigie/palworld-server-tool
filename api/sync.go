@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/zaigie/palworld-server-tool/internal/database"
 	"github.com/zaigie/palworld-server-tool/internal/task"
-	"go.etcd.io/bbolt"
 )
 
 type From string
@@ -31,7 +31,7 @@ const (
 func syncData(c *gin.Context) {
 	from := c.Query("from")
 	if from == "rcon" {
-		go task.RconSync(c.MustGet("db").(*bbolt.DB))
+		go task.RconSync(database.GetDB())
 		c.JSON(http.StatusOK, gin.H{"success": true})
 		return
 	} else if from == "sav" {

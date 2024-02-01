@@ -9,10 +9,10 @@ import (
 )
 
 var db *bbolt.DB
-var dbMutex sync.Mutex
+var once sync.Once
 
 func InitDB() *bbolt.DB {
-	db_, err := bbolt.Open("pst.db", 0600, &bbolt.Options{Timeout: 1 * time.Second})
+	db_, err := bbolt.Open("pst.db", 0600, &bbolt.Options{Timeout: 1 * time.Minute})
 	if err != nil {
 		logger.Panic(err)
 	}
@@ -36,10 +36,8 @@ func InitDB() *bbolt.DB {
 }
 
 func GetDB() *bbolt.DB {
-	dbMutex.Lock()
-	defer dbMutex.Unlock()
-	if db == nil {
+	once.Do(func() {
 		db = InitDB()
-	}
+	})
 	return db
 }
