@@ -379,6 +379,12 @@ touch pst.db
 
 [APIFox 在线接口文档](https://q4ly3bfcop.apifox.cn/)
 
+## 感谢
+
+- [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) 提供了存档解析工具实现
+- [PalEdit](https://github.com/EternalWraith/PalEdit) 提供了最初的数据化思路及逻辑
+- [gorcon](https://github.com/gorcon/rcon) 提供的 RCON 请求/接收基础能力
+
 ## 许可证
 
 根据 [Apache2.0 许可证](LICENSE) 授权，任何转载请在 README 和文件部分标明！任何商用行为请务必告知！

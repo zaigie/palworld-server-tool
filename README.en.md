@@ -378,6 +378,12 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 
 [APIFox Online document](https://q4ly3bfcop.apifox.cn/)
 
+## Acknowledgements
+
+- [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) for providing save file parsing tool implementation
+- [PalEdit](https://github.com/EternalWraith/PalEdit) for providing the initial conceptualization and logic for data processing
+- [gorcon](https://github.com/gorcon/rcon) for providing the basic ability to send/receive RCON requests
+
 ## LICENSE
 
 According to the [Apache2.0 LICENSE](LICENSE) authorization, any reprints please indicate in the README and document section! Any commercial behavior must be informed!
