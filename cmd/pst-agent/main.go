@@ -24,11 +24,10 @@ func main() {
 	flag.StringVar(&file, "f", "", "Level.sav file location")
 	flag.Parse()
 
-	viper.Set("port", port)
-	viper.Set("file", file)
+	viper.BindEnv("sav_file", "SAV_FILE")
 
-	viper.SetEnvPrefix("")
-	viper.AutomaticEnv()
+	viper.SetDefault("port", port)
+	viper.SetDefault("sav_file", file)
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
@@ -39,7 +38,7 @@ func main() {
 		os.MkdirAll(cacheDir, os.ModePerm)
 
 		destFile := filepath.Join(cacheDir, "Level.sav")
-		copyFile(viper.GetString("file"), destFile)
+		copyFile(viper.GetString("sav_file"), destFile)
 
 		c.File(destFile)
 	})
