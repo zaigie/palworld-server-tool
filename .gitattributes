@@ -1,2 +1,2 @@
 *.vue linguist-vendored
-module/* linguist-vendored
+# module/* linguist-vendored

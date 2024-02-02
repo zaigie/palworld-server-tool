@@ -27,12 +27,11 @@ ARG proxy
 RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 RUN apk update && apk add build-base
 
-COPY ./module/requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-COPY ./module /app
-# RUN pyinstaller --onefile sav_cli.py --name sav_cli
-ENV SAV_FILE "sav_cli_$(uname -s | tr 'A-Z' 'a-z')_$(uname -m | tr 'A-Z' 'a-z')"
-RUN ./build.sh && mv dist/$SAV_FILE dist/sav_cli
+COPY ./module/requirements.txt /app/module/requirements.txt
+RUN pip install --no-cache-dir -r /app/module/requirements.txt
+COPY ./module /app/module
+
+RUN cd /app/module && pyinstaller sav_cli.spec
 
 # --------- backend -----------
 FROM golang:1.21-alpine as backendBuilder
@@ -60,7 +59,7 @@ WORKDIR /app
 
 ENV SAVE__DECODE_PATH /app/sav_cli
 
-COPY --from=savBuilder /app/dist/sav_cli /app/sav_cli
+COPY --from=savBuilder /app/module/dist/sav_cli /app/sav_cli
 COPY --from=backendBuilder /app/dist/pst /app/pst
 
 EXPOSE 8080
