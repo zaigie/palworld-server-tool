@@ -5,7 +5,7 @@ on:
     tags:
       - "v*.*.*"
 env:
-  IMAGE_NAME: palworld-docker-server-pst
+  IMAGE_NAME: palworld-server-docker-pst
   DOCKER_REGISTRY: jokerwho
 jobs:
   build-image:
