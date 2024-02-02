@@ -7,9 +7,9 @@ ADD . .
 
 RUN if [ ! -z "$proxy" ]; then \
     export GOPROXY=https://goproxy.io,direct && \
-    go build -ldflags="-s -w" -o ./dist/pst-agent main.go; \
+    go build -ldflags="-s -w" -o ./dist/pst-agent cmd/pst-agent/main.go; \
     else \
-    go build -ldflags="-s -w" -o ./dist/pst-agent main.go; \
+    go build -ldflags="-s -w" -o ./dist/pst-agent cmd/pst-agent/main.go; \
     fi
 
 FROM scratch as runtime
