@@ -3,17 +3,34 @@ import sys
 import zlib
 import json
 import ijson
+from typing import Any, Callable
 
 module_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(module_dir, 'save_tools'))
+sys.path.insert(0, os.path.join(module_dir, "save_tools"))
 
 from save_tools.lib.gvas import GvasFile
 from save_tools.lib.json_tools import CustomEncoder
 from save_tools.lib.palsav import decompress_sav_to_gvas
-from save_tools.lib.paltypes import PALWORLD_CUSTOM_PROPERTIES, PALWORLD_TYPE_HINTS
+from save_tools.lib.paltypes import PALWORLD_TYPE_HINTS
+from save_tools.lib.archive import FArchiveReader, FArchiveWriter
+from save_tools.lib.rawdata import character, group
 
 from world_types import Player, Pal, Guild
 from logger import log
+
+PALWORLD_CUSTOM_PROPERTIES: dict[
+    str,
+    tuple[
+        Callable[[FArchiveReader, str, int, str], dict[str, Any]],
+        Callable[[FArchiveWriter, str, dict[str, Any]], int],
+    ],
+] = {
+    ".worldSaveData.GroupSaveDataMap": (group.decode, group.encode),
+    ".worldSaveData.CharacterSaveParameterMap.Value.RawData": (
+        character.decode,
+        character.encode,
+    ),
+}
 
 
 def convert_sav(file):
