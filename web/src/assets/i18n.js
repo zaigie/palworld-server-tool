@@ -13,6 +13,8 @@ const messages = {
       last_online: "Last Online",
       authenticated: "Authenticated",
       master: "Master",
+      player_number: "Player: {number}",
+      online_number: "Online: {number}",
     },
     message: {
       warn: "Warning",
@@ -78,6 +80,8 @@ const messages = {
       last_online: "最后上线",
       authenticated: "已进入管理模式",
       master: "会长",
+      player_number: "玩家: {number}",
+      online_number: "在线: {number}",
     },
     message: {
       warn: "警告",

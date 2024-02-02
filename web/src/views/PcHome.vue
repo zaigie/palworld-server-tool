@@ -153,6 +153,11 @@ const displayLastOnline = (last_online) => {
   }
   return dayjs(last_online).format("YYYY-MM-DD HH:mm:ss");
 };
+const getOnlineList = () => {
+  return playerList.value.filter((player) =>
+    isPlayerOnline(player.last_online)
+  );
+};
 
 const displayHP = (hp, max_hp) => {
   return (hp / 1000).toFixed(0) + "/" + (max_hp / 1000).toFixed(0);
@@ -555,6 +560,14 @@ onMounted(async () => {
                 {{ $t("button.guilds") }}
               </n-button>
             </n-button-group>
+            <n-space>
+              <n-tag type="info" round size="large">{{
+                $t("status.player_number", { number: playerList.length })
+              }}</n-tag>
+              <n-tag type="success" round size="large">{{
+                $t("status.online_number", { number: getOnlineList().length })
+              }}</n-tag>
+            </n-space>
             <n-space v-if="isLogin">
               <n-button
                 :size="smallScreen ? 'medium' : 'large'"

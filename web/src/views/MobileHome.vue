@@ -145,6 +145,11 @@ const displayLastOnline = (last_online) => {
   }
   return dayjs(last_online).format("YYYY-MM-DD HH:mm:ss");
 };
+const getOnlineList = () => {
+  return playerList.value.filter((player) =>
+    isPlayerOnline(player.last_online)
+  );
+};
 
 const displayHP = (hp, max_hp) => {
   return (hp / 1000).toFixed(0) + "/" + (max_hp / 1000).toFixed(0);
@@ -479,43 +484,52 @@ onMounted(async () => {
           serverInfo.name + " " + serverInfo.version
         }}</n-tag>
       </div>
+      <n-space vertical>
+        <n-space justify="end">
+          <n-tag type="info" round size="small">{{
+            $t("status.player_number", { number: playerList.length })
+          }}</n-tag>
+          <n-tag type="success" round size="small">{{
+            $t("status.online_number", { number: getOnlineList().length })
+          }}</n-tag>
+        </n-space>
+        <n-space justify="end" class="flex items-center">
+          <n-dropdown
+            trigger="hover"
+            :options="languageOptions"
+            @select="handleSelectLanguage"
+          >
+            <n-button type="default" secondary strong circle size="small">
+              <template #icon>
+                <n-icon><LanguageSharp /></n-icon>
+              </template>
+            </n-button>
+          </n-dropdown>
 
-      <n-space class="flex items-center">
-        <n-dropdown
-          trigger="hover"
-          :options="languageOptions"
-          @select="handleSelectLanguage"
-        >
-          <n-button type="default" secondary strong circle size="small">
+          <n-button
+            type="primary"
+            size="small"
+            secondary
+            strong
+            @click="showLoginModal = true"
+            v-if="!isLogin"
+          >
             <template #icon>
-              <n-icon><LanguageSharp /></n-icon>
+              <n-icon>
+                <AdminPanelSettingsOutlined />
+              </n-icon>
             </template>
+            {{ $t("button.auth") }}
           </n-button>
-        </n-dropdown>
-
-        <n-button
-          type="primary"
-          size="small"
-          secondary
-          strong
-          @click="showLoginModal = true"
-          v-if="!isLogin"
-        >
-          <template #icon>
-            <n-icon>
-              <AdminPanelSettingsOutlined />
-            </n-icon>
-          </template>
-          {{ $t("button.auth") }}
-        </n-button>
-        <n-tag v-else type="success" size="small" round>
-          <template #icon>
-            <n-icon>
-              <AdminPanelSettingsOutlined />
-            </n-icon>
-          </template>
-          {{ $t("status.authenticated") }}
-        </n-tag>
+          <n-tag v-else type="success" size="small" round>
+            <template #icon>
+              <n-icon>
+                <AdminPanelSettingsOutlined />
+              </n-icon>
+            </template>
+            {{ $t("status.authenticated") }}
+          </n-tag>
+        </n-space>
       </n-space>
     </div>
     <div class="w-full">
