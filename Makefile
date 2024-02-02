@@ -1,6 +1,6 @@
 GOHOSTOS:=$(shell go env GOHOSTOS)
 GOPATH:=$(shell go env GOPATH)
-GIT_TAG:=$(shell git describe --tags)
+GIT_TAG:=$(shell git describe --tags --abbrev=0)
 PREFIX:=pst_${GIT_TAG}
 
 .PHONY: init
