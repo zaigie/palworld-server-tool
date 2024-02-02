@@ -817,6 +817,7 @@ onMounted(async () => {
                     :columns="createPlayerPalsColumns()"
                     :row-props="dataRowProps"
                     :data="playerInfo.pals"
+                    :virtual-scroll="true"
                     :bordered="false"
                     striped
                     :scroll-x="600"
@@ -1057,7 +1058,7 @@ onMounted(async () => {
   >
     <div>
       <n-input
-        type="textarea"
+        type="text"
         show-password-on="click"
         v-model:value="broadcastText"
       ></n-input>
