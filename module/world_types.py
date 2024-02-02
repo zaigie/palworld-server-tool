@@ -387,14 +387,18 @@ class Pal:
         self.is_lucky = data["IsRarePal"]["value"] if data.get("IsRarePal") else False
         self.is_boss = False
 
-        typename = data["CharacterID"]["value"]
-        typename_upper = typename.upper()
-        if typename_upper[:5] == "BOSS_":
-            typename_upper = typename_upper.replace("BOSS_", "")
-            self.is_boss = not self.is_lucky
-        self.is_tower = typename_upper.startswith("GYM_")
-        self.type = PalType.get(typename_upper, typename)
-        self.workspeed = data["CraftSpeed"]["value"]
+        if data.get("CharacterID"):
+            typename = data["CharacterID"]["value"]
+            typename_upper = typename.upper()
+            if typename_upper[:5] == "BOSS_":
+                typename_upper = typename_upper.replace("BOSS_", "")
+                self.is_boss = not self.is_lucky
+            self.is_tower = typename_upper.startswith("GYM_")
+            self.type = PalType.get(typename_upper, typename)
+        else:
+            self.is_tower = False
+            self.type = "Unknow"
+        self.workspeed = data["CraftSpeed"]["value"] if data.get("CraftSpeed") else 0
         self.melee = (
             int(data["Talent_Melee"]["value"]) if data.get("Talent_Melee") else 0
         )

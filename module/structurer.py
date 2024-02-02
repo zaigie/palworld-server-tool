@@ -1,13 +1,16 @@
+import os
 import sys
 import zlib
 import json
 import ijson
 
-# https://github.com/cheahjs/palworld-save-tools/tree/main/lib
-from lib.gvas import GvasFile
-from lib.json_tools import CustomEncoder
-from lib.palsav import decompress_sav_to_gvas
-from lib.paltypes import PALWORLD_CUSTOM_PROPERTIES, PALWORLD_TYPE_HINTS
+module_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(module_dir, 'save_tools'))
+
+from save_tools.lib.gvas import GvasFile
+from save_tools.lib.json_tools import CustomEncoder
+from save_tools.lib.palsav import decompress_sav_to_gvas
+from save_tools.lib.paltypes import PALWORLD_CUSTOM_PROPERTIES, PALWORLD_TYPE_HINTS
 
 from world_types import Player, Pal, Guild
 from logger import log
