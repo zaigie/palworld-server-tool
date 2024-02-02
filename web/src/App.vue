@@ -1,8 +1,15 @@
 <script setup>
-import { zhCN, dateZhCN } from "naive-ui";
+import { zhCN, dateZhCN, darkTheme } from "naive-ui";
 import pageStore from "@/stores/model/page.js";
-import i18n from "@/assets/i18n.js";
 import { onMounted } from "vue";
+
+const isDarkMode = ref(
+  window.matchMedia("(prefers-color-scheme: dark)").matches
+);
+
+const updateDarkMode = (e) => {
+  isDarkMode.value = e.matches;
+};
 
 const themeOverrides = {
   common: {
@@ -23,6 +30,9 @@ let getScreenWidth = function () {
 };
 
 onMounted(() => {
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  mediaQuery.addEventListener("change", updateDarkMode);
+  isDarkMode.value = mediaQuery.matches;
   getScreenWidth();
   window.onresize = function () {
     getScreenWidth();
@@ -52,6 +62,7 @@ onMounted(() => {
     :locale="uiLocale"
     :date-locale="uiDateLocale"
     :theme-overrides="themeOverrides"
+    :theme="isDarkMode ? darkTheme : null"
   >
     <n-dialog-provider>
       <n-notification-provider>

@@ -1,27 +1,27 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore } from "pinia";
+import { ref } from "vue";
 
 const pageStore = defineStore(
-  'page',
+  "page",
   () => {
-    let screenWidth = ref(0)
+    let screenWidth = ref(0);
     // Set
     const setScreenWidth = (info) => {
-      screenWidth.value = info
-    }
+      screenWidth.value = info;
+    };
     // Get
     const getScreenWidth = () => {
-      return screenWidth.value
-    }
+      return screenWidth.value;
+    };
 
     return {
       setScreenWidth,
-      getScreenWidth
-    }
+      getScreenWidth,
+    };
   },
   {
-    persist: true
+    persist: true,
   }
-)
+);
 
-export default pageStore
+export default pageStore;

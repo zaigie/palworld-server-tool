@@ -42,6 +42,14 @@ const languageOptions = ref([]);
 const isLogin = ref(false);
 const authToken = ref("");
 
+const isDarkMode = ref(
+  window.matchMedia("(prefers-color-scheme: dark)").matches
+);
+
+const updateDarkMode = (e) => {
+  isDarkMode.value = e.matches;
+};
+
 const getUserAvatar = () => {
   return new URL("../assets/avatar.webp", import.meta.url).href;
 };
@@ -195,7 +203,11 @@ const createPlayerPalsColumns = () => {
             {
               style: {
                 display: "inline-block",
-                color: row.is_lucky ? "darkorange" : "black",
+                color: row.is_lucky
+                  ? "darkorange"
+                  : isDarkMode
+                    ? "white"
+                    : "black",
                 fontWeight: row.is_lucky ? "bold" : "normal",
               },
             },
@@ -439,6 +451,10 @@ onMounted(async () => {
       disabled: locale.value == "en",
     },
   ];
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  mediaQuery.addEventListener("change", updateDarkMode);
+  isDarkMode.value = mediaQuery.matches;
+
   skillTypeList.value = getSkillTypeList();
   loading.value = true;
   checkAuthToken();
@@ -453,7 +469,10 @@ onMounted(async () => {
 
 <template>
   <div class="home-page">
-    <div class="bg-#fff flex justify-between items-center p-3">
+    <div
+      :class="isDarkMode ? 'bg-#18181c text-#fff' : 'bg-#fff text-#18181c'"
+      class="flex justify-between items-center p-3"
+    >
       <n-space class="flex items-center">
         <span
           class="line-clamp-1"
@@ -611,7 +630,12 @@ onMounted(async () => {
                       }}</span>
                     </div>
                     <span
-                      class="inline-block mt-1 rounded-full bg-#ddd text-xs px-2 py-0.5"
+                      :class="
+                        isDarkMode
+                          ? 'bg-#2f69aa text-#fff'
+                          : 'bg-#ddd text-#18181c'
+                      "
+                      class="inline-block mt-1 rounded-full text-xs px-2 py-0.5"
                       >{{ $t("status.last_online") }}:
                       {{ displayLastOnline(player.last_online) }}</span
                     >
