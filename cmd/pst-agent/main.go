@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -23,6 +24,11 @@ func main() {
 	flag.StringVar(&file, "f", "", "Level.sav file location")
 	flag.Parse()
 
+	viper.BindEnv("sav_file", "SAV_FILE")
+
+	viper.SetDefault("port", port)
+	viper.SetDefault("sav_file", file)
+
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
@@ -32,7 +38,7 @@ func main() {
 		os.MkdirAll(cacheDir, os.ModePerm)
 
 		destFile := filepath.Join(cacheDir, "Level.sav")
-		copyFile(file, destFile)
+		copyFile(viper.GetString("sav_file"), destFile)
 
 		c.File(destFile)
 	})
