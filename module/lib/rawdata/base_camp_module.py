@@ -45,11 +45,7 @@ def pal_item_and_slot_read(reader: FArchiveReader) -> dict[str, Any]:
 def transport_item_character_info_reader(reader: FArchiveReader) -> dict[str, Any]:
     return {
         "item_infos": reader.tarray,
-        "character_location": {
-            "x": reader.double(),
-            "y": reader.double(),
-            "z": reader.double(),
-        },
+        "character_location": reader.vector_dict,
     }
 
 

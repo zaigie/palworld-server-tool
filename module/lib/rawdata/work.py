@@ -48,28 +48,11 @@ def decode_bytes(b_bytes: Sequence[int], work_type: str) -> dict[str, Any]:
     if work_type in WORK_BASE_TYPES:
         data["id"] = reader.guid()
         data["workable_bounds"] = {
-            "location": {
-                "x": reader.double(),
-                "y": reader.double(),
-                "z": reader.double(),
-            },
-            "rotation": {
-                "x": reader.double(),
-                "y": reader.double(),
-                "z": reader.double(),
-                "w": reader.double(),
-            },
+            "location": reader.vector_dict(),
+            "rotation": reader.quat_dict(),
             "box_sphere_bounds": {
-                "origin": {
-                    "x": reader.double(),
-                    "y": reader.double(),
-                    "z": reader.double(),
-                },
-                "box_extent": {
-                    "x": reader.double(),
-                    "y": reader.double(),
-                    "z": reader.double(),
-                },
+                "origin": reader.vector_dict(),
+                "box_extent": reader.vector_dict(),
                 "sphere_radius": reader.double(),
             },
         }
@@ -79,16 +62,8 @@ def decode_bytes(b_bytes: Sequence[int], work_type: str) -> dict[str, Any]:
         data["current_state"] = reader.byte()
         data["assign_locations"] = reader.tarray(
             lambda r: {
-                "location": {
-                    "x": r.double(),
-                    "y": r.double(),
-                    "z": r.double(),
-                },
-                "facing_direction": {
-                    "x": r.double(),
-                    "y": r.double(),
-                    "z": r.double(),
-                },
+                "location": r.vector_dict(),
+                "facing_direction": r.vector_dict(),
             }
         )
         data["behaviour_type"] = reader.byte()
@@ -129,24 +104,9 @@ def decode_bytes(b_bytes: Sequence[int], work_type: str) -> dict[str, Any]:
         return {"values": b_bytes}
     # UPalWorkProgressTransformBase->SerializeProperties
     transform_type = reader.byte()
-    data["transform"] = {"type": transform_type}
+    data["transform"] = {"type": transform_type, "v2": 0}
     if transform_type == 1:
-        data["transform"]["location"] = {
-            "x": reader.double(),
-            "y": reader.double(),
-            "z": reader.double(),
-        }
-        data["transform"]["rotation"] = {
-            "x": reader.double(),
-            "y": reader.double(),
-            "z": reader.double(),
-            "w": reader.double(),
-        }
-        data["transform"]["scale"] = {
-            "x": reader.double(),
-            "y": reader.double(),
-            "z": reader.double(),
-        }
+        data["transform"].update(reader.ftransform())
     elif transform_type == 2:
         data["transform"]["map_object_instance_id"] = reader.guid()
     elif transform_type == 3:
@@ -218,19 +178,10 @@ def encode_bytes(p: dict[str, Any], work_type: str) -> bytes:
     # Handle base serialization
     if work_type in WORK_BASE_TYPES:
         writer.guid(p["id"])
-        writer.double(p["workable_bounds"]["location"]["x"])
-        writer.double(p["workable_bounds"]["location"]["y"])
-        writer.double(p["workable_bounds"]["location"]["z"])
-        writer.double(p["workable_bounds"]["rotation"]["x"])
-        writer.double(p["workable_bounds"]["rotation"]["y"])
-        writer.double(p["workable_bounds"]["rotation"]["z"])
-        writer.double(p["workable_bounds"]["rotation"]["w"])
-        writer.double(p["workable_bounds"]["box_sphere_bounds"]["origin"]["x"])
-        writer.double(p["workable_bounds"]["box_sphere_bounds"]["origin"]["y"])
-        writer.double(p["workable_bounds"]["box_sphere_bounds"]["origin"]["z"])
-        writer.double(p["workable_bounds"]["box_sphere_bounds"]["box_extent"]["x"])
-        writer.double(p["workable_bounds"]["box_sphere_bounds"]["box_extent"]["y"])
-        writer.double(p["workable_bounds"]["box_sphere_bounds"]["box_extent"]["z"])
+        writer.vector_dict(p["workable_bounds"]["location"])
+        writer.quat_dict(p["workable_bounds"]["rotation"])
+        writer.vector_dict(p["workable_bounds"]["box_sphere_bounds"]["origin"])
+        writer.vector_dict(p["workable_bounds"]["box_sphere_bounds"]["box_extent"])
         writer.double(p["workable_bounds"]["box_sphere_bounds"]["sphere_radius"])
         writer.guid(p["base_camp_id_belong_to"])
         writer.guid(p["owner_map_object_model_id"])
@@ -238,12 +189,8 @@ def encode_bytes(p: dict[str, Any], work_type: str) -> bytes:
         writer.byte(p["current_state"])
         writer.tarray(
             lambda w, l: (
-                w.double(l["location"]["x"]),
-                w.double(l["location"]["y"]),
-                w.double(l["location"]["z"]),
-                w.double(l["facing_direction"]["x"]),
-                w.double(l["facing_direction"]["y"]),
-                w.double(l["facing_direction"]["z"]),
+                w.vector_dict(l["location"]),
+                w.vector_dict(l["facing_direction"]),
             ),
             p["assign_locations"],
         )
@@ -280,16 +227,13 @@ def encode_bytes(p: dict[str, Any], work_type: str) -> bytes:
     transform_type = p["transform"]["type"]
     writer.byte(transform_type)
     if transform_type == 1:
-        writer.double(p["transform"]["location"]["x"])
-        writer.double(p["transform"]["location"]["y"])
-        writer.double(p["transform"]["location"]["z"])
-        writer.double(p["transform"]["rotation"]["x"])
-        writer.double(p["transform"]["rotation"]["y"])
-        writer.double(p["transform"]["rotation"]["z"])
-        writer.double(p["transform"]["rotation"]["w"])
-        writer.double(p["transform"]["scale"]["x"])
-        writer.double(p["transform"]["scale"]["y"])
-        writer.double(p["transform"]["scale"]["z"])
+        # pre-v2 the transform was deserialised in the wrong order
+        if "v2" not in p["transform"]:
+            writer.vector_dict(p["transform"]["location"])
+            writer.quat_dict(p["transform"]["rotation"])
+            writer.vector_dict(p["transform"]["scale"])
+        else:
+            writer.ftransform(p["transform"])
     elif transform_type == 2:
         writer.guid(p["transform"]["map_object_instance_id"])
     elif transform_type == 3:

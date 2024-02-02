@@ -374,22 +374,13 @@ class FArchiveReader:
 
     def struct_value(self, struct_type: str, path: str = ""):
         if struct_type == "Vector":
-            return {
-                "x": self.double(),
-                "y": self.double(),
-                "z": self.double(),
-            }
+            return self.vector_dict()
         elif struct_type == "DateTime":
             return self.u64()
         elif struct_type == "Guid":
             return self.guid()
         elif struct_type == "Quat":
-            return {
-                "x": self.double(),
-                "y": self.double(),
-                "z": self.double(),
-                "w": self.double(),
-            }
+            return self.quat_dict()
         elif struct_type == "LinearColor":
             return {
                 "r": self.float(),
@@ -487,34 +478,39 @@ class FArchiveReader:
         else:
             received_scaler_type_size = 8 if extra_info else 4
             if received_scaler_type_size == 8:
-                x = self.double()
-                y = self.double()
-                z = self.double()
-                return (x, y, z)
+                return self.vector()
             else:
                 x = self.float()
                 y = self.float()
                 z = self.float()
                 return (x, y, z)
 
+    def vector(self) -> tuple[float, float, float]:
+        return (self.double(), self.double(), self.double())
+
+    def vector_dict(self) -> dict[str, float]:
+        return {
+            "x": self.double(),
+            "y": self.double(),
+            "z": self.double(),
+        }
+
+    def quat(self) -> tuple[float, float, float, float]:
+        return (self.double(), self.double(), self.double(), self.double())
+
+    def quat_dict(self) -> dict[str, float]:
+        return {
+            "x": self.double(),
+            "y": self.double(),
+            "z": self.double(),
+            "w": self.double(),
+        }
+
     def ftransform(self) -> dict[str, dict[str, float]]:
         return {
-            "rotation": {
-                "x": self.double(),
-                "y": self.double(),
-                "z": self.double(),
-                "w": self.double(),
-            },
-            "translation": {
-                "x": self.double(),
-                "y": self.double(),
-                "z": self.double(),
-            },
-            "scale3d": {
-                "x": self.double(),
-                "y": self.double(),
-                "z": self.double(),
-            },
+            "rotation": self.quat_dict(),
+            "translation": self.vector_dict(),
+            "scale3d": self.vector_dict(),
         }
 
 
@@ -756,18 +752,13 @@ class FArchiveWriter:
 
     def struct_value(self, struct_type: str, value):
         if struct_type == "Vector":
-            self.double(value["x"])
-            self.double(value["y"])
-            self.double(value["z"])
+            self.vector_dict(value)
         elif struct_type == "DateTime":
             self.u64(value)
         elif struct_type == "Guid":
             self.guid(value)
         elif struct_type == "Quat":
-            self.double(value["x"])
-            self.double(value["y"])
-            self.double(value["z"])
-            self.double(value["w"])
+            self.quat_dict(value)
         elif struct_type == "LinearColor":
             self.float(value["r"])
             self.float(value["g"])
@@ -908,14 +899,29 @@ class FArchiveWriter:
             self.double(y)
             self.double(z)
 
+    def vector(self, x: float, y: float, z: float):
+        self.double(x)
+        self.double(y)
+        self.double(z)
+
+    def vector_dict(self, value: dict[str, float]):
+        self.double(value["x"])
+        self.double(value["y"])
+        self.double(value["z"])
+
+    def quat(self, x: float, y: float, z: float, w: float):
+        self.double(x)
+        self.double(y)
+        self.double(z)
+        self.double(w)
+
+    def quat_dict(self, value: dict[str, float]):
+        self.double(value["x"])
+        self.double(value["y"])
+        self.double(value["z"])
+        self.double(value["w"])
+
     def ftransform(self, value: dict[str, dict[str, float]]):
-        self.double(value["rotation"]["x"])
-        self.double(value["rotation"]["y"])
-        self.double(value["rotation"]["z"])
-        self.double(value["rotation"]["w"])
-        self.double(value["translation"]["x"])
-        self.double(value["translation"]["y"])
-        self.double(value["translation"]["z"])
-        self.double(value["scale3d"]["x"])
-        self.double(value["scale3d"]["y"])
-        self.double(value["scale3d"]["z"])
+        self.quat_dict(value["rotation"])
+        self.vector_dict(value["translation"])
+        self.vector_dict(value["scale3d"])
