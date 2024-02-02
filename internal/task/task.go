@@ -42,7 +42,7 @@ func Schedule(db *bbolt.DB) {
 	savSyncInterval := time.Duration(viper.GetInt("save.sync_interval"))
 
 	if rconSyncInterval > 0 {
-		RconSync(db)
+		go RconSync(db)
 		_, err := s.NewJob(
 			gocron.DurationJob(rconSyncInterval*time.Second),
 			gocron.NewTask(RconSync, db),
@@ -53,7 +53,7 @@ func Schedule(db *bbolt.DB) {
 	}
 
 	if savSyncInterval > 0 {
-		SavSync()
+		go SavSync()
 		_, err := s.NewJob(
 			gocron.DurationJob(savSyncInterval*time.Second),
 			gocron.NewTask(SavSync),
