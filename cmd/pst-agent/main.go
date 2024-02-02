@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -22,6 +23,12 @@ func main() {
 	flag.IntVar(&port, "port", 8081, "port")
 	flag.StringVar(&file, "f", "", "Level.sav file location")
 	flag.Parse()
+
+	viper.Set("port", port)
+	viper.Set("file", file)
+
+	viper.SetEnvPrefix("")
+	viper.AutomaticEnv()
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()

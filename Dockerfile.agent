@@ -9,8 +9,8 @@ FROM scratch as runtime
 
 WORKDIR /app
 
-# 映射宿主机存档目录
-
 COPY --from=builder /app/dist/pst-agent /app/pst-agent
 
+
+EXPOSE 8081
 ENTRYPOINT [ "pst-agent" ]

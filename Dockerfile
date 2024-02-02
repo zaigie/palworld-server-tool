@@ -41,15 +41,23 @@ ADD . .
 
 COPY --from=frontendBuilder /app/dist /app/
 
-RUN go build -ldflags="-s -w -X 'main.version=${version}'" -o ./dist/pst main.go
+RUN if [ ! -z "$proxy" ]; then \
+    export GOPROXY=https://goproxy.io,direct && \
+    go build -ldflags="-s -w -X 'main.version=${version}'" -o ./dist/pst main.go; \
+    else \
+    go build -ldflags="-s -w -X 'main.version=${version}'" -o ./dist/pst main.go; \
+    fi
 
 # --------- runtime -----------
 FROM scratch as runtime
 
 WORKDIR /app
 
+ENV SAVE__DECODE_PATH /app/save_cli
+
 COPY --from=savBuilder /app/dist/sav_cli /app/sav_cli
 COPY --from=backendBuilder /app/dist/pst /app/pst
-# COPY ./test/config.yaml /app/config.yaml
 
-# ENTRYPOINT ["/app/pst"]
+EXPOSE 8080
+
+ENTRYPOINT ["/app/pst"]
