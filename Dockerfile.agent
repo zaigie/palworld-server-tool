@@ -19,4 +19,4 @@ WORKDIR /app
 COPY --from=builder /app/dist/pst-agent /app/pst-agent
 
 EXPOSE 8081
-ENTRYPOINT [ "pst-agent", "--port", "8081" ]
+CMD [ "/app/pst-agent", "--port", "8081" ]

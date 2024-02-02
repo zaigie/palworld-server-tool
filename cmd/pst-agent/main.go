@@ -39,7 +39,7 @@ func main() {
 		os.MkdirAll(cacheDir, os.ModePerm)
 
 		destFile := filepath.Join(cacheDir, "Level.sav")
-		copyFile(file, destFile)
+		copyFile(viper.GetString("file"), destFile)
 
 		c.File(destFile)
 	})
