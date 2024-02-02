@@ -3,9 +3,9 @@
 
 a = Analysis(
     ['sav_cli.py'],
-    pathex=["./module"],
+    pathex=[],
     binaries=[],
-    datas=[("./save_tools", "save_tools")],
+    datas=[("./save_tools", "save_tools"), ("./save_tools/lib", "lib")],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
