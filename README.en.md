@@ -201,6 +201,8 @@ You can also right-click - "Properties", view the path and file name, and then c
 
 > [!WARNING]
 > Instead of pasting the copied path directly into `config.yaml`, add another '\\' in front of all '\\', as shown below
+>
+> It is also important to make sure that the `config.yaml` file is **ANSI encoded**, other encoding formats will cause problems such as path errors!!
 
 ```yaml
 web: # web configuration

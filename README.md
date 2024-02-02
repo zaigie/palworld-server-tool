@@ -202,6 +202,8 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 > [!WARNING]
 > 请不要直接将复制的路径粘贴到 `config.yaml` 中，而是需要在所有的 '\\' 前面再加一个 '\\'，像下面展示的一样
+>
+> 还有比较重要的是，请确保 `config.yaml` 文件为 **ANSI 编码**，其它编码格式将会导致路径错误等问题！！
 
 ```yaml
 web: # web 相关配置
