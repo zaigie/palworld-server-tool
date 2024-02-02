@@ -7,7 +7,7 @@ ARG proxy
 
 # RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 RUN npm install -g pnpm@8.14.0
-RUN [ -z "$proxy" ] || pnpm config set registry https://registry.npm.taobao.org
+# RUN [ -z "$proxy" ] || pnpm config set registry https://registry.npm.taobao.org
 
 COPY ./web/pnpm-lock.yaml /app/web/pnpm-lock.yaml
 COPY ./web/package.json /app/web/package.json
