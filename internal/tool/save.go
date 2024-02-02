@@ -44,6 +44,7 @@ func ConversionLoading(file string) error {
 		if err != nil {
 			return errors.New("error downloading file: " + err.Error())
 		}
+		logger.Info("Level.sav downloaded\n")
 	} else {
 		tmpFile, err = copyFileToTemp(file)
 		if err != nil {

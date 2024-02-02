@@ -20,9 +20,14 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 					return err
 				}
 
-				if p.Exp < existingPlayer.Exp && p.Level < existingPlayer.Level {
-					// Players with corrupted saves will have two player_uid
-					continue
+				/// 数据合并逻辑
+				if existingPlayer.Level > p.Level || (existingPlayer.Level == p.Level && existingPlayer.Exp > p.Exp) {
+					if len(p.Pals) > len(existingPlayer.Pals) {
+						existingPlayer.Pals = p.Pals
+					}
+					p = existingPlayer
+				} else if len(p.Pals) < len(existingPlayer.Pals) {
+					p.Pals = existingPlayer.Pals
 				}
 
 				// Rcon data already has this player
