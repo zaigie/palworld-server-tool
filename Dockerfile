@@ -1,7 +1,7 @@
 # --------- frontend -----------
 FROM node:20.10-alpine as frontendBuilder
 
-WORKDIR /app/web
+WORKDIR /app
 
 ARG proxy
 
@@ -11,9 +11,11 @@ RUN npm install -g pnpm@8.14.0
 
 COPY ./web/pnpm-lock.yaml /app/web/pnpm-lock.yaml
 COPY ./web/package.json /app/web/package.json
-COPY ./web/* /app/web/
 
-RUN pnpm i && pnpm build
+RUN cd /app/web/ && pnpm i
+
+COPY . /app
+RUN cd /app/web/ && pnpm build
 
 # --------- sav_cli -----------
 FROM python:3.11-slim as savBuilder
