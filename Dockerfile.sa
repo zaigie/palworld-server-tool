@@ -1,0 +1,28 @@
+FROM golang:1.21-alpine as builder
+
+ARG proxy
+
+WORKDIR /app
+ADD . .
+
+RUN if [ ! -z "$proxy" ]; then \
+    export GOPROXY=https://goproxy.io,direct && \
+    go build -ldflags="-s -w" -o ./dist/pst-agent cmd/pst-agent/main.go; \
+    else \
+    go build -ldflags="-s -w" -o ./dist/pst-agent cmd/pst-agent/main.go; \
+    fi
+
+FROM thijsvanloef/palworld-server-docker:latest
+
+WORKDIR /home/steam/server
+
+ENV AGENT_PORT 8081
+
+COPY --from=builder /app/dist/pst-agent /usr/local/bin
+COPY ./script/agent_server_init.sh /home/steam/server/init.sh
+
+RUN chmod +x /usr/local/bin/pst-agent
+RUN chmod +x /home/steam/server/init.sh
+
+EXPOSE ${PORT} ${RCON_PORT} 8081
+ENTRYPOINT ["/home/steam/server/init.sh"]
