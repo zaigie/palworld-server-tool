@@ -52,6 +52,8 @@ Download the latest executable files at:
 
 - [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
 
+For docker deployment, see [Docker deployment](#docker-deployment).
+
 ## Function screenshot
 
 https://github.com/zaigie/palworld-server-tool/assets/17232619/42d4c5db-8799-4962-b762-ae22eebbfeb9
@@ -86,6 +88,15 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
 
 ## Installation and Deployment
 
+- [File Deployment](#file-deployment)
+  - [Linux](#linux)
+    - [pst-agent deployment](./README.agent.en.md#linux)
+  - [Windows](#windows)
+    - [pst-agent deployment](./README.agent.en.md#windows)
+- [Docker Depolyment](#docker-deployment)
+  - [Monolithic Deployment](#monolithic-deployment)
+  - [Agent Deployment](#agent-deployment)
+
 Rimer believes that by **putting the pst tool and the game server on the same physical machine**, there are some situations where you might not want to deploy them on the same machine:
 
 - Must be deployed separately on another server
@@ -94,16 +105,18 @@ Rimer believes that by **putting the pst tool and the game server on the same ph
 
 Please refer to [pst-agent deployment tutorial](./README.agent.en.md)
 
-### Linux
+### File Deployment
 
-#### Download and Extract
+#### Linux
+
+##### Download and Extract
 
 ```bash
 # Download pst_{version}_{platform}_{arch}.tar.gz and extract to the pst directory
 mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
 ```
 
-#### Configuration
+##### Configuration
 
 1. Open the directory and allow execution
 
@@ -131,7 +144,7 @@ mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
      sync_interval: 600 # Interval for syncing data from save file, in seconds, recommended >= 600
    ```
 
-#### Run
+##### Run
 
 ```bash
 ./pst
@@ -153,13 +166,13 @@ nohup ./pst > server.log 2>&1 &
 tail -f server.log
 ```
 
-#### Stopping Background Process
+##### Stopping Background Process
 
 ```bash
 kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 ```
 
-#### Access
+##### Access
 
 Access via browser at http://127.0.0.1:8080 or http://{Local Network IP}:8080
 
@@ -170,13 +183,13 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 >
 > If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter, the default is 600s (10min).
 
-### Windows
+#### Windows
 
-#### Download and Extract
+##### Download and Extract
 
 Extract `pst_v0.5.0_windows_x86.zip` to any directory (recommend naming the folder `pst`).
 
-#### Configuration
+##### Configuration
 
 Find the `config.yaml` file in the extracted directory and modify it according to the instructions.
 
@@ -204,7 +217,7 @@ save: # Save file parsing configuration
   sync_interval: 600 # Interval for syncing data from save file, in seconds, recommended >= 600
 ```
 
-#### Running
+##### Running
 
 Two ways to run on Windows:
 
@@ -227,7 +240,7 @@ Two ways to run on Windows:
 
 If you see the preceding interface, it indicates that the operation is successful. Keep the window open.
 
-#### Access
+##### Access
 
 Access via browser at http://127.0.0.1:8080 or http://{Local Network IP}:8080
 
@@ -237,6 +250,127 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 > If you open the file for the first time, nothing will be displayed. Please **wait until the first sav archive synchronization is complete**
 >
 > If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter, the default is 600s (10min).
+
+### Docker Deployment
+
+#### Monolithic Deployment
+
+Only one container is needed. Map the game's save directory to the container's internal directory, running on the same physical host as the game server.
+
+```bash
+docker run -d --name pst \
+-p 8080:8080 \
+-v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
+-e WEB__PASSWORD="your password" \
+-e RCON__ADDRESS="172.17.0.1:25575" \
+-e RCON__PASSWORD="your password" \
+-e SAVE__PATH="/game/Level.sav" \
+-e SAVE__SYNC_INTERVAL=600 \
+jokerwho/palworld-server-tool:latest
+```
+
+Most importantly, use `-v` to map the game's save file (Level.sav) directory to the container's `/game` directory.
+
+##### Persistence
+
+If you need to persist the `pst.db` file:
+
+```bash
+# Create the file first to prevent it from being recognized as a directory
+touch pst.db
+```
+
+Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
+
+##### Environment Variables
+
+Set various environment variables, similar to those in [`config.yaml`](#configuration). The table below lists them:
+
+> [!WARNING]
+> Pay attention to the distinction between single and multiple underscores. It's best to copy the variable names from the table below for modifications!
+
+|     Variable Name     |   Default Value   |  Type  |                                      Description                                       |
+| :-------------------: | :---------------: | :----: | :------------------------------------------------------------------------------------: |
+|    WEB\_\_PASSWORD    |        ""         |  Text  |                         Password for Web interface admin mode                          |
+|      WEB\_\_PORT      |       8080        | Number |    **Changing the container mapping port is recommended instead of modifying this**    |
+|                       |                   |        |                                                                                        |
+|    RCON\_\_ADDRESS    | "127.0.0.1:25575" |  Text  |            RCON service address, can use container network 172.17.0.1:25575            |
+|   RCON\_\_PASSWORD    |        ""         |  Text  |                     AdminPassword in the server configuration file                     |
+|    RCON\_\_TIMEOUT    |         5         | Number |                      Timeout for individual RCON service requests                      |
+| RCON\_\_SYNC_INTERVAL |        60         | Number |             Interval for requesting RCON server to sync player online data             |
+|                       |                   |        |                                                                                        |
+|     SAVE\_\_PATH      |        ""         |  Text  |          Game save path **be sure to fill in the path inside the container**           |
+|  SAVE\_\_DECODE_PATH  |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors |
+| SAVE\_\_SYNC_INTERVAL |        600        | Number |                         Interval for syncing player save data                          |
+
+#### Agent Deployment
+
+Two containers are required: `palworld-server-tool` and `palworld-server-tool-agent`.
+
+Applicable for:
+
+- Separate deployment on other servers.
+- Deployment only on a local personal computer.
+- If the game server's performance is weak and does not meet the requirements, use one of the above two schemes.
+
+##### First, run the agent container
+
+```bash
+docker run -d --name pst-agent \
+-p 8081:8081 \
+-v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
+-e SAV_FILE="/game/Level.sav" \
+jokerwho/palworld-server-tool-agent:latest
+```
+
+You need to `-v` to the directory where the game save file (Level.sav) is located, mapping it to the `/game` directory in the container.
+
+| Variable Name | Default Value | Type |                             Description                             |
+| :-----------: | :-----------: | :--: | :-----------------------------------------------------------------: |
+|   SAV_FILE    |      ""       | Text | Game save path **be sure to fill in the path inside the container** |
+
+##### Then, run the pst container
+
+```bash
+docker run -d --name pst \
+-p 8080:8080 \
+-e WEB__PASSWORD="your password" \
+-e RCON__ADDRESS="Game server IP:25575" \
+-e RCON__PASSWORD="your password" \
+-e SAVE__PATH="http://Game server IP:Agent port/sync" \
+-e SAVE__SYNC_INTERVAL=600 \
+jokerwho/palworld-server-tool:latest
+```
+
+##### Persistence
+
+If you need to persist the `pst.db` file:
+
+```bash
+# Create the file first to prevent it from being recognized as a directory
+touch pst.db
+```
+
+Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
+
+##### Environment Variables
+
+> [!WARNING]
+> Pay attention to the distinction between single and multiple underscores. It's best to copy the variable names from the table below for modifications!
+
+|     Variable Name     |   Default Value   |  Type  |                                      Description                                       |
+| :-------------------: | :---------------: | :----: | :------------------------------------------------------------------------------------: |
+|    WEB\_\_PASSWORD    |        ""         |  Text  |                         Password for Web interface admin mode                          |
+|      WEB\_\_PORT      |       8080        | Number |  **It's recommended to change the container mapping port instead of modifying this**   |
+|                       |                   |        |                                                                                        |
+|    RCON\_\_ADDRESS    | "127.0.0.1:25575" |  Text  |                  RCON service address, typically Game server IP:25575                  |
+|   RCON\_\_PASSWORD    |        ""         |  Text  |                     AdminPassword in the server configuration file                     |
+|    RCON\_\_TIMEOUT    |         5         | Number |                      Timeout for individual RCON service requests                      |
+| RCON\_\_SYNC_INTERVAL |        60         | Number |             Interval for requesting RCON server to sync player online data             |
+|                       |                   |        |                                                                                        |
+|     SAVE\_\_PATH      |        ""         |  Text  |   pst-agent service address, format as<br> http://{Game server IP}:{Agent port}/sync   |
+|  SAVE\_\_DECODE_PATH  |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors |
+| SAVE\_\_SYNC_INTERVAL |        600        | Number |                         Interval for syncing player save data                          |
 
 ## REST API Document
 

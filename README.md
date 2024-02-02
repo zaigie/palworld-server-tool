@@ -53,6 +53,8 @@
 - [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
 - [(国内) Gitee Releases](https://gitee.com/jokerwho/palworld-server-tool/releases)
 
+Docker 部署请参考 [Docker 部署](#docker-部署)
+
 ## 功能截图
 
 https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4efe-8274-15df261d50b4
@@ -87,6 +89,15 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ## 安装部署
 
+- [文件部署](#文件部署)
+  - [Linux](#linux)
+    - [pst-agent 部署](./README.agent.md#linux)
+  - [Windows](#windows)
+    - [pst-agent 部署](./README.agent.md#windows)
+- [Docker 部署](#docker-部署)
+  - [单体部署](#单体部署)
+  - [Agent 部署](#agent-部署)
+
 这里**默认为将 pst 工具和游戏服务器放在同一台物理机上**，在一些情况下你可能不想要它们部署在同一机器上：
 
 - 需要单独部署在其它服务器
@@ -95,16 +106,18 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 **请参考 [pst-agent 部署教程](./README.agent.md)**
 
-### Linux
+### 文件部署
 
-#### 下载解压
+#### Linux
+
+##### 下载解压
 
 ```bash
 # 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
 mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
 ```
 
-#### 配置
+##### 配置
 
 1. 打开目录并允许可执行
 
@@ -132,7 +145,7 @@ mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
      sync_interval: 600 # 定时从存档获取数据的间隔，单位秒，推荐 >= 600
    ```
 
-#### 运行
+##### 运行
 
 ```bash
 ./pst
@@ -154,13 +167,13 @@ nohup ./pst > server.log 2>&1 &
 tail -f server.log
 ```
 
-#### 关闭后台运行
+##### 关闭后台运行
 
 ```bash
 kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 ```
 
-#### 访问
+##### 访问
 
 请通过浏览器访问 http://127.0.0.1:8080 或 http://{局域网 IP}:8080
 
@@ -171,13 +184,13 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 >
 > 如果你的服务器配置足够且性能良好，你可以试着将 `save.sync_interval` 改短一点，默认 600s（10min）
 
-### Windows
+#### Windows
 
-#### 下载解压
+##### 下载解压
 
 解压 `pst_v0.5.0_windows_x86.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
 
-#### 配置
+##### 配置
 
 找到解压目录中的 `config.yaml` 文件并按照说明修改。
 
@@ -205,7 +218,7 @@ save: # 存档文件解析相关配置
   sync_interval: 600 # 定时从存档获取数据的间隔，单位秒，推荐 >= 600
 ```
 
-#### 运行
+##### 运行
 
 这里有两种方式可以在 Windows 下运行
 
@@ -228,7 +241,7 @@ save: # 存档文件解析相关配置
 
 看到上述界面表示成功运行，请保持窗口打开
 
-#### 访问
+##### 访问
 
 请通过浏览器访问 http://127.0.0.1:8080 或 http://{局域网 IP}:8080
 
@@ -238,6 +251,127 @@ save: # 存档文件解析相关配置
 > 初次打开会显示空白没有内容，请**等待第一次 sav 存档同步完成**再访问
 >
 > 如果你的服务器配置足够且性能良好，你可以试着将 `save.sync_interval` 改短一点，默认 600s（10min）
+
+### Docker 部署
+
+#### 单体部署
+
+只需要一个容器，将游戏存档目录映射至容器内，与游戏服务器在同一物理主机上运行。
+
+```bash
+docker run -d --name pst \
+-p 8080:8080 \
+-v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
+-e WEB__PASSWORD="your password" \
+-e RCON__ADDRESS="172.17.0.1:25575" \
+-e RCON__PASSWORD="your password" \
+-e SAVE__PATH="/game/Level.sav" \
+-e SAVE__SYNC_INTERVAL=600 \
+jokerwho/palworld-server-tool:latest
+```
+
+最重要的是需要 -v 到游戏存档文件（Level.sav）所在目录，将其映射到容器内的 /game 目录
+
+##### 持久化
+
+如果需要持久化 `pst.db` 文件：
+
+```bash
+# 先创建文件，避免被识别为目录
+touch pst.db
+```
+
+然后在 `docker run -v` 中增加 `-v ./pst.db:/app/pst.db`
+
+##### 环境变量
+
+设置各环境变量，与 [`config.yaml`](#配置) 基本相似，表格如下：
+
+> [!WARNING]
+> 注意区分单个和多个下划线，若需修改最好请复制下表变量名！
+
+|        变量名         |      默认值       | 类型 |                         说明                         |
+| :-------------------: | :---------------: | :--: | :--------------------------------------------------: |
+|    WEB\_\_PASSWORD    |        ""         | 文本 |               Web 界面的管理员模式密码               |
+|      WEB\_\_PORT      |       8080        | 数字 |     **若非必要不建议修改，而是更改容器映射端口**     |
+|                       |                   |      |                                                      |
+|    RCON\_\_ADDRESS    | "127.0.0.1:25575" | 文本 | RCON 服务对应的地址，可以用容器网络 172.17.0.1:25575 |
+|   RCON\_\_PASSWORD    |        ""         | 文本 |           服务器配置文件中的 AdminPassword           |
+|    RCON\_\_TIMEOUT    |         5         | 数字 |             单个请求 RCON 服务的超时时间             |
+| RCON\_\_SYNC_INTERVAL |        60         | 数字 |        请求 RCON 服务器同步玩家在线数据的间隔        |
+|                       |                   |      |                                                      |
+|     SAVE\_\_PATH      |        ""         | 文本 |    游戏存档所在路径 **请务必填写为容器内的路径**     |
+|  SAVE\_\_DECODE_PATH  |  "/app/sav_cli"   | 文本 |    ⚠️ 容器内置，禁止修改，会导致存档解析工具错误     |
+| SAVE\_\_SYNC_INTERVAL |        600        | 数字 |                同步玩家存档数据的间隔                |
+
+#### Agent 部署
+
+需要两个容器，分别是 `palworld-server-tool` 和 `palworld-server-tool-agent`
+
+适用于：
+
+- 需要单独部署在其它服务器
+- 只需要部署在本地个人电脑
+- 游戏服务器性能较弱不满足，采用上述两种方案之一
+
+##### 先运行 agent 容器
+
+```bash
+docker run -d --name pst-agent \
+-p 8081:8081 \
+-v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
+-e SAV_FILE="/game/Level.sav" \
+jokerwho/palworld-server-tool-agent:latest
+```
+
+需要 -v 到游戏存档文件（Level.sav）所在目录，将其映射到容器内的 /game 目录
+
+|  变量名  | 默认值 | 类型 |                     说明                      |
+| :------: | :----: | :--: | :-------------------------------------------: |
+| SAV_FILE |   ""   | 文本 | 游戏存档所在路径 **请务必填写为容器内的路径** |
+
+##### 再运行 pst 容器
+
+```bash
+docker run -d --name pst \
+-p 8080:8080 \
+-e WEB__PASSWORD="your password" \
+-e RCON__ADDRESS="游戏服务器IP:25575" \
+-e RCON__PASSWORD="your password" \
+-e SAVE__PATH="http://游戏服务器IP:Agent端口/sync" \
+-e SAVE__SYNC_INTERVAL=600 \
+jokerwho/palworld-server-tool:latest
+```
+
+##### 持久化
+
+如果需要持久化 `pst.db` 文件：
+
+```bash
+# 先创建文件，避免被识别为目录
+touch pst.db
+```
+
+然后在 `docker run -v` 中增加 `-v ./pst.db:/app/pst.db`
+
+##### 环境变量
+
+> [!WARNING]
+> 注意区分单个和多个下划线，若需修改最好请复制下表变量名！
+
+|        变量名         |      默认值       | 类型 |                                    说明                                     |
+| :-------------------: | :---------------: | :--: | :-------------------------------------------------------------------------: |
+|    WEB\_\_PASSWORD    |        ""         | 文本 |                          Web 界面的管理员模式密码                           |
+|      WEB\_\_PORT      |       8080        | 数字 |                **若非必要不建议修改，而是更改容器映射端口**                 |
+|                       |                   |      |                                                                             |
+|    RCON\_\_ADDRESS    | "127.0.0.1:25575" | 文本 |               RCON 服务对应的地址，一般为游戏服务器 IP:25575                |
+|   RCON\_\_PASSWORD    |        ""         | 文本 |                      服务器配置文件中的 AdminPassword                       |
+|    RCON\_\_TIMEOUT    |         5         | 数字 |                        单个请求 RCON 服务的超时时间                         |
+| RCON\_\_SYNC_INTERVAL |        60         | 数字 |                   请求 RCON 服务器同步玩家在线数据的间隔                    |
+|                       |                   |      |                                                                             |
+|     SAVE\_\_PATH      |        ""         | 文本 | pst-agent 所在服务地址，格式为<br> http://{游戏服务器 IP}:{Agent 端口}/sync |
+|  SAVE\_\_DECODE_PATH  |  "/app/sav_cli"   | 文本 |                ⚠️ 容器内置，禁止修改，会导致存档解析工具错误                |
+| SAVE\_\_SYNC_INTERVAL |        600        | 数字 |                           同步玩家存档数据的间隔                            |
 
 ## 接口文档
 
