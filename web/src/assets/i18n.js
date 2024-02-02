@@ -37,6 +37,7 @@ const messages = {
       broadcastsuccess: "Broadcast success!",
       shutdownsuccess: "Shutdown success!",
       broadcastfail: "Broadcast fail: {err}",
+      broadcastasciierr: "Broadcast only support ASCII characters!",
       shutdownfail: "Shutdown fail: {err}",
       shutdowntip:
         "This will shut down the server after 60 seconds and send a broadcast.",
@@ -101,6 +102,7 @@ const messages = {
       broadcastsuccess: "广播成功!",
       shutdownsuccess: "关闭成功!",
       broadcastfail: "广播失败: {err}",
+      broadcastasciierr: "广播只支持ASCII字符，暂不支持中文",
       shutdownfail: "关闭失败: {err}",
       shutdowntip: "此操作将在60秒后关闭服务器并发送广播。",
     },

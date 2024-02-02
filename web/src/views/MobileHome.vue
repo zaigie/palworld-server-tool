@@ -349,6 +349,10 @@ const handleBroadcast = async () => {
     showBroadcastModal.value = false;
     broadcastText.value = "";
   } else {
+    if (data.value?.error.includes("contain non-ascii")) {
+      message.error(t("message.broadcastasciierr"));
+      return;
+    }
     message.error(t("message.broadcastfail", { err: data.value?.error }));
   }
 };

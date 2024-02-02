@@ -28,7 +28,7 @@ definitions:
       message:
         type: string
       seconds:
-        type: string
+        type: integer
     type: object
   api.SuccessResponse:
     properties:
@@ -180,8 +180,8 @@ paths:
             items:
               $ref: '#/definitions/database.Guild'
             type: array
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: List Guilds
@@ -207,12 +207,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.SuccessResponse'
-        "401":
-          description: Unauthorized
+        "400":
+          description: Bad Request
           schema:
             $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Internal Server Error
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       security:
@@ -238,14 +238,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/database.Guild'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/api.EmptyResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
       summary: Get Guild
       tags:
       - Guild
@@ -305,8 +305,8 @@ paths:
             items:
               $ref: '#/definitions/database.TersePlayer'
             type: array
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: List Players
@@ -340,10 +340,6 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
       security:
       - ApiKeyAuth: []
       summary: Put Players
@@ -367,14 +363,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/database.Player'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/api.EmptyResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
       summary: Get Player
       tags:
       - Player
@@ -396,12 +392,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.SuccessResponse'
-        "401":
-          description: Unauthorized
+        "400":
+          description: Bad Request
           schema:
             $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Internal Server Error
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       security:
@@ -427,12 +423,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.SuccessResponse'
-        "401":
-          description: Unauthorized
+        "400":
+          description: Bad Request
           schema:
             $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Internal Server Error
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       security:
@@ -452,8 +448,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.ServerInfo'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       summary: Get Server Info
@@ -486,10 +482,6 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
       security:
       - ApiKeyAuth: []
       summary: Publish Broadcast
@@ -520,10 +512,6 @@ paths:
             $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Unauthorized
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Internal Server Error
           schema:
             $ref: '#/definitions/api.ErrorResponse'
       security:

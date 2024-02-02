@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zaigie/palworld-server-tool/internal/tool"
@@ -18,7 +19,7 @@ type BroadcastRequest struct {
 }
 
 type ShutdownRequest struct {
-	Seconds string `json:"seconds"`
+	Seconds int    `json:"seconds"`
 	Message string `json:"message"`
 }
 
@@ -97,10 +98,10 @@ func shutdownServer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if req.Seconds == "" {
-		req.Seconds = "60"
+	if req.Seconds == 0 {
+		req.Seconds = 60
 	}
-	if err := tool.Shutdown(req.Seconds, req.Message); err != nil {
+	if err := tool.Shutdown(strconv.Itoa(req.Seconds), req.Message); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
