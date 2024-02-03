@@ -8,7 +8,6 @@ module_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(module_dir, "save_tools"))
 
 from save_tools.lib.gvas import GvasFile
-from save_tools.lib.json_tools import CustomEncoder
 from save_tools.lib.palsav import decompress_sav_to_gvas
 from save_tools.lib.paltypes import PALWORLD_TYPE_HINTS
 from save_tools.lib.archive import FArchiveReader, FArchiveWriter
@@ -30,6 +29,7 @@ PALWORLD_CUSTOM_PROPERTIES: dict[
         character.encode,
     ),
 }
+
 
 def skip_decode(
     reader: FArchiveReader, type_name: str, size: int, path: str
@@ -62,8 +62,11 @@ def skip_decode(
             "value": reader.read(size),
         }
     else:
-        raise Exception(f"Expected ArrayProperty or StructProperty, got {type_name} in {path}")
+        raise Exception(
+            f"Expected ArrayProperty or StructProperty, got {type_name} in {path}"
+        )
     return value
+
 
 def skip_encode(
     writer: FArchiveWriter, property_type: str, properties: dict[str, Any]
@@ -73,33 +76,55 @@ def skip_encode(
         del properties["skip_type"]
         writer.fstring(properties["array_type"])
         writer.optional_guid(properties.get("id", None))
-        writer.write(properties['value'])
-        return len(properties['value'])
+        writer.write(properties["value"])
+        return len(properties["value"])
     elif property_type == "MapProperty":
         del properties["custom_type"]
         del properties["skip_type"]
         writer.fstring(properties["key_type"])
         writer.fstring(properties["value_type"])
         writer.optional_guid(properties.get("id", None))
-        writer.write(properties['value'])
-        return len(properties['value'])
+        writer.write(properties["value"])
+        return len(properties["value"])
     elif property_type == "StructProperty":
         del properties["custom_type"]
         del properties["skip_type"]
         writer.fstring(properties["struct_type"])
         writer.guid(properties["struct_id"])
         writer.optional_guid(properties.get("id", None))
-        writer.write(properties['value'])
-        return len(properties['value'])
+        writer.write(properties["value"])
+        return len(properties["value"])
     else:
-        raise Exception(f"Expected ArrayProperty or StructProperty, got {property_type} in {path}")
+        raise Exception(
+            f"Expected ArrayProperty or StructProperty, got {property_type}"
+        )
 
-PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSaveData"] = (skip_decode, skip_encode)
-PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.FoliageGridSaveDataMap"] = (skip_decode, skip_encode)
-PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSpawnerInStageSaveData"] = (skip_decode, skip_encode)
-PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData"] = (skip_decode, skip_encode)
-PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.DynamicItemSaveData"] = (skip_decode, skip_encode)
-PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.CharacterContainerSaveData"] = (skip_decode, skip_encode)
+
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.FoliageGridSaveDataMap"] = (
+    skip_decode,
+    skip_encode,
+)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSpawnerInStageSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.DynamicItemSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.CharacterContainerSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+
 
 def convert_sav(file):
     if file.endswith(".sav.json"):
@@ -128,7 +153,9 @@ def structure_player(converted):
             c["key"]["PlayerUId"]["value"],
             c["value"]["RawData"]["value"]["object"]["SaveParameter"]["value"],
         )
-        for c in converted['worldSaveData']['value']['CharacterSaveParameterMap']['value']
+        for c in converted["worldSaveData"]["value"]["CharacterSaveParameterMap"][
+            "value"
+        ]
     )
     players = []
     pals = []
@@ -151,8 +178,8 @@ def structure_guild(converted):
     log("Structuring guilds...")
     groups = (
         g["value"]["RawData"]["value"]
-        for g in converted['worldSaveData']['value']['GroupSaveDataMap']['value']
-            if g["value"]["GroupType"]["value"]["value"] == "EPalGroupType::Guild"
+        for g in converted["worldSaveData"]["value"]["GroupSaveDataMap"]["value"]
+        if g["value"]["GroupType"]["value"]["value"] == "EPalGroupType::Guild"
     )
     guilds_generator = (Guild(g).to_dict() for g in groups)
     sorted_guilds = sorted(
