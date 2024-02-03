@@ -84,8 +84,23 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	go func() {
-		if err := router.Run(fmt.Sprintf(":%d", viper.GetInt("web.port"))); err != nil {
-			logger.Errorf("Server exited with error: %v\n", err)
+		if viper.GetBool("web.tls") {
+			certFile, err := os.ReadFile(viper.GetString("web.cert_path"))
+			if err != nil {
+				panic("Failed to read cert file")
+			}
+			keyFile, err := os.ReadFile(viper.GetString("web.key_path"))
+			if err != nil {
+				panic("Failed to read key file")
+			}
+
+			if err := router.RunTLS(fmt.Sprintf(":%d", viper.GetInt("web.port")), string(certFile), string(keyFile)); err != nil {
+				logger.Errorf("Server exited with error: %v\n", err)
+			}
+		} else {
+			if err := router.Run(fmt.Sprintf(":%d", viper.GetInt("web.port"))); err != nil {
+				logger.Errorf("Server exited with error: %v\n", err)
+			}
 		}
 	}()
 
