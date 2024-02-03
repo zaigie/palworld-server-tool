@@ -1,6 +1,9 @@
 web:
   password: ""
   port: 8080
+  tls: false
+  cert_path: ""
+  key_path: ""
 rcon:
   address: "127.0.0.1:25575"
   password: ""
