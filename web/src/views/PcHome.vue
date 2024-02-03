@@ -50,6 +50,10 @@ const updateDarkMode = (e) => {
   isDarkMode.value = e.matches;
 };
 
+const getDarkModeColor = () => {
+  return isDarkMode.value ? "#fff" : "#000";
+}
+
 const getUserAvatar = () => {
   return new URL("../assets/avatar.webp", import.meta.url).href;
 };
@@ -208,11 +212,7 @@ const createPlayerPalsColumns = () => {
             {
               style: {
                 display: "inline-block",
-                color: row.is_lucky
-                  ? "darkorange"
-                  : isDarkMode
-                    ? "white"
-                    : "black",
+                color: row.is_lucky ? "darkorange" : getDarkModeColor(),
                 fontWeight: row.is_lucky ? "bold" : "normal",
               },
             },
