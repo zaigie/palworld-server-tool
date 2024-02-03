@@ -44,18 +44,18 @@ func ConversionLoading(file string) error {
 			return errors.New("error downloading file: " + err.Error())
 		}
 		logger.Info("Level.sav downloaded\n")
-	} else if strings.HasPrefix("k8s://", file) {
-		// k8s://namespace/pod:remotePath
+	} else if strings.HasPrefix(file, "k8s://") {
+		// k8s://namespace/pod/container:remotePath
 		logger.Infof("copy Level.sav from %s\n", file)
-		namespace, podName, remotePath, err := source.ParseK8sAddress(file)
+		namespace, podName, container, remotePath, err := source.ParseK8sAddress(file)
 		if err != nil {
 			return errors.New("error parsing k8s address: " + err.Error())
 		}
-		tmpFile, err = source.CopyFromPod(namespace, podName, remotePath)
+		tmpFile, err = source.CopyFromPod(namespace, podName, container, remotePath)
 		if err != nil {
 			return errors.New("error copying file from pod: " + err.Error())
 		}
-	} else if strings.HasPrefix("docker://", file) {
+	} else if strings.HasPrefix(file, "docker://") {
 		// docker://containerID(Name):remotePath
 		logger.Infof("copy Level.sav from %s\n", file)
 		containerId, remotePath, err := source.ParseDockerAddress(file)
