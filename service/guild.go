@@ -42,18 +42,28 @@ func ListGuilds(db *bbolt.DB) ([]database.Guild, error) {
 	return guilds, nil
 }
 
-func GetGuild(db *bbolt.DB, adminPlayerUid string) (database.Guild, error) {
+func GetGuild(db *bbolt.DB, playerUID string) (database.Guild, error) {
 	var guild database.Guild
 	err := db.View(func(tx *bbolt.Tx) error {
 		b := tx.Bucket([]byte("guilds"))
-		v := b.Get([]byte(adminPlayerUid))
-		if v == nil {
-			return ErrNoRecord
+
+		// 遍历bucket中的所有guild
+		c := b.Cursor()
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			var g database.Guild
+			if err := json.Unmarshal(v, &g); err != nil {
+				return err
+			}
+
+			// 检查当前guild的players是否包含指定的player_uid
+			for _, player := range g.Players {
+				if player.PlayerUid == playerUID {
+					guild = g
+					return nil
+				}
+			}
 		}
-		if err := json.Unmarshal(v, &guild); err != nil {
-			return err
-		}
-		return nil
+		return ErrNoRecord
 	})
 	if err != nil {
 		return database.Guild{}, err
