@@ -117,7 +117,7 @@ Please refer to [pst-agent deployment tutorial](./README.agent.en.md)
 
 ```bash
 # Download pst_{version}_{platform}_{arch}.tar.gz and extract to the pst directory
-mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.0_linux_x86_64.tar.gz -C pst
 ```
 
 ##### Configuration
@@ -137,6 +137,9 @@ mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
    web: # web configuration
      password: "" # web management mode password
      port: 8080 # web service port
+     tls: false # Whether to enable TLS
+     cert_path: "" # Cert File Path
+     key_path: "" # Key File Path
    rcon: # RCON configuration
      address: "127.0.0.1:25575" # RCON address
      password: "" # Set AdminPassword
@@ -212,6 +215,9 @@ You can also right-click - "Properties", view the path and file name, and then c
 web: # web configuration
   password: "" # web management mode password
   port: 8080 # web service port
+  tls: false # Whether to enable TLS
+  cert_path: "" # Cert File Path
+  key_path: "" # Key File Path
 rcon: # RCON configuration
   address: "127.0.0.1:25575" # RCON address
   password: "" # Set AdminPassword

@@ -118,7 +118,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ```bash
 # 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
-mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.0_linux_x86_64.tar.gz -C pst
 ```
 
 ##### 配置
@@ -138,6 +138,9 @@ mkdir -p pst && tar -xzf pst_v0.5.0_linux_amd64.tar.gz -C pst
    web: # web 相关配置
      password: "" # web 管理模式密码
      port: 8080 # web 服务端口
+     tls: false # 是否开启 TLS
+     cert_path: "" # Cert 文件路径
+     key_path: "" # Key 文件路径
    rcon: # RCON 相关配置
      address: "127.0.0.1:25575" # RCON 地址
      password: "" # 设置的 AdminPassword
@@ -192,7 +195,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 ##### 下载解压
 
-解压 `pst_v0.5.0_windows_x86.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
+解压 `pst_v0.5.0_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
 
 ##### 配置
 
@@ -213,6 +216,9 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 web: # web 相关配置
   password: "" # web 管理模式密码
   port: 8080 # web 服务端口
+  tls: false # 是否开启 TLS
+  cert_path: "" # Cert 文件路径
+  key_path: "" # Key 文件路径
 rcon: # RCON 相关配置
   address: "127.0.0.1:25575" # RCON 地址
   password: "" # 设置的 AdminPassword
