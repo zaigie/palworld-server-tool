@@ -4,14 +4,11 @@ import zlib
 import json
 from typing import Any, Callable
 
-module_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(module_dir, "save_tools"))
-
-from save_tools.lib.gvas import GvasFile
-from save_tools.lib.palsav import decompress_sav_to_gvas
-from save_tools.lib.paltypes import PALWORLD_TYPE_HINTS
-from save_tools.lib.archive import FArchiveReader, FArchiveWriter
-from save_tools.lib.rawdata import character, group
+from palworld_save_tools.gvas import GvasFile
+from palworld_save_tools.palsav import decompress_sav_to_gvas
+from palworld_save_tools.paltypes import PALWORLD_TYPE_HINTS
+from palworld_save_tools.archive import FArchiveReader, FArchiveWriter
+from palworld_save_tools.rawdata import character, group
 
 from world_types import Player, Pal, Guild
 from logger import log
