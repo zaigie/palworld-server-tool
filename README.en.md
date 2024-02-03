@@ -19,6 +19,8 @@
 ![PC](./docs/img/pst-en-1.png)
 
 > The current mobile adaptation is good, you can view [Function Screenshot](#function-screenshot)
+>
+> Of course, the dark mode is also arranged no problem ~
 
 Features and roadmap based on parsing of `Level.sav` save files:
 
@@ -41,14 +43,13 @@ Due to limited maintenance and development staff, we welcome front-end, back-end
 
 ## Download
 
-> [!CAUTION]
-> The task of parsing `Level.sav` requires **significant system memory (often 4GB-6GB) in a short period (about 1-3min)** , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory!
+> The task of parsing `Level.sav` requires some system memory (often 1GB-3GB) in a short period (<20s) , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory.
 >
 > If the conditions are not met and still needed, the `pst-agent` is deployed on the game server, and the `pst` is deployed on a PC or other server with enough memory to perform the parsing task.
->
-> ==> [pst-agent deployment tutorial](./README.agent.en.md)
->
-> And synchronization [Sync archive from K8s-pod](#synchronizing-archives-from-k8s-pod) can be replicated directly within the k8s cluster via the kubectl api.
+
+[pst-agent deployment tutorial](./README.agent.en.md)
+
+And synchronization [Sync archive from K8s-pod](#synchronizing-archives-from-k8s-pod) can be replicated directly within the k8s cluster via the kubectl api.
 
 Download the latest executable files at:
 
@@ -148,7 +149,7 @@ mkdir -p pst && tar -xzf pst_v0.5.0_linux_x86_64.tar.gz -C pst
    save: # Save file parsing configuration
      path: "/path/to/you/Level.sav" # Save file path
      decode_path: "/path/to/your/sav_cli" # Save file parsing tool path, usually in the same directory as pst
-     sync_interval: 600 # Interval for syncing data from save file, in seconds, recommended >= 600
+     sync_interval: 120 # Interval for syncing data from save file, in seconds, recommended >= 120
    ```
 
 ##### Run
@@ -188,7 +189,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 > [!WARNING]
 > If you open the file for the first time, nothing will be displayed. Please **wait until the first sav archive synchronization is complete**
 >
-> If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter, the default is 600s (10min).
+> If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter.
 
 #### Windows
 
@@ -226,7 +227,7 @@ rcon: # RCON configuration
 save: # Save file parsing configuration
   path: "C:\\path\\to\\you\\Level.sav" # Save file path
   decode_path: "C:\\path\\to\\your\\sav_cli.exe" # Save file parsing tool path, usually in the same directory as pst
-  sync_interval: 600 # Interval for syncing data from save file, in seconds, recommended >= 600
+  sync_interval: 120 # Interval for syncing data from save file, in seconds, recommended >= 120
 ```
 
 ##### Running
@@ -261,7 +262,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 > [!WARNING]
 > If you open the file for the first time, nothing will be displayed. Please **wait until the first sav archive synchronization is complete**
 >
-> If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter, the default is 600s (10min).
+> If your server configuration is sufficient and performance is good, you can try to make `save.sync_interval` shorter.
 
 ### Docker Deployment
 
@@ -277,7 +278,7 @@ docker run -d --name pst \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
 -e SAVE__PATH="/game/Level.sav" \
--e SAVE__SYNC_INTERVAL=600 \
+-e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
 ```
 
@@ -350,7 +351,7 @@ docker run -d --name pst \
 -e RCON__ADDRESS="Game server IP:25575" \
 -e RCON__PASSWORD="your password" \
 -e SAVE__PATH="http://Game server IP:Agent port/sync" \
--e SAVE__SYNC_INTERVAL=600 \
+-e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
 ```
 

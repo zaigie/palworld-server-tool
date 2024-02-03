@@ -19,6 +19,8 @@
 ![PC](./docs/img/pst-zh-1.png)
 
 > 目前移动端适配良好，可查看下面 [功能截图](#功能截图)
+>
+> 当然深色模式也安排得妥妥的～
 
 基于 `Level.sav` 存档文件解析实现的功能及路线图：
 
@@ -41,14 +43,13 @@
 
 ## 下载
 
-> [!CAUTION]
-> 解析 `Level.sav` 存档的任务需要在**短时间（1-3 分钟）耗费较大的系统内存**（常常是 4GB~6GB），这部分内存会在执行完解析任务后释放，因此你至少需要确保你的服务器有充足的内存！
+> 解析 `Level.sav` 存档的任务需要在短时间（<20s）耗费一定的系统内存（1GB~3GB），这部分内存会在执行完解析任务后释放，因此你至少需要确保你的服务器有充足的内存。
 >
 > 若不满足条件仍需使用，提供了 `pst-agent` 部署在游戏服务器，而将 `pst` 部署在 PC 或者其它有足够内存执行解析任务的服务器。
->
-> ==> [pst-agent 部署教程](./README.agent.md)
->
-> 以及在 k8s 集群内可以直接通过 kubectl api 复制同步 [从 k8s-pod 同步存档](#从-k8s-pod-同步存档)
+
+[pst-agent 部署教程](./README.agent.md)
+
+在 k8s 集群内可以直接通过 kubectl api 复制同步 [从 k8s-pod 同步存档](#从-k8s-pod-同步存档)
 
 请在以下地址下载最新版可执行文件
 
@@ -149,7 +150,7 @@ mkdir -p pst && tar -xzf pst_v0.5.0_linux_x86_64.tar.gz -C pst
    save: # 存档文件解析相关配置
      path: "/path/to/you/Level.sav" # 存档文件路径
      decode_path: "/path/to/your/sav_cli" # 存档解析工具路径，一般和 pst 在同一目录
-     sync_interval: 600 # 定时从存档获取数据的间隔，单位秒，推荐 >= 600
+     sync_interval: 120 # 定时从存档获取数据的间隔，单位秒，推荐 >= 120
    ```
 
 ##### 运行
@@ -189,7 +190,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 > [!WARNING]
 > 初次打开会显示空白没有内容，请**等待第一次 sav 存档同步完成**再访问
 >
-> 如果你的服务器配置足够且性能良好，你可以试着将 `save.sync_interval` 改短一点，默认 600s（10min）
+> 如果你的服务器配置足够且性能良好，你可以试着将 `save.sync_interval` 改短一点
 
 #### Windows
 
@@ -227,7 +228,7 @@ rcon: # RCON 相关配置
 save: # 存档文件解析相关配置
   path: "C:\\path\\to\\you\\Level.sav" # 存档文件路径
   decode_path: "C:\\path\\to\\your\\sav_cli.exe" # 存档解析工具路径，一般和 pst 在同一目录
-  sync_interval: 600 # 定时从存档获取数据的间隔，单位秒，推荐 >= 600
+  sync_interval: 120 # 定时从存档获取数据的间隔，单位秒，推荐 >= 120
 ```
 
 ##### 运行
@@ -262,7 +263,7 @@ save: # 存档文件解析相关配置
 > [!WARNING]
 > 初次打开会显示空白没有内容，请**等待第一次 sav 存档同步完成**再访问
 >
-> 如果你的服务器配置足够且性能良好，你可以试着将 `save.sync_interval` 改短一点，默认 600s（10min）
+> 如果你的服务器配置足够且性能良好，你可以试着将 `save.sync_interval` 改短一点
 
 ### Docker 部署
 
@@ -278,7 +279,7 @@ docker run -d --name pst \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
 -e SAVE__PATH="/game/Level.sav" \
--e SAVE__SYNC_INTERVAL=600 \
+-e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
 ```
 
@@ -351,7 +352,7 @@ docker run -d --name pst \
 -e RCON__ADDRESS="游戏服务器IP:25575" \
 -e RCON__PASSWORD="your password" \
 -e SAVE__PATH="http://游戏服务器IP:Agent端口/sync" \
--e SAVE__SYNC_INTERVAL=600 \
+-e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
 ```
 
