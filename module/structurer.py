@@ -2,7 +2,6 @@ import os
 import sys
 import zlib
 import json
-import ijson
 from typing import Any, Callable
 
 module_dir = os.path.dirname(os.path.abspath(__file__))
@@ -32,6 +31,75 @@ PALWORLD_CUSTOM_PROPERTIES: dict[
     ),
 }
 
+def skip_decode(
+    reader: FArchiveReader, type_name: str, size: int, path: str
+) -> dict[str, Any]:
+    if type_name == "ArrayProperty":
+        array_type = reader.fstring()
+        value = {
+            "skip_type": type_name,
+            "array_type": array_type,
+            "id": reader.optional_guid(),
+            "value": reader.read(size),
+        }
+    elif type_name == "MapProperty":
+        key_type = reader.fstring()
+        value_type = reader.fstring()
+        _id = reader.optional_guid()
+        value = {
+            "skip_type": type_name,
+            "key_type": key_type,
+            "value_type": value_type,
+            "id": _id,
+            "value": reader.read(size),
+        }
+    elif type_name == "StructProperty":
+        value = {
+            "skip_type": type_name,
+            "struct_type": reader.fstring(),
+            "struct_id": reader.guid(),
+            "id": reader.optional_guid(),
+            "value": reader.read(size),
+        }
+    else:
+        raise Exception(f"Expected ArrayProperty or StructProperty, got {type_name} in {path}")
+    return value
+
+def skip_encode(
+    writer: FArchiveWriter, property_type: str, properties: dict[str, Any]
+) -> int:
+    if property_type == "ArrayProperty":
+        del properties["custom_type"]
+        del properties["skip_type"]
+        writer.fstring(properties["array_type"])
+        writer.optional_guid(properties.get("id", None))
+        writer.write(properties['value'])
+        return len(properties['value'])
+    elif property_type == "MapProperty":
+        del properties["custom_type"]
+        del properties["skip_type"]
+        writer.fstring(properties["key_type"])
+        writer.fstring(properties["value_type"])
+        writer.optional_guid(properties.get("id", None))
+        writer.write(properties['value'])
+        return len(properties['value'])
+    elif property_type == "StructProperty":
+        del properties["custom_type"]
+        del properties["skip_type"]
+        writer.fstring(properties["struct_type"])
+        writer.guid(properties["struct_id"])
+        writer.optional_guid(properties.get("id", None))
+        writer.write(properties['value'])
+        return len(properties['value'])
+    else:
+        raise Exception(f"Expected ArrayProperty or StructProperty, got {property_type} in {path}")
+
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSaveData"] = (skip_decode, skip_encode)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.FoliageGridSaveDataMap"] = (skip_decode, skip_encode)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSpawnerInStageSaveData"] = (skip_decode, skip_encode)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData"] = (skip_decode, skip_encode)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.DynamicItemSaveData"] = (skip_decode, skip_encode)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.CharacterContainerSaveData"] = (skip_decode, skip_encode)
 
 def convert_sav(file):
     if file.endswith(".sav.json"):
@@ -49,7 +117,8 @@ def convert_sav(file):
     except zlib.error:
         log("This .sav file is corrupted. :(", "ERROR")
         sys.exit(1)
-    return json.dumps(gvas_file.dump(), cls=CustomEncoder)
+    # return json.dumps(gvas_file.dump(), cls=CustomEncoder)
+    return gvas_file.properties
 
 
 def structure_player(converted):
@@ -59,10 +128,7 @@ def structure_player(converted):
             c["key"]["PlayerUId"]["value"],
             c["value"]["RawData"]["value"]["object"]["SaveParameter"]["value"],
         )
-        for c in ijson.items(
-            converted,
-            "properties.worldSaveData.value.CharacterSaveParameterMap.value.item",
-        )
+        for c in converted['worldSaveData']['value']['CharacterSaveParameterMap']['value']
     )
     players = []
     pals = []
@@ -85,10 +151,8 @@ def structure_guild(converted):
     log("Structuring guilds...")
     groups = (
         g["value"]["RawData"]["value"]
-        for g in ijson.items(
-            converted, "properties.worldSaveData.value.GroupSaveDataMap.value.item"
-        )
-        if g["value"]["GroupType"]["value"]["value"] == "EPalGroupType::Guild"
+        for g in converted['worldSaveData']['value']['GroupSaveDataMap']['value']
+            if g["value"]["GroupType"]["value"]["value"] == "EPalGroupType::Guild"
     )
     guilds_generator = (Guild(g).to_dict() for g in groups)
     sorted_guilds = sorted(
