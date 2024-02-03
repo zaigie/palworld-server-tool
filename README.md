@@ -47,6 +47,8 @@
 > 若不满足条件仍需使用，提供了 `pst-agent` 部署在游戏服务器，而将 `pst` 部署在 PC 或者其它有足够内存执行解析任务的服务器。
 >
 > ==> [pst-agent 部署教程](./README.agent.md)
+>
+> 以及在 k8s 集群内可以直接通过 kubectl api 复制同步 [从 k8s-pod 同步存档](#从-k8s-pod-同步存档)
 
 请在以下地址下载最新版可执行文件
 
@@ -97,6 +99,8 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 - [Docker 部署](#docker-部署)
   - [单体部署](#单体部署)
   - [Agent 部署](#agent-部署)
+  - [从 k8s-pod 同步存档](#从-k8s-pod-同步存档)
+  - [从 docker 容器同步存档](#从-docker-容器同步存档)
 
 这里**默认为将 pst 工具和游戏服务器放在同一台物理机上**，在一些情况下你可能不想要它们部署在同一机器上：
 
@@ -374,6 +378,52 @@ touch pst.db
 |     SAVE\_\_PATH      |        ""         | 文本 | pst-agent 所在服务地址，格式为<br> http://{游戏服务器 IP}:{Agent 端口}/sync |
 |  SAVE\_\_DECODE_PATH  |  "/app/sav_cli"   | 文本 |                ⚠️ 容器内置，禁止修改，会导致存档解析工具错误                |
 | SAVE\_\_SYNC_INTERVAL |        600        | 数字 |                           同步玩家存档数据的间隔                            |
+
+#### 从 k8s-pod 同步存档
+
+从 v0.5.3 开始，支持无需 agent 同步集群内游戏服务器存档。
+
+> 请确保 pst 所使用的 serviceaccount 具有 "pods/exec" 权限！
+
+只需要更改 `SAVE__PATH` 环境变量即可，格式如下：
+
+```bash
+SAVE__PATH="k8s://<namespace>/<podname>/<container>:<游戏存档目录>"
+```
+
+比如：
+
+```bash
+SAVE__PATH="k8s://default/palworld-server-0/palworld-server:/palworld/Pal/Saved
+```
+
+> 由于游戏服务器创建 Level.sav 文件的时间、位置（包含 HASH）在初次都不确定，您只需要指向 Saved 目录级别即可，程序会自动扫描
+
+当 pst 与游戏服务器在同一 namespace 下时，您可以省略它：
+
+```bash
+SAVE__PATH="k8s://palworld-server-0/palworld-server:/palworld/Pal/Saved
+```
+
+### 从 docker 容器同步存档
+
+从 v0.5.3 开始，支持无需 agent 同步容器内游戏服务器存档（**暂时只支持以文件部署方式部署的 pst**）
+
+只需要更改 `SAVE__PATH` 环境变量即可，格式如下：
+
+```bash
+SAVE__PATH="docker://<container_name_or_id>:<游戏存档目录>"
+```
+
+比如：
+
+```bash
+SAVE__PATH="docker://palworld-server:/palworld/Pal/Saved"
+#or
+SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
+```
+
+> 由于游戏服务器创建 Level.sav 文件的时间、位置（包含 HASH）在初次都不确定，您只需要指向 Saved 目录级别即可，程序会自动扫描
 
 ## 接口文档
 

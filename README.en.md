@@ -47,6 +47,8 @@ Due to limited maintenance and development staff, we welcome front-end, back-end
 > If the conditions are not met and still needed, the `pst-agent` is deployed on the game server, and the `pst` is deployed on a PC or other server with enough memory to perform the parsing task.
 >
 > ==> [pst-agent deployment tutorial](./README.agent.en.md)
+>
+> And synchronization [Sync archive from K8s-pod](#synchronizing-archives-from-k8s-pod) can be replicated directly within the k8s cluster via the kubectl api.
 
 Download the latest executable files at:
 
@@ -96,6 +98,8 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
 - [Docker Depolyment](#docker-deployment)
   - [Monolithic Deployment](#monolithic-deployment)
   - [Agent Deployment](#agent-deployment)
+  - [Synchronizing Archives from k8s-pod](#synchronizing-archives-from-k8s-pod)
+- [Synchronizing Archives from Docker Container](#synchronizing-archives-from-docker-container)
 
 Rimer believes that by **putting the pst tool and the game server on the same physical machine**, there are some situations where you might not want to deploy them on the same machine:
 
@@ -374,6 +378,52 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 |  SAVE\_\_DECODE_PATH  |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors |
 | SAVE\_\_SYNC_INTERVAL |        600        | Number |                         Interval for syncing player save data                          |
 
+#### Synchronizing Archives from k8s-pod
+
+Starting from v0.5.3, it is supported to synchronize game server archives within a cluster without the need for an agent.
+
+> Make sure that the serviceaccount used by pst has "pods/exec" permissions!
+
+You only need to change the `SAVE__PATH` environment variable, in the following format:
+
+```bash
+SAVE__PATH="k8s://<namespace>/<podname>/<container>:<Game Archive Directory>"
+```
+
+For example:
+
+```bash
+SAVE__PATH="k8s://default/palworld-server-0/palworld-server:/palworld/Pal/Saved"
+```
+
+> Since the time and location (including HASH) of the Level.sav file created by the game server are uncertain at the first instance, you only need to point to the Saved directory level, and the program will automatically scan.
+
+When pst and the game server are in the same namespace, you can omit it:
+
+```bash
+SAVE__PATH="k8s://palworld-server-0/palworld-server:/palworld/Pal/Saved"
+```
+
+### Synchronizing Archives from Docker Container
+
+Starting from v0.5.3, it is supported to synchronize game server archives inside a container without the need for an agent (**temporarily only supports pst deployed in file deployment mode**).
+
+You only need to change the `SAVE__PATH` environment variable, in the following format:
+
+```bash
+SAVE__PATH="docker://<container_name_or_id>:<Game Archive Directory>"
+```
+
+For example:
+
+```bash
+SAVE__PATH="docker://palworld-server:/palworld/Pal/Saved"
+#or
+SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
+```
+
+> Since the time and location (including HASH) of the Level.sav file created by the game server are uncertain at the first instance, you only need to point to the Saved directory level, and the program will automatically scan.
+
 ## REST API Document
 
 [APIFox Online document](https://q4ly3bfcop.apifox.cn/)
@@ -388,3 +438,7 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 ## LICENSE
 
 According to the [Apache2.0 LICENSE](LICENSE) authorization, any reprints please indicate in the README and document section! Any commercial behavior must be informed!
+
+```
+
+```
