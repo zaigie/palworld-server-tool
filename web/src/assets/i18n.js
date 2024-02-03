@@ -55,6 +55,8 @@ const messages = {
       detail: "Detail",
       confirm: "Confirm",
       cancel: "Cancel",
+      viewGuild: "View Guild",
+      viewPlayer: "View Player",
     },
     pal: {
       type: "Type",
@@ -121,6 +123,8 @@ const messages = {
       detail: "详情",
       confirm: "确认",
       cancel: "取消",
+      viewGuild: "查看公会",
+      viewPlayer: "查看玩家",
     },
     pal: {
       type: "类型",

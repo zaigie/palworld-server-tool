@@ -5,6 +5,7 @@ import {
   GroupWorkRound,
   ContentCopyFilled,
   SettingsPowerRound,
+  PersonSearchSharp
 } from "@vicons/material";
 import { GameController, LogOut, Ban, LanguageSharp } from "@vicons/ionicons5";
 import { BroadcastTower } from "@vicons/fa";
@@ -102,11 +103,12 @@ const getPlayerList = async (is_update_info = true) => {
     getPlayerInfo(playerList.value[0].player_uid);
   }
 };
-const getGuildList = async () => {
+const getGuildList = async (player_uid = '') => {
   const { data } = await new ApiService().getGuildList();
   guildList.value = data.value;
   if (guildList.value.length > 0) {
-    getGuildInfo(guildList.value[0].admin_player_uid);
+    let uid = player_uid ? player_uid : guildList.value[0].admin_player_uid;
+    getGuildInfo(uid);
   }
 };
 
@@ -414,19 +416,26 @@ const handleShutdown = () => {
   }
 };
 
-const toPlayers = async () => {
+const toPlayers = async (uid = '') => {
   if (currentDisplay.value === "players") {
     return;
   }
   await getPlayerList();
   currentDisplay.value = "players";
 };
-const toGuilds = async () => {
+const toGuilds = async (uid = '') => {
   if (currentDisplay.value === "guilds") {
     return;
   }
-  await getGuildList();
+  await getGuildList(uid);
   currentDisplay.value = "guilds";
+};
+const guildToPlayers = async (uid) => {
+  if (currentDisplay.value === "players") {
+    return;
+  }
+  await getPlayerInfo(uid);
+  currentDisplay.value = "players";
 };
 
 /**
@@ -546,7 +555,7 @@ onMounted(async () => {
                 {{ $t("button.players") }}
               </n-button>
               <n-button
-                @click="toGuilds"
+                @click="toGuilds()"
                 :type="currentDisplay === 'guilds' ? 'primary' : 'tertiary'"
                 secondary
                 strong
@@ -723,6 +732,19 @@ onMounted(async () => {
                       UID: {{ playerInfo.player_uid }}
                       <template #icon>
                         <n-icon><ContentCopyFilled /></n-icon>
+                      </template>
+                    </n-button>
+                    <n-button
+                        @click="toGuilds(playerInfo.player_uid)"
+                        class="ml-3"
+                        size="small"
+                        type="warning"
+                        icon-placement="right"
+                        ghost
+                    >
+                      {{ $t("button.viewGuild") }}
+                      <template #icon>
+                        <n-icon><PersonSearchSharp /></n-icon>
                       </template>
                     </n-button>
                   </template>
@@ -940,6 +962,19 @@ onMounted(async () => {
                         >
                           {{ $t("status.master") }}
                         </n-tag>
+                        <n-button
+                            @click="guildToPlayers(player.player_uid)"
+                            class="ml-3"
+                            size="small"
+                            type="warning"
+                            icon-placement="right"
+                            ghost
+                        >
+                          {{ $t("button.viewPlayer") }}
+                          <template #icon>
+                            <n-icon><PersonSearchSharp /></n-icon>
+                          </template>
+                        </n-button>
                       </n-space>
                     </n-list-item></n-list
                   >
