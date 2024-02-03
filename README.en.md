@@ -381,6 +381,7 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 ## Acknowledgements
 
 - [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) for providing save file parsing tool implementation
+- [palworld-server-toolkit](https://github.com/magicbear/palworld-server-toolkit) for providing high performance save file parsing
 - [PalEdit](https://github.com/EternalWraith/PalEdit) for providing the initial conceptualization and logic for data processing
 - [gorcon](https://github.com/gorcon/rcon) for providing the basic ability to send/receive RCON requests
 

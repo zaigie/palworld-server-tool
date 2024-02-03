@@ -4,6 +4,8 @@ from logger import log
 
 
 def hexuid_to_decimal(uuid):
+    if not isinstance(uuid, str) and not isinstance(uuid, UUID):
+        uuid = str(uuid)
     if isinstance(uuid, str):
         hex_part = uuid.split("-")[0]
         decimal_number = int(hex_part, 16)
@@ -465,7 +467,7 @@ class Guild:
             }
             for player in data["players"]
         ]
-        self.base_ids = data["base_ids"]
+        self.base_ids = [str(x) for x in data["base_ids"]]
         self.__order = [
             "name",
             "base_camp_level",

@@ -382,6 +382,7 @@ touch pst.db
 ## 感谢
 
 - [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) 提供了存档解析工具实现
+- [palworld-server-toolkit](https://github.com/magicbear/palworld-server-toolkit) 提供了存档高性能解析部份实现
 - [PalEdit](https://github.com/EternalWraith/PalEdit) 提供了最初的数据化思路及逻辑
 - [gorcon](https://github.com/gorcon/rcon) 提供的 RCON 请求/接收基础能力
 
