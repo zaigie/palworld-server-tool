@@ -60,10 +60,9 @@ def skip_decode(
         }
     else:
         raise Exception(
-            f"Expected ArrayProperty or StructProperty, got {type_name} in {path}"
+            f"Expected ArrayProperty or MapProperty or StructProperty, got {type_name} in {path}"
         )
     return value
-
 
 def skip_encode(
     writer: FArchiveWriter, property_type: str, properties: dict[str, Any]
@@ -93,7 +92,7 @@ def skip_encode(
         return len(properties["value"])
     else:
         raise Exception(
-            f"Expected ArrayProperty or StructProperty, got {property_type}"
+            f"Expected ArrayProperty or MapProperty or StructProperty, got {property_type}"
         )
 
 
