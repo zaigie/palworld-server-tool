@@ -276,18 +276,21 @@ const createPlayerPalsColumns = () => {
   ];
 };
 
-const copyText = async (text) => {
-  if (!navigator.clipboard) {
-    message.error(t("message.copyfail"));
-    return;
-  }
+const copyText = (text) => {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
 
   try {
-    await navigator.clipboard.writeText(text);
-    message.success(t("message.copysuccess"));
+    const successful = document.execCommand('copy');
+    const msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copy text command was ' + msg);
   } catch (err) {
-    message.error(t("message.copyerr", { err: err }));
+    console.error('Unable to copy', err);
   }
+
+  document.body.removeChild(textarea);
 };
 
 // login
@@ -781,6 +784,19 @@ onMounted(async () => {
                           }}
                         </n-tag>
                       </div>
+                      <n-tag
+                        @click="copyText(playerInfo.player_uid)"
+                        class="mt-1"
+                        type="info"
+                        size="small"
+                        icon-placement="right"
+                        ghost
+                      >
+                        UID: {{ playerInfo.player_uid }}
+                        <template #icon>
+                          <n-icon><ContentCopyFilled /></n-icon>
+                        </template>
+                      </n-tag>
                       <n-tag
                         @click="copyText(playerInfo.player_uid)"
                         class="mt-1"

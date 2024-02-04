@@ -286,18 +286,21 @@ const createPlayerPalsColumns = () => {
   ];
 };
 
-const copyText = async (text) => {
-  if (!navigator.clipboard) {
-    message.error(t("message.copyfail"));
-    return;
-  }
+const copyText = (text) => {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
 
   try {
-    await navigator.clipboard.writeText(text);
-    message.success(t("message.copysuccess"));
+    const successful = document.execCommand('copy');
+    const msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copy text command was ' + msg);
   } catch (err) {
-    message.error(t("message.copyerr", { err: err }));
+    console.error('Unable to copy', err);
   }
+
+  document.body.removeChild(textarea);
 };
 
 // login
@@ -730,6 +733,19 @@ onMounted(async () => {
                       ghost
                     >
                       UID: {{ playerInfo.player_uid }}
+                      <template #icon>
+                        <n-icon><ContentCopyFilled /></n-icon>
+                      </template>
+                    </n-button>
+                    <n-button
+                      @click="copyText(playerInfo.steam_id)"
+                      class="ml-3"
+                      type="info"
+                      size="small"
+                      icon-placement="right"
+                      ghost
+                    >
+                      Steam64: {{ playerInfo.steam_id }}
                       <template #icon>
                         <n-icon><ContentCopyFilled /></n-icon>
                       </template>
