@@ -1,12 +1,15 @@
 package source
 
 import (
-	"bytes"
+	"context"
 	"errors"
-	"fmt"
+	"io"
 	"os"
-	"os/exec"
 	"strings"
+
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/client"
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 )
 
 func CopyFromContainer(containerID, remotePath string) (string, error) {
@@ -16,25 +19,50 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 	}
 	defer tmpFile.Close()
 
-	var stdout bytes.Buffer
+	execConfig := types.ExecConfig{
+		Cmd:          []string{"find", remotePath, "-name", "Level.sav"},
+		AttachStdout: true,
+		AttachStderr: true,
+	}
 
-	finderCmd := fmt.Sprintf("docker exec %s find %s -name Level.sav", containerID, remotePath)
+	ctx := context.Background()
+	// dockerSocket := "unix:///app/run/docker.sock"
+	// cli, err := client.NewClientWithOpts(client.FromEnv, client.WithHost(dockerSocket))
+	cli, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return "", err
+	}
+	defer cli.Close()
 
-	cmd := exec.Command("sh", "-c", finderCmd)
-	cmd.Stdout = &stdout
-	err = cmd.Run()
+	resp, err := cli.ContainerExecCreate(ctx, containerID, execConfig)
 	if err != nil {
 		return "", err
 	}
 
-	foundFilePath := strings.TrimSpace(stdout.String())
+	response, err := cli.ContainerExecAttach(ctx, resp.ID, types.ExecStartCheck{})
+	if err != nil {
+		return "", err
+	}
+	defer response.Close()
+
+	out, err := io.ReadAll(response.Reader)
+	if err != nil {
+		return "", err
+	}
+
+	foundFilePath := strings.TrimSpace(string(out))
+	logger.Debugf("found file: %s\n", foundFilePath)
 	if foundFilePath == "" {
 		return "", errors.New("file Level.sav not found in container")
 	}
 
-	dockerCmd := fmt.Sprintf("docker cp %s:%s %s", containerID, foundFilePath, tmpFile.Name())
+	reader, _, err := cli.CopyFromContainer(ctx, containerID, foundFilePath)
+	if err != nil {
+		return "", err
+	}
+	defer reader.Close()
 
-	err = exec.Command("sh", "-c", dockerCmd).Run()
+	_, err = io.Copy(tmpFile, reader)
 	if err != nil {
 		return "", err
 	}
