@@ -262,6 +262,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 Only one container is needed. Map the game's save directory to the container's internal directory, running on the same physical host as the game server.
 
+##### ① docker run（recommended）
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
@@ -275,6 +276,49 @@ jokerwho/palworld-server-tool:latest
 ```
 
 Most importantly, use `-v` to map the game's save file (Level.sav) directory to the container's `/game` directory.
+
+##### ② Docker Compose (Optional)
+
+- Create a directory
+- Create a docker-compose.yml file under the directory
+
+```yml
+version: "3"
+services:
+    palworld-server-tool:
+        container_name: pst
+        restart: always
+        ports:
+            - 8080:8080
+        volumes:
+            - /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game
+        environment:
+            - WEB__PASSWORD="your password"
+            - RCON__ADDRESS="172.17.0.1:25575"
+            - RCON__PASSWORD="your password"
+            - SAVE__PATH="/game/Level.sav"
+            - SAVE__SYNC_INTERVAL=120
+        image: jokerwho/palworld-server-tool:latest
+```
+
+Most importantly, use `-v` to map the game's save file (Level.sav) directory to the container's `/game` directory.
+
+
+```bash
+# In this directory：
+
+# ① Start the container
+docker-compose up -d 
+
+# ② Stop the container
+docker-compose down
+
+# ③ Update the container: stop the container, pull the latest image, and then run the container
+docker-compose down
+docker-compose pull
+docker-compose up -d
+```
+
 
 ##### Persistence
 
