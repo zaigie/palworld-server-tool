@@ -275,6 +275,7 @@ save: # 存档文件解析相关配置
 #### 单体部署
 
 只需要一个容器，将游戏存档目录映射至容器内，与游戏服务器在同一物理主机上运行。
+##### ① docker run 方式（推荐）
 
 ```bash
 docker run -d --name pst \
@@ -289,6 +290,50 @@ jokerwho/palworld-server-tool:latest
 ```
 
 最重要的是需要 -v 到游戏存档文件（Level.sav）所在目录，将其映射到容器内的 /game 目录
+
+##### ② docker compose 方式（可选）
+
+- 创建一个目录
+- 目录下创建docker-compose.yml文件：
+
+```yml
+version: "3"
+services:
+    palworld-server-tool:
+        container_name: pst
+        restart: always
+        ports:
+            - 8080:8080
+        volumes:
+            - /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game
+        environment:
+            - WEB__PASSWORD="your password"
+            - RCON__ADDRESS="172.17.0.1:25575"
+            - RCON__PASSWORD="your password"
+            - SAVE__PATH="/game/Level.sav"
+            - SAVE__SYNC_INTERVAL=120
+        image: jokerwho/palworld-server-tool:latest
+```
+
+最重要的是需要 -v 到游戏存档文件（Level.sav）所在目录，将其映射到容器内的 /game 目录
+
+
+```bash
+# 在该目录下：
+
+# ① 运行容器
+docker-compose up -d 
+
+# ② 停止容器
+docker-compose down
+
+# ③ 更新容器：停止容器，拉取最新镜像，再运行容器
+docker-compose down
+docker-compose pull
+docker-compose up -d
+```
+
+##### 
 
 ##### 持久化
 
