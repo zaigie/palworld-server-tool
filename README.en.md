@@ -413,12 +413,41 @@ SAVE__PATH="k8s://palworld-server-0/palworld-server:/palworld/Pal/Saved"
 
 ### Synchronizing Archives from Docker Container
 
-Starting from v0.5.3, it is supported to synchronize game server archives inside a container without the need for an agent (**temporarily only supports pst deployed in file deployment mode**).
+Starting from v0.5.3, it is supported to synchronize game server archives inside a container without the need for an agent.
 
-You only need to change the `SAVE__PATH` environment variable, in the following format:
+#### File Deployment Usage
+
+When your pst application is deployed through running a binary file, you just need to modify the `save.path` in `config.yaml`:
+
+```yaml
+save:
+  path: "docker://<container_name_or_id>:<game_save_directory>"
+```
+
+For example:
+
+```yaml
+save:
+  path: docker://palworld-server:/palworld/Pal/Saved
+# or
+save:
+  path: docker://04b0a9af4288:/palworld/Pal/Saved
+```
+
+#### Docker Deployment Usage
+
+If the pst application is deployed as a Docker single container, then you need to modify the `SAVE__PATH` environment variable and mount the Docker daemon inside the pst container.
+
+1. Mount the daemon
+
+In the original `docker run` command, add the line `-v /var/run/docker.sock:/var/run/docker.sock`.
+
+2. Modify the environment variable
+
+Change the `SAVE__PATH` environment variable as follows:
 
 ```bash
-SAVE__PATH="docker://<container_name_or_id>:<Game Archive Directory>"
+SAVE__PATH="docker://<container_name_or_id>:<game_save_directory>"
 ```
 
 For example:
@@ -428,6 +457,11 @@ SAVE__PATH="docker://palworld-server:/palworld/Pal/Saved"
 #or
 SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 ```
+
+> [!WARNING]
+> If you see an error like `Error response from daemon: client version 1.44 is too new. Maximum supported API version is 1.43` after running, it is because the Docker API version used by your current docker engine is too low. In this case, please add another environment variable:
+>
+> -e DOCKER_API_VERSION="1.43" (your API version)
 
 > Since the time and location (including HASH) of the Level.sav file created by the game server are uncertain at the first instance, you only need to point to the Saved directory level, and the program will automatically scan.
 
