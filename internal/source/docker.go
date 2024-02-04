@@ -1,6 +1,7 @@
 package source
 
 import (
+	"archive/tar"
 	"context"
 	"errors"
 	"io"
@@ -19,6 +20,15 @@ func getDockerClient() (*client.Client, error) {
 	} else {
 		return client.NewClientWithOpts(client.FromEnv, client.WithVersion(dockerAPIVersion))
 	}
+}
+
+func getValidFilePath(output, expectedStart string) (string, error) {
+	startIndex := strings.Index(output, expectedStart)
+	if startIndex == -1 {
+		return "", errors.New("expected path not found in the output")
+	}
+	validPath := output[startIndex:]
+	return validPath, nil
 }
 
 func CopyFromContainer(containerID, remotePath string) (string, error) {
@@ -59,9 +69,9 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 		return "", err
 	}
 
-	foundFilePath := strings.TrimSpace(string(out))
-	if strings.HasPrefix(foundFilePath, "K") {
-		foundFilePath = strings.TrimSpace(foundFilePath[1:])
+	foundFilePath, err := getValidFilePath(strings.TrimSpace(string(out)), remotePath)
+	if err != nil {
+		return "", err
 	}
 
 	logger.Debugf("found file: %s\n", foundFilePath)
@@ -75,12 +85,30 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 	}
 	defer reader.Close()
 
-	_, err = io.Copy(tmpFile, reader)
-	if err != nil {
-		return "", err
-	}
+	// reader include tar header
+	tarReader := tar.NewReader(reader)
 
-	return tmpFile.Name(), nil
+	for {
+		header, err := tarReader.Next()
+
+		switch {
+		case err == io.EOF:
+			return "", errors.New("file not found in tar archive")
+		case err != nil:
+			return "", err
+		case header == nil:
+			continue
+		}
+
+		if header.Typeflag == tar.TypeReg && header.Name == "Level.sav" {
+			logger.Debugf("found file: %s\n", header.Name)
+			_, err = io.Copy(tmpFile, tarReader)
+			if err != nil {
+				return "", err
+			}
+			return tmpFile.Name(), nil
+		}
+	}
 }
 
 func ParseDockerAddress(address string) (containerID, filePath string, err error) {
