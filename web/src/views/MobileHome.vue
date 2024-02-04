@@ -798,14 +798,14 @@ onMounted(async () => {
                         </template>
                       </n-tag>
                       <n-tag
-                        @click="copyText(playerInfo.player_uid)"
+                        @click="copyText(playerInfo.steam_id)"
                         class="mt-1"
                         type="info"
                         size="small"
                         icon-placement="right"
                         ghost
                       >
-                        UID: {{ playerInfo.player_uid }}
+                        Steam64: {{ playerInfo.steam_id }}
                         <template #icon>
                           <n-icon><ContentCopyFilled /></n-icon>
                         </template>
