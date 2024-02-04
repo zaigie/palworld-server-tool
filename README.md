@@ -41,23 +41,6 @@
 
 由于维护开发人员较少，虽有心但力不足，欢迎各前端和后端甚至数据工程师来提交 PR！
 
-## 下载
-
-> 解析 `Level.sav` 存档的任务需要在短时间（<20s）耗费一定的系统内存（1GB~3GB），这部分内存会在执行完解析任务后释放，因此你至少需要确保你的服务器有充足的内存。
->
-> 若不满足条件仍需使用，提供了 `pst-agent` 部署在游戏服务器，而将 `pst` 部署在 PC 或者其它有足够内存执行解析任务的服务器。
-
-[pst-agent 部署教程](./README.agent.md)
-
-在 k8s 集群内可以直接通过 kubectl api 复制同步 [从 k8s-pod 同步存档](#从-k8s-pod-同步存档)
-
-请在以下地址下载最新版可执行文件
-
-- [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
-- [(国内) Gitee Releases](https://gitee.com/jokerwho/palworld-server-tool/releases)
-
-Docker 部署请参考 [Docker 部署](#docker-部署)
-
 ## 功能截图
 
 https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4efe-8274-15df261d50b4
@@ -92,7 +75,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ## 安装部署
 
-- [Sealos 一键部署](#一键部署)
+- [Sealos 一键部署](#sealos-一键部署)
 - [文件部署](#文件部署)
   - [Linux](#linux)
     - [pst-agent 部署](./README.agent.md#linux)
@@ -102,7 +85,11 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
   - [单体部署](#单体部署)
   - [Agent 部署](#agent-部署)
   - [从 k8s-pod 同步存档](#从-k8s-pod-同步存档)
-  - [从 docker 容器同步存档](#从-docker-容器同步存档)
+- [从 docker 容器同步存档](#从-docker-容器同步存档)
+
+请确保前提 [开启私服 RCON](#如何开启私服-rcon)
+
+> 解析 `Level.sav` 存档的任务需要在短时间（<20s）耗费一定的系统内存（1GB~3GB），这部分内存会在执行完解析任务后释放，因此你至少需要确保你的服务器有充足的内存。若不满足可使用如下等方式
 
 这里**默认为将 pst 工具和游戏服务器放在同一台物理机上**，在一些情况下你可能不想要它们部署在同一机器上：
 
@@ -110,9 +97,11 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 - 只需要部署在本地个人电脑
 - 游戏服务器性能较弱不满足，采用上述两种方案之一
 
-**请参考 [pst-agent 部署教程](./README.agent.md)**
+**请参考 [pst-agent 部署教程](./README.agent.md) 或 [从 k8s-pod 同步存档](#从-k8s-pod-同步存档)**
 
 ### Sealos 一键部署
+
+**30s 部署私服 + 管理工具，拒绝复杂步骤**
 
 首先点击以下按钮一键部署帕鲁私服：
 
@@ -124,13 +113,18 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ### 文件部署
 
+请在以下地址下载最新版可执行文件
+
+- [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
+- [(国内) Gitee Releases](https://gitee.com/jokerwho/palworld-server-tool/releases)
+
 #### Linux
 
 ##### 下载解压
 
 ```bash
 # 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
-mkdir -p pst && tar -xzf pst_v0.5.0_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
 ```
 
 ##### 配置
@@ -207,7 +201,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 ##### 下载解压
 
-解压 `pst_v0.5.0_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
+解压 `pst_v0.5.4_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
 
 ##### 配置
 

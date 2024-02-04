@@ -41,22 +41,6 @@ This tool uses bbolt for single file storage, fetching and saving data from RCON
 
 Due to limited maintenance and development staff, we welcome front-end, back-end developers, and even data engineers to submit PRs!
 
-## Download
-
-> The task of parsing `Level.sav` requires some system memory (often 1GB-3GB) in a short period (<20s) , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory.
->
-> If the conditions are not met and still needed, the `pst-agent` is deployed on the game server, and the `pst` is deployed on a PC or other server with enough memory to perform the parsing task.
-
-[pst-agent deployment tutorial](./README.agent.en.md)
-
-And synchronization [Sync archive from K8s-pod](#synchronizing-archives-from-k8s-pod) can be replicated directly within the k8s cluster via the kubectl api.
-
-Download the latest executable files at:
-
-- [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
-
-For docker deployment, see [Docker deployment](#docker-deployment).
-
 ## Function screenshot
 
 https://github.com/zaigie/palworld-server-tool/assets/17232619/42d4c5db-8799-4962-b762-ae22eebbfeb9
@@ -102,15 +86,23 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
   - [Synchronizing Archives from k8s-pod](#synchronizing-archives-from-k8s-pod)
 - [Synchronizing Archives from Docker Container](#synchronizing-archives-from-docker-container)
 
+Make sure RCON first [How to Enable RCON for Private Servers](#how-to-enable-rcon-for-private-servers)
+
+> The task of parsing `Level.sav` requires some system memory (often 1GB-3GB) in a short period (<20s) , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory.If you do not meet the requirements, use the following methods below
+
 Rimer believes that by **putting the pst tool and the game server on the same physical machine**, there are some situations where you might not want to deploy them on the same machine:
 
 - Must be deployed separately on another server
 - Only need to deploy on a local PC
 - The game server performance is weak and not satisfied, using one of the above two schemes
 
-Please refer to [pst-agent deployment tutorial](./README.agent.en.md)
+Please refer to [pst-agent deployment tutorial](./README.agent.en.md) or [Synchronizing Archives from k8s-pod](#synchronizing-archives-from-k8s-pod)
 
 ### File Deployment
+
+Download the latest executable files at:
+
+- [Github Releases](https://github.com/zaigie/palworld-server-tool/releases)
 
 #### Linux
 
@@ -118,7 +110,7 @@ Please refer to [pst-agent deployment tutorial](./README.agent.en.md)
 
 ```bash
 # Download pst_{version}_{platform}_{arch}.tar.gz and extract to the pst directory
-mkdir -p pst && tar -xzf pst_v0.5.0_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
 ```
 
 ##### Configuration
@@ -195,7 +187,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 ##### Download and Extract
 
-Extract `pst_v0.5.0_windows_x86.zip` to any directory (recommend naming the folder `pst`).
+Extract `pst_v0.5.4_windows_x86_64.zip` to any directory (recommend naming the folder `pst`).
 
 ##### Configuration
 
