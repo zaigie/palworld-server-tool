@@ -27,7 +27,6 @@
 - [x] 完整玩家数据
 - [x] 玩家帕鲁数据
 - [x] 公会数据
-- [ ] 玩家背包数据
 
 基于官方提供的 RCON 命令（仅服务器可用的）实现功能：
 
@@ -40,6 +39,13 @@
 本工具使用 bbolt 单文件存储，将 RCON 和 Level.sav 文件的数据通过定时任务获取并保存，提供简单的可视化界面和 REST 接口和便于管理与开发。
 
 由于维护开发人员较少，虽有心但力不足，欢迎各前端和后端甚至数据工程师来提交 PR！
+
+> [!NOTE]
+> 如果您需要幻兽帕鲁服务器&工具搭建交流，或者**需要闭源付费定制功能开发**，如：多服务器管理、服务器注入反作弊、可视化修改存档等，请加群或 QQ 交流
+
+幻兽帕鲁服务器管理交流：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=RkItz42aIvppN716Tdlpni_gSpnYasxF&jump_from=webapi&authKey=PLbIHENUObGLnW4s5476OnenRVcUNBV79g9zd0CEi5kpddfdooAsoU/SeoEdfGWq"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="幻兽帕鲁服务器管理" title="幻兽帕鲁服务器管理"></a>
+
+![加QQ群](./docs/img/add_group.jpg)
 
 ## 功能截图
 
