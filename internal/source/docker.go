@@ -12,6 +12,15 @@ import (
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 )
 
+func getDockerClient() (*client.Client, error) {
+	dockerAPIVersion := os.Getenv("DOCKER_API_VERSION")
+	if dockerAPIVersion == "" {
+		return client.NewClientWithOpts(client.FromEnv)
+	} else {
+		return client.NewClientWithOpts(client.FromEnv, client.WithVersion(dockerAPIVersion))
+	}
+}
+
 func CopyFromContainer(containerID, remotePath string) (string, error) {
 	tmpFile, err := os.CreateTemp("", "docker-file-*")
 	if err != nil {
@@ -28,7 +37,7 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 	ctx := context.Background()
 	// dockerSocket := "unix:///app/run/docker.sock"
 	// cli, err := client.NewClientWithOpts(client.FromEnv, client.WithHost(dockerSocket))
-	cli, err := client.NewClientWithOpts(client.FromEnv)
+	cli, err := getDockerClient()
 	if err != nil {
 		return "", err
 	}
