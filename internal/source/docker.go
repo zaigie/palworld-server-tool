@@ -60,6 +60,10 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 	}
 
 	foundFilePath := strings.TrimSpace(string(out))
+	if strings.HasPrefix(foundFilePath, "K") {
+		foundFilePath = strings.TrimSpace(foundFilePath[1:])
+	}
+
 	logger.Debugf("found file: %s\n", foundFilePath)
 	if foundFilePath == "" {
 		return "", errors.New("file Level.sav not found in container")
