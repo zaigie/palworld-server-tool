@@ -33,6 +33,8 @@ const isShowDetail = ref(false);
 const playerList = ref([]);
 const guildList = ref([]);
 const playerInfo = ref({});
+const playerPalsList = ref([]);
+const currentPlayerPalsList = ref([]);
 const guildInfo = ref({});
 const skillTypeList = ref([]);
 const languageOptions = ref([]);
@@ -108,8 +110,15 @@ const getPlayerInfo = async (player_uid) => {
       pal.skills = pal.skills.map((skill) => {
         return palZHSkills[skill] ? palZHSkills[skill] : skill;
       });
+      pal.typeName = palZHTypes[pal.type] ? palZHTypes[pal.type] : pal.type;
+    });
+  } else {
+    playerInfo.value.pals.forEach((pal) => {
+      pal.typeName = pal.type;
     });
   }
+  playerPalsList.value = JSON.parse(JSON.stringify(playerInfo.value.pals));
+  currentPlayerPalsList.value = playerPalsList.value.slice(0, pageSize.value);
   isShowDetail.value = true;
   contentRef.value.scrollTo(0, 0);
 };
@@ -121,6 +130,63 @@ const getGuildInfo = async (admin_player_uid) => {
   guildInfo.value = data.value;
   isShowDetail.value = true;
   contentRef.value.scrollTo(0, 0);
+};
+// 游戏用户的帕鲁列表筛选、排序
+const orderOptions = [
+  { text: "默认排序", value: 0 },
+  { text: "类型升序", value: 1 },
+  { text: "类型降序", value: 2 },
+  { text: "等级升序", value: 3 },
+  { text: "等级降序", value: 4 },
+];
+const playerPalsOrder = ref(0);
+
+// 游戏用户的帕鲁列表分页，搜索
+const searchValue = ref("");
+const clickSearch = () => {
+  const pattern = /^\s*$|(\s)\1/;
+  if (searchValue.value && !pattern.test(searchValue.value)) {
+    playerPalsList.value = playerInfo.value.pals.filter((item) => {
+      return (
+        item.skills.some((skill) => skill.includes(searchValue.value)) ||
+        item.typeName.includes(searchValue.value)
+      );
+    });
+  } else {
+    playerPalsList.value = JSON.parse(JSON.stringify(playerInfo.value.pals));
+  }
+  currentPage.value = 1;
+  if (playerPalsList.value.length <= 10) {
+    finished.value = true;
+    currentPlayerPalsList.value = playerPalsList.value ?? [];
+  } else {
+    finished.value = false;
+    currentPlayerPalsList.value = playerPalsList.value.slice(0, pageSize.value);
+  }
+};
+// 滚动加载更多
+const palsLoading = ref(false);
+const currentPage = ref(1);
+const pageSize = ref(10);
+const finished = ref(false);
+const onLoadPals = () => {
+  if (playerPalsList.value.length <= currentPage.value * pageSize.value) {
+    finished.value = true;
+  } else {
+    currentPage.value += 1;
+    currentPlayerPalsList.value = playerPalsList.value.slice(
+      0,
+      pageSize.value * currentPage.value
+    );
+  }
+};
+const onContentScroll = () => {
+  if (currentDisplay.value === "players" && isShowDetail.value) {
+    const dom = document.getElementsByClassName("n-layout-scroll-container");
+    if (dom[1].scrollTop + dom[1].clientHeight > dom[1].scrollHeight - 6) {
+      onLoadPals();
+    }
+  }
 };
 
 const showPalDetailModal = ref(false);
@@ -160,120 +226,6 @@ const percentageHP = (hp, max_hp) => {
     return 0;
   }
   return ((hp / max_hp) * 100).toFixed(2);
-};
-
-const createPlayerPalsColumns = () => {
-  return [
-    {
-      title: "",
-      key: "",
-      render(row) {
-        return h(NAvatar, {
-          size: "small",
-          src: getPalAvatar(row.type),
-          fallbackSrc: getUnknowPalAvatar(),
-        });
-      },
-    },
-    {
-      title: t("pal.type"),
-      key: "type",
-      // defaultSortOrder: 'ascend',
-      sorter: "default",
-      render(row) {
-        return [
-          h(
-            NTag,
-            {
-              style: {
-                marginRight: "6px",
-              },
-              type: row.gender == "Male" ? "primary" : "error",
-              bordered: false,
-            },
-            {
-              default: () => (row.gender == "Male" ? "♂" : "♀"),
-            }
-          ),
-          h(
-            "div",
-            {
-              style: {
-                display: "inline-block",
-                color: row.is_lucky
-                  ? "darkorange"
-                  : isDarkMode
-                    ? "white"
-                    : "black",
-                fontWeight: row.is_lucky ? "bold" : "normal",
-              },
-            },
-            {
-              default: () =>
-                locale.value === "zh"
-                  ? palZHTypes[row.type]
-                    ? palZHTypes[row.type]
-                    : row.type
-                  : row.type,
-            }
-          ),
-        ];
-      },
-    },
-    {
-      title: t("pal.level"),
-      key: "level",
-      width: 70,
-      defaultSortOrder: "descend",
-      sorter: "default",
-      render(row) {
-        return "Lv." + row.level;
-      },
-    },
-    {
-      title: t("pal.skills"),
-      key: "skills",
-      render(row) {
-        const skills = row.skills.map((skill) => {
-          return h(
-            NTag,
-            {
-              style: {
-                marginRight: "6px",
-              },
-              type: "warning",
-              bordered: false,
-            },
-            {
-              default: () => skill,
-            }
-          );
-        });
-        return skills;
-      },
-      filterOptions: skillTypeList.value.map((value) => ({
-        label: value,
-        value,
-      })),
-      filter(value, row) {
-        return ~row.skills.indexOf(value);
-      },
-    },
-    {
-      title: "",
-      key: "actions",
-      render(row) {
-        return h(
-          NButton,
-          {
-            size: "small",
-            onClick: () => showPalDetail(row),
-          },
-          { default: () => t("button.detail") }
-        );
-      },
-    },
-  ];
 };
 
 const copyText = async (text) => {
@@ -413,6 +365,12 @@ const toPlayers = async () => {
   await getPlayerList();
   currentDisplay.value = "players";
   isShowDetail.value = false;
+
+  palsLoading.value = false;
+  finished.value = false;
+  currentPage.value = 1;
+  searchValue.value = "";
+
   contentRef.value.scrollTo(0, 0);
 };
 const toGuilds = async () => {
@@ -422,10 +380,22 @@ const toGuilds = async () => {
   await getGuildList();
   currentDisplay.value = "guilds";
   isShowDetail.value = false;
+
+  palsLoading.value = false;
+  finished.value = false;
+  currentPage.value = 1;
+  searchValue.value = "";
+
   contentRef.value.scrollTo(0, 0);
 };
 const returnList = () => {
   isShowDetail.value = false;
+
+  palsLoading.value = false;
+  finished.value = false;
+  currentPage.value = 1;
+  searchValue.value = "";
+
   contentRef.value.scrollTo(0, 0);
 };
 
@@ -463,7 +433,7 @@ onMounted(async () => {
   skillTypeList.value = getSkillTypeList();
   loading.value = true;
   checkAuthToken();
-  await getServerInfo();
+  getServerInfo();
   await getPlayerList();
   loading.value = false;
   setInterval(() => {
@@ -481,7 +451,9 @@ onMounted(async () => {
       <div>
         <span class="line-clamp-1 text-base">{{ $t("title") }}</span>
         <n-tag type="default" size="small">{{
-          serverInfo.name + " " + serverInfo.version
+          serverInfo?.name
+            ? `${serverInfo.name + " " + serverInfo.version}`
+            : "获取中..."
         }}</n-tag>
       </div>
       <n-space vertical>
@@ -534,7 +506,7 @@ onMounted(async () => {
     </div>
     <div class="w-full">
       <div class="rounded-lg" v-if="!loading && playerList.length > 0">
-        <n-layout style="height: calc(100vh - 72px)" has-sider>
+        <n-layout style="height: calc(100vh - 86px)" has-sider>
           <n-layout-header
             class="flex flex-col justify-between"
             :class="isLogin ? 'h-16' : 'h-10'"
@@ -619,7 +591,12 @@ onMounted(async () => {
               </n-button-group>
             </div>
           </n-layout-header>
-          <n-layout position="absolute" style="top: 64px" ref="contentRef">
+          <n-layout
+            position="absolute"
+            style="top: 64px"
+            ref="contentRef"
+            @scroll="onContentScroll"
+          >
             <div v-if="!isShowDetail">
               <!-- list -->
               <n-list v-if="currentDisplay === 'players'" hoverable clickable>
@@ -849,22 +826,80 @@ onMounted(async () => {
                       }}</n-progress
                     >
                   </n-space>
-                  <n-data-table
-                    class="mt-5"
-                    size="small"
-                    :columns="createPlayerPalsColumns()"
-                    :row-props="dataRowProps"
-                    :data="playerInfo.pals"
-                    :virtual-scroll="false"
-                    :bordered="false"
-                    striped
-                    :scroll-x="600"
-                  />
+                  <div
+                    class="flex w-full mt-5 border-b border-b-solid border-b-#eee"
+                  >
+                    <van-field
+                      v-model="searchValue"
+                      :placeholder="$t('input.searchPlaceholder')"
+                      @update:model-value="clickSearch"
+                      right-icon="search"
+                    >
+                    </van-field>
+                  </div>
+                  <!-- <div class="my-2 flex justify-between">
+                    <van-dropdown-menu>
+                      <van-dropdown-item
+                        v-model="playerPalsOrder"
+                        :options="orderOptions"
+                      />
+                    </van-dropdown-menu>
+                    <van-button type="default" size="small">筛选</van-button>
+                  </div> -->
+                  <van-list :finished="finished" finished-text="没有更多了">
+                    <div
+                      v-for="(pal, index) in currentPlayerPalsList"
+                      :key="pal"
+                      class="py-2"
+                      :class="
+                        index < currentPlayerPalsList.length - 1
+                          ? 'border-b border-b-solid border-b-#eee'
+                          : ''
+                      "
+                      @click="showPalDetail(pal)"
+                    >
+                      <div class="flex justify-between items-center">
+                        <van-image
+                          class="bg-#c5c5c5 rounded-md"
+                          width="32"
+                          height="32"
+                          :src="getPalAvatar(pal.type)"
+                        />
+                        <div
+                          class="flex-1 flex items-center justify-between ml-3"
+                        >
+                          <van-tag
+                            plain
+                            :type="pal.gender == 'Male' ? 'primary' : 'danger'"
+                            >{{ pal.gender == "Male" ? "♂" : "♀" }}</van-tag
+                          >
+                          <span class="px-3 flex-1 line-clamp-1">{{
+                            pal.typeName
+                          }}</span>
+                          <span>{{ "Lv." + pal.level }}</span>
+                        </div>
+                      </div>
+                      <div class="ml-11 mt-1 flex flex-wrap">
+                        <van-tag
+                          v-for="skill in pal.skills"
+                          class="rounded-sm mr-2"
+                          size="medium"
+                          :key="skill"
+                          color="#fcf0e0"
+                          text-color="#ee9b2f"
+                          >{{ skill }}</van-tag
+                        >
+                      </div>
+                    </div>
+                  </van-list>
+                  <div class="h-10"></div>
                 </n-card>
                 <n-modal
                   v-model:show="showPalDetailModal"
                   preset="card"
                   :style="{ width: '90%', maxWidth: '400px' }"
+                  header-style="padding:12px;"
+                  content-style="margin:0 28px;"
                   size="huge"
                   :bordered="false"
                   :segmented="{ content: 'soft', footer: 'soft' }"
@@ -874,6 +909,7 @@ onMounted(async () => {
                       Lv.{{ palDetail.level }}
                     </n-tag>
                     <n-tag
+                      class="mr-3"
                       :type="palDetail.gender === 'Male' ? 'primary' : 'error'"
                       round
                     >
