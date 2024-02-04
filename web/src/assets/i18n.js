@@ -57,6 +57,7 @@ const messages = {
       cancel: "Cancel",
       viewGuild: "View Guild",
       viewPlayer: "View Player",
+      search: "Search",
     },
     pal: {
       type: "Type",
@@ -68,6 +69,9 @@ const messages = {
       rank: "Rank",
       tower: "Tower",
       lucky: "Lucky",
+    },
+    input: {
+      searchPlaceholder: "Search for pal type and skills",
     },
   },
   zh: {
@@ -125,6 +129,7 @@ const messages = {
       cancel: "取消",
       viewGuild: "查看公会",
       viewPlayer: "查看玩家",
+      search: "搜索",
     },
     pal: {
       type: "类型",
@@ -136,6 +141,9 @@ const messages = {
       rank: "队伍序",
       tower: "塔主",
       lucky: "稀有",
+    },
+    input: {
+      searchPlaceholder: "搜索帕鲁类型、技能",
     },
   },
 };
