@@ -4,7 +4,7 @@
    <strong>简体中文</strong> | <a href="/README.en.md">English</a>
 </p>
 
-<p align='center'> 
+<p align='center'>
   通过可视化界面及 REST 接口管理幻兽帕鲁专用服务器，基于 SAV 存档文件解析及 RCON 实现<br/>
   并且花了很漫长且枯燥的时间去做了国际化...
 </p>
@@ -92,6 +92,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ## 安装部署
 
+- [Sealos 一键部署](#一键部署)
 - [文件部署](#文件部署)
   - [Linux](#linux)
     - [pst-agent 部署](./README.agent.md#linux)
@@ -110,6 +111,16 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 - 游戏服务器性能较弱不满足，采用上述两种方案之一
 
 **请参考 [pst-agent 部署教程](./README.agent.md)**
+
+### Sealos 一键部署
+
+首先点击以下按钮一键部署帕鲁私服：
+
+[![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://hzh.sealos.run/?uid=1b856tuu)
+
+然后点击以下按钮一键部署 palworld-server-tool：
+
+[![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://hzh.sealos.run/?openapp=system-template%3FtemplateName%3Dpalworld-management)
 
 ### 文件部署
 
