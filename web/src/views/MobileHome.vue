@@ -284,10 +284,9 @@ const copyText = (text) => {
 
   try {
     const successful = document.execCommand('copy');
-    const msg = successful ? 'successful' : 'unsuccessful';
-    console.log('Copy text command was ' + msg);
+    message.success(t("message.copysuccess"));
   } catch (err) {
-    console.error('Unable to copy', err);
+    message.error(t("message.copyerr", { err: err }));
   }
 
   document.body.removeChild(textarea);
