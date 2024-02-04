@@ -85,17 +85,8 @@ func main() {
 
 	go func() {
 		if viper.GetBool("web.tls") {
-			certFile, err := os.ReadFile(viper.GetString("web.cert_path"))
-			if err != nil {
-				panic("Failed to read cert file")
-			}
-			keyFile, err := os.ReadFile(viper.GetString("web.key_path"))
-			if err != nil {
-				panic("Failed to read key file")
-			}
-
-			if err := router.RunTLS(fmt.Sprintf(":%d", viper.GetInt("web.port")), string(certFile), string(keyFile)); err != nil {
-				logger.Errorf("Server exited with error: %v\n", err)
+			if err := router.RunTLS(fmt.Sprintf(":%d", viper.GetInt("web.port")), viper.GetString("web.cert_path"), viper.GetString("web.key_path")); err != nil {
+				logger.Errorf("Server exited with TLS error: %v\n", err)
 			}
 		} else {
 			if err := router.Run(fmt.Sprintf(":%d", viper.GetInt("web.port"))); err != nil {
