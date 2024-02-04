@@ -414,9 +414,38 @@ SAVE__PATH="k8s://palworld-server-0/palworld-server:/palworld/Pal/Saved
 
 ### 从 docker 容器同步存档
 
-从 v0.5.3 开始，支持无需 agent 同步容器内游戏服务器存档（**暂时只支持以文件部署方式部署的 pst**）
+从 v0.5.3 开始，支持无需 agent 同步容器内游戏服务器存档
 
-只需要更改 `SAVE__PATH` 环境变量即可，格式如下：
+#### 文件部署使用
+
+当你的 pst 本体是通过运行二进制文件部署时，只需要修改 `config.yaml` 中的 `save.path` 即可：
+
+```yaml
+save:
+  path: "docker://<container_name_or_id>:<游戏存档目录>"
+```
+
+比如：
+
+```yaml
+save:
+  path: docker://palworld-server:/palworld/Pal/Saved
+# or
+save:
+  path: docker://04b0a9af4288:/palworld/Pal/Saved
+```
+
+#### Docker 部署使用
+
+如果 pst 本体是通过 Docker 单体部署的，那么你需要修改 `SAVE__PATH` 环境变量，并且将 Docker 守护进程挂载至 pst 容器内
+
+1. 挂载守护进程
+
+在原来的 `docker run` 命令中，增加一行 `-v /var/run/docker.sock:/var/run/docker.sock`
+
+2. 修改环境变量
+
+更改 `SAVE__PATH` 环境变量，格式如下：
 
 ```bash
 SAVE__PATH="docker://<container_name_or_id>:<游戏存档目录>"
@@ -429,6 +458,11 @@ SAVE__PATH="docker://palworld-server:/palworld/Pal/Saved"
 #or
 SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 ```
+
+> [!WARNING]
+> 如果在运行后看到如 ` Error response from daemon: client version 1.44 is too new. Maximum supported API version is 1.43` 的报错，是因为你当前 docker engine 使用的 Docker API 版本较低，这时候请再增加一个环境变量：
+>
+> -e DOCKER_API_VERSION="1.43" (你的 API 版本)
 
 > 由于游戏服务器创建 Level.sav 文件的时间、位置（包含 HASH）在初次都不确定，您只需要指向 Saved 目录级别即可，程序会自动扫描
 

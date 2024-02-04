@@ -101,7 +101,7 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 		}
 
 		if header.Typeflag == tar.TypeReg && header.Name == "Level.sav" {
-			logger.Debugf("found file: %s\n", header.Name)
+			logger.Debugf("got file: %s\n", header.Name)
 			_, err = io.Copy(tmpFile, tarReader)
 			if err != nil {
 				return "", err
