@@ -131,15 +131,6 @@ const getGuildInfo = async (admin_player_uid) => {
   isShowDetail.value = true;
   contentRef.value.scrollTo(0, 0);
 };
-// 游戏用户的帕鲁列表筛选、排序
-const orderOptions = [
-  { text: "默认排序", value: 0 },
-  { text: "类型升序", value: 1 },
-  { text: "类型降序", value: 2 },
-  { text: "等级升序", value: 3 },
-  { text: "等级降序", value: 4 },
-];
-const playerPalsOrder = ref(0);
 
 // 游戏用户的帕鲁列表分页，搜索
 const searchValue = ref("");
@@ -837,15 +828,6 @@ onMounted(async () => {
                     >
                     </van-field>
                   </div>
-                  <!-- <div class="my-2 flex justify-between">
-                    <van-dropdown-menu>
-                      <van-dropdown-item
-                        v-model="playerPalsOrder"
-                        :options="orderOptions"
-                      />
-                    </van-dropdown-menu>
-                    <van-button type="default" size="small">筛选</van-button>
-                  </div> -->
                   <van-list :finished="finished" finished-text="没有更多了">
                     <div
                       v-for="(pal, index) in currentPlayerPalsList"
