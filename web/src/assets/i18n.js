@@ -66,6 +66,7 @@ const messages = {
       viewPlayer: "View Player",
       whitelist: "Whitelist",
       joinWhitelist: "Join Whitelist",
+      search: "Search",
     },
     input: {
       nickname: "Nickname",
@@ -82,6 +83,9 @@ const messages = {
       rank: "Rank",
       tower: "Tower",
       lucky: "Lucky",
+    },
+    input: {
+      searchPlaceholder: "Search for pal type and skills",
     },
   },
   zh: {
@@ -148,6 +152,7 @@ const messages = {
       viewPlayer: "查看玩家",
       whitelist: "白名单管理",
       joinWhitelist: "加入白名单",
+      search: "搜索",
     },
     input: {
       nickname: "昵称",
@@ -164,6 +169,9 @@ const messages = {
       rank: "队伍序",
       tower: "塔主",
       lucky: "稀有",
+    },
+    input: {
+      searchPlaceholder: "搜索帕鲁类型、技能",
     },
   },
 };

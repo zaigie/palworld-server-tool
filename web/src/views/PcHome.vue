@@ -45,6 +45,7 @@ const currentDisplay = ref("players");
 const playerList = ref([]);
 const guildList = ref([]);
 const playerInfo = ref({});
+const playerPalsList = ref([]);
 const guildInfo = ref({});
 const skillTypeList = ref([]);
 const languageOptions = ref([]);
@@ -62,7 +63,7 @@ const updateDarkMode = (e) => {
 
 const getDarkModeColor = () => {
   return isDarkMode.value ? "#fff" : "#000";
-}
+};
 
 const getUserAvatar = () => {
   return new URL("../assets/avatar.webp", import.meta.url).href;
@@ -112,7 +113,7 @@ const getPlayerList = async (is_update_info = true) => {
     getPlayerInfo(playerList.value[0].player_uid);
   }
 };
-const getGuildList = async (player_uid = '') => {
+const getGuildList = async (player_uid = "") => {
   const { data } = await new ApiService().getGuildList();
   guildList.value = data.value;
   if (guildList.value.length > 0) {
@@ -129,14 +130,24 @@ const getPlayerInfo = async (player_uid) => {
       pal.skills = pal.skills.map((skill) => {
         return palZHSkills[skill] ? palZHSkills[skill] : skill;
       });
+      pal.typeName = palZHTypes[pal.type] ? palZHTypes[pal.type] : pal.type;
+    });
+  } else {
+    playerInfo.value.pals.forEach((pal) => {
+      pal.typeName = pal.type;
     });
   }
+  playerPalsList.value = JSON.parse(JSON.stringify(playerInfo.value.pals));
   nextTick(() => {
     const playerInfoEL = document.getElementById("player-info");
     if (playerInfoEL) {
       playerInfoEL.scrollIntoView({ behavior: "smooth" });
     }
   });
+
+  paginationReactive.page = 1;
+  paginationReactive.pageSize = 10;
+  searchValue.value = "";
 };
 
 const getGuildInfo = async (admin_player_uid) => {
@@ -144,6 +155,41 @@ const getGuildInfo = async (admin_player_uid) => {
     adminPlayerUid: admin_player_uid,
   });
   guildInfo.value = data.value;
+};
+
+// 游戏用户的帕鲁列表分页，搜索
+const paginationReactive = reactive({
+  page: 1,
+  pageSize: 10,
+  showSizePicker: true,
+  pageSizes: [10, 15, 20],
+  onChange: (page) => {
+    paginationReactive.page = page;
+  },
+  onUpdatePageSize: (pageSize) => {
+    paginationReactive.pageSize = pageSize;
+    paginationReactive.page = 1;
+  },
+});
+const searchValue = ref("");
+const clickSearch = () => {
+  const pattern = /^\s*$|(\s)\1/;
+  if (searchValue.value && !pattern.test(searchValue.value)) {
+    playerPalsList.value = playerInfo.value.pals.filter((item) => {
+      return (
+        item.skills.some((skill) => skill.includes(searchValue.value)) ||
+        item.typeName.includes(searchValue.value)
+      );
+    });
+  } else {
+    playerPalsList.value = JSON.parse(JSON.stringify(playerInfo.value.pals));
+  }
+  paginationReactive.page = 1;
+};
+const clearSearch = () => {
+  nextTick(() => {
+    clickSearch();
+  });
 };
 
 const showPalDetailModal = ref(false);
@@ -228,12 +274,7 @@ const createPlayerPalsColumns = () => {
               },
             },
             {
-              default: () =>
-                locale.value === "zh"
-                  ? palZHTypes[row.type]
-                    ? palZHTypes[row.type]
-                    : row.type
-                  : row.type,
+              default: () => row.typeName,
             }
           ),
         ];
@@ -295,18 +336,20 @@ const createPlayerPalsColumns = () => {
   ];
 };
 
-const copyText = async (text) => {
-  if (!navigator.clipboard) {
-    message.error(t("message.copyfail"));
-    return;
-  }
+const copyText = (text) => {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
 
   try {
-    await navigator.clipboard.writeText(text);
+    const successful = document.execCommand("copy");
     message.success(t("message.copysuccess"));
   } catch (err) {
     message.error(t("message.copyerr", { err: err }));
   }
+
+  document.body.removeChild(textarea);
 };
 
 // login
@@ -494,19 +537,27 @@ const handleShutdown = () => {
   }
 };
 
-const toPlayers = async (uid = '') => {
+const toPlayers = async (uid = "") => {
   if (currentDisplay.value === "players") {
     return;
   }
   await getPlayerList();
   currentDisplay.value = "players";
+
+  paginationReactive.page = 1;
+  paginationReactive.pageSize = 10;
+  searchValue.value = "";
 };
-const toGuilds = async (uid = '') => {
+const toGuilds = async (uid = "") => {
   if (currentDisplay.value === "guilds") {
     return;
   }
   await getGuildList(uid);
   currentDisplay.value = "guilds";
+
+  paginationReactive.page = 1;
+  paginationReactive.pageSize = 10;
+  searchValue.value = "";
 };
 const guildToPlayers = async (uid) => {
   if (currentDisplay.value === "players") {
@@ -514,6 +565,10 @@ const guildToPlayers = async (uid) => {
   }
   await getPlayerInfo(uid);
   currentDisplay.value = "players";
+
+  paginationReactive.page = 1;
+  paginationReactive.pageSize = 10;
+  searchValue.value = "";
 };
 
 /**
@@ -550,7 +605,7 @@ onMounted(async () => {
   skillTypeList.value = getSkillTypeList();
   loading.value = true;
   checkAuthToken();
-  await getServerInfo();
+  getServerInfo();
   await getPlayerList();
   loading.value = false;
   setInterval(() => {
@@ -572,7 +627,9 @@ onMounted(async () => {
           >{{ $t("title") }}</span
         >
         <n-tag type="default" :size="smallScreen ? 'medium' : 'large'">{{
-          serverInfo.name + " " + serverInfo.version
+          serverInfo?.name
+            ? `${serverInfo.name + " " + serverInfo.version}`
+            : "获取中..."
         }}</n-tag>
       </n-space>
 
@@ -785,6 +842,7 @@ onMounted(async () => {
               :native-scrollbar="false"
             >
               <n-card
+                content-style="padding-bottom:64px;"
                 id="player-info"
                 :bordered="false"
                 v-if="playerInfo.nickname"
@@ -828,12 +886,26 @@ onMounted(async () => {
                       </template>
                     </n-button>
                     <n-button
-                        @click="toGuilds(playerInfo.player_uid)"
-                        class="ml-3"
-                        size="small"
-                        type="warning"
-                        icon-placement="right"
-                        ghost
+                      @click="copyText(playerInfo.steam_id)"
+                      class="ml-3"
+                      type="info"
+                      size="small"
+                      icon-placement="right"
+                      ghost
+                    >
+                      Steam64:
+                      {{ playerInfo.steam_id ? playerInfo.steam_id : "--" }}
+                      <template #icon>
+                        <n-icon><ContentCopyFilled /></n-icon>
+                      </template>
+                    </n-button>
+                    <n-button
+                      @click="toGuilds(playerInfo.player_uid)"
+                      class="ml-3"
+                      size="small"
+                      type="warning"
+                      icon-placement="right"
+                      ghost
                     >
                       {{ $t("button.viewGuild") }}
                       <template #icon>
@@ -890,14 +962,28 @@ onMounted(async () => {
                     }}</n-progress
                   >
                 </n-space>
+                <div class="w-full mt-5">
+                  <n-input-group class="w-full flex justify-end">
+                    <n-input
+                      v-model:value="searchValue"
+                      clearable
+                      :placeholder="$t('input.searchPlaceholder')"
+                      :on-clear="clearSearch"
+                    />
+                    <n-button type="primary" class="w-20" @click="clickSearch">
+                      {{ $t("button.search") }}
+                    </n-button>
+                  </n-input-group>
+                </div>
                 <n-data-table
-                  class="mt-5"
+                  class="mt-2"
                   size="small"
                   :columns="createPlayerPalsColumns()"
                   :row-props="dataRowProps"
-                  :data="playerInfo.pals"
+                  :data="playerPalsList"
                   :bordered="false"
                   striped
+                  :pagination="paginationReactive"
                 />
               </n-card>
               <n-modal
@@ -1056,21 +1142,20 @@ onMounted(async () => {
                           {{ $t("status.master") }}
                         </n-tag>
                         <n-button
-                            @click="guildToPlayers(player.player_uid)"
-                            class="ml-3"
-                            size="small"
-                            type="warning"
-                            icon-placement="right"
-                            ghost
+                          @click="guildToPlayers(player.player_uid)"
+                          class="ml-3"
+                          size="small"
+                          type="warning"
+                          icon-placement="right"
+                          ghost
                         >
                           {{ $t("button.viewPlayer") }}
                           <template #icon>
                             <n-icon><PersonSearchSharp /></n-icon>
                           </template>
                         </n-button>
-                      </n-space>
-                    </n-list-item></n-list
-                  >
+                      </n-space> </n-list-item
+                  ></n-list>
                 </n-space>
               </n-card>
             </n-layout>

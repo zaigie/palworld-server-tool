@@ -27,7 +27,6 @@
 - [x] 完整玩家数据
 - [x] 玩家帕鲁数据
 - [x] 公会数据
-- [ ] 玩家背包数据
 
 基于官方提供的 RCON 命令（仅服务器可用的）实现功能：
 
@@ -40,6 +39,13 @@
 本工具使用 bbolt 单文件存储，将 RCON 和 Level.sav 文件的数据通过定时任务获取并保存，提供简单的可视化界面和 REST 接口和便于管理与开发。
 
 由于维护开发人员较少，虽有心但力不足，欢迎各前端和后端甚至数据工程师来提交 PR！
+
+> [!NOTE]
+> 如果您需要幻兽帕鲁服务器&工具搭建交流，或者**需要闭源付费定制功能开发**，如：多服务器管理、服务器注入反作弊、可视化修改存档等，请加群或 QQ 交流
+
+幻兽帕鲁服务器管理交流：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=RkItz42aIvppN716Tdlpni_gSpnYasxF&jump_from=webapi&authKey=PLbIHENUObGLnW4s5476OnenRVcUNBV79g9zd0CEi5kpddfdooAsoU/SeoEdfGWq"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="幻兽帕鲁服务器管理" title="幻兽帕鲁服务器管理"></a>
+
+![加QQ群](./docs/img/add_group.jpg)
 
 ## 功能截图
 
@@ -275,10 +281,11 @@ save: # 存档文件解析相关配置
 #### 单体部署
 
 只需要一个容器，将游戏存档目录映射至容器内，与游戏服务器在同一物理主机上运行。
-
+> 注意:使用交换分区,可能导致程序性能下降,建议仅在内存不足时使用
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
+-m 256M --memory-swap=4G `# 可选参数 设置可用内存为256M 交换分区为4G` \
 -v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
@@ -333,10 +340,12 @@ touch pst.db
 - 游戏服务器性能较弱不满足，采用上述两种方案之一
 
 ##### 先运行 agent 容器
+> 注意:使用交换分区,可能导致程序性能下降,建议仅在内存不足时使用
 
 ```bash
 docker run -d --name pst-agent \
 -p 8081:8081 \
+-m 256M --memory-swap=4G `# 可选参数 设置可用内存为256M 交换分区为4G` \
 -v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
 -e SAV_FILE="/game/Level.sav" \
 jokerwho/palworld-server-tool-agent:latest

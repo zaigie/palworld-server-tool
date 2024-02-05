@@ -261,10 +261,12 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 #### Monolithic Deployment
 
 Only one container is needed. Map the game's save directory to the container's internal directory, running on the same physical host as the game server.
-
+> Note: Using swap partitions may cause a decrease in program performance.Do not use it when your server has enough memory.
+ 
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
+-m 256M --memory-swap=4G `# optional limit memory to 256M and memory-swap to 4G` \
 -v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
@@ -322,6 +324,7 @@ Applicable for:
 
 ```bash
 docker run -d --name pst-agent \
+-m 256M --memory-swap=4G `# optional limit memory to 256M and memory-swap to 4G` \
 -p 8081:8081 \
 -v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
 -e SAV_FILE="/game/Level.sav" \
