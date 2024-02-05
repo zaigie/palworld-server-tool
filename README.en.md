@@ -142,6 +142,8 @@ mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
      path: "/path/to/you/Level.sav" # Save file path
      decode_path: "/path/to/your/sav_cli" # Save file parsing tool path, usually in the same directory as pst
      sync_interval: 120 # Interval for syncing data from save file, in seconds, recommended >= 120
+   manage: # manage configuration
+     kick_non_whitelist: false # is the player not in whitelist then kick
    ```
 
 ##### Run
@@ -220,6 +222,8 @@ save: # Save file parsing configuration
   path: "C:\\path\\to\\you\\Level.sav" # Save file path
   decode_path: "C:\\path\\to\\your\\sav_cli.exe" # Save file parsing tool path, usually in the same directory as pst
   sync_interval: 120 # Interval for syncing data from save file, in seconds, recommended >= 120
+manage: # manage configuration
+  kick_non_whitelist: false # is the player not in whitelist then kick
 ```
 
 ##### Running
@@ -261,8 +265,9 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 #### Monolithic Deployment
 
 Only one container is needed. Map the game's save directory to the container's internal directory, running on the same physical host as the game server.
+
 > Note: Using swap partitions may cause a decrease in program performance.Do not use it when your server has enough memory.
- 
+
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
@@ -296,19 +301,20 @@ Set various environment variables, similar to those in [`config.yaml`](#configur
 > [!WARNING]
 > Pay attention to the distinction between single and multiple underscores. It's best to copy the variable names from the table below for modifications!
 
-|     Variable Name     |   Default Value   |  Type  |                                      Description                                       |
-| :-------------------: | :---------------: | :----: | :------------------------------------------------------------------------------------: |
-|    WEB\_\_PASSWORD    |        ""         |  Text  |                         Password for Web interface admin mode                          |
-|      WEB\_\_PORT      |       8080        | Number |    **Changing the container mapping port is recommended instead of modifying this**    |
-|                       |                   |        |                                                                                        |
-|    RCON\_\_ADDRESS    | "127.0.0.1:25575" |  Text  |            RCON service address, can use container network 172.17.0.1:25575            |
-|   RCON\_\_PASSWORD    |        ""         |  Text  |                     AdminPassword in the server configuration file                     |
-|    RCON\_\_TIMEOUT    |         5         | Number |                      Timeout for individual RCON service requests                      |
-| RCON\_\_SYNC_INTERVAL |        60         | Number |             Interval for requesting RCON server to sync player online data             |
-|                       |                   |        |                                                                                        |
-|     SAVE\_\_PATH      |        ""         |  Text  |          Game save path **be sure to fill in the path inside the container**           |
-|  SAVE\_\_DECODE_PATH  |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors |
-| SAVE\_\_SYNC_INTERVAL |        600        | Number |                         Interval for syncing player save data                          |
+|        Variable Name         |   Default Value   |  Type  |                                       Description                                       |
+| :--------------------------: | :---------------: | :----: | :-------------------------------------------------------------------------------------: |
+|       WEB\_\_PASSWORD        |        ""         |  Text  |                          Password for Web interface admin mode                          |
+|         WEB\_\_PORT          |       8080        | Number |    **Changing the container mapping port is recommended instead of modifying this**     |
+|                              |                   |        |                                                                                         |
+|       RCON\_\_ADDRESS        | "127.0.0.1:25575" |  Text  |            RCON service address, can use container network 172.17.0.1:25575             |
+|       RCON\_\_PASSWORD       |        ""         |  Text  |                     AdminPassword in the server configuration file                      |
+|       RCON\_\_TIMEOUT        |         5         | Number |                      Timeout for individual RCON service requests                       |
+|    RCON\_\_SYNC_INTERVAL     |        60         | Number |             Interval for requesting RCON server to sync player online data              |
+|                              |                   |        |                                                                                         |
+|         SAVE\_\_PATH         |        ""         |  Text  |           Game save path **be sure to fill in the path inside the container**           |
+|     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
+|    SAVE\_\_SYNC_INTERVAL     |        600        | Number |                          Interval for syncing player save data                          |
+| MANAGE\_\_KICK_NON_WHITELIST |       false       |  布尔  | Automatically kicked out when it detects that a player is not whitelisted but is online |
 
 #### Agent Deployment
 
@@ -366,19 +372,20 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 > [!WARNING]
 > Pay attention to the distinction between single and multiple underscores. It's best to copy the variable names from the table below for modifications!
 
-|     Variable Name     |   Default Value   |  Type  |                                      Description                                       |
-| :-------------------: | :---------------: | :----: | :------------------------------------------------------------------------------------: |
-|    WEB\_\_PASSWORD    |        ""         |  Text  |                         Password for Web interface admin mode                          |
-|      WEB\_\_PORT      |       8080        | Number |  **It's recommended to change the container mapping port instead of modifying this**   |
-|                       |                   |        |                                                                                        |
-|    RCON\_\_ADDRESS    | "127.0.0.1:25575" |  Text  |                  RCON service address, typically Game server IP:25575                  |
-|   RCON\_\_PASSWORD    |        ""         |  Text  |                     AdminPassword in the server configuration file                     |
-|    RCON\_\_TIMEOUT    |         5         | Number |                      Timeout for individual RCON service requests                      |
-| RCON\_\_SYNC_INTERVAL |        60         | Number |             Interval for requesting RCON server to sync player online data             |
-|                       |                   |        |                                                                                        |
-|     SAVE\_\_PATH      |        ""         |  Text  |   pst-agent service address, format as<br> http://{Game server IP}:{Agent port}/sync   |
-|  SAVE\_\_DECODE_PATH  |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors |
-| SAVE\_\_SYNC_INTERVAL |        600        | Number |                         Interval for syncing player save data                          |
+|        Variable Name         |   Default Value   |  Type  |                                       Description                                       |
+| :--------------------------: | :---------------: | :----: | :-------------------------------------------------------------------------------------: |
+|       WEB\_\_PASSWORD        |        ""         |  Text  |                          Password for Web interface admin mode                          |
+|         WEB\_\_PORT          |       8080        | Number |   **It's recommended to change the container mapping port instead of modifying this**   |
+|                              |                   |        |                                                                                         |
+|       RCON\_\_ADDRESS        | "127.0.0.1:25575" |  Text  |                  RCON service address, typically Game server IP:25575                   |
+|       RCON\_\_PASSWORD       |        ""         |  Text  |                     AdminPassword in the server configuration file                      |
+|       RCON\_\_TIMEOUT        |         5         | Number |                      Timeout for individual RCON service requests                       |
+|    RCON\_\_SYNC_INTERVAL     |        60         | Number |             Interval for requesting RCON server to sync player online data              |
+|                              |                   |        |                                                                                         |
+|         SAVE\_\_PATH         |        ""         |  Text  |   pst-agent service address, format as<br> http://{Game server IP}:{Agent port}/sync    |
+|     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
+|    SAVE\_\_SYNC_INTERVAL     |        600        | Number |                          Interval for syncing player save data                          |
+| MANAGE\_\_KICK_NON_WHITELIST |       false       |  布尔  | Automatically kicked out when it detects that a player is not whitelisted but is online |
 
 #### Synchronizing Archives from k8s-pod
 
