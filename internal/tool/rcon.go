@@ -3,6 +3,8 @@ package tool
 import (
 	"errors"
 	"fmt"
+	"github.com/zaigie/palworld-server-tool/service"
+	"go.etcd.io/bbolt"
 	"regexp"
 	"strings"
 
@@ -96,6 +98,38 @@ func ShowPlayers() ([]database.PlayerRcon, error) {
 	}
 
 	return playersRcon, nil
+}
+
+func CheckAndKickPlayers(db *bbolt.DB, players []database.PlayerRcon) error {
+	whitelist, err := service.ListWhitelist(db)
+	if err != nil {
+		return errors.New(err.Error())
+	}
+	for _, player := range players {
+		if !isPlayerWhitelisted(player, whitelist) {
+			// 优先使用SteamId进行操作，如果没有提供，则使用PlayerUid
+			identifier := player.SteamId
+			if identifier == "" {
+				identifier = player.PlayerUid
+			}
+			if err := KickPlayer(identifier); err != nil {
+				logger.Warnf("Kicked %s fail, %s \n", player.Nickname, err)
+			} else {
+				logger.Warnf("Kicked %s successful \n", player.Nickname)
+			}
+		}
+	}
+	return nil
+}
+
+func isPlayerWhitelisted(player database.PlayerRcon, whitelist []database.PlayerW) bool {
+	for _, whitelistedPlayer := range whitelist {
+		if (player.PlayerUid != "" && player.PlayerUid == whitelistedPlayer.PlayerUID) ||
+			(player.SteamId != "" && player.SteamId == whitelistedPlayer.SteamID) {
+			return true
+		}
+	}
+	return false
 }
 
 func KickPlayer(steamID string) error {

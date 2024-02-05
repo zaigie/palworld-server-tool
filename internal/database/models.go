@@ -59,3 +59,9 @@ type Guild struct {
 	Players        []*GuildPlayer `json:"players"`
 	BaseIds        []string       `json:"base_ids"`
 }
+
+type PlayerW struct {
+	Name      string `json:"name"`
+	SteamID   string `json:"steam_id"`
+	PlayerUID string `json:"player_uid"`
+}
