@@ -64,6 +64,7 @@ def skip_decode(
         )
     return value
 
+
 def skip_encode(
     writer: FArchiveWriter, property_type: str, properties: dict[str, Any]
 ) -> int:
@@ -144,6 +145,8 @@ def convert_sav(file):
 
 def structure_player(converted):
     log("Structuring players...")
+    if not converted["worldSaveData"]["value"].get("CharacterSaveParameterMap"):
+        return []
     uid_character = (
         (
             c["key"]["PlayerUId"]["value"],
@@ -172,6 +175,8 @@ def structure_player(converted):
 
 def structure_guild(converted):
     log("Structuring guilds...")
+    if not converted["worldSaveData"]["value"].get("GroupSaveDataMap"):
+        return []
     groups = (
         g["value"]["RawData"]["value"]
         for g in converted["worldSaveData"]["value"]["GroupSaveDataMap"]["value"]

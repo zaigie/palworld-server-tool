@@ -75,7 +75,12 @@ func ConversionLoading(file string) error {
 	}
 	defer os.Remove(tmpFile)
 
-	requestUrl := fmt.Sprintf("http://127.0.0.1:%d/api/", viper.GetInt("web.port"))
+	baseUrl := "http://127.0.0.1"
+	if viper.GetBool("web.tls") {
+		baseUrl = "https://127.0.0.1"
+	}
+
+	requestUrl := fmt.Sprintf("%s:%d/api/", baseUrl, viper.GetInt("web.port"))
 	tokenString, err := auth.GenerateToken()
 	if err != nil {
 		return errors.New("error generating token: " + err.Error())
