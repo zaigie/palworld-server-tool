@@ -26,6 +26,9 @@ type Config struct {
 		DecodePath   string `mapstructure:"decode_path"`
 		SyncInterval int    `mapstructure:"sync_interval"`
 	} `mapstructure:"save"`
+	Manage struct {
+		KickNonWhitelist bool `mapstructure:"kick_non_whitelist"`
+	}
 }
 
 func Init(cfgFile string, conf *Config) {
