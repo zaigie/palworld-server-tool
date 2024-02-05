@@ -70,8 +70,8 @@ const messages = {
     },
     input: {
       nickname: "Nickname",
-      player_uid: "Player Uid",
-      steam_id: "Steam Id",
+      player_uid: "Player UID",
+      steam_id: "Steam64",
     },
     pal: {
       type: "Type",
@@ -156,7 +156,7 @@ const messages = {
     },
     input: {
       nickname: "昵称",
-      player_uid: "玩家 Uid",
+      player_uid: "玩家 UID",
       steam_id: "Steam64",
     },
     pal: {
