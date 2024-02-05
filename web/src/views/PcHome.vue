@@ -6,8 +6,17 @@ import {
   ContentCopyFilled,
   SettingsPowerRound,
   PersonSearchSharp,
+  DeleteOutlineTwotone,
+  RemoveRedEyeTwotone
 } from "@vicons/material";
-import { GameController, LogOut, Ban, LanguageSharp } from "@vicons/ionicons5";
+import {
+  GameController,
+  LogOut,
+  Ban,
+  LanguageSharp,
+  ShieldCheckmarkOutline,
+  ShieldCheckmarkSharp
+} from "@vicons/ionicons5";
 import { BroadcastTower } from "@vicons/fa";
 import { CrownFilled } from "@vicons/antd";
 import { computed, onMounted, ref, h } from "vue";
@@ -397,7 +406,76 @@ const handelPlayerAction = async (type) => {
     },
   });
 };
+// whitelist
+const showWhiteListModal = ref(false);
+const whiteList = ref([]);
+const handleWhiteList = () => {
+  if (checkAuthToken()) {
+    showWhiteListModal.value = true;
+    getWhiteList();
+  } else {
+    message.error(t("message.requireauth"));
+    showWhiteListModal.value = true;
+  }
+};
+const getWhiteList = async () => {
+  const { data } = await new ApiService().getWhitelist();
+  if (data.value) {
+    whiteList.value = data.value;
+  }else {
+    whiteList.value = []
+  }
+};
 
+const removeWhiteList = async (player) => {
+  const { data, statusCode } = await new ApiService().removeWhitelist(player);
+  if (statusCode.value === 200) {
+    message.success(t("message.removewhitesuccess"));
+    getWhiteList();
+  } else {
+    message.error(t("message.removewhitefail", { err: data.value?.error }));
+  }
+};
+
+const addWhiteData = ref({
+  name: "",
+  player_uid: "",
+  steam_id: "",
+});
+const addWhiteList = async () => {
+  const { data, statusCode } = await new ApiService().addWhitelist(addWhiteData);
+  if (statusCode.value === 200) {
+    message.success(t("message.addwhitesuccess"));
+    showAddWhiteListModal.value = false;
+  } else {
+    message.error(t("message.addwhitefail", { err: data.value?.error }));
+  }
+};
+const putWhiteList = async () => {
+  if(whiteList.value.length === 0) {
+    return;
+  }
+  const whiteListData = JSON.stringify(whiteList.value)
+  const { data, statusCode } = await new ApiService().putWhitelist(whiteListData);
+  if (statusCode.value === 200) {
+    message.success(t("message.addwhitesuccess"));
+    showAddWhiteListModal.value = false;
+  } else {
+    message.error(t("message.addwhitefail", { err: data.value?.error }));
+  }
+};
+const showAddWhiteListModal = ref(false);
+const handleAddWhiteList = () => {
+  if (checkAuthToken()) {
+    addWhiteData.value.name = playerInfo.value.nickname
+    addWhiteData.value.player_uid = playerInfo.value.player_uid
+    addWhiteData.value.steam_id = playerInfo.value.steam_id
+    showAddWhiteListModal.value = true;
+  } else {
+    message.error(t("message.requireauth"));
+    showAddWhiteListModal.value = true;
+  }
+};
 // broadcast
 const showBroadcastModal = ref(false);
 const broadcastText = ref("");
@@ -635,6 +713,21 @@ onMounted(async () => {
               }}</n-tag>
             </n-space>
             <n-space v-if="isLogin">
+              <n-button
+                  :size="smallScreen ? 'medium' : 'large'"
+                  type="warning"
+                  secondary
+                  strong
+                  round
+                  @click="handleWhiteList"
+              >
+                <template #icon>
+                  <n-icon>
+                    <ShieldCheckmarkSharp />
+                  </n-icon>
+                </template>
+                {{ $t("button.whitelist") }}
+              </n-button>
               <n-button
                 :size="smallScreen ? 'medium' : 'large'"
                 type="success"
@@ -1077,6 +1170,21 @@ onMounted(async () => {
           >
             <n-flex justify="end">
               <n-button
+                  @click="handleAddWhiteList"
+                  type="success"
+                  size="large"
+                  secondary
+                  strong
+                  round
+              >
+                <template #icon>
+                  <n-icon>
+                    <ShieldCheckmarkOutline />
+                  </n-icon>
+                </template>
+                {{ $t("button.joinWhitelist") }}
+              </n-button>
+              <n-button
                 @click="handelPlayerAction('ban')"
                 type="error"
                 size="large"
@@ -1201,6 +1309,144 @@ onMounted(async () => {
         <n-button class="ml-3 w-40" type="primary" @click="handleBroadcast">{{
           $t("button.confirm")
         }}</n-button>
+      </div>
+    </template>
+  </n-modal>
+
+  <!-- whitelist modal -->
+  <n-modal
+    v-model:show="showWhiteListModal"
+    class="custom-card"
+    preset="card"
+    style="width: 90%; max-width: 700px;"
+    footer-style="padding: 12px;"
+    content-style="padding: 12px;"
+    header-style="padding: 12px;"
+    :title="$t('modal.whitelist')"
+    size="large"
+    :bordered="false"
+    :mask-closable="false"
+    :close-on-esc="false"
+    :segmented="segmented"
+  >
+    <div>
+      <n-empty description="什么都没有" v-if="whiteList.length==0"> </n-empty>
+      <n-virtual-list v-else style="max-height: 240px" :item-size="42" :items="whiteList">
+        <template #default="{ item }">
+          <div :key="item.player_uid" class="flex flex-col item mlr-3 mb-3" style="height: 42px">
+            <n-grid >
+              <n-gi span="19">
+                <n-input-group>
+                  <n-input v-model:value="item.name" :style="{ width: '33%' }" :placeholder="$t('input.nickname')"/>
+                  <n-input v-model:value="item.player_uid" :style="{ width: '33%' }" :placeholder="$t('input.player_uid')"/>
+                  <n-input v-model:value="item.steam_id" :style="{ width: '33%' }" :placeholder="$t('input.steam_id')" />
+                </n-input-group>
+              </n-gi>
+              <n-gi span="5">
+                <div class="flex justify-end mr-3">
+                  <n-space>
+                    <n-button
+                        strong secondary type="primary"
+                        @click="() => {
+                          getPlayerInfo(item.player_uid)
+                          showWhiteListModal = false;
+                        }"
+                    >
+                      <template #icon>
+                        <n-icon><RemoveRedEyeTwotone /></n-icon>
+                      </template>
+                    </n-button >
+                    <n-button
+                        @click="removeWhiteList(item)"
+                        strong secondary type="error"
+                    >
+                      <template #icon>
+                        <n-icon><DeleteOutlineTwotone /></n-icon>
+                      </template>
+                    </n-button>
+                  </n-space>
+                </div>
+              </n-gi>
+            </n-grid>
+          </div>
+        </template>
+      </n-virtual-list>
+
+    </div>
+    <template #footer>
+      <div class="flex justify-end">
+        <n-space>
+          <n-button
+              type="tertiary"
+              @click="
+            () => {
+              showWhiteListModal = false;
+            }
+          "
+          >
+            {{ $t("button.cancel") }}
+          </n-button>
+
+          <n-button
+              :disabled="whiteList.length === 0"
+              @click="putWhiteList"
+              strong secondary type="success"
+          >
+            保存
+          </n-button>
+        </n-space>
+      </div>
+    </template>
+  </n-modal>
+  <!-- add whitelist modal -->
+  <n-modal
+    v-model:show="showAddWhiteListModal"
+    class="custom-card"
+    preset="card"
+    style="width: 90%; max-width: 700px"
+    footer-style="padding: 12px;"
+    content-style="padding: 12px;"
+    header-style="padding: 12px;"
+    :title="$t('modal.addWhitelist')"
+    :bordered="false"
+    >
+
+    <div>
+      <n-grid >
+        <n-gi span="5">
+          <div class="flex justify-center">
+            {{ $t("message.selectVerify") }}
+          </div>
+        </n-gi>
+        <n-gi span="19">
+          <n-input-group>
+            <n-input v-model:value="addWhiteData.name" :style="{ width: '33%' }" :placeholder="$t('input.nickname')"/>
+            <n-input v-model:value="addWhiteData.player_uid" :style="{ width: '33%' }" :placeholder="$t('input.player_uid')"/>
+            <n-input v-model:value="addWhiteData.steam_id" :style="{ width: '33%' }" :placeholder="$t('input.steam_id')" />
+          </n-input-group>
+        </n-gi>
+      </n-grid>
+    </div>
+    <template #footer>
+      <div class="flex justify-end">
+        <n-button
+            type="tertiary"
+            @click="
+            () => {
+              showAddWhiteListModal = false;
+            }
+          "
+        >
+          {{ $t("button.cancel") }}
+        </n-button>
+        <n-button
+            class="ml-3 w-40"
+            type="primary"
+            @click="addWhiteList"
+            :disabled="!addWhiteData.name || (!addWhiteData.player_uid && !addWhiteData.steam_id)"
+        >
+          {{ $t("button.confirm") }}
+        </n-button>
       </div>
     </template>
   </n-modal>

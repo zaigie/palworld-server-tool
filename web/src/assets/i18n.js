@@ -6,6 +6,8 @@ const messages = {
     modal: {
       auth: "Auth",
       broadcast: "Publish Broadcast",
+      whitelist: "Whitelist",
+      addWhitelist: "Add Whitelist",
     },
     status: {
       online: "Online",
@@ -43,6 +45,11 @@ const messages = {
       shutdownfail: "Shutdown fail: {err}",
       shutdowntip:
         "This will shut down the server after 60 seconds and send a broadcast.",
+      selectVerify: "Select verification method",
+      addwhitesuccess: "Add whitelist success!",
+      addwhitefail: "Add whitelist fail: {err}",
+      removewhitesuccess: "Remove whitelist success!",
+      removewhitefail: "Remove whitelist fail: {err}",
     },
     button: {
       auth: "Admin Mode",
@@ -57,7 +64,14 @@ const messages = {
       cancel: "Cancel",
       viewGuild: "View Guild",
       viewPlayer: "View Player",
+      whitelist: "Whitelist",
+      joinWhitelist: "Join Whitelist",
       search: "Search",
+    },
+    input: {
+      nickname: "Nickname",
+      player_uid: "Player Uid",
+      steam_id: "Steam Id",
     },
     pal: {
       type: "Type",
@@ -79,6 +93,8 @@ const messages = {
     modal: {
       auth: "管理认证",
       broadcast: "发布游戏内广播",
+      whitelist: "白名单管理",
+      addWhitelist: "添加白名单",
     },
     status: {
       online: "在线",
@@ -115,6 +131,11 @@ const messages = {
       broadcastasciierr: "广播只支持ASCII字符，暂不支持中文",
       shutdownfail: "关闭失败: {err}",
       shutdowntip: "此操作将在60秒后关闭服务器并发送广播。",
+      selectVerify: "请选择验证方式",
+      addwhitesuccess: "添加白名单成功!",
+      addwhitefail: "添加白名单失败: {err}",
+      removewhitesuccess: "移除白名单成功!",
+      removewhitefail: "移除白名单失败: {err}",
     },
     button: {
       auth: "管理模式",
@@ -129,7 +150,14 @@ const messages = {
       cancel: "取消",
       viewGuild: "查看公会",
       viewPlayer: "查看玩家",
+      whitelist: "白名单管理",
+      joinWhitelist: "加入白名单",
       search: "搜索",
+    },
+    input: {
+      nickname: "昵称",
+      player_uid: "玩家 Uid",
+      steam_id: "Steam Id",
     },
     pal: {
       type: "类型",

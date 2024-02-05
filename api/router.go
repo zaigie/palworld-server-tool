@@ -68,6 +68,10 @@ func RegisterRouter() *gin.Engine {
 		authGroup.POST("/player/:player_uid/ban", banPlayer)
 		authGroup.PUT("/guild", putGuilds)
 		authGroup.POST("/sync", syncData)
+		authGroup.GET("/whitelist", listWhite)
+		authGroup.POST("/whitelist", addWhite)
+		authGroup.DELETE("/whitelist", removeWhite)
+		authGroup.PUT("/whitelist", putWhite)
 	}
 
 	return r
