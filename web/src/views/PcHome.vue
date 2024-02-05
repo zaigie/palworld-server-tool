@@ -428,6 +428,10 @@ const getWhiteList = async () => {
 };
 
 const removeWhiteList = async (player) => {
+  if(player.player_uid || player.steam_id) {
+    message.error(t("message.removewhitefail", { err: "player_uid or steam_id is required" }));
+    return;
+  }
   const { data, statusCode } = await new ApiService().removeWhitelist(player);
   if (statusCode.value === 200) {
     message.success(t("message.removewhitesuccess"));
@@ -475,6 +479,15 @@ const handleAddWhiteList = () => {
     message.error(t("message.requireauth"));
     showAddWhiteListModal.value = true;
   }
+};
+const virtualListInst = ref();
+const handleAddNewWhiteList = () => {
+  whiteList.value.unshift({
+    name: "",
+    player_uid: "",
+    steam_id: "",
+  })
+  virtualListInst.value?.scrollTo({ index: 0 });
 };
 // broadcast
 const showBroadcastModal = ref(false);
@@ -1331,7 +1344,7 @@ onMounted(async () => {
   >
     <div>
       <n-empty description="什么都没有" v-if="whiteList.length==0"> </n-empty>
-      <n-virtual-list v-else style="max-height: 240px" :item-size="42" :items="whiteList">
+      <n-virtual-list ref="virtualListInst" v-else style="max-height: 240px" :item-size="42" :items="whiteList">
         <template #default="{ item }">
           <div :key="item.player_uid" class="flex flex-col item mlr-3 mb-3" style="height: 42px">
             <n-grid >
@@ -1344,7 +1357,7 @@ onMounted(async () => {
               </n-gi>
               <n-gi span="5">
                 <div class="flex justify-end mr-3">
-                  <n-space>
+                  <n-space v-if="item.player_uid || item.steam_id">
                     <n-button
                         strong secondary type="primary"
                         @click="() => {
@@ -1376,6 +1389,13 @@ onMounted(async () => {
     <template #footer>
       <div class="flex justify-end">
         <n-space>
+          <n-button
+              type="primary"
+              @click="handleAddNewWhiteList"
+          >
+            {{ $t("button.addNew") }}
+          </n-button>
+
           <n-button
               type="tertiary"
               @click="

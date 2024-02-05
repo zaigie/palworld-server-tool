@@ -67,11 +67,7 @@ const messages = {
       whitelist: "Whitelist",
       joinWhitelist: "Join Whitelist",
       search: "Search",
-    },
-    input: {
-      nickname: "Nickname",
-      player_uid: "Player Uid",
-      steam_id: "Steam Id",
+      addNew: "Add New",
     },
     pal: {
       type: "Type",
@@ -86,6 +82,9 @@ const messages = {
     },
     input: {
       searchPlaceholder: "Search for pal type and skills",
+      nickname: "Nickname",
+      player_uid: "Player Uid",
+      steam_id: "Steam Id",
     },
   },
   zh: {
@@ -153,11 +152,7 @@ const messages = {
       whitelist: "白名单管理",
       joinWhitelist: "加入白名单",
       search: "搜索",
-    },
-    input: {
-      nickname: "昵称",
-      player_uid: "玩家 Uid",
-      steam_id: "Steam Id",
+      addNew: "新增",
     },
     pal: {
       type: "类型",
@@ -172,6 +167,9 @@ const messages = {
     },
     input: {
       searchPlaceholder: "搜索帕鲁类型、技能",
+      nickname: "昵称",
+      player_uid: "玩家 Uid",
+      steam_id: "Steam Id",
     },
   },
 };
