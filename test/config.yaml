@@ -13,3 +13,5 @@ save:
   path: ""
   decode_path: ""
   sync_interval: 600
+manage:
+  kick_non_whitelist: false
