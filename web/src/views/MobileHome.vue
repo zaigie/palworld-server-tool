@@ -220,13 +220,13 @@ const percentageHP = (hp, max_hp) => {
 };
 
 const copyText = (text) => {
-  const textarea = document.createElement('textarea');
+  const textarea = document.createElement("textarea");
   textarea.value = text;
   document.body.appendChild(textarea);
   textarea.select();
 
   try {
-    const successful = document.execCommand('copy');
+    const successful = document.execCommand("copy");
     message.success(t("message.copysuccess"));
   } catch (err) {
     message.error(t("message.copyerr", { err: err }));
@@ -772,7 +772,8 @@ onMounted(async () => {
                         icon-placement="right"
                         ghost
                       >
-                        Steam64: {{ playerInfo.steam_id }}
+                        Steam64:
+                        {{ playerInfo.steam_id ? playerInfo.steam_id : "--" }}
                         <template #icon>
                           <n-icon><ContentCopyFilled /></n-icon>
                         </template>
