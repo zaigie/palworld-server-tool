@@ -129,6 +129,15 @@ definitions:
       steam_id:
         type: string
     type: object
+  database.PlayerW:
+    properties:
+      name:
+        type: string
+      player_uid:
+        type: string
+      steam_id:
+        type: string
+    type: object
   database.TersePlayer:
     properties:
       exp:
@@ -549,6 +558,120 @@ paths:
       summary: Sync Data
       tags:
       - Sync
+  /api/whitelist:
+    delete:
+      consumes:
+      - application/json
+      description: Remove White List
+      parameters:
+      - description: Player UID
+        in: path
+        name: player_uid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Remove White List
+      tags:
+      - Player
+    get:
+      consumes:
+      - application/json
+      description: List White List
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.PlayerW'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: List White List
+      tags:
+      - Player
+    post:
+      consumes:
+      - application/json
+      description: Add White List
+      parameters:
+      - description: Player UID
+        in: path
+        name: player_uid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add White List
+      tags:
+      - Player
+    put:
+      consumes:
+      - application/json
+      description: Put White List
+      parameters:
+      - description: Players
+        in: body
+        name: players
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/database.PlayerW'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Put White List
+      tags:
+      - Player
 securityDefinitions:
   ApiKeyAuth:
     in: header
