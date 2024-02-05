@@ -489,6 +489,16 @@ const handleAddNewWhiteList = () => {
   })
   virtualListInst.value?.scrollTo({ index: 0 });
 };
+const isWhite=(player)=>{
+  return whiteList.value.some(whitelistItem => {
+    return (
+        (whitelistItem.player_uid && whitelistItem.player_uid === player.player_uid) ||
+        (whitelistItem.steam_id && whitelistItem.steam_id === player.steam_id)
+    );
+  });
+}
+
+
 // broadcast
 const showBroadcastModal = ref(false);
 const broadcastText = ref("");
@@ -620,6 +630,7 @@ onMounted(async () => {
   checkAuthToken();
   getServerInfo();
   await getPlayerList();
+  await getWhiteList();
   loading.value = false;
   setInterval(() => {
     getPlayerList(false);
@@ -810,6 +821,9 @@ onMounted(async () => {
                       <n-tag class="ml-2" type="primary" size="small" round>
                         Lv.{{ player.level }}
                       </n-tag>
+                      <n-tag class="ml-2" type="warning" size="small" round v-if="isWhite(player)">
+                        {{ $t("status.whitelist") }}
+                      </n-tag>
                       <span class="flex-1 pl-2 font-bold line-clamp-1">{{
                         player.nickname
                       }}</span>
@@ -885,6 +899,9 @@ onMounted(async () => {
                           : $t("status.offline")
                       }}</n-tag
                     >
+                    <n-tag class="ml-2" type="warning" round v-if="isWhite(playerInfo)">
+                      {{ $t("status.whitelist") }}
+                    </n-tag>
                     <n-button
                       @click="copyText(playerInfo.player_uid)"
                       class="ml-3"
@@ -1343,7 +1360,7 @@ onMounted(async () => {
     :segmented="segmented"
   >
     <div>
-      <n-empty description="什么都没有" v-if="whiteList.length==0"> </n-empty>
+      <n-empty description="empty" v-if="whiteList.length==0"> </n-empty>
       <n-virtual-list ref="virtualListInst" v-else style="max-height: 240px" :item-size="42" :items="whiteList">
         <template #default="{ item }">
           <div :key="item.player_uid" class="flex flex-col item mlr-3 mb-3" style="height: 42px">
@@ -1412,7 +1429,7 @@ onMounted(async () => {
               @click="putWhiteList"
               strong secondary type="success"
           >
-            保存
+            {{ $t("button.save") }}
           </n-button>
         </n-space>
       </div>

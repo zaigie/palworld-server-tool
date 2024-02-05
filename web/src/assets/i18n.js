@@ -17,6 +17,7 @@ const messages = {
       master: "Master",
       player_number: "Player: {number}",
       online_number: "Online: {number}",
+      whitelist: "Whitelist",
     },
     message: {
       warn: "Warning",
@@ -68,6 +69,7 @@ const messages = {
       joinWhitelist: "Join Whitelist",
       search: "Search",
       addNew: "Add New",
+      save: "Save",
     },
     pal: {
       type: "Type",
@@ -103,6 +105,7 @@ const messages = {
       master: "会长",
       player_number: "玩家: {number}",
       online_number: "在线: {number}",
+      whitelist: "白名单",
     },
     message: {
       warn: "警告",
@@ -153,6 +156,7 @@ const messages = {
       joinWhitelist: "加入白名单",
       search: "搜索",
       addNew: "新增",
+      save: "保存",
     },
     pal: {
       type: "类型",
