@@ -24,6 +24,7 @@ type Config struct {
 	Save struct {
 		Path         string `mapstructure:"path"`
 		DecodePath   string `mapstructure:"decode_path"`
+		TlsUrl       string `mapstructure:"tls_url"`
 		SyncInterval int    `mapstructure:"sync_interval"`
 	} `mapstructure:"save"`
 	Manage struct {

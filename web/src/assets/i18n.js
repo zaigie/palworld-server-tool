@@ -157,7 +157,7 @@ const messages = {
     input: {
       nickname: "昵称",
       player_uid: "玩家 Uid",
-      steam_id: "Steam Id",
+      steam_id: "Steam64",
     },
     pal: {
       type: "类型",

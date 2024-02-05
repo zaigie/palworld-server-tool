@@ -127,23 +127,45 @@ mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
    For `decode_path`, it's usually the pst directory plus `sav_cli`. If unsure about the absolute path, execute `pwd` in the terminal.
 
    ```yaml
-   web: # web configuration
-     password: "" # web management mode password
-     port: 8080 # web service port
-     tls: false # Whether to enable TLS
-     cert_path: "" # Cert File Path
-     key_path: "" # Key File Path
-   rcon: # RCON configuration
-     address: "127.0.0.1:25575" # RCON address
-     password: "" # Set AdminPassword
-     timeout: 5 # RCON request timeout, recommended <= 5
-     sync_interval: 60 # Interval for syncing online player status with RCON service, in seconds
-   save: # Save file parsing configuration
-     path: "/path/to/your/Pal/Saved" # Save file path
-     decode_path: "/path/to/your/sav_cli" # Save file parsing tool path, usually in the same directory as pst
-     sync_interval: 120 # Interval for syncing data from save file, in seconds, recommended >= 120
-   manage: # manage configuration
-     kick_non_whitelist: false # is the player not in whitelist then kick
+    # WebUI Config
+    web:
+      # WebUI Admin Password
+      password: ""
+      # WebUI Port
+      port: 8080
+      # Enable TLS
+      tls: false
+      # TLS Cert
+      cert_path: ""
+      # TLS Key
+      key_path: ""
+
+    # RCON Config
+    rcon:
+      # RCON Address Port
+      address: "127.0.0.1:25575"
+      # Server AdminPassword
+      password: ""
+      # RCON Timeout Sec
+      timeout: 5
+      # RCON Communication Interval Sec
+      sync_interval: 60
+
+    # sav_cli Config
+    save:
+      # Sav File Path
+      path: "/path/to/your/Pal/Saved"
+      # Sav_cli Path
+      decode_path: "/path/to/your/sav_cli"
+      # Sav Decode Interval Sec
+      sync_interval: 120
+      # TLS url for sav_cli to communicate eg. https://yourdomain.com
+      tls_url: ""
+
+      # Automation Config
+      manage:
+      # Auto Kick non-whitelisted
+      kick_non_whitelist: false
    ```
 
 ##### Run

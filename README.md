@@ -227,23 +227,45 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 > 还有比较重要的是，请确保 `config.yaml` 文件为 **ANSI 编码**，其它编码格式将会导致路径错误等问题！！
 
 ```yaml
-web: # web 相关配置
-  password: "" # web 管理模式密码
-  port: 8080 # web 服务端口
-  tls: false # 是否开启 TLS
-  cert_path: "" # Cert 文件路径
-  key_path: "" # Key 文件路径
-rcon: # RCON 相关配置
-  address: "127.0.0.1:25575" # RCON 地址
-  password: "" # 设置的 AdminPassword
-  timeout: 5 # 请求 RCON 超时时间，推荐 <= 5
-  sync_interval: 60 # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
-save: # 存档文件解析相关配置
-  path: "C:\\path\\to\\your\\Pal\\Saved" # 存档文件路径
-  decode_path: "C:\\path\\to\\your\\sav_cli.exe" # 存档解析工具路径，一般和 pst 在同一目录
-  sync_interval: 120 # 定时从存档获取数据的间隔，单位秒，推荐 >= 120
-manage: # 管理相关
-  kick_non_whitelist: false # 玩家不在白名单是否自动踢出
+    # WebUI Config
+    web:
+      # WebUI Admin Password
+      password: ""
+      # WebUI Port
+      port: 8080
+      # Enable TLS
+      tls: false
+      # TLS Cert
+      cert_path: ""
+      # TLS Key
+      key_path: ""
+
+    # RCON Config
+    rcon:
+      # RCON Address Port
+      address: "127.0.0.1:25575"
+      # Server AdminPassword
+      password: ""
+      # RCON Timeout Sec
+      timeout: 5
+      # 定时向 RCON Interval Sec
+      sync_interval: 60
+
+    # sav_cli Config 存档文件解析相关配置
+    save:
+      # Sav File Path
+      path: "/path/to/your/Pal/Saved"
+      # Sav_cli Path
+      decode_path: "/path/to/your/sav_cli"
+      # Sav Decode Interval Sec
+      sync_interval: 120
+      # TLS url for sav_cli to communicate eg. https://yourdomain.com
+      tls_url: ""
+
+      # Automation Config
+      manage:
+      # Auto Kick non-whitelisted
+      kick_non_whitelist: false
 ```
 
 ##### 运行
