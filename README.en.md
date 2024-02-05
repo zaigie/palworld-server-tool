@@ -139,7 +139,7 @@ mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
      timeout: 5 # RCON request timeout, recommended <= 5
      sync_interval: 60 # Interval for syncing online player status with RCON service, in seconds
    save: # Save file parsing configuration
-     path: "/path/to/you/Level.sav" # Save file path
+     path: "/path/to/your/Pal/Saved" # Save file path
      decode_path: "/path/to/your/sav_cli" # Save file parsing tool path, usually in the same directory as pst
      sync_interval: 120 # Interval for syncing data from save file, in seconds, recommended >= 120
    manage: # manage configuration
@@ -219,7 +219,7 @@ rcon: # RCON configuration
   timeout: 5 # RCON request timeout, recommended <= 5
   sync_interval: 60 # Interval for syncing online player status with RCON service, in seconds
 save: # Save file parsing configuration
-  path: "C:\\path\\to\\you\\Level.sav" # Save file path
+  path: "C:\\path\\to\\your\\Pal\\Saved" # Save file path
   decode_path: "C:\\path\\to\\your\\sav_cli.exe" # Save file parsing tool path, usually in the same directory as pst
   sync_interval: 120 # Interval for syncing data from save file, in seconds, recommended >= 120
 manage: # manage configuration
@@ -272,11 +272,11 @@ Only one container is needed. Map the game's save directory to the container's i
 docker run -d --name pst \
 -p 8080:8080 \
 -m 256M --memory-swap=4G `# optional limit memory to 256M and memory-swap to 4G` \
--v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
+-v /path/to/your/Pal/Saved:/game \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
--e SAVE__PATH="/game/Level.sav" \
+-e SAVE__PATH="/game" \
 -e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
 ```
@@ -332,8 +332,8 @@ Applicable for:
 docker run -d --name pst-agent \
 -m 256M --memory-swap=4G `# optional limit memory to 256M and memory-swap to 4G` \
 -p 8081:8081 \
--v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
--e SAV_FILE="/game/Level.sav" \
+-v /path/to/your/Pal/Saved:/game \
+-e SAV_FILE="/game" \
 jokerwho/palworld-server-tool-agent:latest
 ```
 

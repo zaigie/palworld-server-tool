@@ -159,7 +159,7 @@ mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
      timeout: 5 # 请求 RCON 超时时间，推荐 <= 5
      sync_interval: 60 # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
    save: # 存档文件解析相关配置
-     path: "/path/to/you/Level.sav" # 存档文件路径
+     path: "/path/to/your/Pal/Saved" # 存档文件路径
      decode_path: "/path/to/your/sav_cli" # 存档解析工具路径，一般和 pst 在同一目录
      sync_interval: 120 # 定时从存档获取数据的间隔，单位秒，推荐 >= 120
    manage: # 管理相关
@@ -239,7 +239,7 @@ rcon: # RCON 相关配置
   timeout: 5 # 请求 RCON 超时时间，推荐 <= 5
   sync_interval: 60 # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
 save: # 存档文件解析相关配置
-  path: "C:\\path\\to\\you\\Level.sav" # 存档文件路径
+  path: "C:\\path\\to\\your\\Pal\\Saved" # 存档文件路径
   decode_path: "C:\\path\\to\\your\\sav_cli.exe" # 存档解析工具路径，一般和 pst 在同一目录
   sync_interval: 120 # 定时从存档获取数据的间隔，单位秒，推荐 >= 120
 manage: # 管理相关
@@ -292,11 +292,11 @@ manage: # 管理相关
 docker run -d --name pst \
 -p 8080:8080 \
 -m 256M --memory-swap=4G `# 可选参数 设置可用内存为256M 交换分区为4G` \
--v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
+-v /path/to/your/Pal/Saved:/game \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
--e SAVE__PATH="/game/Level.sav" \
+-e SAVE__PATH="/game" \
 -e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
 ```
@@ -354,8 +354,8 @@ touch pst.db
 docker run -d --name pst-agent \
 -p 8081:8081 \
 -m 256M --memory-swap=4G `# 可选参数 设置可用内存为256M 交换分区为4G` \
--v /path/to/your/Pal/Saved/SaveGames/0/E8F71231A51246429C7CCCCD51320C22:/game \
--e SAV_FILE="/game/Level.sav" \
+-v /path/to/your/Pal/Saved:/game \
+-e SAV_FILE="/game" \
 jokerwho/palworld-server-tool-agent:latest
 ```
 
