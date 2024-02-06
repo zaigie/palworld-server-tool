@@ -419,6 +419,9 @@ const handleWhiteList = () => {
   }
 };
 const getWhiteList = async () => {
+  if (!checkAuthToken()) {
+    return;
+  }
   const { data } = await new ApiService().getWhitelist();
   if (data.value) {
     whiteList.value = data.value;
