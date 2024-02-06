@@ -139,6 +139,8 @@ mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
       cert_path: ""
       # TLS Key
       key_path: ""
+      # TLS url for sav_cli to communicate eg. https://yourdomain.com
+      public_url: ""
 
     # RCON Config
     rcon:
@@ -159,11 +161,9 @@ mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
       decode_path: "/path/to/your/sav_cli"
       # Sav Decode Interval Sec
       sync_interval: 120
-      # TLS url for sav_cli to communicate eg. https://yourdomain.com
-      tls_url: ""
 
-      # Automation Config
-      manage:
+    # Automation Config
+    manage:
       # Auto Kick non-whitelisted
       kick_non_whitelist: false
    ```

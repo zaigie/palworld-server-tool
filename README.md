@@ -227,44 +227,44 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 > 还有比较重要的是，请确保 `config.yaml` 文件为 **ANSI 编码**，其它编码格式将会导致路径错误等问题！！
 
 ```yaml
-    # WebUI Config
+    # WebUI 设置
     web:
-      # WebUI Admin Password
+      # WebUI 管理员密码
       password: ""
-      # WebUI Port
+      # WebUI 访问端口
       port: 8080
-      # Enable TLS
+      # 使用 HTTPS TLS 访问
       tls: false
-      # TLS Cert
+      # 若开启 HTTPS 访问请填写 TLS 证书路径
       cert_path: ""
-      # TLS Key
+      # 若开启 HTTPS 访问请填写 TLS Key
       key_path: ""
+      # 若开启 HTTPS 访问请填写你的 HTTPS 证书绑定的域名 eg. https://yourdomain.com
+      public_url: ""
 
-    # RCON Config
+    # RCON 相关设置
     rcon:
-      # RCON Address Port
+      # RCON 的地址和端口
       address: "127.0.0.1:25575"
-      # Server AdminPassword
+      # 服务 端设置的 RCON AdminPassword
       password: ""
-      # RCON Timeout Sec
+      # RCON 通信超时时间，推荐 <= 5
       timeout: 5
-      # 定时向 RCON Interval Sec
+      # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
       sync_interval: 60
 
     # sav_cli Config 存档文件解析相关配置
     save:
-      # Sav File Path
+      # 存档文件路径
       path: "/path/to/your/Pal/Saved"
-      # Sav_cli Path
+      # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录
       decode_path: "/path/to/your/sav_cli"
-      # Sav Decode Interval Sec
+      # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
       sync_interval: 120
-      # TLS url for sav_cli to communicate eg. https://yourdomain.com
-      tls_url: ""
-
-      # Automation Config
-      manage:
-      # Auto Kick non-whitelisted
+      
+    # Automation Config
+    manage:
+      # 玩家不在白名单是否自动踢出
       kick_non_whitelist: false
 ```
 

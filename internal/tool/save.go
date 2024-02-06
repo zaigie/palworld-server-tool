@@ -77,7 +77,7 @@ func ConversionLoading(file string) error {
 
 	baseUrl := "http://127.0.0.1"
 	if viper.GetBool("web.tls") && !strings.HasSuffix(baseUrl, "/") {
-		baseUrl = viper.GetString("save.tls_url")
+		baseUrl = viper.GetString("web.public_url")
 	}
 
 	requestUrl := fmt.Sprintf("%s:%d/api/", baseUrl, viper.GetInt("web.port"))

@@ -10,6 +10,8 @@ web:
   cert_path: ""
   # TLS Key 如果开启使用 HTTPS 请输入证书密钥文件路径
   key_path: ""
+  # TLS url for sav_cli to communicate 如果开启填入 TLS 证书绑定的地址如 https://yourdomain.com
+  public_url: ""
 
 # RCON Config 相关配置
 rcon:
@@ -30,8 +32,6 @@ save:
   decode_path: "/path/to/your/sav_cli"
   # Sav Decode Interval 定时从存档获取数据的间隔，单位秒，推荐 >= 120
   sync_interval: 120
-  # TLS url for sav_cli to communicate 如果开启填入 TLS 证书绑定的地址如 https://yourdomain.com
-  tls_url: ""
 
 # Automation Config 自动化管理相关
 manage:
