@@ -489,7 +489,10 @@ const handleAddNewWhiteList = () => {
   })
   virtualListInst.value?.scrollTo({ index: 0 });
 };
-const isWhite=(player)=>{
+const isWhite = (player) => {
+  if(whiteList.value.length === 0) {
+    return false;
+  }
   return whiteList.value.some(whitelistItem => {
     return (
         (whitelistItem.player_uid && whitelistItem.player_uid === player.player_uid) ||
