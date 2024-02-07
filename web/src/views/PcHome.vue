@@ -1300,8 +1300,8 @@ onMounted(async () => {
           type="tertiary"
           @click="
             () => {
-              showLoginModal = false;
-              password = '';
+              showBroadcastModal = false;
+              broadcastText = '';
             }
           "
           >{{ $t("button.cancel") }}</n-button
