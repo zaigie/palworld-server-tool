@@ -1,948 +1,948 @@
-﻿zhCN,enUS,ItemID
-羊毛,Wool,Wool
-木材,Wood,Wood
-,Wine,Wine
-小麦种子,Wheat Seeds,WheatSeeds
-小麦,Wheat,Wheat
-陈旧的弓,Old Bow +4,WeakerBow_5
-陈旧的弓,Old Bow +3,WeakerBow_4
-陈旧的弓,Old Bow +2,WeakerBow_3
-陈旧的弓,Old Bow +1,WeakerBow_2
-陈旧的弓,Old Bow,WeakerBow
-,Unused Item,WaterBucket
-毒腺,Venom Gland,Venom
-,Unused Item,VenisonBoiledInTomato
-便便,Dung,Unko_S
-大号便便,Huge Dung Pile,Unko_L
-金钥匙,Gold Key,TreasureBoxKey03
-银钥匙,Silver Key,TreasureBoxKey02
-铜钥匙,Copper Key,TreasureBoxKey01
-携带火把,Hand-held Torch,Torch
-番茄种子,Tomato Seeds,TomatoSeeds
-番茄,Tomato,Tomato
-,Unused Item,ThrowStone
-未来技术书,Future Technical Manual,TechnologyBook_G3
-革新技术书,Innovative Technical Manual,TechnologyBook_G2
-高等技术书,High Grade Technical Manual,TechnologyBook_G1
-剑,Sword,Sword
-棉花糖,Cotton Candy,Sweet
-硫磺,Sulfur,Sulfur
-石头,Stone,Stone
-严冬鹿肉炖菜,Reindrix Stew,StewedIceDeer
-,Stew,Stew
-帕鲁金属锭,Pal Metal Ingot,StealIngot
-帕鲁金属头盔,Pal Metal Helm +4,StealHelmet_5
-帕鲁金属头盔,Pal Metal Helm +3,StealHelmet_4
-帕鲁金属头盔,Pal Metal Helm +2,StealHelmet_3
-帕鲁金属头盔,Pal Metal Helm +1,StealHelmet_2
-帕鲁金属头盔,Pal Metal Helm,StealHelmet
-耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor +4,StealArmorHeat_5
-耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor +3,StealArmorHeat_4
-耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor +2,StealArmorHeat_3
-耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor +1,StealArmorHeat_2
-耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor,StealArmorHeat
-耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor +4,StealArmorCold_5
-耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor +3,StealArmorCold_4
-耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor +2,StealArmorCold_3
-耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor +1,StealArmorCold_2
-耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor,StealArmorCold
-帕鲁金属盔甲,Pal Metal Armor +4,StealArmor_5
-帕鲁金属盔甲,Pal Metal Armor +3,StealArmor_4
-帕鲁金属盔甲,Pal Metal Armor +2,StealArmor_3
-帕鲁金属盔甲,Pal Metal Armor +1,StealArmor_2
-帕鲁金属盔甲,Pal Metal Armor,StealArmor
-消除记忆药,Memory Wiping Medicine,StatusPointResetSan
-单发型帕鲁球发射器,Single-shot Sphere Launcher,SphereLauncher_Once
-扩散型帕鲁球发射器,Scatter Sphere Launcher,SphereLauncher
-骑士蜂之矛,Beegarde's Spear,Spear_SoldierBee
-女皇蜂之杖,Elizabee's Staff,Spear_QueenBee
-莉莉之矛,Lily's Spear,Spear_ForestBoss
-精炼金属长矛,Refined Metal Spear +2,Spear_3
-金属长矛,Metal Spear +1,Spear_2
-石头长矛,Stone Spear,Spear
-,Unused Item,SniperRifle_Default
-,Unused Item,SmallBullet
-绿苔绒怪的鞍具,Wumpo Botan Saddle,SkillUnlock_Yeti_Grass
-白绒雪怪的鞍具,Wumpo Saddle,SkillUnlock_Yeti
-Goujin -o马鞍,Wing Golem Saddle,SkillUnlock_WingGolem
-冰缚灵的手套,Hangyu Cryst's Glove,SkillUnlock_WindChimes_Ice
-吊缚灵的手套,Hangyu's Gloves,SkillUnlock_WindChimes
-疾旋鼬的鞍具,Chillet Saddle,SkillUnlock_WeaselDragon
-寒霜兽的鞍具,Ice Reptyro Saddle,SkillUnlock_VolcanicMonster_Ice
-熔岩兽的鞍具,Reptyro Saddle,SkillUnlock_VolcanicMonster
-腾炎龙的鞍具,Jormuntide Ignis Saddle,SkillUnlock_Umihebi_Fire
-覆海龙的鞍具,Jormuntide Saddle,SkillUnlock_Umihebi
-霹雳犬的鞍具,Rayhound Saddle,SkillUnlock_ThunderDog
-迅雷鸟的鞍具,Beakon Saddle,SkillUnlock_ThunderBird
-清雀的鞍具,Water Suzaku Saddle,SkillUnlock_Suzaku_Water
-朱雀的鞍具,Suzaku Saddle,SkillUnlock_Suzaku
-天羽龙的鞍具,Quivern Saddle,SkillUnlock_SkyDragon
-流沙蛇的鞍具,Aquadon Terra Saddle,SkillUnlock_Serpent_Ground
-滑水蛇的鞍具,Surfent Saddle,SkillUnlock_Serpent
-海誓龙的鞍具,Water Broncherry Saddle,SkillUnlock_SakuraSaurus_Water
-连理龙的鞍具,Broncherry Saddle,SkillUnlock_SakuraSaurus
-圣光骑士的鞍具,Paladius Saddle,SkillUnlock_SaintCentaur
-燧火鸟的鞍具,Ragnahawk Saddle,SkillUnlock_RedArmorBird
-雷鸣童子的项圈,Dazzi's Necklace,SkillUnlock_RaijinDaughter
-企丸丸的火箭发射器,Pengullet's Rocket Launcher,SkillUnlock_Penguin
-勾魂鱿的手套,Killamari's Gloves,SkillUnlock_NegativeOctopus
-笑魇猫的鞍具,Grintale Saddle,SkillUnlock_NaughtyCat
-毛老爹的鞍具,Sweepa Saddle,SkillUnlock_MopKing
-新叶猿的突击步枪,Tanzee's Assault Rifle,SkillUnlock_Monkey
-狱阎王的鞍具,Dark Kingferno Saddle,SkillUnlock_Manticore_Dark
-狱焰王的鞍具,Blazehowl Saddle,SkillUnlock_Manticore
-派克龙的导弹发射器,Relaxaurus Lux's Missile Launcher,SkillUnlock_LazyDragon_Electric
-佩克龙的导弹发射器,Relaxaurus's Missile Launcher,SkillUnlock_LazyDragon
-火绒狐的背带,Foxparks's Harness,SkillUnlock_Kitsunebi
-雷角马的鞍具,Univolt Saddle,SkillUnlock_Kirin
-焰煌的鞍具,Blazamut Saddle,SkillUnlock_KingBahamut
-冰帝美露帕的鞍具,Ice Kingpaca Saddle,SkillUnlock_KingAlpaca_Ice
-君王美露帕的鞍具,Kingpaca Saddle,SkillUnlock_KingAlpaca
-空涡龙的导弹发射器,Jetragon's Missile Launcher,SkillUnlock_JetDragon
-唤夜兽的鞍具,Frostallion Noct Saddle,SkillUnlock_IceHorse_Dark
-唤冬兽的鞍具,Frostallion Saddle,SkillUnlock_IceHorse
-严冬鹿的鞍具,Reindrix Saddle,SkillUnlock_IceDeer
-荷鲁斯的鞍具,Faleris Saddle,SkillUnlock_Horus
-冰刺鼠的手套,Jolthog Cryst's Gloves,SkillUnlock_Hedgehog_Ice
-電棘鼠的手套,Jolthog's Gloves,SkillUnlock_Hedgehog
-疾风隼的鞍具,Nitewing Saddle,SkillUnlock_HawkBird
-雷冥鸟的鞍具,Helzephyr Saddle,SkillUnlock_HadesBird
-Yakomogoma鞍座,Guardian Dog Saddle,SkillUnlock_GuardianDog
-雷胖达的榴弹发射器,Mossanda Lux's Grenade Launcher,SkillUnlock_GrassPanda_Electric
-叶胖达的榴弹发射器,Mossanda's Grenade Launcher,SkillUnlock_GrassPanda
-雪猛犸的鞍具,Mammorest Cryst Saddle,SkillUnlock_GrassMammoth_Ice
-森猛犸的鞍具,Mammorest Saddle,SkillUnlock_GrassMammoth
-kouou的马鞍,Golden Horse Saddle,SkillUnlock_GoldenHorse
-噬魂兽的鞍具,Maraith Saddle,SkillUnlock_GhostBeast
-猎狼的挽具鞍具组合,Direhowl's Saddled Harness,SkillUnlock_Garm
-鲁米儿的手套,Celaray's Gloves,SkillUnlock_FlyingManta
-波娜兔的项圈,Flopie's Necklace,SkillUnlock_FlowerRabbit
-雷冠龙的鞍具,Dinossom Lux Saddle,SkillUnlock_FlowerDinosaur_Electric
-花冠龙的鞍具,Dinossom Saddle,SkillUnlock_FlowerDinosaur
-炽焰牛的鞍具,Arsox Saddle,SkillUnlock_FlameBuffalo
-邪麒麟的鞍具,Dark Pyrin Saddle,SkillUnlock_FireKirin_Dark
-火麒麟的鞍具,Pyrin Saddle,SkillUnlock_FireKirin
-云海鹿的鞍具,Fenglope Saddle,SkillUnlock_FengyunDeeper
-Zokucho马鞍,Feather Ostrich Saddle,SkillUnlock_FeatherOstrich
-水灵龙的鞍具,Water Elphidran Saddle,SkillUnlock_FairyDragon_Water
-精灵龙的鞍具,Elphidran Saddle,SkillUnlock_FairyDragon
-暴电熊的机关枪,Grizzbolt's Minigun,SkillUnlock_ElecPanda
-里约贤者马鞍,Boltmane Saddle,SkillUnlock_ElecLion
-天擒鸟的手套,Galeclaw's Gloves,SkillUnlock_Eagle
-碎岩龟的头巾,Digtoise's Headband,SkillUnlock_DrillGame
-寐魔的项圈,Daedream's Necklace,SkillUnlock_DreamDemon
-祇岳鹿的鞍具,Eikthyrdeer Terra Saddle,SkillUnlock_Deer_Ground
-紫霞鹿的鞍具,Eikthyrdeer Saddle,SkillUnlock_Deer
-Daknesis功率转换器,Dark Mutant's Power Converter,SkillUnlock_DarkMutant
-炸蛋鸟的手套,Tocotoco's Gloves,SkillUnlock_ColorfulBird
-翠叶鼠的冲锋枪,Lifmunk's Submachine Gun,SkillUnlock_Carbunclo
-草莽猪的鞍具,Rushoar Saddle,SkillUnlock_Boar
-碧海龙的鞍具,Azurobe Saddle,SkillUnlock_BlueDragon
-魔渊龙的鞍具,Astegon Saddle,SkillUnlock_BlackMetalDragon
-异构格里芬的鞍具,Shadowbeak Saddle,SkillUnlock_BlackGriffon
-Shadora shot弹枪,Dragostrophe's Shotgun,SkillUnlock_BlackFurDragon
-混沌骑士的鞍具,Necromus Saddle,SkillUnlock_BlackCentaur
-霜歌龙的鞍具,Vanwyrm Cryst Saddle,SkillUnlock_BirdDragon_Ice
-烽歌龙的鞍具,Vanwyrm Saddle,SkillUnlock_BirdDragon
-大坝猫shot弹枪,Bad Catgirl's Shotgun,SkillUnlock_BadCatgirl
-苍焰狼的鞍具,Kitsun Saddle,SkillUnlock_AmaterasuWolf
-美露帕的鞍具,Melpaca Saddle,SkillUnlock_Alpaca
-草之技能果实：狂风利刃,Grass Skill Fruit: Wind Cutter,SkillCard_WindCutter
-水之技能果实：水枪,Water Skill Fruit: Aqua Gun,SkillCard_WaterGun
-水之技能果实：爆裂水球,Water Skill Fruit: Aqua Burst,SkillCard_WaterBall
-雷之技能果实：等离子浮游炮,Electric Skill Fruit: Plasma Tornado,SkillCard_ThunderFunnel
-雷之技能果实：闪电伏特,Electric Skill Fruit: Lightning Bolt,SkillCard_Thunderbolt
-雷之技能果实：闪电球,Electric Skill Fruit: Electric Ball,SkillCard_ThunderBall
-地之技能果实：投石,Earth Skill Fruit: Stone Cannon,SkillCard_ThrowRock
-雷之技能果实：三重雷击,Electric Skill Fruit: Tri-Lightning,SkillCard_ThreeThunder
-地之技能果实：碎石霰弹,Earth Skill Fruit: Stone Blast,SkillCard_StoneShotgun
-雷之技能果实：电火花,Electric Skill Fruit: Spark Blast,SkillCard_SpreadPulse
-草之技能果实：太阳光束,Grass Skill Fruit: Solar Blast,SkillCard_SolarBeam
-暗之技能果实：噩梦球,Dark Skill Fruit: Nightmare Ball,SkillCard_ShadowBall
-技能果实：自爆,Skill Fruit: Implode,SkillCard_SelfDestruct
-草之技能果实：种子地雷,Grass Skill Fruit: Seed Mine,SkillCard_SeedMine
-草之技能果实：种子机关枪,Grass Skill Fruit: Seed Machine Gun,SkillCard_SeedMachinegun
-地之技能果实：砂砾飓风,Earth Skill Fruit: Sand Tornado,SkillCard_SandTornado
-草之技能果实：缠绕地刺,Grass Skill Fruit: Spine Vine,SkillCard_RootAttack
-地之技能果实：岩石锐矛,Earth Skill Fruit: Rock Lance,SkillCard_RockLance
-暗之技能果实：念动引力,Dark Skill Fruit: Psycho Gravity,SkillCard_Psychokinesis
-技能果实：能量射击,Skill Fruit: Power Shot,SkillCard_PowerShot
-技能果实：元气弹,Skill Fruit: Power Bomb,SkillCard_PowerBall
-暗之技能果实：剧毒射击,Dark Skill Fruit: Poison Blast,SkillCard_PoisonShot
-地之技能果实：泥浆投掷,Earth Skill Fruit: Sand Blast,SkillCard_MudShot
-雷之技能果实：锁定雷射,Electric Skill Fruit: Lock-on Laser,SkillCard_LockonLaser
-雷之技能果实：雷击,Electric Skill Fruit: Lightning Streak,SkillCard_LineThunder
-雷之技能果实：闪电冲击,Electric Skill Fruit: Lightning Strike,SkillCard_LightningStrike
-炎之技能果实：地狱火,Fire Skill Fruit: Ignis Rage,SkillCard_Inferno
-冰之技能果实：钻石星辰,Ice Skill Fruit: Blizzard Spike,SkillCard_IcicleThrow
-冰之技能果实：冰雪飞弹,Ice Skill Fruit: Ice Missile,SkillCard_IceMissile
-冰之技能果实：冰刃,Ice Skill Fruit: Icicle Cutter,SkillCard_IceBlade
-技能果实：帕鲁光束,Skill Fruit: Pal Blast,SkillCard_HyperBeam
-水之技能果实：高压水炮,Water Skill Fruit: Hydro Laser,SkillCard_HydroPump
-草之技能果实：绿野飓风,Grass Skill Fruit: Grass Tornado,SkillCard_GrassTornado
-暗之技能果实：鬼火,Dark Skill Fruit: Spirit Flame,SkillCard_GhostFlame
-冰之技能果实：凛冬之息,Ice Skill Fruit: Cryst Breath,SkillCard_FrostBreath
-炎之技能果实：烈焰风暴,Fire Skill Fruit: Flare Storm,SkillCard_FlareTornado
-炎之技能果实：烈焰箭,Fire Skill Fruit: Flare Arrow,SkillCard_FlareArrow
-炎之技能果实：烈焰放射,Fire Skill Fruit: Ignis Breath,SkillCard_Flamethrower
-炎之技能果实：烈焰溅射,Fire Skill Fruit: Spirit Fire,SkillCard_FireSeed
-炎之技能果实：烈焰射击,Fire Skill Fruit: Ignis Blast,SkillCard_FireBlast
-炎之技能果实：烈焰球,Fire Skill Fruit: Fire Ball,SkillCard_FireBall
-雷之技能果实：冲击波,Electric Skill Fruit: Shockwave,SkillCard_ElecWave
-龙之技能果实：龙之波动,Dragon Skill Fruit: Dragon Burst,SkillCard_DragonWave
-龙之技能果实：龙彗星,Dragon Skill Fruit: Dragon Meteor,SkillCard_DragonMeteor
-龙之技能果实：龙息弹,Dragon Skill Fruit: Dragon Cannon,SkillCard_DragonCanon
-龙之技能果实：龙息,Dragon Skill Fruit: Draconic Breath,SkillCard_DragonBreath
-暗之技能果实：暗影波动,Dark Skill Fruit: Shadow Burst,SkillCard_DarkWave
-暗之技能果实：暗黑镭射,Dark Skill Fruit: Dark Laser,SkillCard_DarkLaser
-水之技能果实：泡泡射击,Water Skill Fruit: Bubble Blast,SkillCard_BubbleShot
-冰之技能果实：冰刺,Ice Skill Fruit: Iceberg,SkillCard_BlizzardLance
-水之技能果实：水流射击,Water Skill Fruit: Hydro Jet,SkillCard_AquaJet
-技能果实：空气炮,Skill Fruit: Air Cannon,SkillCard_AirCanon
-水之技能果实：酸雨,Water Skill Fruit: Acid Rain,SkillCard_AcidRain
-单发步枪,Single-shot Rifle,SingleShotRifle
-硅,Silicon,Silicon
-霰弹枪子弹,Shotgun Shells,ShotgunBullet
-,Unused Item,Shotgun_NPC
-特级护盾,Hyper Shield,Shield_04
-优级护盾,Giga Shield,Shield_03
-高级护盾,Mega Shield,Shield_02
-普通护盾,Common Shield,Shield_01
-,Unused Item,Sharkkid_Scale
-,Unused Item,Seed_Tmp
-,Seafood Soup,SeafoodSoup
-,Unused Item,Scales2
-,Unused Item,Scales
-蓝宝石,Sapphire,Sapphire
-,Sandwich,Sandwich
-,Unused Item,Sand
-沙拉,Salad,Salad
-红宝石,Ruby,Ruby
-劣质弹药,Coarse Ammo,RoughBullet
-,Unused Item,RocketLauncher_NPC
-步枪子弹,Rifle Ammo,RifleBullet
-修理套装,Repair Kit,RepairKit
-翠叶鼠雕像,Lifmunk Effigy,Relic
-,Unused Item,RecurveBow
-纯水晶,Pure Quartz,Quartz
-#N/A,ITEM_NAME_PV_Glider_Manta,PV_Glider_Manta
-,Unused Item,PV_AssaultRifle_Default1
-,Unused Item,Pumpkin
-泵动式霰弹枪,Pump-action Shotgun +4,PumpActionShotgun_5
-泵动式霰弹枪,Pump-action Shotgun +3,PumpActionShotgun_4
-泵动式霰弹枪,Pump-action Shotgun +2,PumpActionShotgun_3
-泵动式霰弹枪,Pump-action Shotgun +1,PumpActionShotgun_2
-泵动式霰弹枪,Pump-action Shotgun,PumpActionShotgun
-,PotatoSeedPotatoes,PotatoSeedPotatoes
-,Unused Item,Potato
-,Potage,Potage
-美丽花朵,Beautiful Flower,Poppy
-聚合物,Polymer,Polymer
-,Plastic,Plastic
-披萨,Pizza,Pizza
-,Unused Item,Pickaxe_Tier_03
-精炼金属锄头,Refined Metal Pickaxe,Pickaxe_Tier_02
-金属锄头,Metal Pickaxe,Pickaxe_Tier_01
-石头锄头,Stone Pickaxe,Pickaxe_Tier_00
-,Unused Item,PenguinLauncher
-松饼,Pancake,Pancake
-面包,Bread,Pan
-大型帕鲁之魂,Large Pal Soul,PalUpgradeStone3
-中型帕鲁之魂,Medium Pal Soul,PalUpgradeStone2
-小型帕鲁之魂,Small Pal Soul,PalUpgradeStone
-特级帕鲁球,Hyper Sphere,PalSphere_Tera
-雷达帕鲁球,Radar Sphere,PalSphere_Robbery
-高级帕鲁球,Mega Sphere,PalSphere_Mega
-大师帕鲁球,Ultra Sphere,PalSphere_Master
-传奇帕鲁球,Legendary Sphere,PalSphere_Legend
-优级帕鲁球,Giga Sphere,PalSphere_Giga
-,Pal Sphere,PalSphere_Debug
-帕鲁球,Pal Sphere,PalSphere
-优质帕鲁油,High Quality Pal Oil,PalOil
-贵重兽毛,Precious Pelt,PalItem_ToSell_05
-贵重爪子,Precious Claw,PalItem_ToSell_04
-贵重内脏,Precious Entrails,PalItem_ToSell_03
-贵重羽毛,Precious Plume,PalItem_ToSell_02
-贵重龙珠,Precious Dragon Stone,PalItem_ToSell_01
-叶泥泥的叶子,Gumoss Leaf,PalItem_PlantSlime
-炸蛋鸟的羽毛,Tocotoco Feather,PalItem_ColorfulBird
-暗巫猫的体毛,Katress Hair,PalItem_CatMage
-企丸王的羽饰,Penking Plume,PalItem_CaptainPenguin
-帕鲁的体液,Pal Fluids,PalFluid
-巨大潮湿帕鲁蛋,Huge Damp Egg,PalEgg_Water_05
-大潮湿帕鲁蛋,Large Damp Egg,PalEgg_Water_04
-大潮湿帕鲁蛋,Large Damp Egg,PalEgg_Water_03
-潮湿帕鲁蛋,Damp Egg,PalEgg_Water_02
-潮湿帕鲁蛋,Damp Egg,PalEgg_Water_01
-巨大平凡帕鲁蛋,Huge Common Egg,PalEgg_Normal_05
-大平凡帕鲁蛋,Large Common Egg,PalEgg_Normal_04
-大平凡帕鲁蛋,Large Common Egg,PalEgg_Normal_03
-平凡帕鲁蛋,Common Egg,PalEgg_Normal_02
-平凡帕鲁蛋,Common Egg,PalEgg_Normal_01
-巨大新绿帕鲁蛋,Huge Verdant Egg,PalEgg_Leaf_05
-大新绿帕鲁蛋,Large Verdant Egg,PalEgg_Leaf_04
-大新绿帕鲁蛋,Large Verdant Egg,PalEgg_Leaf_03
-新绿帕鲁蛋,Verdant Egg,PalEgg_Leaf_02
-新绿帕鲁蛋,Verdant Egg,PalEgg_Leaf_01
-巨大结冰帕鲁蛋,Huge Frozen Egg,PalEgg_Ice_05
-大结冰帕鲁蛋,Large Frozen Egg,PalEgg_Ice_04
-大结冰帕鲁蛋,Large Frozen Egg,PalEgg_Ice_03
-结冰帕鲁蛋,Frozen Egg,PalEgg_Ice_02
-结冰帕鲁蛋,Frozen Egg,PalEgg_Ice_01
-巨大发热帕鲁蛋,Huge Scorching Egg,PalEgg_Fire_05
-大发热帕鲁蛋,Large Scorching Egg,PalEgg_Fire_04
-大发热帕鲁蛋,Large Scorching Egg,PalEgg_Fire_03
-发热帕鲁蛋,Scorching Egg,PalEgg_Fire_02
-发热帕鲁蛋,Scorching Egg,PalEgg_Fire_01
-巨大电气帕鲁蛋,Huge Electric Egg,PalEgg_Electricity_05
-大电气帕鲁蛋,Large Electric Egg,PalEgg_Electricity_04
-大电气帕鲁蛋,Large Electric Egg,PalEgg_Electricity_03
-电气帕鲁蛋,Electric Egg,PalEgg_Electricity_02
-电气帕鲁蛋,Electric Egg,PalEgg_Electricity_01
-巨大粗糙帕鲁蛋,Huge Rocky Egg,PalEgg_Earth_05
-大粗糙帕鲁蛋,Large Rocky Egg,PalEgg_Earth_04
-大粗糙帕鲁蛋,Large Rocky Egg,PalEgg_Earth_03
-粗糙帕鲁蛋,Rocky Egg,PalEgg_Earth_02
-粗糙帕鲁蛋,Rocky Egg,PalEgg_Earth_01
-巨大龙蛋,Huge Dragon Egg,PalEgg_Dragon_05
-大龙蛋,Large Dragon Egg,PalEgg_Dragon_04
-大龙蛋,Large Dragon Egg,PalEgg_Dragon_03
-龙蛋,Dragon Egg,PalEgg_Dragon_02
-龙蛋,Dragon Egg,PalEgg_Dragon_01
-巨大暗黑帕鲁蛋,Huge Dark Egg,PalEgg_Dark_05
-大暗黑帕鲁蛋,Large Dark Egg,PalEgg_Dark_04
-大暗黑帕鲁蛋,Large Dark Egg,PalEgg_Dark_03
-暗黑帕鲁蛋,Dark Egg,PalEgg_Dark_02
-暗黑帕鲁蛋,Dark Egg,PalEgg_Dark_01
-古代文明部件,Ancient Civilization Parts,PalCrystal_Ex
-,Unused Item,PAL_Growth_Stone_XL
-,Unused Item,PAL_Growth_Stone_S
-,Unused Item,PAL_Growth_Stone_M
-,Unused Item,PAL_Growth_Stone_L
-帕鲁矿碎块,Paldium Fragment,Pal_crystal_S
-帕鲁矿,Paldium Clump,Pal_crystal_L
-可疑果汁,Suspicious Juice,Opium
-欧姆蛋,Omelet,Omelet
-,Night Vision Goggles,NightVisionGoggles
-怪异果汁,Strange Juice,Narcotic
-鸟枪,Musket,Musket
-炖蘑菇,Mushroom Stew,MushroomStew
-蘑菇汤,Mushroom Soup,MushroomSoup
-蘑菇,Mushroom,Mushroom
-,ITEM_NAME_MonsterEquipWeapon_Dummy,MonsterEquipWeapon_Dummy
-金币,Gold Coin,Money
-洗脑药,Mind Control Meds,MindControlDrug
-牛奶,Milk,Milk
-药品,Medical Supplies,Medicines
-肉汤,Bolognese Sauce,MeatSauce
-切肉刀,Meat Cleaver,MeatCutterKnife
-,Unused Item,Meat2
-棉悠悠的羊肉,Lamball Mutton,Meat_SheepBall
-连理龙的恐龙肉,Broncherry Meat,Meat_SakuraSaurus
-趴趴鲶的鱼肉,Raw Dumud,Meat_LazyCatfish
-水灵儿的鱼肉,Raw Kelpsea,Meat_Kelpie
-严冬鹿的鹿肉,Reindrix Venison,Meat_IceDeer
-森猛犸的巨兽肉,Mammorest Meat,Meat_GrassMammoth
-天擒鸟的鸟肉,Galeclaw Poultry,Meat_Eagle
-紫霞鹿的鹿肉,Eikthyrdeer Venison,Meat_Deer
-波霸牛的牛肉,Mozzarina Meat,Meat_CowPal
-皮皮鸡的鸡肉,Chikipi Poultry,Meat_ChickenPal
-草莽猪的猪肉,Rushoar Pork,Meat_Boar
-灌木羊的香草肉,Caprity Meat,Meat_BerryGoat
-生肉,Raw Meat,Meat
-,Unused Item,MateItem01
-腌蘑菇,Marinated Mushrooms,MarinatedMushrooms
-劣质手枪,Makeshift Handgun,MakeshiftHandgun
-马格南子弹,Magnum Ammo,MagnumBullet
-机关枪子弹,Machine Gun Ammo,MachingunBullet
-电路板,Circuit Board,MachineParts2
-钉子,Nail,MachineParts
-,LuxuryOmelette,LuxuryOmelette
-高级药品,High Grade Medical Supplies,LuxuryMedicines
-,Lightz Helmet,LightzHelmet
-生菜种子,Lettuce Seeds,LettuceSeeds
-生菜,Lettuce,Lettuce
-,Unused Item,Leather2
-皮革,Leather,Leather
-,Unused Item,Launcher_Meat
-火箭发射器,Rocket Launcher +4,Launcher_Default_5
-火箭发射器,Rocket Launcher +3,Launcher_Default_4
-火箭发射器,Rocket Launcher +2,Launcher_Default_3
-火箭发射器,Rocket Launcher +1,Launcher_Default_2
-火箭发射器,Rocket Launcher,Launcher_Default
-,Unused Item,LaserRifle_NPC
-,Unused Item,LaserRifle
-,Unused Item,LaserBullet
-,Unused Item,LargeBullet
-腰挂提灯,Hip Lantern,Lantern
-,Unused Item,Kitsunebi_Fire
-果酱面包,Jam-filled Bun,JamBun
-,Unused Item,IronOre
-精炼金属铸块,Refined Ingot,IronIngot
-精炼金属头盔,Refined Metal Helm +4,IronHelmet_5
-精炼金属头盔,Refined Metal Helm +3,IronHelmet_4
-精炼金属头盔,Refined Metal Helm +2,IronHelmet_3
-精炼金属头盔,Refined Metal Helm +1,IronHelmet_2
-精炼金属头盔,Refined Metal Helm,IronHelmet
-耐热精炼金属盔甲,Heat Resistant Refined Metal Armor +4,IronArmorHeat_5
-耐热精炼金属盔甲,Heat Resistant Refined Metal Armor +3,IronArmorHeat_4
-耐热精炼金属盔甲,Heat Resistant Refined Metal Armor +2,IronArmorHeat_3
-耐热精炼金属盔甲,Heat Resistant Refined Metal Armor +1,IronArmorHeat_2
-耐热精炼金属盔甲,Heat Resistant Refined Metal Armor,IronArmorHeat
-耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor +4,IronArmorCold_5
-耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor +3,IronArmorCold_4
-耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor +2,IronArmorCold_3
-耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor +1,IronArmorCold_2
-耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor,IronArmorCold
-精炼金属盔甲,Refined Metal Armor +4,IronArmor_5
-精炼金属盔甲,Refined Metal Armor +3,IronArmor_4
-精炼金属盔甲,Refined Metal Armor +2,IronArmor_3
-精炼金属盔甲,Refined Metal Armor +1,IronArmor_2
-精炼金属盔甲,Refined Metal Armor,IronArmor
-印花墨水,Decal Ink,InkBullet
-结冰器官,Ice Organ,IceOrgan
-热牛奶,Hot Milk,HotMilk
-草莽猪热狗,Rushoar Hot Dog,HotDog_2
-热狗,Hot Dog,HotDog
-角,Horn,Horn
-,Hop,Hop
-蜂蜜,Honey,Honey
-自动追踪帕鲁球发射器,Homing Sphere Launcher,HomingSphereLauncher
-低品质药品,Low Grade Medical Supplies,Herbs
-暗巫猫帽,Katress Cap +4,Head017_5
-暗巫猫帽,Katress Cap +3,Head017_4
-暗巫猫帽,Katress Cap +2,Head017_3
-暗巫猫帽,Katress Cap +1,Head017_2
-暗巫猫帽,Katress Cap,Head017
-企丸王帽,Penking Cap +4,Head016_5
-企丸王帽,Penking Cap +3,Head016_4
-企丸王帽,Penking Cap +2,Head016_3
-企丸王帽,Penking Cap +1,Head016_2
-企丸王帽,Penking Cap,Head016
-叶泥泥帽,Gumoss Cap +4,Head015_5
-叶泥泥帽,Gumoss Cap +3,Head015_4
-叶泥泥帽,Gumoss Cap +2,Head015_3
-叶泥泥帽,Gumoss Cap +1,Head015_2
-叶泥泥帽,Gumoss Cap,Head015
-笑脸炸蛋鸟帽,Grinning Tocotoco Cap +4,Head014_5
-笑脸炸蛋鸟帽,Grinning Tocotoco Cap +3,Head014_4
-笑脸炸蛋鸟帽,Grinning Tocotoco Cap +2,Head014_3
-笑脸炸蛋鸟帽,Grinning Tocotoco Cap +1,Head014_2
-笑脸炸蛋鸟帽,Grinning Tocotoco Cap,Head014
-炸蛋鸟帽,Tocotoco Cap +4,Head013_5
-炸蛋鸟帽,Tocotoco Cap +3,Head013_4
-炸蛋鸟帽,Tocotoco Cap +2,Head013_3
-炸蛋鸟帽,Tocotoco Cap +1,Head013_2
-炸蛋鸟帽,Tocotoco Cap,Head013
-圆顶礼帽,Bowler Hat +4,Head012_5
-圆顶礼帽,Bowler Hat +3,Head012_4
-圆顶礼帽,Bowler Hat +2,Head012_3
-圆顶礼帽,Bowler Hat +1,Head012_2
-圆顶礼帽,Bowler Hat,Head012
-农夫帽,Farming Hat +4,Head011_5
-农夫帽,Farming Hat +3,Head011_4
-农夫帽,Farming Hat +2,Head011_3
-农夫帽,Farming Hat +1,Head011_2
-农夫帽,Farming Hat,Head011
-学士帽,Graduation cap +4,Head010_5
-学士帽,Graduation cap +3,Head010_4
-学士帽,Graduation cap +2,Head010_3
-学士帽,Graduation cap +1,Head010_2
-学士帽,Graduation cap,Head010
-探险帽,Explorer Cap +4,Head009_5
-探险帽,Explorer Cap +3,Head009_4
-探险帽,Explorer Cap +2,Head009_3
-探险帽,Explorer Cap +1,Head009_2
-探险帽,Explorer Cap,Head009
-三角帽,Tricorne +4,Head008_5
-三角帽,Tricorne +3,Head008_4
-三角帽,Tricorne +2,Head008_3
-三角帽,Tricorne +1,Head008_2
-三角帽,Tricorne,Head008
-大礼帽,Silk Hat +4,Head007_5
-大礼帽,Silk Hat +3,Head007_4
-大礼帽,Silk Hat +2,Head007_3
-大礼帽,Silk Hat +1,Head007_2
-大礼帽,Silk Hat,Head007
-安全帽,Helmet +4,Head006_5
-安全帽,Helmet +3,Head006_4
-安全帽,Helmet +2,Head006_3
-安全帽,Helmet +1,Head006_2
-安全帽,Helmet,Head006
-费多拉帽,Soft Hat +4,Head005_5
-费多拉帽,Soft Hat +3,Head005_4
-费多拉帽,Soft Hat +2,Head005_3
-费多拉帽,Soft Hat +1,Head005_2
-费多拉帽,Soft Hat,Head005
-魔女帽子,Witch Hat +4,Head004_5
-魔女帽子,Witch Hat +3,Head004_4
-魔女帽子,Witch Hat +2,Head004_3
-魔女帽子,Witch Hat +1,Head004_2
-魔女帽子,Witch Hat,Head004
-长耳发箍,Long-eared Headband +4,Head003_5
-长耳发箍,Long-eared Headband +3,Head003_4
-长耳发箍,Long-eared Headband +2,Head003_3
-长耳发箍,Long-eared Headband +1,Head003_2
-长耳发箍,Long-eared Headband,Head003
-金冠,Golden Crown +4,Head002_5
-金冠,Golden Crown +3,Head002_4
-金冠,Golden Crown +2,Head002_3
-金冠,Golden Crown +1,Head002_2
-金冠,Golden Crown,Head002
-王冠,Monarch's Crown +4,Head001_5
-王冠,Monarch's Crown +3,Head001_4
-王冠,Monarch's Crown +2,Head001_3
-王冠,Monarch's Crown +1,Head001_2
-王冠,Monarch's Crown,Head001
-手枪子弹,Handgun Ammo,HandgunBullet
-,Unused Item,Handgun_NPC
-手枪,Handgun +4,HandGun_Default_5
-手枪,Handgun +3,HandGun_Default_4
-手枪,Handgun +2,HandGun_Default_3
-手枪,Handgun +1,HandGun_Default_2
-手枪,Handgun,HandGun_Default
-波霸牛汉堡,Mozzarina Hamburger,Hamburger_2
-汉堡,Hamburger,Hamburger
-火药,Gunpowder,Gunpowder2
-,Gunpowder,Gunpowder
-棉悠悠香草烤肉,Herb Roasted Lamball,GrilledSheepHerbs
-烤肉,Grilled Meat,GrilledMeat
-,Grilled Fish,GrilledFish
-特级爪钩枪,Hyper Grappling Gun,GrapplingGun4
-优级爪钩枪,Giga Grappling Gun,GrapplingGun3
-高级爪钩枪,Mega Grappling Gun,GrapplingGun2
-爪钩枪,Grappling Gun,GrapplingGun
-,Grape,Grape
-优级滑翔伞,Giga Glider,Glider_Super
-普通滑翔伞,Normal Parachute,Glider_Old
-特级滑翔伞,Hyper Glider,Glider_Legendary
-高级滑翔伞,Mega Glider,Glider_Good
-棉悠悠成吉思汗烤肉,Grilled Lamball,GenghisKhan
-,Unused Item,GatlingGun_NPC
-,Gas Mask,GasMask
-羽毛发饰,Feathered Hair Band +4,FurHelmet_5
-羽毛发饰,Feathered Hair Band +3,FurHelmet_4
-羽毛发饰,Feathered Hair Band +2,FurHelmet_3
-羽毛发饰,Feathered Hair Band +1,FurHelmet_2
-羽毛发饰,Feathered Hair Band,FurHelmet
-耐热毛皮盔甲,Heat Resistant Pelt Armor +4,FurArmorHeat_5
-耐热毛皮盔甲,Heat Resistant Pelt Armor +3,FurArmorHeat_4
-耐热毛皮盔甲,Heat Resistant Pelt Armor +2,FurArmorHeat_3
-耐热毛皮盔甲,Heat Resistant Pelt Armor +1,FurArmorHeat_2
-耐热毛皮盔甲,Heat Resistant Pelt Armor,FurArmorHeat
-耐寒毛皮盔甲,Cold Resistant Pelt Armor +4,FurArmorCold_5
-耐寒毛皮盔甲,Cold Resistant Pelt Armor +3,FurArmorCold_4
-耐寒毛皮盔甲,Cold Resistant Pelt Armor +2,FurArmorCold_3
-耐寒毛皮盔甲,Cold Resistant Pelt Armor +1,FurArmorCold_2
-耐寒毛皮盔甲,Cold Resistant Pelt Armor,FurArmorCold
-毛皮盔甲,Pelt Armor +4,FurArmor_5
-毛皮盔甲,Pelt Armor +3,FurArmor_4
-毛皮盔甲,Pelt Armor +2,FurArmor_3
-毛皮盔甲,Pelt Armor +1,FurArmor_2
-毛皮盔甲,Pelt Armor,FurArmor
-炒蔬菜,Stir-fried Veggies,FriedVegetables
-炸水灵儿,Fried Kelpsea,FriedKelpie
-荷包蛋,Fried Egg,FriedEggs
-炸皮皮鸡肉块,Fried Chikipi,FriedChicken
-,Unused Item,FragGrenade_NPC
-冷冻型手榴弹,Ice Grenade,FragGrenade_Ice
-燃烧型手榴弹,Incendiary Grenade,FragGrenade_Fire
-电击型手榴弹,Shock Grenade,FragGrenade_Elec
-破片手榴弹,Frag Grenade,FragGrenade
-面粉,Flour,Flour
-,Unused Item,Flint
-,Unused Item,FlameThrower_NPC
-,Unused Item,FishMeat2
-,Unused Item,FishMeat
-,Fishing Rod_Super,FishingRod_Super
-,Fishing Rod_Old,FishingRod_Old
-,Fishing Rod_Legendary,FishingRod_Legendary
-,Fishing Rod_Good,FishingRod_Good
-喷火器官,Flame Organ,FireOrgan
-纤维,Fiber,Fiber
-,Unused Item,FarmCrop_Tmp
-,Unused Item,FangNecklace
-,Unused Item,Fang2
-,Fang,Fang
-火箭弹,Rocket Ammo,ExplosiveBullet
-,Unused Item,EnergyDrink
-,Unused Item,ElectronicCircuit
-发电器官,Electric Organ,ElectricOrgan
-电棍,Stun Baton,ElecBaton
-蛋,Egg,Egg
-绿宝石,Emerald,Eemerald
-炖煮天擒鸟肉,Stewed Galeclaw,Eaglestew
-双管霰弹枪,Double-barreled Shotgun,DoubleBarrelShotgun
-钻石,Diamond,Diamond
-紫霞鹿肉炖菜,Eikthyrdeer Stew,DeerStew
-夏威夷紫霞鹿汉堡饭,Eikthyrdeer Loco Moco,DeerLocoMoco
-印花枪5,Decal Gun 5,DecalGun_5
-印花枪4,Decal Gun 4,DecalGun_4
-印花枪3,Decal Gun 3,DecalGun_3
-印花枪2,Decal Gun 2,DecalGun_2
-印花枪1,Decal Gun 1,DecalGun_1
-,Unused Item,Debug_Handgun_Wetness
-,Unused Item,Debug_Handgun_Stun
-,Unused Item,Debug_Handgun_Poison
-,Unused Item,Debug_Handgun_Muddy
-,Unused Item,Debug_Handgun_IvyCling
-,Unused Item,Debug_Handgun_Freeze
-,Unused Item,Debug_Handgun_Electrical
-,Unused Item,Debug_Handgun_DefenseUp
-,Unused Item,Debug_Handgun_Darkness
-,Unused Item,Debug_Handgun_Burn
-,Unused Item,Debug_Handgun_AttackUp
-,Curry,Curry
-,Crude Oil,CrudeOil
-,Corn Soup,CornSoup
-,Unused Item,Corn
-金属矿石,Ore,CopperOre
-金属铸块,Ingot,CopperIngot
-金属头盔,Metal Helm +4,CopperHelmet_5
-金属头盔,Metal Helm +3,CopperHelmet_4
-金属头盔,Metal Helm +2,CopperHelmet_3
-金属头盔,Metal Helm +1,CopperHelmet_2
-金属头盔,Metal Helm,CopperHelmet
-耐热金属盔甲,Heat Resistant Metal Armor +4,CopperArmorHeat_5
-耐热金属盔甲,Heat Resistant Metal Armor +3,CopperArmorHeat_4
-耐热金属盔甲,Heat Resistant Metal Armor +2,CopperArmorHeat_3
-耐热金属盔甲,Heat Resistant Metal Armor +1,CopperArmorHeat_2
-耐热金属盔甲,Heat Resistant Metal Armor,CopperArmorHeat
-耐寒金属盔甲,Cold Resistant Metal Armor +4,CopperArmorCold_5
-耐寒金属盔甲,Cold Resistant Metal Armor +3,CopperArmorCold_4
-耐寒金属盔甲,Cold Resistant Metal Armor +2,CopperArmorCold_3
-耐寒金属盔甲,Cold Resistant Metal Armor +1,CopperArmorCold_2
-耐寒金属盔甲,Cold Resistant Metal Armor,CopperArmorCold
-金属盔甲,Metal Armor +4,CopperArmor_5
-金属盔甲,Metal Armor +3,CopperArmor_4
-金属盔甲,Metal Armor +2,CopperArmor_3
-金属盔甲,Metal Armor +1,CopperArmor_2
-金属盔甲,Metal Armor,CopperArmor
-,Computer,Computer
-石炭,Coal,Coal
-,Unused Item,ClothHat
-热带地区民族服饰,Tropical Outfit +4,ClothArmorHeat_5
-热带地区民族服饰,Tropical Outfit +3,ClothArmorHeat_4
-热带地区民族服饰,Tropical Outfit +2,ClothArmorHeat_3
-热带地区民族服饰,Tropical Outfit +1,ClothArmorHeat_2
-热带地区民族服饰,Tropical Outfit,ClothArmorHeat
-寒冷地区民族服饰,Tundra Outfit +4,ClothArmorCold_5
-寒冷地区民族服饰,Tundra Outfit +3,ClothArmorCold_4
-寒冷地区民族服饰,Tundra Outfit +2,ClothArmorCold_3
-寒冷地区民族服饰,Tundra Outfit +1,ClothArmorCold_2
-寒冷地区民族服饰,Tundra Outfit,ClothArmorCold
-布衣服,Cloth Outfit +4,ClothArmor_5
-布衣服,Cloth Outfit +3,ClothArmor_4
-布衣服,Cloth Outfit +2,ClothArmor_3
-布衣服,Cloth Outfit +1,ClothArmor_2
-布衣服,Cloth Outfit,ClothArmor
-优质的布,High Quality Cloth,Cloth2
-布,Cloth,Cloth
-,Unused Item,ClawsPendant
-,Unused Item,Claws2
-,Claw,Claws
-趴趴鲶杂烩,Dumud Chowder,Chowder
-嫩煎皮皮鸡,Chikipi Sauté,ChickenSaute
-波霸牛芝士汉堡,Mozzarina Cheeseburger,Cheeseburger_2
-芝士汉堡,Cheeseburger,CheeseBurger
-木炭,Charcoal,Charcoal
-水泥,Cement,Cement
-,Unused Item,CashScales
-,Unused Item,CashFang
-碳纤维,Carbon Fiber,CarbonFiber
-奶油培根意面,Carbonara,Carbonara
-,Unused Item,CaptureRope
-蛋糕,Cake,Cake
-毒箭十字弓,Poison Arrow Crossbow,BowGun_Poison
-,Unused Item,BowGun_NPC
-火箭十字弓,Fire Arrow Crossbow,BowGun_Fire
-十字弓,Crossbow +4,BowGun_5
-十字弓,Crossbow +3,BowGun_4
-十字弓,Crossbow +2,BowGun_3
-十字弓,Crossbow +1,BowGun_2
-十字弓,Crossbow,BowGun
-三连弓,Three Shot Bow,Bow_Triple
-毒之弓,Poison Bow,Bow_Poison
-火之弓,Fire Bow,Bow_Fire
-五连弓,Five Shot Bow,Bow_Fifth
-骨头,Bone,Bone
-#N/A,ITEM_NAME_BlueprintTest,BlueprintTest
-陈旧的弓设计图4,Old Bow Schematic 4,Blueprint_WeakerBow_5
-陈旧的弓设计图3,Old Bow Schematic 3,Blueprint_WeakerBow_4
-陈旧的弓设计图2,Old Bow Schematic 2,Blueprint_WeakerBow_3
-陈旧的弓设计图1,Old Bow Schematic 1,Blueprint_WeakerBow_2
-帕鲁金属头盔设计图4,Pal Metal Helm Schematic 4,Blueprint_StealHelmet_5
-帕鲁金属头盔设计图3,Pal Metal Helm Schematic 3,Blueprint_StealHelmet_4
-帕鲁金属头盔设计图2,Pal Metal Helm Schematic 2,Blueprint_StealHelmet_3
-帕鲁金属头盔设计图1,Pal Metal Helm Schematic 1,Blueprint_StealHelmet_2
-耐热帕鲁金属盔甲设计图4,Heat Resistant Pal Metal Armor Schematic 4,Blueprint_StealArmorHeat_5
-耐热帕鲁金属盔甲设计图3,Heat Resistant Pal Metal Armor Schematic 3,Blueprint_StealArmorHeat_4
-耐热帕鲁金属盔甲设计图2,Heat Resistant Pal Metal Armor Schematic 2,Blueprint_StealArmorHeat_3
-耐热帕鲁金属盔甲设计图1,Heat Resistant Pal Metal Armor Schematic 1,Blueprint_StealArmorHeat_2
-耐寒帕鲁金属盔甲设计图4,Cold Resistant Pal Metal Armor Schematic 4,Blueprint_StealArmorCold_5
-耐寒帕鲁金属盔甲设计图3,Cold Resistant Pal Metal Armor Schematic 3,Blueprint_StealArmorCold_4
-耐寒帕鲁金属盔甲设计图2,Cold Resistant Pal Metal Armor Schematic 2,Blueprint_StealArmorCold_3
-耐寒帕鲁金属盔甲设计图1,Cold Resistant Pal Metal Armor Schematic 1,Blueprint_StealArmorCold_2
-帕鲁金属盔甲设计图4,Pal Metal Armor Schematic 4,Blueprint_StealArmor_5
-帕鲁金属盔甲设计图3,Pal Metal Armor Schematic 3,Blueprint_StealArmor_4
-帕鲁金属盔甲设计图2,Pal Metal Armor Schematic 2,Blueprint_StealArmor_3
-帕鲁金属盔甲设计图1,Pal Metal Armor Schematic 1,Blueprint_StealArmor_2
-泵动式霰弹枪设计图4,Pump-Action Shotgun Schematic 4,Blueprint_PumpActionShotgun_5
-泵动式霰弹枪设计图3,Pump-Action Shotgun Schematic 3,Blueprint_PumpActionShotgun_4
-泵动式霰弹枪设计图2,Pump-Action Shotgun Schematic 2,Blueprint_PumpActionShotgun_3
-泵动式霰弹枪设计图1,Pump-Action Shotgun Schematic 1,Blueprint_PumpActionShotgun_2
-火箭发射器设计图4,Rocket Launcher Schematic 4,Blueprint_Launcher_Default_5
-火箭发射器设计图3,Rocket Launcher Schematic 3,Blueprint_Launcher_Default_4
-火箭发射器设计图2,Rocket Launcher Schematic 2,Blueprint_Launcher_Default_3
-火箭发射器设计图1,Rocket Launcher Schematic 1,Blueprint_Launcher_Default_2
-精炼金属头盔设计图4,Refined Metal Helm Schematic 4,Blueprint_IronHelmet_5
-精炼金属头盔设计图3,Refined Metal Helm Schematic 3,Blueprint_IronHelmet_4
-精炼金属头盔设计图2,Refined Metal Helm Schematic 2,Blueprint_IronHelmet_3
-精炼金属头盔设计图1,Refined Metal Helm Schematic 1,Blueprint_IronHelmet_2
-耐热精炼金属盔甲设计图4,Heat Resistant Refined Metal Armor Schematic 4,Blueprint_IronArmorHeat_5
-耐热精炼金属盔甲设计图3,Heat Resistant Refined Metal Armor Schematic 3,Blueprint_IronArmorHeat_4
-耐热精炼金属盔甲设计图2,Heat Resistant Refined Metal Armor Schematic 2,Blueprint_IronArmorHeat_3
-耐热精炼金属盔甲设计图1,Heat Resistant Refined Metal Armor Schematic 1,Blueprint_IronArmorHeat_2
-耐寒精炼金属盔甲设计图4,Cold Resistant Refined Metal Armor Schematic 4,Blueprint_IronArmorCold_5
-耐寒精炼金属盔甲设计图3,Cold Resistant Refined Metal Armor Schematic 3,Blueprint_IronArmorCold_4
-耐寒精炼金属盔甲设计图2,Cold Resistant Refined Metal Armor Schematic 2,Blueprint_IronArmorCold_3
-耐寒精炼金属盔甲设计图1,Cold Resistant Refined Metal Armor Schematic 1,Blueprint_IronArmorCold_2
-精炼金属盔甲设计图4,Refined Metal Armor Schematic 4,Blueprint_IronArmor_5
-精炼金属盔甲设计图3,Refined Metal Armor Schematic 3,Blueprint_IronArmor_4
-精炼金属盔甲设计图2,Refined Metal Armor Schematic 2,Blueprint_IronArmor_3
-精炼金属盔甲设计图1,Refined Metal Armor Schematic 1,Blueprint_IronArmor_2
-克莱梅奥帽子设计图5,Design Blueprint of Clemence Hat 5,Blueprint_Head017_5
-暗巫猫帽设计图4,Katress Cap Schematic 4,Blueprint_Head017_4
-暗巫猫帽设计图3,Katress Cap Schematic 3,Blueprint_Head017_3
-暗巫猫帽设计图2,Katress Cap Schematic 2,Blueprint_Head017_2
-暗巫猫帽设计图1,Katress Cap Schematic 1,Blueprint_Head017_1
-凯本帽设计图纸5,Blueprint of Capppen Hat 5,Blueprint_Head016_5
-企丸王帽设计图4,Penking Cap Schematic 4,Blueprint_Head016_4
-企丸王帽设计图3,Penking Cap Schematic 3,Blueprint_Head016_3
-企丸王帽设计图2,Penking Cap Schematic 2,Blueprint_Head016_2
-企丸王帽设计图1,Penking Cap Schematic 1,Blueprint_Head016_1
-纳恩魔帽设计图5,5 Blueprints of Naemochi Hat,Blueprint_Head015_5
-叶泥泥帽设计图4,Gumoss Cap Schematic 4,Blueprint_Head015_4
-叶泥泥帽设计图3,Gumoss Cap Schematic 3,Blueprint_Head015_3
-叶泥泥帽设计图2,Gumoss Cap Schematic 2,Blueprint_Head015_2
-叶泥泥帽设计图1,Gumoss Cap Schematic 1,Blueprint_Head015_1
-咧咧微笑螺旋帽的设计图5,Grinning Curly Hat Blueprint 5,Blueprint_Head014_5
-笑脸炸蛋鸟帽设计图4,Grinning Tocotoco Cap Schematic 4,Blueprint_Head014_4
-笑脸炸蛋鸟帽设计图3,Grinning Tocotoco Cap Schematic 3,Blueprint_Head014_3
-笑脸炸蛋鸟帽设计图2,Grinning Tocotoco Cap Schematic 2,Blueprint_Head014_2
-笑脸炸蛋鸟帽设计图1,Grinning Tocotoco Cap Schematic 1,Blueprint_Head014_1
-<クルットリ帽>的设计图5,Design Plan 5 for the Crutchli Hat,Blueprint_Head013_5
-炸蛋鸟帽设计图4,Tocotoco Cap Schematic 4,Blueprint_Head013_4
-炸蛋鸟帽设计图3,Tocotoco Cap Schematic 3,Blueprint_Head013_3
-炸蛋鸟帽设计图2,Tocotoco Cap Schematic 2,Blueprint_Head013_2
-炸蛋鸟帽设计图1,Tocotoco Cap Schematic 1,Blueprint_Head013_1
-圆顶礼帽的设计图5,Blueprint of Bowler Hat 5,Blueprint_Head012_5
-圆顶礼帽的设计图4,Bowler Hat Schematic 4,Blueprint_Head012_4
-圆顶礼帽的设计图3,Bowler Hat Schematic 3,Blueprint_Head012_3
-圆顶礼帽的设计图2,Bowler Hat Schematic 2,Blueprint_Head012_2
-圆顶礼帽的设计图1,Bowler Hat Schematic 1,Blueprint_Head012_1
-农业帽子设计图5,5 Diagrams of Agricultural Hat,Blueprint_Head011_5
-农夫帽设计图4,Farming Hat Schematic 4,Blueprint_Head011_4
-农夫帽设计图3,Farming Hat Schematic 3,Blueprint_Head011_3
-农夫帽设计图2,Farming Hat Schematic 2,Blueprint_Head011_2
-农夫帽设计图1,Farming Hat Schematic 1,Blueprint_Head011_1
-大学帽设计图5,Blueprint 5 of University Hat,Blueprint_Head010_5
-学士帽设计图4,Graduate Cap Schematic 4,Blueprint_Head010_4
-学士帽设计图3,Graduate Cap Schematic 3,Blueprint_Head010_3
-学士帽设计图2,Graduate Cap Schematic 2,Blueprint_Head010_2
-学士帽设计图1,Graduate Cap Schematic 1,Blueprint_Head010_1
-探险帽设计图5,Blueprint of Exploration Hat 5,Blueprint_Head009_5
-探险帽设计图4,Exploration Cap Schematic 4,Blueprint_Head009_4
-探险帽设计图3,Exploration Cap Schematic 3,Blueprint_Head009_3
-探险帽设计图2,Exploration Cap Schematic 2,Blueprint_Head009_2
-探险帽设计图1,Exploration Cap Schematic 1,Blueprint_Head009_1
-三角帽设计图纸5,Blueprint of the Tricorn Hat 5,Blueprint_Head008_5
-三角帽设计图4,Tricorne Schematic 4,Blueprint_Head008_4
-三角帽设计图3,Tricorne Schematic 3,Blueprint_Head008_3
-三角帽设计图2,Tricorne Schematic 2,Blueprint_Head008_2
-三角帽设计图1,Tricorne Schematic 1,Blueprint_Head008_1
-丝绸高帽子的设计图5,5 Schematic Diagrams of the Silk Hat,Blueprint_Head007_5
-大礼帽设计图4,Silk Hat Schematic 4,Blueprint_Head007_4
-大礼帽设计图3,Silk Hat Schematic 3,Blueprint_Head007_3
-大礼帽设计图2,Silk Hat Schematic 2,Blueprint_Head007_2
-大礼帽设计图1,Silk Hat Schematic 1,Blueprint_Head007_1
-头盔设计图5,Blueprint of Helmet 5,Blueprint_Head006_5
-安全帽设计图4,Helmet Schematic 4,Blueprint_Head006_4
-安全帽设计图3,Helmet Schematic 3,Blueprint_Head006_3
-安全帽设计图2,Helmet Schematic 2,Blueprint_Head006_2
-安全帽设计图1,Helmet Schematic 1,Blueprint_Head006_1
-软帽设计图纸5,Blueprint of Soft Hat 5,Blueprint_Head005_5
-费多拉帽设计图4,Soft Hat Schematic 4,Blueprint_Head005_4
-费多拉帽设计图3,Soft Hat Schematic 3,Blueprint_Head005_3
-费多拉帽设计图2,Soft Hat Schematic 2,Blueprint_Head005_2
-费多拉帽设计图1,Soft Hat Schematic 1,Blueprint_Head005_1
-魔女帽子设计图5,Design of Witch Hat No. 5,Blueprint_Head004_5
-女巫帽设计图4,Witch Hat Schematic 4,Blueprint_Head004_4
-女巫帽设计图3,Witch Hat Schematic 3,Blueprint_Head004_3
-女巫帽设计图2,Witch Hat Schematic 2,Blueprint_Head004_2
-女巫帽设计图1,Witch Hat Schematic 1,Blueprint_Head004_1
-长耳发箍的设计图5,5 Blueprints of Long-eared Headband,Blueprint_Head003_5
-长耳发箍设计图4,Long-eared Headband Schematic 4,Blueprint_Head003_4
-长耳发箍设计图3,Long-eared Headband Schematic 3,Blueprint_Head003_3
-长耳发箍设计图2,Long-eared Headband Schematic 2,Blueprint_Head003_2
-长耳发箍设计图1,Long-eared Headband Schematic 1,Blueprint_Head003_1
-#N/A,ITEM_NAME_Blueprint_Head002_5,Blueprint_Head002_5
-金冠设计图4,Golden Crown Schematic 4,Blueprint_Head002_4
-金冠设计图3,Golden Crown Schematic 3,Blueprint_Head002_3
-金冠设计图2,Golden Crown Schematic 2,Blueprint_Head002_2
-金冠设计图1,Golden Crown Schematic 1,Blueprint_Head002_1
-王冠设计图5,Blueprint of the King's Crown 5,Blueprint_Head001_5
-王冠设计图4,Monarch's Crown Schematic 4,Blueprint_Head001_4
-王冠设计图3,Monarch's Crown Schematic 3,Blueprint_Head001_3
-王冠设计图2,Monarch's Crown Schematic 2,Blueprint_Head001_2
-王冠设计图1,Monarch's Crown Schematic 1,Blueprint_Head001_1
-手枪设计图4,Handgun Schematic 4,Blueprint_HandGun_Default_5
-手枪设计图3,Handgun Schematic 3,Blueprint_HandGun_Default_4
-手枪设计图2,Handgun Schematic 2,Blueprint_HandGun_Default_3
-手枪设计图1,Handgun Schematic 1,Blueprint_HandGun_Default_2
-羽毛发饰设计图4,Feathered Hair Band Schematic 4,Blueprint_FurHelmet_5
-羽毛发饰设计图3,Feathered Hair Band Schematic 3,Blueprint_FurHelmet_4
-羽毛发饰设计图2,Feathered Hair Band Schematic 2,Blueprint_FurHelmet_3
-羽毛发饰设计图1,Feathered Hair Band Schematic 1,Blueprint_FurHelmet_2
-耐热毛皮盔甲设计图4,Heat Resistant Pelt Armor Schematic 4,Blueprint_FurArmorHeat_5
-耐热毛皮盔甲设计图3,Heat Resistant Pelt Armor Schematic 3,Blueprint_FurArmorHeat_4
-耐热毛皮盔甲设计图2,Heat Resistant Pelt Armor Schematic 2,Blueprint_FurArmorHeat_3
-耐热毛皮盔甲设计图1,Heat Resistant Pelt Armor Schematic 1,Blueprint_FurArmorHeat_2
-耐寒毛皮盔甲设计图4,Cold Resistant Pelt Armor Schematic 4,Blueprint_FurArmorCold_5
-耐寒毛皮盔甲设计图3,Cold Resistant Pelt Armor Schematic 3,Blueprint_FurArmorCold_4
-耐寒毛皮盔甲设计图2,Cold Resistant Pelt Armor Schematic 2,Blueprint_FurArmorCold_3
-耐寒毛皮盔甲设计图1,Cold Resistant Pelt Armor Schematic 1,Blueprint_FurArmorCold_2
-毛皮盔甲设计图4,Pelt Armor Schematic 4,Blueprint_FurArmor_5
-毛皮盔甲设计图3,Pelt Armor Schematic 3,Blueprint_FurArmor_4
-毛皮盔甲设计图2,Pelt Armor Schematic 2,Blueprint_FurArmor_3
-毛皮盔甲设计图1,Pelt Armor Schematic 1,Blueprint_FurArmor_2
-金属头盔设计图4,Metal Helm Schematic 4,Blueprint_CopperHelmet_5
-金属头盔设计图3,Metal Helm Schematic 3,Blueprint_CopperHelmet_4
-金属头盔设计图2,Metal Helm Schematic 2,Blueprint_CopperHelmet_3
-金属头盔设计图1,Metal Helm Schematic 1,Blueprint_CopperHelmet_2
-耐热金属盔甲设计图4,Heat Resistant Metal Armor Schematic 4,Blueprint_CopperArmorHeat_5
-耐热金属盔甲设计图3,Heat Resistant Metal Armor Schematic 3,Blueprint_CopperArmorHeat_4
-耐热金属盔甲设计图2,Heat Resistant Metal Armor Schematic 2,Blueprint_CopperArmorHeat_3
-耐热金属盔甲设计图1,Heat Resistant Metal Armor Schematic 1,Blueprint_CopperArmorHeat_2
-耐寒金属盔甲设计图4,Cold Resistant Metal Armor Schematic 4,Blueprint_CopperArmorCold_5
-耐寒金属盔甲设计图3,Cold Resistant Metal Armor Schematic 3,Blueprint_CopperArmorCold_4
-耐寒金属盔甲设计图2,Cold Resistant Metal Armor Schematic 2,Blueprint_CopperArmorCold_3
-耐寒金属盔甲设计图1,Cold Resistant Metal Armor Schematic 1,Blueprint_CopperArmorCold_2
-金属盔甲设计图4,Metal Armor Schematic 4,Blueprint_CopperArmor_5
-金属盔甲设计图3,Metal Armor Schematic 3,Blueprint_CopperArmor_4
-金属盔甲设计图2,Metal Armor Schematic 2,Blueprint_CopperArmor_3
-金属盔甲设计图1,Metal Armor Schematic 1,Blueprint_CopperArmor_2
-热带地区民族服饰设计图4,Tropical Outfit Schematic 4,Blueprint_ClothArmorHeat_5
-热带地区民族服饰设计图3,Tropical Outfit Schematic 3,Blueprint_ClothArmorHeat_4
-热带地区民族服饰设计图2,Tropical Outfit Schematic 2,Blueprint_ClothArmorHeat_3
-热带地区民族服饰设计图1,Tropical Outfit Schematic 1,Blueprint_ClothArmorHeat_2
-寒冷地区民族服饰设计图4,Tundra Outfit Schematic 4,Blueprint_ClothArmorCold_5
-寒冷地区民族服饰设计图3,Tundra Outfit Schematic 3,Blueprint_ClothArmorCold_4
-寒冷地区民族服饰设计图2,Tundra Outfit Schematic 2,Blueprint_ClothArmorCold_3
-寒冷地区民族服饰设计图1,Tundra Outfit Schematic 1,Blueprint_ClothArmorCold_2
-布衣设计图4,Cloth Outfit Schematic 4,Blueprint_ClothArmor_5
-布衣设计图3,Cloth Outfit Schematic 3,Blueprint_ClothArmor_4
-布衣设计图2,Cloth Outfit Schematic 2,Blueprint_ClothArmor_3
-布衣设计图1,Cloth Outfit Schematic 1,Blueprint_ClothArmor_2
-十字弓设计图4,Crossbow Schematic 4,Blueprint_BowGun_5
-十字弓设计图3,Crossbow Schematic 3,Blueprint_BowGun_4
-十字弓设计图2,Crossbow Schematic 2,Blueprint_BowGun_3
-十字弓设计图1,Crossbow Schematic 1,Blueprint_BowGun_2
-突击步枪设计图4,Assault Rifle Schematic 4,Blueprint_AssaultRifle_Default5
-突击步枪设计图3,Assault Rifle Schematic 3,Blueprint_AssaultRifle_Default4
-突击步枪设计图2,Assault Rifle Schematic 2,Blueprint_AssaultRifle_Default3
-突击步枪设计图1,Assault Rifle Schematic 1,Blueprint_AssaultRifle_Default2
-卷饼,Burrito,BLT
-野莓种子,Berry Seeds,BerrySeeds
-,Unused Item,Berries2
-红色野莓,Red Berries,Berries
-,Beer,Beer
-棒球棒,Bat,Bat2
-,Unused Item,Bat_NPC
-木棒,Wooden Club,Bat
-烤蘑菇,Baked Mushroom,BakedMushroom
-棉悠悠羊肉烤串,Lamball Kebab,BakedMeat_SheepBall
-连理龙带骨烤肉,Broncherry Rib Roast,BakedMeat_SakuraSaurus
-蒲烧趴趴鲶,Broiled Dumud,BakedMeat_LazyCatfish
-水灵儿炭烤肉,Grilled Kelpsea,BakedMeat_Kelpie
-严冬鹿炙烤肉,Roast Reindrix,BakedMeat_IceDeer
-森猛犸巨兽烤排,Mammorest Steak,BakedMeat_GrassMammoth
-烤天擒鸟肉,Grilled Galeclaw,BakedMeat_Eagle
-紫霞鹿炙烤肉,Roast Eikthyrdeer,BakedMeat_Deer
-波霸牛牛排,Mozzarina Steak,BakedMeat_CowPal
-烤皮皮鸡,Grilled Chikipi,BakedMeat_ChickenPal
-草莽猪烤全猪,Roast Rushoar,BakedMeat_Boar
-灌木羊香草烤肉,Herb Roasted Caprity,BakedMeat_BerryGoat
-,Unused Item,Baked_Potato
-烤野莓,Baked Berries,Baked_Berries
-草莽猪培根蛋,Rushoar Bacon 'n' Eggs,BaconEggs
-,Axe4,Axe_Tier_03
-精炼金属斧头,Refined Metal Axe,Axe_Tier_02
-金属斧头,Metal Axe,Axe_Tier_01
-石头斧,Stone Axe,Axe_Tier_00
-特大饲料袋,Giant Feed Bag,AutoMealPouch_Tier5
-巨大饲料袋,Huge Feed Bag,AutoMealPouch_Tier4
-大饲料袋,Large Feed Bag,AutoMealPouch_Tier3
-普通饲料袋,Average Feed Bag,AutoMealPouch_Tier2
-小饲料袋,Small Feed Bag,AutoMealPouch_Tier1
-突击步枪子弹,Assault Rifle Ammo,AssaultRifleBullet
-,Unused Item,AssaultRifle_NPC
-突击步枪,Assault Rifle,AssaultRifle_Default5
-突击步枪,Assault Rifle,AssaultRifle_Default4
-突击步枪,Assault Rifle,AssaultRifle_Default3
-突击步枪,Assault Rifle,AssaultRifle_Default2
-突击步枪,Assault Rifle,AssaultRifle_Default1
-毒箭,Poison Arrow,Arrow_Poison
-火箭,Fire Arrow,Arrow_Fire
-箭,Arrow,Arrow
-,Antibiotic_Super,Antibiotic_Super
-,Antibiotic_Normal,Antibiotic_Normal
-,Antibiotic_Good,Antibiotic_Good
-,Unused Item,AnimalSkin2
-,Animal Skin,AnimalSkin
-,Unused Item,AirGrapplingGun
-勤劳吊坠+2,Pendant of Diligence +2,Accessory_WorkSpeed_3
-勤劳吊坠+1,Pendant of Diligence +1,Accessory_WorkSpeed_2
-勤劳吊坠,Pendant of Diligence,Accessory_WorkSpeed_1
-雷属性抵抗戒指+2,Ring of Lightning Resistance +2,Accessory_ThunderResist_3
-雷属性抵抗戒指+1,Ring of Lightning Resistance +1,Accessory_ThunderResist_2
-雷属性抵抗戒指,Ring of Lightning Resistance,Accessory_ThunderResist_1
-无属性抵抗戒指+2,Ring of Resistance +2,Accessory_NormalResist_3
-无属性抵抗戒指+1,Ring of Resistance +1,Accessory_NormalResist_2
-无属性抵抗戒指,Ring of Resistance,Accessory_NormalResist_1
-草属性抵抗戒指+2,Ring of Grass Resistance +2,Accessory_LeafResist_3
-草属性抵抗戒指+1,Ring of Grass Resistance +1,Accessory_LeafResist_2
-草属性抵抗戒指,Ring of Grass Resistance,Accessory_LeafResist_1
-冰属性抵抗戒指+2,Ring of Ice Resistance +2,Accessory_IceResist_3
-冰属性抵抗戒指+1,Ring of Ice Resistance +1,Accessory_IceResist_2
-冰属性抵抗戒指,Ring of Ice Resistance,Accessory_IceResist_1
-生命吊坠+2,Life Pendant +2,Accessory_HP_3
-生命吊坠+1,Life Pendant +1,Accessory_HP_2
-生命吊坠,Life Pendant,Accessory_HP_1
-耐热内衣+2,Heat Resistant Undershirt +2,Accessory_HeatResist_3
-耐热内衣+1,Heat Resistant Undershirt +1,Accessory_HeatResist_2
-耐热内衣,Heat Resistant Undershirt,Accessory_HeatResist_1
-炎属性抵抗戒指+2,Ring of Flame Resistance +2,Accessory_FireResist_3
-炎属性抵抗戒指+1,Ring of Flame Resistance +1,Accessory_FireResist_2
-炎属性抵抗戒指,Ring of Flame Resistance,Accessory_FireResist_1
-地属性抵抗戒指+2,Ring of Earth Resistance +2,Accessory_EarthResist_3
-地属性抵抗戒指+1,Ring of Earth Resistance +1,Accessory_EarthResist_2
-地属性抵抗戒指,Ring of Earth Resistance,Accessory_EarthResist_1
-龙属性抵抗戒指+2,Ring of Dragon Resistance +2,Accessory_DragonResist_3
-龙属性抵抗戒指+1,Ring of Dragon Resistance +1,Accessory_DragonResist_2
-龙属性抵抗戒指,Ring of Dragon Resistance,Accessory_DragonResist_1
-防御吊坠+2,Defense Pendant +2,Accessory_defense_3
-防御吊坠+1,Defense Pendant +1,Accessory_defense_2
-防御吊坠,Defense Pendant,Accessory_defense_1
-暗属性抵抗戒指+2,Ring of Dark Resistance +2,Accessory_DarkResist_3
-暗属性抵抗戒指+1,Ring of Dark Resistance +1,Accessory_DarkResist_2
-暗属性抵抗戒指,Ring of Dark Resistance,Accessory_DarkResist_1
-防寒内衣+2,Thermal Undershirt +2,Accessory_CoolResist_3
-防寒内衣+1,Thermal Undershirt +1,Accessory_CoolResist_2
-防寒内衣,Thermal Undershirt,Accessory_CoolResist_1
-攻击吊坠+2,Attack Pendant +2,Accessory_AT_3
-攻击吊坠+1,Attack Pendant +1,Accessory_AT_2
-攻击吊坠,Attack Pendant,Accessory_AT_1
-水属性抵抗戒指+2,Ring of Water Resistance +2,Accessory_AquaResist_3
-水属性抵抗戒指+1,Ring of Water Resistance +1,Accessory_AquaResist_2
-水属性抵抗戒指,Ring of Water Resistance,Accessory_AquaResist_1
+﻿zhCN,enUS,ItemID,cheatFlag
+羊毛,Wool,Wool,
+木材,Wood,Wood,
+,Wine,Wine,1
+小麦种子,Wheat Seeds,WheatSeeds,
+小麦,Wheat,Wheat,
+陈旧的弓,Old Bow +4,WeakerBow_5,
+陈旧的弓,Old Bow +3,WeakerBow_4,
+陈旧的弓,Old Bow +2,WeakerBow_3,
+陈旧的弓,Old Bow +1,WeakerBow_2,
+陈旧的弓,Old Bow,WeakerBow,
+,Unused Item,WaterBucket,1
+毒腺,Venom Gland,Venom,
+,Unused Item,VenisonBoiledInTomato,1
+便便,Dung,Unko_S,
+大号便便,Huge Dung Pile,Unko_L,
+金钥匙,Gold Key,TreasureBoxKey03,
+银钥匙,Silver Key,TreasureBoxKey02,
+铜钥匙,Copper Key,TreasureBoxKey01,
+携带火把,Hand-held Torch,Torch,
+番茄种子,Tomato Seeds,TomatoSeeds,
+番茄,Tomato,Tomato,
+,Unused Item,ThrowStone,1
+未来技术书,Future Technical Manual,TechnologyBook_G3,
+革新技术书,Innovative Technical Manual,TechnologyBook_G2,
+高等技术书,High Grade Technical Manual,TechnologyBook_G1,
+剑,Sword,Sword,
+棉花糖,Cotton Candy,Sweet,
+硫磺,Sulfur,Sulfur,
+石头,Stone,Stone,
+严冬鹿肉炖菜,Reindrix Stew,StewedIceDeer,
+,Stew,Stew,1
+帕鲁金属锭,Pal Metal Ingot,StealIngot,
+帕鲁金属头盔,Pal Metal Helm +4,StealHelmet_5,
+帕鲁金属头盔,Pal Metal Helm +3,StealHelmet_4,
+帕鲁金属头盔,Pal Metal Helm +2,StealHelmet_3,
+帕鲁金属头盔,Pal Metal Helm +1,StealHelmet_2,
+帕鲁金属头盔,Pal Metal Helm,StealHelmet,
+耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor +4,StealArmorHeat_5,
+耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor +3,StealArmorHeat_4,
+耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor +2,StealArmorHeat_3,
+耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor +1,StealArmorHeat_2,
+耐热帕鲁金属盔甲,Heat Resistant Pal Metal Armor,StealArmorHeat,
+耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor +4,StealArmorCold_5,
+耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor +3,StealArmorCold_4,
+耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor +2,StealArmorCold_3,
+耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor +1,StealArmorCold_2,
+耐寒帕鲁金属盔甲,Cold Resistant Pal Metal Armor,StealArmorCold,
+帕鲁金属盔甲,Pal Metal Armor +4,StealArmor_5,
+帕鲁金属盔甲,Pal Metal Armor +3,StealArmor_4,
+帕鲁金属盔甲,Pal Metal Armor +2,StealArmor_3,
+帕鲁金属盔甲,Pal Metal Armor +1,StealArmor_2,
+帕鲁金属盔甲,Pal Metal Armor,StealArmor,
+消除记忆药,Memory Wiping Medicine,StatusPointResetSan,
+单发型帕鲁球发射器,Single-shot Sphere Launcher,SphereLauncher_Once,
+扩散型帕鲁球发射器,Scatter Sphere Launcher,SphereLauncher,
+骑士蜂之矛,Beegarde's Spear,Spear_SoldierBee,
+女皇蜂之杖,Elizabee's Staff,Spear_QueenBee,
+莉莉之矛,Lily's Spear,Spear_ForestBoss,
+精炼金属长矛,Refined Metal Spear +2,Spear_3,
+金属长矛,Metal Spear +1,Spear_2,
+石头长矛,Stone Spear,Spear,
+,Unused Item,SniperRifle_Default,1
+,Unused Item,SmallBullet,1
+绿苔绒怪的鞍具,Wumpo Botan Saddle,SkillUnlock_Yeti_Grass,
+白绒雪怪的鞍具,Wumpo Saddle,SkillUnlock_Yeti,
+Goujin -o马鞍,Wing Golem Saddle,SkillUnlock_WingGolem,
+冰缚灵的手套,Hangyu Cryst's Glove,SkillUnlock_WindChimes_Ice,
+吊缚灵的手套,Hangyu's Gloves,SkillUnlock_WindChimes,
+疾旋鼬的鞍具,Chillet Saddle,SkillUnlock_WeaselDragon,
+寒霜兽的鞍具,Ice Reptyro Saddle,SkillUnlock_VolcanicMonster_Ice,
+熔岩兽的鞍具,Reptyro Saddle,SkillUnlock_VolcanicMonster,
+腾炎龙的鞍具,Jormuntide Ignis Saddle,SkillUnlock_Umihebi_Fire,
+覆海龙的鞍具,Jormuntide Saddle,SkillUnlock_Umihebi,
+霹雳犬的鞍具,Rayhound Saddle,SkillUnlock_ThunderDog,
+迅雷鸟的鞍具,Beakon Saddle,SkillUnlock_ThunderBird,
+清雀的鞍具,Water Suzaku Saddle,SkillUnlock_Suzaku_Water,
+朱雀的鞍具,Suzaku Saddle,SkillUnlock_Suzaku,
+天羽龙的鞍具,Quivern Saddle,SkillUnlock_SkyDragon,
+流沙蛇的鞍具,Aquadon Terra Saddle,SkillUnlock_Serpent_Ground,
+滑水蛇的鞍具,Surfent Saddle,SkillUnlock_Serpent,
+海誓龙的鞍具,Water Broncherry Saddle,SkillUnlock_SakuraSaurus_Water,
+连理龙的鞍具,Broncherry Saddle,SkillUnlock_SakuraSaurus,
+圣光骑士的鞍具,Paladius Saddle,SkillUnlock_SaintCentaur,
+燧火鸟的鞍具,Ragnahawk Saddle,SkillUnlock_RedArmorBird,
+雷鸣童子的项圈,Dazzi's Necklace,SkillUnlock_RaijinDaughter,
+企丸丸的火箭发射器,Pengullet's Rocket Launcher,SkillUnlock_Penguin,
+勾魂鱿的手套,Killamari's Gloves,SkillUnlock_NegativeOctopus,
+笑魇猫的鞍具,Grintale Saddle,SkillUnlock_NaughtyCat,
+毛老爹的鞍具,Sweepa Saddle,SkillUnlock_MopKing,
+新叶猿的突击步枪,Tanzee's Assault Rifle,SkillUnlock_Monkey,
+狱阎王的鞍具,Dark Kingferno Saddle,SkillUnlock_Manticore_Dark,
+狱焰王的鞍具,Blazehowl Saddle,SkillUnlock_Manticore,
+派克龙的导弹发射器,Relaxaurus Lux's Missile Launcher,SkillUnlock_LazyDragon_Electric,
+佩克龙的导弹发射器,Relaxaurus's Missile Launcher,SkillUnlock_LazyDragon,
+火绒狐的背带,Foxparks's Harness,SkillUnlock_Kitsunebi,
+雷角马的鞍具,Univolt Saddle,SkillUnlock_Kirin,
+焰煌的鞍具,Blazamut Saddle,SkillUnlock_KingBahamut,
+冰帝美露帕的鞍具,Ice Kingpaca Saddle,SkillUnlock_KingAlpaca_Ice,
+君王美露帕的鞍具,Kingpaca Saddle,SkillUnlock_KingAlpaca,
+空涡龙的导弹发射器,Jetragon's Missile Launcher,SkillUnlock_JetDragon,
+唤夜兽的鞍具,Frostallion Noct Saddle,SkillUnlock_IceHorse_Dark,
+唤冬兽的鞍具,Frostallion Saddle,SkillUnlock_IceHorse,
+严冬鹿的鞍具,Reindrix Saddle,SkillUnlock_IceDeer,
+荷鲁斯的鞍具,Faleris Saddle,SkillUnlock_Horus,
+冰刺鼠的手套,Jolthog Cryst's Gloves,SkillUnlock_Hedgehog_Ice,
+電棘鼠的手套,Jolthog's Gloves,SkillUnlock_Hedgehog,
+疾风隼的鞍具,Nitewing Saddle,SkillUnlock_HawkBird,
+雷冥鸟的鞍具,Helzephyr Saddle,SkillUnlock_HadesBird,
+Yakomogoma鞍座,Guardian Dog Saddle,SkillUnlock_GuardianDog,
+雷胖达的榴弹发射器,Mossanda Lux's Grenade Launcher,SkillUnlock_GrassPanda_Electric,
+叶胖达的榴弹发射器,Mossanda's Grenade Launcher,SkillUnlock_GrassPanda,
+雪猛犸的鞍具,Mammorest Cryst Saddle,SkillUnlock_GrassMammoth_Ice,
+森猛犸的鞍具,Mammorest Saddle,SkillUnlock_GrassMammoth,
+kouou的马鞍,Golden Horse Saddle,SkillUnlock_GoldenHorse,
+噬魂兽的鞍具,Maraith Saddle,SkillUnlock_GhostBeast,
+猎狼的挽具鞍具组合,Direhowl's Saddled Harness,SkillUnlock_Garm,
+鲁米儿的手套,Celaray's Gloves,SkillUnlock_FlyingManta,
+波娜兔的项圈,Flopie's Necklace,SkillUnlock_FlowerRabbit,
+雷冠龙的鞍具,Dinossom Lux Saddle,SkillUnlock_FlowerDinosaur_Electric,
+花冠龙的鞍具,Dinossom Saddle,SkillUnlock_FlowerDinosaur,
+炽焰牛的鞍具,Arsox Saddle,SkillUnlock_FlameBuffalo,
+邪麒麟的鞍具,Dark Pyrin Saddle,SkillUnlock_FireKirin_Dark,
+火麒麟的鞍具,Pyrin Saddle,SkillUnlock_FireKirin,
+云海鹿的鞍具,Fenglope Saddle,SkillUnlock_FengyunDeeper,
+Zokucho马鞍,Feather Ostrich Saddle,SkillUnlock_FeatherOstrich,
+水灵龙的鞍具,Water Elphidran Saddle,SkillUnlock_FairyDragon_Water,
+精灵龙的鞍具,Elphidran Saddle,SkillUnlock_FairyDragon,
+暴电熊的机关枪,Grizzbolt's Minigun,SkillUnlock_ElecPanda,
+里约贤者马鞍,Boltmane Saddle,SkillUnlock_ElecLion,
+天擒鸟的手套,Galeclaw's Gloves,SkillUnlock_Eagle,
+碎岩龟的头巾,Digtoise's Headband,SkillUnlock_DrillGame,
+寐魔的项圈,Daedream's Necklace,SkillUnlock_DreamDemon,
+祇岳鹿的鞍具,Eikthyrdeer Terra Saddle,SkillUnlock_Deer_Ground,
+紫霞鹿的鞍具,Eikthyrdeer Saddle,SkillUnlock_Deer,
+Daknesis功率转换器,Dark Mutant's Power Converter,SkillUnlock_DarkMutant,
+炸蛋鸟的手套,Tocotoco's Gloves,SkillUnlock_ColorfulBird,
+翠叶鼠的冲锋枪,Lifmunk's Submachine Gun,SkillUnlock_Carbunclo,
+草莽猪的鞍具,Rushoar Saddle,SkillUnlock_Boar,
+碧海龙的鞍具,Azurobe Saddle,SkillUnlock_BlueDragon,
+魔渊龙的鞍具,Astegon Saddle,SkillUnlock_BlackMetalDragon,
+异构格里芬的鞍具,Shadowbeak Saddle,SkillUnlock_BlackGriffon,
+Shadora shot弹枪,Dragostrophe's Shotgun,SkillUnlock_BlackFurDragon,
+混沌骑士的鞍具,Necromus Saddle,SkillUnlock_BlackCentaur,
+霜歌龙的鞍具,Vanwyrm Cryst Saddle,SkillUnlock_BirdDragon_Ice,
+烽歌龙的鞍具,Vanwyrm Saddle,SkillUnlock_BirdDragon,
+大坝猫shot弹枪,Bad Catgirl's Shotgun,SkillUnlock_BadCatgirl,
+苍焰狼的鞍具,Kitsun Saddle,SkillUnlock_AmaterasuWolf,
+美露帕的鞍具,Melpaca Saddle,SkillUnlock_Alpaca,
+草之技能果实：狂风利刃,Grass Skill Fruit: Wind Cutter,SkillCard_WindCutter,
+水之技能果实：水枪,Water Skill Fruit: Aqua Gun,SkillCard_WaterGun,
+水之技能果实：爆裂水球,Water Skill Fruit: Aqua Burst,SkillCard_WaterBall,
+雷之技能果实：等离子浮游炮,Electric Skill Fruit: Plasma Tornado,SkillCard_ThunderFunnel,
+雷之技能果实：闪电伏特,Electric Skill Fruit: Lightning Bolt,SkillCard_Thunderbolt,
+雷之技能果实：闪电球,Electric Skill Fruit: Electric Ball,SkillCard_ThunderBall,
+地之技能果实：投石,Earth Skill Fruit: Stone Cannon,SkillCard_ThrowRock,
+雷之技能果实：三重雷击,Electric Skill Fruit: Tri-Lightning,SkillCard_ThreeThunder,
+地之技能果实：碎石霰弹,Earth Skill Fruit: Stone Blast,SkillCard_StoneShotgun,
+雷之技能果实：电火花,Electric Skill Fruit: Spark Blast,SkillCard_SpreadPulse,
+草之技能果实：太阳光束,Grass Skill Fruit: Solar Blast,SkillCard_SolarBeam,
+暗之技能果实：噩梦球,Dark Skill Fruit: Nightmare Ball,SkillCard_ShadowBall,
+技能果实：自爆,Skill Fruit: Implode,SkillCard_SelfDestruct,
+草之技能果实：种子地雷,Grass Skill Fruit: Seed Mine,SkillCard_SeedMine,
+草之技能果实：种子机关枪,Grass Skill Fruit: Seed Machine Gun,SkillCard_SeedMachinegun,
+地之技能果实：砂砾飓风,Earth Skill Fruit: Sand Tornado,SkillCard_SandTornado,
+草之技能果实：缠绕地刺,Grass Skill Fruit: Spine Vine,SkillCard_RootAttack,
+地之技能果实：岩石锐矛,Earth Skill Fruit: Rock Lance,SkillCard_RockLance,
+暗之技能果实：念动引力,Dark Skill Fruit: Psycho Gravity,SkillCard_Psychokinesis,
+技能果实：能量射击,Skill Fruit: Power Shot,SkillCard_PowerShot,
+技能果实：元气弹,Skill Fruit: Power Bomb,SkillCard_PowerBall,
+暗之技能果实：剧毒射击,Dark Skill Fruit: Poison Blast,SkillCard_PoisonShot,
+地之技能果实：泥浆投掷,Earth Skill Fruit: Sand Blast,SkillCard_MudShot,
+雷之技能果实：锁定雷射,Electric Skill Fruit: Lock-on Laser,SkillCard_LockonLaser,
+雷之技能果实：雷击,Electric Skill Fruit: Lightning Streak,SkillCard_LineThunder,
+雷之技能果实：闪电冲击,Electric Skill Fruit: Lightning Strike,SkillCard_LightningStrike,
+炎之技能果实：地狱火,Fire Skill Fruit: Ignis Rage,SkillCard_Inferno,
+冰之技能果实：钻石星辰,Ice Skill Fruit: Blizzard Spike,SkillCard_IcicleThrow,
+冰之技能果实：冰雪飞弹,Ice Skill Fruit: Ice Missile,SkillCard_IceMissile,
+冰之技能果实：冰刃,Ice Skill Fruit: Icicle Cutter,SkillCard_IceBlade,
+技能果实：帕鲁光束,Skill Fruit: Pal Blast,SkillCard_HyperBeam,
+水之技能果实：高压水炮,Water Skill Fruit: Hydro Laser,SkillCard_HydroPump,
+草之技能果实：绿野飓风,Grass Skill Fruit: Grass Tornado,SkillCard_GrassTornado,
+暗之技能果实：鬼火,Dark Skill Fruit: Spirit Flame,SkillCard_GhostFlame,
+冰之技能果实：凛冬之息,Ice Skill Fruit: Cryst Breath,SkillCard_FrostBreath,
+炎之技能果实：烈焰风暴,Fire Skill Fruit: Flare Storm,SkillCard_FlareTornado,
+炎之技能果实：烈焰箭,Fire Skill Fruit: Flare Arrow,SkillCard_FlareArrow,
+炎之技能果实：烈焰放射,Fire Skill Fruit: Ignis Breath,SkillCard_Flamethrower,
+炎之技能果实：烈焰溅射,Fire Skill Fruit: Spirit Fire,SkillCard_FireSeed,
+炎之技能果实：烈焰射击,Fire Skill Fruit: Ignis Blast,SkillCard_FireBlast,
+炎之技能果实：烈焰球,Fire Skill Fruit: Fire Ball,SkillCard_FireBall,
+雷之技能果实：冲击波,Electric Skill Fruit: Shockwave,SkillCard_ElecWave,
+龙之技能果实：龙之波动,Dragon Skill Fruit: Dragon Burst,SkillCard_DragonWave,
+龙之技能果实：龙彗星,Dragon Skill Fruit: Dragon Meteor,SkillCard_DragonMeteor,
+龙之技能果实：龙息弹,Dragon Skill Fruit: Dragon Cannon,SkillCard_DragonCanon,
+龙之技能果实：龙息,Dragon Skill Fruit: Draconic Breath,SkillCard_DragonBreath,
+暗之技能果实：暗影波动,Dark Skill Fruit: Shadow Burst,SkillCard_DarkWave,
+暗之技能果实：暗黑镭射,Dark Skill Fruit: Dark Laser,SkillCard_DarkLaser,
+水之技能果实：泡泡射击,Water Skill Fruit: Bubble Blast,SkillCard_BubbleShot,
+冰之技能果实：冰刺,Ice Skill Fruit: Iceberg,SkillCard_BlizzardLance,
+水之技能果实：水流射击,Water Skill Fruit: Hydro Jet,SkillCard_AquaJet,
+技能果实：空气炮,Skill Fruit: Air Cannon,SkillCard_AirCanon,
+水之技能果实：酸雨,Water Skill Fruit: Acid Rain,SkillCard_AcidRain,
+单发步枪,Single-shot Rifle,SingleShotRifle,
+硅,Silicon,Silicon,
+霰弹枪子弹,Shotgun Shells,ShotgunBullet,
+,Unused Item,Shotgun_NPC,1
+特级护盾,Hyper Shield,Shield_04,
+优级护盾,Giga Shield,Shield_03,
+高级护盾,Mega Shield,Shield_02,
+普通护盾,Common Shield,Shield_01,
+,Unused Item,Sharkkid_Scale,1
+,Unused Item,Seed_Tmp,1
+,Seafood Soup,SeafoodSoup,1
+,Unused Item,Scales2,1
+,Unused Item,Scales,1
+蓝宝石,Sapphire,Sapphire,
+,Sandwich,Sandwich,1
+,Unused Item,Sand,1
+沙拉,Salad,Salad,
+红宝石,Ruby,Ruby,
+劣质弹药,Coarse Ammo,RoughBullet,
+,Unused Item,RocketLauncher_NPC,1
+步枪子弹,Rifle Ammo,RifleBullet,
+修理套装,Repair Kit,RepairKit,
+翠叶鼠雕像,Lifmunk Effigy,Relic,
+,Unused Item,RecurveBow,1
+纯水晶,Pure Quartz,Quartz,
+#N/A,ITEM_NAME_PV_Glider_Manta,PV_Glider_Manta,
+,Unused Item,PV_AssaultRifle_Default1,1
+,Unused Item,Pumpkin,1
+泵动式霰弹枪,Pump-action Shotgun +4,PumpActionShotgun_5,
+泵动式霰弹枪,Pump-action Shotgun +3,PumpActionShotgun_4,
+泵动式霰弹枪,Pump-action Shotgun +2,PumpActionShotgun_3,
+泵动式霰弹枪,Pump-action Shotgun +1,PumpActionShotgun_2,
+泵动式霰弹枪,Pump-action Shotgun,PumpActionShotgun,
+,PotatoSeedPotatoes,PotatoSeedPotatoes,1
+,Unused Item,Potato,1
+,Potage,Potage,1
+美丽花朵,Beautiful Flower,Poppy,
+聚合物,Polymer,Polymer,
+,Plastic,Plastic,1
+披萨,Pizza,Pizza,
+,Unused Item,Pickaxe_Tier_03,1
+精炼金属锄头,Refined Metal Pickaxe,Pickaxe_Tier_02,
+金属锄头,Metal Pickaxe,Pickaxe_Tier_01,
+石头锄头,Stone Pickaxe,Pickaxe_Tier_00,
+,Unused Item,PenguinLauncher,1
+松饼,Pancake,Pancake,
+面包,Bread,Pan,
+大型帕鲁之魂,Large Pal Soul,PalUpgradeStone3,
+中型帕鲁之魂,Medium Pal Soul,PalUpgradeStone2,
+小型帕鲁之魂,Small Pal Soul,PalUpgradeStone,
+特级帕鲁球,Hyper Sphere,PalSphere_Tera,
+雷达帕鲁球,Radar Sphere,PalSphere_Robbery,
+高级帕鲁球,Mega Sphere,PalSphere_Mega,
+大师帕鲁球,Ultra Sphere,PalSphere_Master,
+传奇帕鲁球,Legendary Sphere,PalSphere_Legend,
+优级帕鲁球,Giga Sphere,PalSphere_Giga,
+,Pal Sphere,PalSphere_Debug,1
+帕鲁球,Pal Sphere,PalSphere,
+优质帕鲁油,High Quality Pal Oil,PalOil,
+贵重兽毛,Precious Pelt,PalItem_ToSell_05,
+贵重爪子,Precious Claw,PalItem_ToSell_04,
+贵重内脏,Precious Entrails,PalItem_ToSell_03,
+贵重羽毛,Precious Plume,PalItem_ToSell_02,
+贵重龙珠,Precious Dragon Stone,PalItem_ToSell_01,
+叶泥泥的叶子,Gumoss Leaf,PalItem_PlantSlime,
+炸蛋鸟的羽毛,Tocotoco Feather,PalItem_ColorfulBird,
+暗巫猫的体毛,Katress Hair,PalItem_CatMage,
+企丸王的羽饰,Penking Plume,PalItem_CaptainPenguin,
+帕鲁的体液,Pal Fluids,PalFluid,
+巨大潮湿帕鲁蛋,Huge Damp Egg,PalEgg_Water_05,
+大潮湿帕鲁蛋,Large Damp Egg,PalEgg_Water_04,
+大潮湿帕鲁蛋,Large Damp Egg,PalEgg_Water_03,
+潮湿帕鲁蛋,Damp Egg,PalEgg_Water_02,
+潮湿帕鲁蛋,Damp Egg,PalEgg_Water_01,
+巨大平凡帕鲁蛋,Huge Common Egg,PalEgg_Normal_05,
+大平凡帕鲁蛋,Large Common Egg,PalEgg_Normal_04,
+大平凡帕鲁蛋,Large Common Egg,PalEgg_Normal_03,
+平凡帕鲁蛋,Common Egg,PalEgg_Normal_02,
+平凡帕鲁蛋,Common Egg,PalEgg_Normal_01,
+巨大新绿帕鲁蛋,Huge Verdant Egg,PalEgg_Leaf_05,
+大新绿帕鲁蛋,Large Verdant Egg,PalEgg_Leaf_04,
+大新绿帕鲁蛋,Large Verdant Egg,PalEgg_Leaf_03,
+新绿帕鲁蛋,Verdant Egg,PalEgg_Leaf_02,
+新绿帕鲁蛋,Verdant Egg,PalEgg_Leaf_01,
+巨大结冰帕鲁蛋,Huge Frozen Egg,PalEgg_Ice_05,
+大结冰帕鲁蛋,Large Frozen Egg,PalEgg_Ice_04,
+大结冰帕鲁蛋,Large Frozen Egg,PalEgg_Ice_03,
+结冰帕鲁蛋,Frozen Egg,PalEgg_Ice_02,
+结冰帕鲁蛋,Frozen Egg,PalEgg_Ice_01,
+巨大发热帕鲁蛋,Huge Scorching Egg,PalEgg_Fire_05,
+大发热帕鲁蛋,Large Scorching Egg,PalEgg_Fire_04,
+大发热帕鲁蛋,Large Scorching Egg,PalEgg_Fire_03,
+发热帕鲁蛋,Scorching Egg,PalEgg_Fire_02,
+发热帕鲁蛋,Scorching Egg,PalEgg_Fire_01,
+巨大电气帕鲁蛋,Huge Electric Egg,PalEgg_Electricity_05,
+大电气帕鲁蛋,Large Electric Egg,PalEgg_Electricity_04,
+大电气帕鲁蛋,Large Electric Egg,PalEgg_Electricity_03,
+电气帕鲁蛋,Electric Egg,PalEgg_Electricity_02,
+电气帕鲁蛋,Electric Egg,PalEgg_Electricity_01,
+巨大粗糙帕鲁蛋,Huge Rocky Egg,PalEgg_Earth_05,
+大粗糙帕鲁蛋,Large Rocky Egg,PalEgg_Earth_04,
+大粗糙帕鲁蛋,Large Rocky Egg,PalEgg_Earth_03,
+粗糙帕鲁蛋,Rocky Egg,PalEgg_Earth_02,
+粗糙帕鲁蛋,Rocky Egg,PalEgg_Earth_01,
+巨大龙蛋,Huge Dragon Egg,PalEgg_Dragon_05,
+大龙蛋,Large Dragon Egg,PalEgg_Dragon_04,
+大龙蛋,Large Dragon Egg,PalEgg_Dragon_03,
+龙蛋,Dragon Egg,PalEgg_Dragon_02,
+龙蛋,Dragon Egg,PalEgg_Dragon_01,
+巨大暗黑帕鲁蛋,Huge Dark Egg,PalEgg_Dark_05,
+大暗黑帕鲁蛋,Large Dark Egg,PalEgg_Dark_04,
+大暗黑帕鲁蛋,Large Dark Egg,PalEgg_Dark_03,
+暗黑帕鲁蛋,Dark Egg,PalEgg_Dark_02,
+暗黑帕鲁蛋,Dark Egg,PalEgg_Dark_01,
+古代文明部件,Ancient Civilization Parts,PalCrystal_Ex,
+,Unused Item,PAL_Growth_Stone_XL,1
+,Unused Item,PAL_Growth_Stone_S,1
+,Unused Item,PAL_Growth_Stone_M,1
+,Unused Item,PAL_Growth_Stone_L,1
+帕鲁矿碎块,Paldium Fragment,Pal_crystal_S,
+帕鲁矿,Paldium Clump,Pal_crystal_L,
+可疑果汁,Suspicious Juice,Opium,
+欧姆蛋,Omelet,Omelet,
+,Night Vision Goggles,NightVisionGoggles,1
+怪异果汁,Strange Juice,Narcotic,
+鸟枪,Musket,Musket,
+炖蘑菇,Mushroom Stew,MushroomStew,
+蘑菇汤,Mushroom Soup,MushroomSoup,
+蘑菇,Mushroom,Mushroom,
+,ITEM_NAME_MonsterEquipWeapon_Dummy,MonsterEquipWeapon_Dummy,1
+金币,Gold Coin,Money,
+洗脑药,Mind Control Meds,MindControlDrug,
+牛奶,Milk,Milk,
+药品,Medical Supplies,Medicines,
+肉汤,Bolognese Sauce,MeatSauce,
+切肉刀,Meat Cleaver,MeatCutterKnife,
+,Unused Item,Meat2,1
+棉悠悠的羊肉,Lamball Mutton,Meat_SheepBall,
+连理龙的恐龙肉,Broncherry Meat,Meat_SakuraSaurus,
+趴趴鲶的鱼肉,Raw Dumud,Meat_LazyCatfish,
+水灵儿的鱼肉,Raw Kelpsea,Meat_Kelpie,
+严冬鹿的鹿肉,Reindrix Venison,Meat_IceDeer,
+森猛犸的巨兽肉,Mammorest Meat,Meat_GrassMammoth,
+天擒鸟的鸟肉,Galeclaw Poultry,Meat_Eagle,
+紫霞鹿的鹿肉,Eikthyrdeer Venison,Meat_Deer,
+波霸牛的牛肉,Mozzarina Meat,Meat_CowPal,
+皮皮鸡的鸡肉,Chikipi Poultry,Meat_ChickenPal,
+草莽猪的猪肉,Rushoar Pork,Meat_Boar,
+灌木羊的香草肉,Caprity Meat,Meat_BerryGoat,
+生肉,Raw Meat,Meat,
+,Unused Item,MateItem01,1
+腌蘑菇,Marinated Mushrooms,MarinatedMushrooms,
+劣质手枪,Makeshift Handgun,MakeshiftHandgun,
+马格南子弹,Magnum Ammo,MagnumBullet,
+机关枪子弹,Machine Gun Ammo,MachingunBullet,
+电路板,Circuit Board,MachineParts2,
+钉子,Nail,MachineParts,
+,LuxuryOmelette,LuxuryOmelette,1
+高级药品,High Grade Medical Supplies,LuxuryMedicines,
+,Lightz Helmet,LightzHelmet,1
+生菜种子,Lettuce Seeds,LettuceSeeds,
+生菜,Lettuce,Lettuce,
+,Unused Item,Leather2,1
+皮革,Leather,Leather,
+,Unused Item,Launcher_Meat,1
+火箭发射器,Rocket Launcher +4,Launcher_Default_5,
+火箭发射器,Rocket Launcher +3,Launcher_Default_4,
+火箭发射器,Rocket Launcher +2,Launcher_Default_3,
+火箭发射器,Rocket Launcher +1,Launcher_Default_2,
+火箭发射器,Rocket Launcher,Launcher_Default,
+,Unused Item,LaserRifle_NPC,1
+,Unused Item,LaserRifle,1
+,Unused Item,LaserBullet,1
+,Unused Item,LargeBullet,1
+腰挂提灯,Hip Lantern,Lantern,
+,Unused Item,Kitsunebi_Fire,1
+果酱面包,Jam-filled Bun,JamBun,
+,Unused Item,IronOre,1
+精炼金属铸块,Refined Ingot,IronIngot,
+精炼金属头盔,Refined Metal Helm +4,IronHelmet_5,
+精炼金属头盔,Refined Metal Helm +3,IronHelmet_4,
+精炼金属头盔,Refined Metal Helm +2,IronHelmet_3,
+精炼金属头盔,Refined Metal Helm +1,IronHelmet_2,
+精炼金属头盔,Refined Metal Helm,IronHelmet,
+耐热精炼金属盔甲,Heat Resistant Refined Metal Armor +4,IronArmorHeat_5,
+耐热精炼金属盔甲,Heat Resistant Refined Metal Armor +3,IronArmorHeat_4,
+耐热精炼金属盔甲,Heat Resistant Refined Metal Armor +2,IronArmorHeat_3,
+耐热精炼金属盔甲,Heat Resistant Refined Metal Armor +1,IronArmorHeat_2,
+耐热精炼金属盔甲,Heat Resistant Refined Metal Armor,IronArmorHeat,
+耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor +4,IronArmorCold_5,
+耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor +3,IronArmorCold_4,
+耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor +2,IronArmorCold_3,
+耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor +1,IronArmorCold_2,
+耐寒精炼金属盔甲,Cold Resistant Refined Metal Armor,IronArmorCold,
+精炼金属盔甲,Refined Metal Armor +4,IronArmor_5,
+精炼金属盔甲,Refined Metal Armor +3,IronArmor_4,
+精炼金属盔甲,Refined Metal Armor +2,IronArmor_3,
+精炼金属盔甲,Refined Metal Armor +1,IronArmor_2,
+精炼金属盔甲,Refined Metal Armor,IronArmor,
+印花墨水,Decal Ink,InkBullet,
+结冰器官,Ice Organ,IceOrgan,
+热牛奶,Hot Milk,HotMilk,
+草莽猪热狗,Rushoar Hot Dog,HotDog_2,
+热狗,Hot Dog,HotDog,
+角,Horn,Horn,
+,Hop,Hop,1
+蜂蜜,Honey,Honey,
+自动追踪帕鲁球发射器,Homing Sphere Launcher,HomingSphereLauncher,
+低品质药品,Low Grade Medical Supplies,Herbs,
+暗巫猫帽,Katress Cap +4,Head017_5,
+暗巫猫帽,Katress Cap +3,Head017_4,
+暗巫猫帽,Katress Cap +2,Head017_3,
+暗巫猫帽,Katress Cap +1,Head017_2,
+暗巫猫帽,Katress Cap,Head017,
+企丸王帽,Penking Cap +4,Head016_5,
+企丸王帽,Penking Cap +3,Head016_4,
+企丸王帽,Penking Cap +2,Head016_3,
+企丸王帽,Penking Cap +1,Head016_2,
+企丸王帽,Penking Cap,Head016,
+叶泥泥帽,Gumoss Cap +4,Head015_5,
+叶泥泥帽,Gumoss Cap +3,Head015_4,
+叶泥泥帽,Gumoss Cap +2,Head015_3,
+叶泥泥帽,Gumoss Cap +1,Head015_2,
+叶泥泥帽,Gumoss Cap,Head015,
+笑脸炸蛋鸟帽,Grinning Tocotoco Cap +4,Head014_5,
+笑脸炸蛋鸟帽,Grinning Tocotoco Cap +3,Head014_4,
+笑脸炸蛋鸟帽,Grinning Tocotoco Cap +2,Head014_3,
+笑脸炸蛋鸟帽,Grinning Tocotoco Cap +1,Head014_2,
+笑脸炸蛋鸟帽,Grinning Tocotoco Cap,Head014,
+炸蛋鸟帽,Tocotoco Cap +4,Head013_5,
+炸蛋鸟帽,Tocotoco Cap +3,Head013_4,
+炸蛋鸟帽,Tocotoco Cap +2,Head013_3,
+炸蛋鸟帽,Tocotoco Cap +1,Head013_2,
+炸蛋鸟帽,Tocotoco Cap,Head013,
+圆顶礼帽,Bowler Hat +4,Head012_5,
+圆顶礼帽,Bowler Hat +3,Head012_4,
+圆顶礼帽,Bowler Hat +2,Head012_3,
+圆顶礼帽,Bowler Hat +1,Head012_2,
+圆顶礼帽,Bowler Hat,Head012,
+农夫帽,Farming Hat +4,Head011_5,
+农夫帽,Farming Hat +3,Head011_4,
+农夫帽,Farming Hat +2,Head011_3,
+农夫帽,Farming Hat +1,Head011_2,
+农夫帽,Farming Hat,Head011,
+学士帽,Graduation cap +4,Head010_5,
+学士帽,Graduation cap +3,Head010_4,
+学士帽,Graduation cap +2,Head010_3,
+学士帽,Graduation cap +1,Head010_2,
+学士帽,Graduation cap,Head010,
+探险帽,Explorer Cap +4,Head009_5,
+探险帽,Explorer Cap +3,Head009_4,
+探险帽,Explorer Cap +2,Head009_3,
+探险帽,Explorer Cap +1,Head009_2,
+探险帽,Explorer Cap,Head009,
+三角帽,Tricorne +4,Head008_5,
+三角帽,Tricorne +3,Head008_4,
+三角帽,Tricorne +2,Head008_3,
+三角帽,Tricorne +1,Head008_2,
+三角帽,Tricorne,Head008,
+大礼帽,Silk Hat +4,Head007_5,
+大礼帽,Silk Hat +3,Head007_4,
+大礼帽,Silk Hat +2,Head007_3,
+大礼帽,Silk Hat +1,Head007_2,
+大礼帽,Silk Hat,Head007,
+安全帽,Helmet +4,Head006_5,
+安全帽,Helmet +3,Head006_4,
+安全帽,Helmet +2,Head006_3,
+安全帽,Helmet +1,Head006_2,
+安全帽,Helmet,Head006,
+费多拉帽,Soft Hat +4,Head005_5,
+费多拉帽,Soft Hat +3,Head005_4,
+费多拉帽,Soft Hat +2,Head005_3,
+费多拉帽,Soft Hat +1,Head005_2,
+费多拉帽,Soft Hat,Head005,
+魔女帽子,Witch Hat +4,Head004_5,
+魔女帽子,Witch Hat +3,Head004_4,
+魔女帽子,Witch Hat +2,Head004_3,
+魔女帽子,Witch Hat +1,Head004_2,
+魔女帽子,Witch Hat,Head004,
+长耳发箍,Long-eared Headband +4,Head003_5,
+长耳发箍,Long-eared Headband +3,Head003_4,
+长耳发箍,Long-eared Headband +2,Head003_3,
+长耳发箍,Long-eared Headband +1,Head003_2,
+长耳发箍,Long-eared Headband,Head003,
+金冠,Golden Crown +4,Head002_5,
+金冠,Golden Crown +3,Head002_4,
+金冠,Golden Crown +2,Head002_3,
+金冠,Golden Crown +1,Head002_2,
+金冠,Golden Crown,Head002,
+王冠,Monarch's Crown +4,Head001_5,
+王冠,Monarch's Crown +3,Head001_4,
+王冠,Monarch's Crown +2,Head001_3,
+王冠,Monarch's Crown +1,Head001_2,
+王冠,Monarch's Crown,Head001,
+手枪子弹,Handgun Ammo,HandgunBullet,
+,Unused Item,Handgun_NPC,1
+手枪,Handgun +4,HandGun_Default_5,
+手枪,Handgun +3,HandGun_Default_4,
+手枪,Handgun +2,HandGun_Default_3,
+手枪,Handgun +1,HandGun_Default_2,
+手枪,Handgun,HandGun_Default,
+波霸牛汉堡,Mozzarina Hamburger,Hamburger_2,
+汉堡,Hamburger,Hamburger,
+火药,Gunpowder,Gunpowder2,
+,Gunpowder,Gunpowder,1
+棉悠悠香草烤肉,Herb Roasted Lamball,GrilledSheepHerbs,
+烤肉,Grilled Meat,GrilledMeat,
+,Grilled Fish,GrilledFish,1
+特级爪钩枪,Hyper Grappling Gun,GrapplingGun4,
+优级爪钩枪,Giga Grappling Gun,GrapplingGun3,
+高级爪钩枪,Mega Grappling Gun,GrapplingGun2,
+爪钩枪,Grappling Gun,GrapplingGun,
+,Grape,Grape,1
+优级滑翔伞,Giga Glider,Glider_Super,
+普通滑翔伞,Normal Parachute,Glider_Old,
+特级滑翔伞,Hyper Glider,Glider_Legendary,
+高级滑翔伞,Mega Glider,Glider_Good,
+棉悠悠成吉思汗烤肉,Grilled Lamball,GenghisKhan,
+,Unused Item,GatlingGun_NPC,1
+,Gas Mask,GasMask,1
+羽毛发饰,Feathered Hair Band +4,FurHelmet_5,
+羽毛发饰,Feathered Hair Band +3,FurHelmet_4,
+羽毛发饰,Feathered Hair Band +2,FurHelmet_3,
+羽毛发饰,Feathered Hair Band +1,FurHelmet_2,
+羽毛发饰,Feathered Hair Band,FurHelmet,
+耐热毛皮盔甲,Heat Resistant Pelt Armor +4,FurArmorHeat_5,
+耐热毛皮盔甲,Heat Resistant Pelt Armor +3,FurArmorHeat_4,
+耐热毛皮盔甲,Heat Resistant Pelt Armor +2,FurArmorHeat_3,
+耐热毛皮盔甲,Heat Resistant Pelt Armor +1,FurArmorHeat_2,
+耐热毛皮盔甲,Heat Resistant Pelt Armor,FurArmorHeat,
+耐寒毛皮盔甲,Cold Resistant Pelt Armor +4,FurArmorCold_5,
+耐寒毛皮盔甲,Cold Resistant Pelt Armor +3,FurArmorCold_4,
+耐寒毛皮盔甲,Cold Resistant Pelt Armor +2,FurArmorCold_3,
+耐寒毛皮盔甲,Cold Resistant Pelt Armor +1,FurArmorCold_2,
+耐寒毛皮盔甲,Cold Resistant Pelt Armor,FurArmorCold,
+毛皮盔甲,Pelt Armor +4,FurArmor_5,
+毛皮盔甲,Pelt Armor +3,FurArmor_4,
+毛皮盔甲,Pelt Armor +2,FurArmor_3,
+毛皮盔甲,Pelt Armor +1,FurArmor_2,
+毛皮盔甲,Pelt Armor,FurArmor,
+炒蔬菜,Stir-fried Veggies,FriedVegetables,
+炸水灵儿,Fried Kelpsea,FriedKelpie,
+荷包蛋,Fried Egg,FriedEggs,
+炸皮皮鸡肉块,Fried Chikipi,FriedChicken,
+,Unused Item,FragGrenade_NPC,1
+冷冻型手榴弹,Ice Grenade,FragGrenade_Ice,
+燃烧型手榴弹,Incendiary Grenade,FragGrenade_Fire,
+电击型手榴弹,Shock Grenade,FragGrenade_Elec,
+破片手榴弹,Frag Grenade,FragGrenade,
+面粉,Flour,Flour,
+,Unused Item,Flint,1
+,Unused Item,FlameThrower_NPC,1
+,Unused Item,FishMeat2,1
+,Unused Item,FishMeat,1
+,Fishing Rod_Super,FishingRod_Super,1
+,Fishing Rod_Old,FishingRod_Old,1
+,Fishing Rod_Legendary,FishingRod_Legendary,1
+,Fishing Rod_Good,FishingRod_Good,1
+喷火器官,Flame Organ,FireOrgan,
+纤维,Fiber,Fiber,
+,Unused Item,FarmCrop_Tmp,1
+,Unused Item,FangNecklace,1
+,Unused Item,Fang2,1
+,Fang,Fang,1
+火箭弹,Rocket Ammo,ExplosiveBullet,
+,Unused Item,EnergyDrink,1
+,Unused Item,ElectronicCircuit,1
+发电器官,Electric Organ,ElectricOrgan,
+电棍,Stun Baton,ElecBaton,
+蛋,Egg,Egg,
+绿宝石,Emerald,Eemerald,
+炖煮天擒鸟肉,Stewed Galeclaw,Eaglestew,
+双管霰弹枪,Double-barreled Shotgun,DoubleBarrelShotgun,
+钻石,Diamond,Diamond,
+紫霞鹿肉炖菜,Eikthyrdeer Stew,DeerStew,
+夏威夷紫霞鹿汉堡饭,Eikthyrdeer Loco Moco,DeerLocoMoco,
+印花枪5,Decal Gun 5,DecalGun_5,
+印花枪4,Decal Gun 4,DecalGun_4,
+印花枪3,Decal Gun 3,DecalGun_3,
+印花枪2,Decal Gun 2,DecalGun_2,
+印花枪1,Decal Gun 1,DecalGun_1,
+,Unused Item,Debug_Handgun_Wetness,1
+,Unused Item,Debug_Handgun_Stun,1
+,Unused Item,Debug_Handgun_Poison,1
+,Unused Item,Debug_Handgun_Muddy,1
+,Unused Item,Debug_Handgun_IvyCling,1
+,Unused Item,Debug_Handgun_Freeze,1
+,Unused Item,Debug_Handgun_Electrical,1
+,Unused Item,Debug_Handgun_DefenseUp,1
+,Unused Item,Debug_Handgun_Darkness,1
+,Unused Item,Debug_Handgun_Burn,1
+,Unused Item,Debug_Handgun_AttackUp,1
+,Curry,Curry,1
+,Crude Oil,CrudeOil,1
+,Corn Soup,CornSoup,1
+,Unused Item,Corn,1
+金属矿石,Ore,CopperOre,
+金属铸块,Ingot,CopperIngot,
+金属头盔,Metal Helm +4,CopperHelmet_5,
+金属头盔,Metal Helm +3,CopperHelmet_4,
+金属头盔,Metal Helm +2,CopperHelmet_3,
+金属头盔,Metal Helm +1,CopperHelmet_2,
+金属头盔,Metal Helm,CopperHelmet,
+耐热金属盔甲,Heat Resistant Metal Armor +4,CopperArmorHeat_5,
+耐热金属盔甲,Heat Resistant Metal Armor +3,CopperArmorHeat_4,
+耐热金属盔甲,Heat Resistant Metal Armor +2,CopperArmorHeat_3,
+耐热金属盔甲,Heat Resistant Metal Armor +1,CopperArmorHeat_2,
+耐热金属盔甲,Heat Resistant Metal Armor,CopperArmorHeat,
+耐寒金属盔甲,Cold Resistant Metal Armor +4,CopperArmorCold_5,
+耐寒金属盔甲,Cold Resistant Metal Armor +3,CopperArmorCold_4,
+耐寒金属盔甲,Cold Resistant Metal Armor +2,CopperArmorCold_3,
+耐寒金属盔甲,Cold Resistant Metal Armor +1,CopperArmorCold_2,
+耐寒金属盔甲,Cold Resistant Metal Armor,CopperArmorCold,
+金属盔甲,Metal Armor +4,CopperArmor_5,
+金属盔甲,Metal Armor +3,CopperArmor_4,
+金属盔甲,Metal Armor +2,CopperArmor_3,
+金属盔甲,Metal Armor +1,CopperArmor_2,
+金属盔甲,Metal Armor,CopperArmor,
+,Computer,Computer,1
+石炭,Coal,Coal,
+,Unused Item,ClothHat,1
+热带地区民族服饰,Tropical Outfit +4,ClothArmorHeat_5,
+热带地区民族服饰,Tropical Outfit +3,ClothArmorHeat_4,
+热带地区民族服饰,Tropical Outfit +2,ClothArmorHeat_3,
+热带地区民族服饰,Tropical Outfit +1,ClothArmorHeat_2,
+热带地区民族服饰,Tropical Outfit,ClothArmorHeat,
+寒冷地区民族服饰,Tundra Outfit +4,ClothArmorCold_5,
+寒冷地区民族服饰,Tundra Outfit +3,ClothArmorCold_4,
+寒冷地区民族服饰,Tundra Outfit +2,ClothArmorCold_3,
+寒冷地区民族服饰,Tundra Outfit +1,ClothArmorCold_2,
+寒冷地区民族服饰,Tundra Outfit,ClothArmorCold,
+布衣服,Cloth Outfit +4,ClothArmor_5,
+布衣服,Cloth Outfit +3,ClothArmor_4,
+布衣服,Cloth Outfit +2,ClothArmor_3,
+布衣服,Cloth Outfit +1,ClothArmor_2,
+布衣服,Cloth Outfit,ClothArmor,
+优质的布,High Quality Cloth,Cloth2,
+布,Cloth,Cloth,
+,Unused Item,ClawsPendant,1
+,Unused Item,Claws2,1
+,Claw,Claws,1
+趴趴鲶杂烩,Dumud Chowder,Chowder,
+嫩煎皮皮鸡,Chikipi Sauté,ChickenSaute,
+波霸牛芝士汉堡,Mozzarina Cheeseburger,Cheeseburger_2,
+芝士汉堡,Cheeseburger,CheeseBurger,
+木炭,Charcoal,Charcoal,
+水泥,Cement,Cement,
+,Unused Item,CashScales,1
+,Unused Item,CashFang,1
+碳纤维,Carbon Fiber,CarbonFiber,
+奶油培根意面,Carbonara,Carbonara,
+,Unused Item,CaptureRope,1
+蛋糕,Cake,Cake,
+毒箭十字弓,Poison Arrow Crossbow,BowGun_Poison,
+,Unused Item,BowGun_NPC,1
+火箭十字弓,Fire Arrow Crossbow,BowGun_Fire,
+十字弓,Crossbow +4,BowGun_5,
+十字弓,Crossbow +3,BowGun_4,
+十字弓,Crossbow +2,BowGun_3,
+十字弓,Crossbow +1,BowGun_2,
+十字弓,Crossbow,BowGun,
+三连弓,Three Shot Bow,Bow_Triple,
+毒之弓,Poison Bow,Bow_Poison,
+火之弓,Fire Bow,Bow_Fire,
+五连弓,Five Shot Bow,Bow_Fifth,
+骨头,Bone,Bone,
+#N/A,ITEM_NAME_BlueprintTest,BlueprintTest,1
+陈旧的弓设计图4,Old Bow Schematic 4,Blueprint_WeakerBow_5,
+陈旧的弓设计图3,Old Bow Schematic 3,Blueprint_WeakerBow_4,
+陈旧的弓设计图2,Old Bow Schematic 2,Blueprint_WeakerBow_3,
+陈旧的弓设计图1,Old Bow Schematic 1,Blueprint_WeakerBow_2,
+帕鲁金属头盔设计图4,Pal Metal Helm Schematic 4,Blueprint_StealHelmet_5,
+帕鲁金属头盔设计图3,Pal Metal Helm Schematic 3,Blueprint_StealHelmet_4,
+帕鲁金属头盔设计图2,Pal Metal Helm Schematic 2,Blueprint_StealHelmet_3,
+帕鲁金属头盔设计图1,Pal Metal Helm Schematic 1,Blueprint_StealHelmet_2,
+耐热帕鲁金属盔甲设计图4,Heat Resistant Pal Metal Armor Schematic 4,Blueprint_StealArmorHeat_5,
+耐热帕鲁金属盔甲设计图3,Heat Resistant Pal Metal Armor Schematic 3,Blueprint_StealArmorHeat_4,
+耐热帕鲁金属盔甲设计图2,Heat Resistant Pal Metal Armor Schematic 2,Blueprint_StealArmorHeat_3,
+耐热帕鲁金属盔甲设计图1,Heat Resistant Pal Metal Armor Schematic 1,Blueprint_StealArmorHeat_2,
+耐寒帕鲁金属盔甲设计图4,Cold Resistant Pal Metal Armor Schematic 4,Blueprint_StealArmorCold_5,
+耐寒帕鲁金属盔甲设计图3,Cold Resistant Pal Metal Armor Schematic 3,Blueprint_StealArmorCold_4,
+耐寒帕鲁金属盔甲设计图2,Cold Resistant Pal Metal Armor Schematic 2,Blueprint_StealArmorCold_3,
+耐寒帕鲁金属盔甲设计图1,Cold Resistant Pal Metal Armor Schematic 1,Blueprint_StealArmorCold_2,
+帕鲁金属盔甲设计图4,Pal Metal Armor Schematic 4,Blueprint_StealArmor_5,
+帕鲁金属盔甲设计图3,Pal Metal Armor Schematic 3,Blueprint_StealArmor_4,
+帕鲁金属盔甲设计图2,Pal Metal Armor Schematic 2,Blueprint_StealArmor_3,
+帕鲁金属盔甲设计图1,Pal Metal Armor Schematic 1,Blueprint_StealArmor_2,
+泵动式霰弹枪设计图4,Pump-Action Shotgun Schematic 4,Blueprint_PumpActionShotgun_5,
+泵动式霰弹枪设计图3,Pump-Action Shotgun Schematic 3,Blueprint_PumpActionShotgun_4,
+泵动式霰弹枪设计图2,Pump-Action Shotgun Schematic 2,Blueprint_PumpActionShotgun_3,
+泵动式霰弹枪设计图1,Pump-Action Shotgun Schematic 1,Blueprint_PumpActionShotgun_2,
+火箭发射器设计图4,Rocket Launcher Schematic 4,Blueprint_Launcher_Default_5,
+火箭发射器设计图3,Rocket Launcher Schematic 3,Blueprint_Launcher_Default_4,
+火箭发射器设计图2,Rocket Launcher Schematic 2,Blueprint_Launcher_Default_3,
+火箭发射器设计图1,Rocket Launcher Schematic 1,Blueprint_Launcher_Default_2,
+精炼金属头盔设计图4,Refined Metal Helm Schematic 4,Blueprint_IronHelmet_5,
+精炼金属头盔设计图3,Refined Metal Helm Schematic 3,Blueprint_IronHelmet_4,
+精炼金属头盔设计图2,Refined Metal Helm Schematic 2,Blueprint_IronHelmet_3,
+精炼金属头盔设计图1,Refined Metal Helm Schematic 1,Blueprint_IronHelmet_2,
+耐热精炼金属盔甲设计图4,Heat Resistant Refined Metal Armor Schematic 4,Blueprint_IronArmorHeat_5,
+耐热精炼金属盔甲设计图3,Heat Resistant Refined Metal Armor Schematic 3,Blueprint_IronArmorHeat_4,
+耐热精炼金属盔甲设计图2,Heat Resistant Refined Metal Armor Schematic 2,Blueprint_IronArmorHeat_3,
+耐热精炼金属盔甲设计图1,Heat Resistant Refined Metal Armor Schematic 1,Blueprint_IronArmorHeat_2,
+耐寒精炼金属盔甲设计图4,Cold Resistant Refined Metal Armor Schematic 4,Blueprint_IronArmorCold_5,
+耐寒精炼金属盔甲设计图3,Cold Resistant Refined Metal Armor Schematic 3,Blueprint_IronArmorCold_4,
+耐寒精炼金属盔甲设计图2,Cold Resistant Refined Metal Armor Schematic 2,Blueprint_IronArmorCold_3,
+耐寒精炼金属盔甲设计图1,Cold Resistant Refined Metal Armor Schematic 1,Blueprint_IronArmorCold_2,
+精炼金属盔甲设计图4,Refined Metal Armor Schematic 4,Blueprint_IronArmor_5,
+精炼金属盔甲设计图3,Refined Metal Armor Schematic 3,Blueprint_IronArmor_4,
+精炼金属盔甲设计图2,Refined Metal Armor Schematic 2,Blueprint_IronArmor_3,
+精炼金属盔甲设计图1,Refined Metal Armor Schematic 1,Blueprint_IronArmor_2,
+克莱梅奥帽子设计图5,Design Blueprint of Clemence Hat 5,Blueprint_Head017_5,
+暗巫猫帽设计图4,Katress Cap Schematic 4,Blueprint_Head017_4,
+暗巫猫帽设计图3,Katress Cap Schematic 3,Blueprint_Head017_3,
+暗巫猫帽设计图2,Katress Cap Schematic 2,Blueprint_Head017_2,
+暗巫猫帽设计图1,Katress Cap Schematic 1,Blueprint_Head017_1,
+凯本帽设计图纸5,Blueprint of Capppen Hat 5,Blueprint_Head016_5,
+企丸王帽设计图4,Penking Cap Schematic 4,Blueprint_Head016_4,
+企丸王帽设计图3,Penking Cap Schematic 3,Blueprint_Head016_3,
+企丸王帽设计图2,Penking Cap Schematic 2,Blueprint_Head016_2,
+企丸王帽设计图1,Penking Cap Schematic 1,Blueprint_Head016_1,
+纳恩魔帽设计图5,5 Blueprints of Naemochi Hat,Blueprint_Head015_5,
+叶泥泥帽设计图4,Gumoss Cap Schematic 4,Blueprint_Head015_4,
+叶泥泥帽设计图3,Gumoss Cap Schematic 3,Blueprint_Head015_3,
+叶泥泥帽设计图2,Gumoss Cap Schematic 2,Blueprint_Head015_2,
+叶泥泥帽设计图1,Gumoss Cap Schematic 1,Blueprint_Head015_1,
+咧咧微笑螺旋帽的设计图5,Grinning Curly Hat Blueprint 5,Blueprint_Head014_5,
+笑脸炸蛋鸟帽设计图4,Grinning Tocotoco Cap Schematic 4,Blueprint_Head014_4,
+笑脸炸蛋鸟帽设计图3,Grinning Tocotoco Cap Schematic 3,Blueprint_Head014_3,
+笑脸炸蛋鸟帽设计图2,Grinning Tocotoco Cap Schematic 2,Blueprint_Head014_2,
+笑脸炸蛋鸟帽设计图1,Grinning Tocotoco Cap Schematic 1,Blueprint_Head014_1,
+<クルットリ帽>的设计图5,Design Plan 5 for the Crutchli Hat,Blueprint_Head013_5,
+炸蛋鸟帽设计图4,Tocotoco Cap Schematic 4,Blueprint_Head013_4,
+炸蛋鸟帽设计图3,Tocotoco Cap Schematic 3,Blueprint_Head013_3,
+炸蛋鸟帽设计图2,Tocotoco Cap Schematic 2,Blueprint_Head013_2,
+炸蛋鸟帽设计图1,Tocotoco Cap Schematic 1,Blueprint_Head013_1,
+圆顶礼帽的设计图5,Blueprint of Bowler Hat 5,Blueprint_Head012_5,
+圆顶礼帽的设计图4,Bowler Hat Schematic 4,Blueprint_Head012_4,
+圆顶礼帽的设计图3,Bowler Hat Schematic 3,Blueprint_Head012_3,
+圆顶礼帽的设计图2,Bowler Hat Schematic 2,Blueprint_Head012_2,
+圆顶礼帽的设计图1,Bowler Hat Schematic 1,Blueprint_Head012_1,
+农业帽子设计图5,5 Diagrams of Agricultural Hat,Blueprint_Head011_5,
+农夫帽设计图4,Farming Hat Schematic 4,Blueprint_Head011_4,
+农夫帽设计图3,Farming Hat Schematic 3,Blueprint_Head011_3,
+农夫帽设计图2,Farming Hat Schematic 2,Blueprint_Head011_2,
+农夫帽设计图1,Farming Hat Schematic 1,Blueprint_Head011_1,
+大学帽设计图5,Blueprint 5 of University Hat,Blueprint_Head010_5,
+学士帽设计图4,Graduate Cap Schematic 4,Blueprint_Head010_4,
+学士帽设计图3,Graduate Cap Schematic 3,Blueprint_Head010_3,
+学士帽设计图2,Graduate Cap Schematic 2,Blueprint_Head010_2,
+学士帽设计图1,Graduate Cap Schematic 1,Blueprint_Head010_1,
+探险帽设计图5,Blueprint of Exploration Hat 5,Blueprint_Head009_5,
+探险帽设计图4,Exploration Cap Schematic 4,Blueprint_Head009_4,
+探险帽设计图3,Exploration Cap Schematic 3,Blueprint_Head009_3,
+探险帽设计图2,Exploration Cap Schematic 2,Blueprint_Head009_2,
+探险帽设计图1,Exploration Cap Schematic 1,Blueprint_Head009_1,
+三角帽设计图纸5,Blueprint of the Tricorn Hat 5,Blueprint_Head008_5,
+三角帽设计图4,Tricorne Schematic 4,Blueprint_Head008_4,
+三角帽设计图3,Tricorne Schematic 3,Blueprint_Head008_3,
+三角帽设计图2,Tricorne Schematic 2,Blueprint_Head008_2,
+三角帽设计图1,Tricorne Schematic 1,Blueprint_Head008_1,
+丝绸高帽子的设计图5,5 Schematic Diagrams of the Silk Hat,Blueprint_Head007_5,
+大礼帽设计图4,Silk Hat Schematic 4,Blueprint_Head007_4,
+大礼帽设计图3,Silk Hat Schematic 3,Blueprint_Head007_3,
+大礼帽设计图2,Silk Hat Schematic 2,Blueprint_Head007_2,
+大礼帽设计图1,Silk Hat Schematic 1,Blueprint_Head007_1,
+头盔设计图5,Blueprint of Helmet 5,Blueprint_Head006_5,
+安全帽设计图4,Helmet Schematic 4,Blueprint_Head006_4,
+安全帽设计图3,Helmet Schematic 3,Blueprint_Head006_3,
+安全帽设计图2,Helmet Schematic 2,Blueprint_Head006_2,
+安全帽设计图1,Helmet Schematic 1,Blueprint_Head006_1,
+软帽设计图纸5,Blueprint of Soft Hat 5,Blueprint_Head005_5,
+费多拉帽设计图4,Soft Hat Schematic 4,Blueprint_Head005_4,
+费多拉帽设计图3,Soft Hat Schematic 3,Blueprint_Head005_3,
+费多拉帽设计图2,Soft Hat Schematic 2,Blueprint_Head005_2,
+费多拉帽设计图1,Soft Hat Schematic 1,Blueprint_Head005_1,
+魔女帽子设计图5,Design of Witch Hat No. 5,Blueprint_Head004_5,
+女巫帽设计图4,Witch Hat Schematic 4,Blueprint_Head004_4,
+女巫帽设计图3,Witch Hat Schematic 3,Blueprint_Head004_3,
+女巫帽设计图2,Witch Hat Schematic 2,Blueprint_Head004_2,
+女巫帽设计图1,Witch Hat Schematic 1,Blueprint_Head004_1,
+长耳发箍的设计图5,5 Blueprints of Long-eared Headband,Blueprint_Head003_5,
+长耳发箍设计图4,Long-eared Headband Schematic 4,Blueprint_Head003_4,
+长耳发箍设计图3,Long-eared Headband Schematic 3,Blueprint_Head003_3,
+长耳发箍设计图2,Long-eared Headband Schematic 2,Blueprint_Head003_2,
+长耳发箍设计图1,Long-eared Headband Schematic 1,Blueprint_Head003_1,
+#N/A,ITEM_NAME_Blueprint_Head002_5,Blueprint_Head002_5,1
+金冠设计图4,Golden Crown Schematic 4,Blueprint_Head002_4,
+金冠设计图3,Golden Crown Schematic 3,Blueprint_Head002_3,
+金冠设计图2,Golden Crown Schematic 2,Blueprint_Head002_2,
+金冠设计图1,Golden Crown Schematic 1,Blueprint_Head002_1,
+王冠设计图5,Blueprint of the King's Crown 5,Blueprint_Head001_5,
+王冠设计图4,Monarch's Crown Schematic 4,Blueprint_Head001_4,
+王冠设计图3,Monarch's Crown Schematic 3,Blueprint_Head001_3,
+王冠设计图2,Monarch's Crown Schematic 2,Blueprint_Head001_2,
+王冠设计图1,Monarch's Crown Schematic 1,Blueprint_Head001_1,
+手枪设计图4,Handgun Schematic 4,Blueprint_HandGun_Default_5,
+手枪设计图3,Handgun Schematic 3,Blueprint_HandGun_Default_4,
+手枪设计图2,Handgun Schematic 2,Blueprint_HandGun_Default_3,
+手枪设计图1,Handgun Schematic 1,Blueprint_HandGun_Default_2,
+羽毛发饰设计图4,Feathered Hair Band Schematic 4,Blueprint_FurHelmet_5,
+羽毛发饰设计图3,Feathered Hair Band Schematic 3,Blueprint_FurHelmet_4,
+羽毛发饰设计图2,Feathered Hair Band Schematic 2,Blueprint_FurHelmet_3,
+羽毛发饰设计图1,Feathered Hair Band Schematic 1,Blueprint_FurHelmet_2,
+耐热毛皮盔甲设计图4,Heat Resistant Pelt Armor Schematic 4,Blueprint_FurArmorHeat_5,
+耐热毛皮盔甲设计图3,Heat Resistant Pelt Armor Schematic 3,Blueprint_FurArmorHeat_4,
+耐热毛皮盔甲设计图2,Heat Resistant Pelt Armor Schematic 2,Blueprint_FurArmorHeat_3,
+耐热毛皮盔甲设计图1,Heat Resistant Pelt Armor Schematic 1,Blueprint_FurArmorHeat_2,
+耐寒毛皮盔甲设计图4,Cold Resistant Pelt Armor Schematic 4,Blueprint_FurArmorCold_5,
+耐寒毛皮盔甲设计图3,Cold Resistant Pelt Armor Schematic 3,Blueprint_FurArmorCold_4,
+耐寒毛皮盔甲设计图2,Cold Resistant Pelt Armor Schematic 2,Blueprint_FurArmorCold_3,
+耐寒毛皮盔甲设计图1,Cold Resistant Pelt Armor Schematic 1,Blueprint_FurArmorCold_2,
+毛皮盔甲设计图4,Pelt Armor Schematic 4,Blueprint_FurArmor_5,
+毛皮盔甲设计图3,Pelt Armor Schematic 3,Blueprint_FurArmor_4,
+毛皮盔甲设计图2,Pelt Armor Schematic 2,Blueprint_FurArmor_3,
+毛皮盔甲设计图1,Pelt Armor Schematic 1,Blueprint_FurArmor_2,
+金属头盔设计图4,Metal Helm Schematic 4,Blueprint_CopperHelmet_5,
+金属头盔设计图3,Metal Helm Schematic 3,Blueprint_CopperHelmet_4,
+金属头盔设计图2,Metal Helm Schematic 2,Blueprint_CopperHelmet_3,
+金属头盔设计图1,Metal Helm Schematic 1,Blueprint_CopperHelmet_2,
+耐热金属盔甲设计图4,Heat Resistant Metal Armor Schematic 4,Blueprint_CopperArmorHeat_5,
+耐热金属盔甲设计图3,Heat Resistant Metal Armor Schematic 3,Blueprint_CopperArmorHeat_4,
+耐热金属盔甲设计图2,Heat Resistant Metal Armor Schematic 2,Blueprint_CopperArmorHeat_3,
+耐热金属盔甲设计图1,Heat Resistant Metal Armor Schematic 1,Blueprint_CopperArmorHeat_2,
+耐寒金属盔甲设计图4,Cold Resistant Metal Armor Schematic 4,Blueprint_CopperArmorCold_5,
+耐寒金属盔甲设计图3,Cold Resistant Metal Armor Schematic 3,Blueprint_CopperArmorCold_4,
+耐寒金属盔甲设计图2,Cold Resistant Metal Armor Schematic 2,Blueprint_CopperArmorCold_3,
+耐寒金属盔甲设计图1,Cold Resistant Metal Armor Schematic 1,Blueprint_CopperArmorCold_2,
+金属盔甲设计图4,Metal Armor Schematic 4,Blueprint_CopperArmor_5,
+金属盔甲设计图3,Metal Armor Schematic 3,Blueprint_CopperArmor_4,
+金属盔甲设计图2,Metal Armor Schematic 2,Blueprint_CopperArmor_3,
+金属盔甲设计图1,Metal Armor Schematic 1,Blueprint_CopperArmor_2,
+热带地区民族服饰设计图4,Tropical Outfit Schematic 4,Blueprint_ClothArmorHeat_5,
+热带地区民族服饰设计图3,Tropical Outfit Schematic 3,Blueprint_ClothArmorHeat_4,
+热带地区民族服饰设计图2,Tropical Outfit Schematic 2,Blueprint_ClothArmorHeat_3,
+热带地区民族服饰设计图1,Tropical Outfit Schematic 1,Blueprint_ClothArmorHeat_2,
+寒冷地区民族服饰设计图4,Tundra Outfit Schematic 4,Blueprint_ClothArmorCold_5,
+寒冷地区民族服饰设计图3,Tundra Outfit Schematic 3,Blueprint_ClothArmorCold_4,
+寒冷地区民族服饰设计图2,Tundra Outfit Schematic 2,Blueprint_ClothArmorCold_3,
+寒冷地区民族服饰设计图1,Tundra Outfit Schematic 1,Blueprint_ClothArmorCold_2,
+布衣设计图4,Cloth Outfit Schematic 4,Blueprint_ClothArmor_5,
+布衣设计图3,Cloth Outfit Schematic 3,Blueprint_ClothArmor_4,
+布衣设计图2,Cloth Outfit Schematic 2,Blueprint_ClothArmor_3,
+布衣设计图1,Cloth Outfit Schematic 1,Blueprint_ClothArmor_2,
+十字弓设计图4,Crossbow Schematic 4,Blueprint_BowGun_5,
+十字弓设计图3,Crossbow Schematic 3,Blueprint_BowGun_4,
+十字弓设计图2,Crossbow Schematic 2,Blueprint_BowGun_3,
+十字弓设计图1,Crossbow Schematic 1,Blueprint_BowGun_2,
+突击步枪设计图4,Assault Rifle Schematic 4,Blueprint_AssaultRifle_Default5,
+突击步枪设计图3,Assault Rifle Schematic 3,Blueprint_AssaultRifle_Default4,
+突击步枪设计图2,Assault Rifle Schematic 2,Blueprint_AssaultRifle_Default3,
+突击步枪设计图1,Assault Rifle Schematic 1,Blueprint_AssaultRifle_Default2,
+卷饼,Burrito,BLT,
+野莓种子,Berry Seeds,BerrySeeds,
+,Unused Item,Berries2,1
+红色野莓,Red Berries,Berries,
+,Beer,Beer,11
+棒球棒,Bat,Bat2,
+,Unused Item,Bat_NPC,1
+木棒,Wooden Club,Bat,
+烤蘑菇,Baked Mushroom,BakedMushroom,
+棉悠悠羊肉烤串,Lamball Kebab,BakedMeat_SheepBall,
+连理龙带骨烤肉,Broncherry Rib Roast,BakedMeat_SakuraSaurus,
+蒲烧趴趴鲶,Broiled Dumud,BakedMeat_LazyCatfish,
+水灵儿炭烤肉,Grilled Kelpsea,BakedMeat_Kelpie,
+严冬鹿炙烤肉,Roast Reindrix,BakedMeat_IceDeer,
+森猛犸巨兽烤排,Mammorest Steak,BakedMeat_GrassMammoth,
+烤天擒鸟肉,Grilled Galeclaw,BakedMeat_Eagle,
+紫霞鹿炙烤肉,Roast Eikthyrdeer,BakedMeat_Deer,
+波霸牛牛排,Mozzarina Steak,BakedMeat_CowPal,
+烤皮皮鸡,Grilled Chikipi,BakedMeat_ChickenPal,
+草莽猪烤全猪,Roast Rushoar,BakedMeat_Boar,
+灌木羊香草烤肉,Herb Roasted Caprity,BakedMeat_BerryGoat,
+,Unused Item,Baked_Potato,1
+烤野莓,Baked Berries,Baked_Berries,
+草莽猪培根蛋,Rushoar Bacon 'n' Eggs,BaconEggs,
+,Axe4,Axe_Tier_03,1
+精炼金属斧头,Refined Metal Axe,Axe_Tier_02,
+金属斧头,Metal Axe,Axe_Tier_01,
+石头斧,Stone Axe,Axe_Tier_00,
+特大饲料袋,Giant Feed Bag,AutoMealPouch_Tier5,
+巨大饲料袋,Huge Feed Bag,AutoMealPouch_Tier4,
+大饲料袋,Large Feed Bag,AutoMealPouch_Tier3,
+普通饲料袋,Average Feed Bag,AutoMealPouch_Tier2,
+小饲料袋,Small Feed Bag,AutoMealPouch_Tier1,
+突击步枪子弹,Assault Rifle Ammo,AssaultRifleBullet,
+,Unused Item,AssaultRifle_NPC,1
+突击步枪,Assault Rifle,AssaultRifle_Default5,
+突击步枪,Assault Rifle,AssaultRifle_Default4,
+突击步枪,Assault Rifle,AssaultRifle_Default3,
+突击步枪,Assault Rifle,AssaultRifle_Default2,
+突击步枪,Assault Rifle,AssaultRifle_Default1,
+毒箭,Poison Arrow,Arrow_Poison,
+火箭,Fire Arrow,Arrow_Fire,
+箭,Arrow,Arrow,
+,Antibiotic_Super,Antibiotic_Super,1
+,Antibiotic_Normal,Antibiotic_Normal,1
+,Antibiotic_Good,Antibiotic_Good,1
+,Unused Item,AnimalSkin2,1
+,Animal Skin,AnimalSkin,1
+,Unused Item,AirGrapplingGun,1
+勤劳吊坠+2,Pendant of Diligence +2,Accessory_WorkSpeed_3,
+勤劳吊坠+1,Pendant of Diligence +1,Accessory_WorkSpeed_2,
+勤劳吊坠,Pendant of Diligence,Accessory_WorkSpeed_1,
+雷属性抵抗戒指+2,Ring of Lightning Resistance +2,Accessory_ThunderResist_3,
+雷属性抵抗戒指+1,Ring of Lightning Resistance +1,Accessory_ThunderResist_2,
+雷属性抵抗戒指,Ring of Lightning Resistance,Accessory_ThunderResist_1,
+无属性抵抗戒指+2,Ring of Resistance +2,Accessory_NormalResist_3,
+无属性抵抗戒指+1,Ring of Resistance +1,Accessory_NormalResist_2,
+无属性抵抗戒指,Ring of Resistance,Accessory_NormalResist_1,
+草属性抵抗戒指+2,Ring of Grass Resistance +2,Accessory_LeafResist_3,
+草属性抵抗戒指+1,Ring of Grass Resistance +1,Accessory_LeafResist_2,
+草属性抵抗戒指,Ring of Grass Resistance,Accessory_LeafResist_1,
+冰属性抵抗戒指+2,Ring of Ice Resistance +2,Accessory_IceResist_3,
+冰属性抵抗戒指+1,Ring of Ice Resistance +1,Accessory_IceResist_2,
+冰属性抵抗戒指,Ring of Ice Resistance,Accessory_IceResist_1,
+生命吊坠+2,Life Pendant +2,Accessory_HP_3,
+生命吊坠+1,Life Pendant +1,Accessory_HP_2,
+生命吊坠,Life Pendant,Accessory_HP_1,
+耐热内衣+2,Heat Resistant Undershirt +2,Accessory_HeatResist_3,
+耐热内衣+1,Heat Resistant Undershirt +1,Accessory_HeatResist_2,
+耐热内衣,Heat Resistant Undershirt,Accessory_HeatResist_1,
+炎属性抵抗戒指+2,Ring of Flame Resistance +2,Accessory_FireResist_3,
+炎属性抵抗戒指+1,Ring of Flame Resistance +1,Accessory_FireResist_2,
+炎属性抵抗戒指,Ring of Flame Resistance,Accessory_FireResist_1,
+地属性抵抗戒指+2,Ring of Earth Resistance +2,Accessory_EarthResist_3,
+地属性抵抗戒指+1,Ring of Earth Resistance +1,Accessory_EarthResist_2,
+地属性抵抗戒指,Ring of Earth Resistance,Accessory_EarthResist_1,
+龙属性抵抗戒指+2,Ring of Dragon Resistance +2,Accessory_DragonResist_3,
+龙属性抵抗戒指+1,Ring of Dragon Resistance +1,Accessory_DragonResist_2,
+龙属性抵抗戒指,Ring of Dragon Resistance,Accessory_DragonResist_1,
+防御吊坠+2,Defense Pendant +2,Accessory_defense_3,
+防御吊坠+1,Defense Pendant +1,Accessory_defense_2,
+防御吊坠,Defense Pendant,Accessory_defense_1,
+暗属性抵抗戒指+2,Ring of Dark Resistance +2,Accessory_DarkResist_3,
+暗属性抵抗戒指+1,Ring of Dark Resistance +1,Accessory_DarkResist_2,
+暗属性抵抗戒指,Ring of Dark Resistance,Accessory_DarkResist_1,
+防寒内衣+2,Thermal Undershirt +2,Accessory_CoolResist_3,
+防寒内衣+1,Thermal Undershirt +1,Accessory_CoolResist_2,
+防寒内衣,Thermal Undershirt,Accessory_CoolResist_1,
+攻击吊坠+2,Attack Pendant +2,Accessory_AT_3,
+攻击吊坠+1,Attack Pendant +1,Accessory_AT_2,
+攻击吊坠,Attack Pendant,Accessory_AT_1,
+水属性抵抗戒指+2,Ring of Water Resistance +2,Accessory_AquaResist_3,
+水属性抵抗戒指+1,Ring of Water Resistance +1,Accessory_AquaResist_2,
+水属性抵抗戒指,Ring of Water Resistance,Accessory_AquaResist_1,
