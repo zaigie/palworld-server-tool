@@ -18,6 +18,8 @@ import dayjs from "dayjs";
 import skillDescMap from "@/assets/skillDesc.json";
 import palZHTypes from "@/assets/zhTypes.json";
 import palZHSkills from "@/assets/zhSkills.json";
+import palJATypes from "@/assets/jaTypes.json";
+import palJASkills from "@/assets/jaSkills.json";
 
 const { t, locale } = useI18n();
 
@@ -61,6 +63,9 @@ const handleSelectLanguage = (key) => {
   if (key === "zh") {
     localStorage.setItem("locale", "zh");
     // locale.value = "zh";
+  } else if (key === "ja") {
+    localStorage.setItem("locale", "ja");
+    // locale.value = "ja";
   } else {
     localStorage.setItem("locale", "en");
     // locale.value = "en";
@@ -73,6 +78,8 @@ const handleSelectLanguage = (key) => {
 const getSkillTypeList = () => {
   if (locale.value === "zh") {
     return Object.values(palZHSkills);
+  } else if (local.value === "ja") {
+    return Object.values(palJASkills);
   } else if (locale.value === "en") {
     return Object.keys(palZHSkills);
   }
@@ -111,6 +118,13 @@ const getPlayerInfo = async (player_uid) => {
         return palZHSkills[skill] ? palZHSkills[skill] : skill;
       });
       pal.typeName = palZHTypes[pal.type] ? palZHTypes[pal.type] : pal.type;
+    });
+  } else if (locale.value === "ja") {
+    playerInfo.value.pals.forEach((pal) => {
+      pal.skills = pal.skills.map((skill) => {
+        return palJASkills[skill] ? palJASkills[skill] : skill;
+      });
+      pal.typeName = palJATypes[pal.type] ? palJATypes[pal.type] : pal.type;
     });
   } else {
     playerInfo.value.pals.forEach((pal) => {
@@ -417,6 +431,11 @@ onMounted(async () => {
       label: "English",
       key: "en",
       disabled: locale.value == "en",
+    },
+    {
+      label: "日本語",
+      key: "ja",
+      disabled: locale.value == "ja",
     },
   ];
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -920,6 +939,10 @@ onMounted(async () => {
                         ? palZHTypes[palDetail.type]
                           ? palZHTypes[palDetail.type]
                           : palDetail.type
+                      locale === "ja"
+                        ? palZHTypes[palDetail.type]
+                            ? palZHTypes[palDetail.type]
+                            : palDetail.type
                         : palDetail.type
                     }}
                   </template>
