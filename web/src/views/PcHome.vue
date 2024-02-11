@@ -1037,7 +1037,7 @@ onMounted(async () => {
                       : locale === "ja"
                         ? palJATypes[palDetail.type]
                           ? palJATypes[palDetail.type]
-                          : plaDetail.type
+                          : palDetail.type
                         : palDetail.type
                   }}
                 </template>
