@@ -92,7 +92,7 @@ const getSkillTypeList = () => {
   if (locale.value === "zh") {
     return Object.values(palZHSkills);
   } else if (locale.value === "ja") {
-    return Object.keys(palJASkills);
+    return Object.values(palJASkills);
   } else if (locale.value === "en") {
     return Object.keys(palZHSkills);
   }
