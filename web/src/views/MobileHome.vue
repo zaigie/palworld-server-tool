@@ -939,11 +939,11 @@ onMounted(async () => {
                         ? palZHTypes[palDetail.type]
                           ? palZHTypes[palDetail.type]
                           : palDetail.type
-                      locale === "ja"
-                        ? palZHTypes[palDetail.type]
+                        : locale === "ja"
+                          ? palZHTypes[palDetail.type]
                             ? palZHTypes[palDetail.type]
                             : palDetail.type
-                        : palDetail.type
+                          : palDetail.type
                     }}
                   </template>
                   <n-space class="mb-2" justify="center">
