@@ -28,6 +28,8 @@ import dayjs from "dayjs";
 import skillDescMap from "@/assets/skillDesc.json";
 import palZHTypes from "@/assets/zhTypes.json";
 import palZHSkills from "@/assets/zhSkills.json";
+import palJATypes from "@/assets/jaTypes.json";
+import palJASkills from "@/assets/jaSkills.json";
 
 const { t, locale } = useI18n();
 
@@ -74,6 +76,9 @@ const handleSelectLanguage = (key) => {
   if (key === "zh") {
     localStorage.setItem("locale", "zh");
     // locale.value = "zh";
+  } else if (key === "ja") {
+    localStorage.setItem("locale", "ja");
+    // locale.value = "ja";
   } else {
     localStorage.setItem("locale", "en");
     // locale.value = "en";
@@ -86,6 +91,8 @@ const handleSelectLanguage = (key) => {
 const getSkillTypeList = () => {
   if (locale.value === "zh") {
     return Object.values(palZHSkills);
+  } else if (locale.value === "ja") {
+    return Object.values(palJASkills);
   } else if (locale.value === "en") {
     return Object.keys(palZHSkills);
   }
@@ -131,6 +138,13 @@ const getPlayerInfo = async (player_uid) => {
         return palZHSkills[skill] ? palZHSkills[skill] : skill;
       });
       pal.typeName = palZHTypes[pal.type] ? palZHTypes[pal.type] : pal.type;
+    });
+  } else if (locale.value === "ja") {
+    playerInfo.value.pals.forEach((pal) => {
+      pal.skills = pal.skills.map((skill) => {
+        return palJASkills[skill] ? palJASkills[skill] : skill;
+      });
+      pal.typeName = palJATypes[pal.type] ? palJATypes[pal.type] : pal.type;
     });
   } else {
     playerInfo.value.pals.forEach((pal) => {
@@ -425,8 +439,8 @@ const getWhiteList = async () => {
   const { data } = await new ApiService().getWhitelist();
   if (data.value) {
     whiteList.value = data.value;
-  }else {
-    whiteList.value = []
+  } else {
+    whiteList.value = [];
   }
 };
 
@@ -450,7 +464,9 @@ const addWhiteData = ref({
   steam_id: "",
 });
 const addWhiteList = async () => {
-  const { data, statusCode } = await new ApiService().addWhitelist(addWhiteData);
+  const { data, statusCode } = await new ApiService().addWhitelist(
+    addWhiteData
+  );
   if (statusCode.value === 200) {
     message.success(t("message.addwhitesuccess"));
     showAddWhiteListModal.value = false;
@@ -459,11 +475,13 @@ const addWhiteList = async () => {
   }
 };
 const putWhiteList = async () => {
-  if(whiteList.value.length === 0) {
+  if (whiteList.value.length === 0) {
     return;
   }
-  const whiteListData = JSON.stringify(whiteList.value)
-  const { data, statusCode } = await new ApiService().putWhitelist(whiteListData);
+  const whiteListData = JSON.stringify(whiteList.value);
+  const { data, statusCode } = await new ApiService().putWhitelist(
+    whiteListData
+  );
   if (statusCode.value === 200) {
     message.success(t("message.addwhitesuccess"));
     showAddWhiteListModal.value = false;
@@ -474,9 +492,9 @@ const putWhiteList = async () => {
 const showAddWhiteListModal = ref(false);
 const handleAddWhiteList = () => {
   if (checkAuthToken()) {
-    addWhiteData.value.name = playerInfo.value.nickname
-    addWhiteData.value.player_uid = playerInfo.value.player_uid
-    addWhiteData.value.steam_id = playerInfo.value.steam_id
+    addWhiteData.value.name = playerInfo.value.nickname;
+    addWhiteData.value.player_uid = playerInfo.value.player_uid;
+    addWhiteData.value.steam_id = playerInfo.value.steam_id;
     showAddWhiteListModal.value = true;
   } else {
     message.error(t("message.requireauth"));
@@ -626,6 +644,11 @@ onMounted(async () => {
       key: "en",
       disabled: locale.value == "en",
     },
+    {
+      label: "日本語",
+      key: "ja",
+      disabled: locale.value == "ja",
+    },
   ];
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   mediaQuery.addEventListener("change", updateDarkMode);
@@ -744,12 +767,12 @@ onMounted(async () => {
             </n-space>
             <n-space v-if="isLogin">
               <n-button
-                  :size="smallScreen ? 'medium' : 'large'"
-                  type="warning"
-                  secondary
-                  strong
-                  round
-                  @click="handleWhiteList"
+                :size="smallScreen ? 'medium' : 'large'"
+                type="warning"
+                secondary
+                strong
+                round
+                @click="handleWhiteList"
               >
                 <template #icon>
                   <n-icon>
@@ -1047,7 +1070,11 @@ onMounted(async () => {
                       ? palZHTypes[palDetail.type]
                         ? palZHTypes[palDetail.type]
                         : palDetail.type
-                      : palDetail.type
+                      : locale === "ja"
+                        ? palJATypes[palDetail.type]
+                          ? palJATypes[palDetail.type]
+                          : palDetail.type
+                        : palDetail.type
                   }}
                 </template>
                 <n-space class="mb-2" justify="center">
@@ -1206,12 +1233,12 @@ onMounted(async () => {
           >
             <n-flex justify="end">
               <n-button
-                  @click="handleAddWhiteList"
-                  type="success"
-                  size="large"
-                  secondary
-                  strong
-                  round
+                @click="handleAddWhiteList"
+                type="success"
+                size="large"
+                secondary
+                strong
+                round
               >
                 <template #icon>
                   <n-icon>
@@ -1354,7 +1381,7 @@ onMounted(async () => {
     v-model:show="showWhiteListModal"
     class="custom-card"
     preset="card"
-    style="width: 90%; max-width: 700px;"
+    style="width: 90%; max-width: 700px"
     footer-style="padding: 12px;"
     content-style="padding: 12px;"
     header-style="padding: 12px;"
@@ -1369,32 +1396,54 @@ onMounted(async () => {
       <n-empty description="empty" v-if="whiteList.length==0"> </n-empty>
       <n-virtual-list ref="virtualListInst" v-else style="max-height: 240px" :item-size="42" :items="whiteList">
         <template #default="{ item }">
-          <div :key="item.player_uid" class="flex flex-col item mlr-3 mb-3" style="height: 42px">
-            <n-grid >
+          <div
+            :key="item.player_uid"
+            class="flex flex-col item mlr-3 mb-3"
+            style="height: 42px"
+          >
+            <n-grid>
               <n-gi span="19">
                 <n-input-group>
-                  <n-input v-model:value="item.name" :style="{ width: '33%' }" :placeholder="$t('input.nickname')"/>
-                  <n-input v-model:value="item.player_uid" :style="{ width: '33%' }" :placeholder="$t('input.player_uid')"/>
-                  <n-input v-model:value="item.steam_id" :style="{ width: '33%' }" :placeholder="$t('input.steam_id')" />
+                  <n-input
+                    v-model:value="item.name"
+                    :style="{ width: '33%' }"
+                    :placeholder="$t('input.nickname')"
+                  />
+                  <n-input
+                    v-model:value="item.player_uid"
+                    :style="{ width: '33%' }"
+                    :placeholder="$t('input.player_uid')"
+                  />
+                  <n-input
+                    v-model:value="item.steam_id"
+                    :style="{ width: '33%' }"
+                    :placeholder="$t('input.steam_id')"
+                  />
                 </n-input-group>
               </n-gi>
               <n-gi span="5">
                 <div class="flex justify-end mr-3">
                   <n-space v-if="item.player_uid || item.steam_id">
                     <n-button
-                        strong secondary type="primary"
-                        @click="() => {
-                          getPlayerInfo(item.player_uid)
+                      strong
+                      secondary
+                      type="primary"
+                      @click="
+                        () => {
+                          getPlayerInfo(item.player_uid);
                           showWhiteListModal = false;
-                        }"
+                        }
+                      "
                     >
                       <template #icon>
                         <n-icon><RemoveRedEyeTwotone /></n-icon>
                       </template>
-                    </n-button >
+                    </n-button>
                     <n-button
-                        @click="removeWhiteList(item)"
-                        strong secondary type="error"
+                      @click="removeWhiteList(item)"
+                      strong
+                      secondary
+                      type="error"
                     >
                       <template #icon>
                         <n-icon><DeleteOutlineTwotone /></n-icon>
@@ -1407,7 +1456,6 @@ onMounted(async () => {
           </div>
         </template>
       </n-virtual-list>
-
     </div>
     <template #footer>
       <div class="flex justify-end">
@@ -1431,9 +1479,11 @@ onMounted(async () => {
           </n-button>
 
           <n-button
-              :disabled="whiteList.length === 0"
-              @click="putWhiteList"
-              strong secondary type="success"
+            :disabled="whiteList.length === 0"
+            @click="putWhiteList"
+            strong
+            secondary
+            type="success"
           >
             {{ $t("button.save") }}
           </n-button>
@@ -1452,10 +1502,9 @@ onMounted(async () => {
     header-style="padding: 12px;"
     :title="$t('modal.addWhitelist')"
     :bordered="false"
-    >
-
+  >
     <div>
-      <n-grid >
+      <n-grid>
         <n-gi span="5">
           <div class="flex justify-center">
             {{ $t("message.selectVerify") }}
@@ -1463,9 +1512,21 @@ onMounted(async () => {
         </n-gi>
         <n-gi span="19">
           <n-input-group>
-            <n-input v-model:value="addWhiteData.name" :style="{ width: '33%' }" :placeholder="$t('input.nickname')"/>
-            <n-input v-model:value="addWhiteData.player_uid" :style="{ width: '33%' }" :placeholder="$t('input.player_uid')"/>
-            <n-input v-model:value="addWhiteData.steam_id" :style="{ width: '33%' }" :placeholder="$t('input.steam_id')" />
+            <n-input
+              v-model:value="addWhiteData.name"
+              :style="{ width: '33%' }"
+              :placeholder="$t('input.nickname')"
+            />
+            <n-input
+              v-model:value="addWhiteData.player_uid"
+              :style="{ width: '33%' }"
+              :placeholder="$t('input.player_uid')"
+            />
+            <n-input
+              v-model:value="addWhiteData.steam_id"
+              :style="{ width: '33%' }"
+              :placeholder="$t('input.steam_id')"
+            />
           </n-input-group>
         </n-gi>
       </n-grid>
@@ -1473,8 +1534,8 @@ onMounted(async () => {
     <template #footer>
       <div class="flex justify-end">
         <n-button
-            type="tertiary"
-            @click="
+          type="tertiary"
+          @click="
             () => {
               showAddWhiteListModal = false;
             }
@@ -1483,10 +1544,13 @@ onMounted(async () => {
           {{ $t("button.cancel") }}
         </n-button>
         <n-button
-            class="ml-3 w-40"
-            type="primary"
-            @click="addWhiteList"
-            :disabled="!addWhiteData.name || (!addWhiteData.player_uid && !addWhiteData.steam_id)"
+          class="ml-3 w-40"
+          type="primary"
+          @click="addWhiteList"
+          :disabled="
+            !addWhiteData.name ||
+            (!addWhiteData.player_uid && !addWhiteData.steam_id)
+          "
         >
           {{ $t("button.confirm") }}
         </n-button>

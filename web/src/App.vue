@@ -1,5 +1,5 @@
 <script setup>
-import { zhCN, dateZhCN, darkTheme } from "naive-ui";
+import { zhCN, dateZhCN, jaJP, dateJaJP, darkTheme } from "naive-ui";
 import pageStore from "@/stores/model/page.js";
 import { onMounted } from "vue";
 
@@ -44,6 +44,9 @@ onMounted(() => {
     if (locale.value == "zh") {
       uiLocale.value = zhCN;
       uiDateLocale.value = dateZhCN;
+    } else if (locale.value == "ja") {
+      uiLocale.value = jaJP;
+      uiDateLocale.value = dateJaJP;
     } else if (locale.value == "en") {
       uiLocale.value = null;
       uiDateLocale.value = null;
