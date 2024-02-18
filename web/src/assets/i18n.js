@@ -17,6 +17,7 @@ const messages = {
       master: "Master",
       player_number: "Player: {number}",
       online_number: "Online: {number}",
+      whitelist: "Whitelist",
     },
     message: {
       warn: "Warning",
@@ -67,11 +68,8 @@ const messages = {
       whitelist: "Whitelist",
       joinWhitelist: "Join Whitelist",
       search: "Search",
-    },
-    input: {
-      nickname: "Nickname",
-      player_uid: "Player Uid",
-      steam_id: "Steam Id",
+      addNew: "Add New",
+      save: "Save",
     },
     pal: {
       type: "Type",
@@ -86,6 +84,9 @@ const messages = {
     },
     input: {
       searchPlaceholder: "Search for pal type and skills",
+      nickname: "Nickname",
+      player_uid: "Player Uid",
+      steam_id: "Steam Id",
     },
   },
   zh: {
@@ -104,6 +105,7 @@ const messages = {
       master: "会长",
       player_number: "玩家: {number}",
       online_number: "在线: {number}",
+      whitelist: "白名单",
     },
     message: {
       warn: "警告",
@@ -153,11 +155,8 @@ const messages = {
       whitelist: "白名单管理",
       joinWhitelist: "加入白名单",
       search: "搜索",
-    },
-    input: {
-      nickname: "昵称",
-      player_uid: "玩家 Uid",
-      steam_id: "Steam Id",
+      addNew: "新增",
+      save: "保存",
     },
     pal: {
       type: "类型",
@@ -172,6 +171,9 @@ const messages = {
     },
     input: {
       searchPlaceholder: "搜索帕鲁类型、技能",
+      nickname: "昵称",
+      player_uid: "玩家 Uid",
+      steam_id: "Steam Id",
     },
   },
   ja: {

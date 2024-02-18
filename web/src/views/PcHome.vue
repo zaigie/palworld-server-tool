@@ -433,6 +433,9 @@ const handleWhiteList = () => {
   }
 };
 const getWhiteList = async () => {
+  if (!checkAuthToken()) {
+    return;
+  }
   const { data } = await new ApiService().getWhitelist();
   if (data.value) {
     whiteList.value = data.value;
@@ -442,6 +445,10 @@ const getWhiteList = async () => {
 };
 
 const removeWhiteList = async (player) => {
+  if(player.player_uid || player.steam_id) {
+    message.error(t("message.removewhitefail", { err: "player_uid or steam_id is required" }));
+    return;
+  }
   const { data, statusCode } = await new ApiService().removeWhitelist(player);
   if (statusCode.value === 200) {
     message.success(t("message.removewhitesuccess"));
@@ -494,6 +501,28 @@ const handleAddWhiteList = () => {
     showAddWhiteListModal.value = true;
   }
 };
+const virtualListInst = ref();
+const handleAddNewWhiteList = () => {
+  whiteList.value.unshift({
+    name: "",
+    player_uid: "",
+    steam_id: "",
+  })
+  virtualListInst.value?.scrollTo({ index: 0 });
+};
+const isWhite = (player) => {
+  if(whiteList.value.length === 0) {
+    return false;
+  }
+  return whiteList.value.some(whitelistItem => {
+    return (
+        (whitelistItem.player_uid && whitelistItem.player_uid === player.player_uid) ||
+        (whitelistItem.steam_id && whitelistItem.steam_id === player.steam_id)
+    );
+  });
+}
+
+
 // broadcast
 const showBroadcastModal = ref(false);
 const broadcastText = ref("");
@@ -630,6 +659,7 @@ onMounted(async () => {
   checkAuthToken();
   getServerInfo();
   await getPlayerList();
+  await getWhiteList();
   loading.value = false;
   setInterval(() => {
     getPlayerList(false);
@@ -820,6 +850,9 @@ onMounted(async () => {
                       <n-tag class="ml-2" type="primary" size="small" round>
                         Lv.{{ player.level }}
                       </n-tag>
+                      <n-tag class="ml-2" type="warning" size="small" round v-if="isWhite(player)">
+                        {{ $t("status.whitelist") }}
+                      </n-tag>
                       <span class="flex-1 pl-2 font-bold line-clamp-1">{{
                         player.nickname
                       }}</span>
@@ -895,6 +928,9 @@ onMounted(async () => {
                           : $t("status.offline")
                       }}</n-tag
                     >
+                    <n-tag class="ml-2" type="warning" round v-if="isWhite(playerInfo)">
+                      {{ $t("status.whitelist") }}
+                    </n-tag>
                     <n-button
                       @click="copyText(playerInfo.player_uid)"
                       class="ml-3"
@@ -1327,8 +1363,8 @@ onMounted(async () => {
           type="tertiary"
           @click="
             () => {
-              showLoginModal = false;
-              password = '';
+              showBroadcastModal = false;
+              broadcastText = '';
             }
           "
           >{{ $t("button.cancel") }}</n-button
@@ -1357,13 +1393,8 @@ onMounted(async () => {
     :segmented="segmented"
   >
     <div>
-      <n-empty description="什么都没有" v-if="whiteList.length == 0"> </n-empty>
-      <n-virtual-list
-        v-else
-        style="max-height: 240px"
-        :item-size="42"
-        :items="whiteList"
-      >
+      <n-empty description="empty" v-if="whiteList.length==0"> </n-empty>
+      <n-virtual-list ref="virtualListInst" v-else style="max-height: 240px" :item-size="42" :items="whiteList">
         <template #default="{ item }">
           <div
             :key="item.player_uid"
@@ -1392,7 +1423,7 @@ onMounted(async () => {
               </n-gi>
               <n-gi span="5">
                 <div class="flex justify-end mr-3">
-                  <n-space>
+                  <n-space v-if="item.player_uid || item.steam_id">
                     <n-button
                       strong
                       secondary
@@ -1430,12 +1461,19 @@ onMounted(async () => {
       <div class="flex justify-end">
         <n-space>
           <n-button
-            type="tertiary"
-            @click="
-              () => {
-                showWhiteListModal = false;
-              }
-            "
+              type="primary"
+              @click="handleAddNewWhiteList"
+          >
+            {{ $t("button.addNew") }}
+          </n-button>
+
+          <n-button
+              type="tertiary"
+              @click="
+            () => {
+              showWhiteListModal = false;
+            }
+          "
           >
             {{ $t("button.cancel") }}
           </n-button>
@@ -1447,7 +1485,7 @@ onMounted(async () => {
             secondary
             type="success"
           >
-            保存
+            {{ $t("button.save") }}
           </n-button>
         </n-space>
       </div>

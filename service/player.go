@@ -305,8 +305,13 @@ func PutWhitelist(db *bbolt.DB, players []database.PlayerW) error {
 			if err != nil {
 				return err
 			}
-			// 生成新玩家的唯一键，这里假设player.PlayerUID是唯一的
-			if err := b.Put([]byte(player.PlayerUID), playerData); err != nil {
+			identifier := player.PlayerUID
+			if identifier == "" {
+				if identifier = player.SteamID; identifier == "" {
+					continue
+				}
+			}
+			if err := b.Put([]byte(identifier), playerData); err != nil {
 				return err
 			}
 		}
