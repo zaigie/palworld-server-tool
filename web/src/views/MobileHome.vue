@@ -319,6 +319,7 @@ const handleBroadcast = async () => {
   }
 };
 
+//shutdown
 const doShutdown = async () => {
   return await new ApiService().shutdownServer({
     seconds: 60,
@@ -326,7 +327,6 @@ const doShutdown = async () => {
   });
 };
 
-// shutdown
 const handleShutdown = () => {
   if (checkAuthToken()) {
     dialog.warning({
@@ -1141,8 +1141,8 @@ onMounted(async () => {
           type="tertiary"
           @click="
             () => {
-              showLoginModal = false;
-              password = '';
+              showBroadcastModal = false;
+              broadcastText = '';
             }
           "
           >{{ $t("button.cancel") }}</n-button
