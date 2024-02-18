@@ -95,21 +95,18 @@ func limitCacheFiles(cacheDir string, n int) {
 		return
 	}
 
-	var fileInfos []os.DirEntry
-	for _, file := range files {
-		if !file.IsDir() {
-			fileInfos = append(fileInfos, file)
-		}
-	}
-
-	sort.Slice(fileInfos, func(i, j int) bool {
-		infoI, _ := fileInfos[i].Info()
-		infoJ, _ := fileInfos[j].Info()
+	sort.Slice(files, func(i, j int) bool {
+		infoI, _ := files[i].Info()
+		infoJ, _ := files[j].Info()
 		return infoI.ModTime().After(infoJ.ModTime())
 	})
 
 	// Delete files that exceed the limit
-	for i := n; i < len(fileInfos); i++ {
-		os.Remove(filepath.Join(cacheDir, fileInfos[i].Name()))
+	for i := n; i < len(files); i++ {
+		path := filepath.Join(cacheDir, files[i].Name())
+		err = os.RemoveAll(path)
+		if err != nil {
+			fmt.Println("delete files path", path, err)
+		}
 	}
 }
