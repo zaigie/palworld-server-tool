@@ -67,6 +67,7 @@ const messages = {
       viewPlayer: "View Player",
       whitelist: "Whitelist",
       joinWhitelist: "Join Whitelist",
+      removeWhitelist: "Remove Whitelist",
       search: "Search",
       addNew: "Add New",
       save: "Save",
@@ -154,6 +155,7 @@ const messages = {
       viewPlayer: "查看玩家",
       whitelist: "白名单管理",
       joinWhitelist: "加入白名单",
+      removeWhitelist: " 移除白名单",
       search: "搜索",
       addNew: "新增",
       save: "保存",
@@ -216,7 +218,8 @@ const messages = {
       broadcastsuccess: "全体メッセージを配信しました！",
       shutdownsuccess: "シャットダウンに成功しました！",
       broadcastfail: "全体メッセージ配信に失敗しました: {err}",
-      broadcastasciierr: "全体メッセージ配信は現在ASCII文字にのみ対応しています",
+      broadcastasciierr:
+        "全体メッセージ配信は現在ASCII文字にのみ対応しています",
       shutdownfail: "シャットダウンに失敗しました: {err}",
       shutdowntip:
         "全体メッセージを配信し、60秒後にサーバーをシャットダウンします",
@@ -241,6 +244,7 @@ const messages = {
       viewPlayer: "プレイヤーを見る",
       whitelist: "ホワイトリスト",
       joinWhitelist: "ホワイトリストに追加",
+      removeWhitelist: "ホワイトリストを削除します",
       search: "検索",
     },
     input: {
