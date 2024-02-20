@@ -1,7 +1,7 @@
 {
     "en": {
         "Anubis": "Anubis",
-        "Boss_Anubis": "Anubis (Boss)",
+        "BOSS_Anubis": "Anubis (Boss)",
         "FlameBuffalo": "Arsox",
         "BOSS_FlameBuffalo": "Arsox (Boss)",
         "BlackMetalDragon": "Astegon",
@@ -169,7 +169,7 @@
         "BOSS_KingAlpaca": "Kingpaca (Boss)",
         "AmaterasuWolf": "Kitsun",
         "BOSS_AmaterasuWolf": "Kitsun (Boss)",
-        "SheepBall": "Lamball",
+        "Sheepball": "Lamball",
         "BOSS_SheepBall": "Lamball (Boss)",
         "LizardMan": "Leezpunk",
         "BOSS_LizardMan": "Leezpunk (Boss)",
@@ -390,7 +390,7 @@
     },
     "zh": {
         "Anubis": "阿努比斯",
-        "Boss_Anubis": "Anubis (Boss)",
+        "BOSS_Anubis": "阿努比斯 (Boss)",
         "FlameBuffalo": "炽焰牛",
         "BOSS_FlameBuffalo": "炽焰牛 (Boss)",
         "BlackMetalDragon": "魔渊龙",
@@ -558,7 +558,7 @@
         "BOSS_KingAlpaca": "君王美露帕 (Boss)",
         "AmaterasuWolf": "苍焰狼",
         "BOSS_AmaterasuWolf": "苍焰狼 (Boss)",
-        "SheepBall": "棉悠悠",
+        "Sheepball": "棉悠悠",
         "BOSS_SheepBall": "棉悠悠 (Boss)",
         "LizardMan": "朋克蜥",
         "BOSS_LizardMan": "朋克蜥 (Boss)",
@@ -779,7 +779,7 @@
     },
     "ja": {
         "Anubis": "アヌビス",
-        "Boss_Anubis": "Anubis (Boss)",
+        "BOSS_Anubis": "アヌビス (Boss)",
         "FlameBuffalo": "ブルフェルノ",
         "BOSS_FlameBuffalo": "ブルフェルノ (Boss)",
         "BlackMetalDragon": "ジオラーヴァ",
@@ -947,7 +947,7 @@
         "BOSS_KingAlpaca": "アルパオー (Boss)",
         "AmaterasuWolf": "シラヌイ",
         "BOSS_AmaterasuWolf": "シラヌイ (Boss)",
-        "SheepBall": "モコロン",
+        "Sheepball": "モコロン",
         "BOSS_SheepBall": "モコロン (Boss)",
         "LizardMan": "ダリザード",
         "BOSS_LizardMan": "ダリザード (Boss)",

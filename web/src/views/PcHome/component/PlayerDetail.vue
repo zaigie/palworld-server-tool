@@ -6,9 +6,8 @@ import ApiService from "@/service/api";
 import { ref, onMounted, computed } from "vue";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n";
-import palZHTypes from "@/assets/zhTypes.json";
-import palZHSkills from "@/assets/zhSkills.json";
-import palJASkills from "@/assets/jaSkills.json";
+import palMap from "@/assets/pal.json";
+import skillMap from "@/assets/skill.json";
 import { useDialog, useMessage, NAvatar, NTag, NButton } from "naive-ui";
 import PalDetail from "./PalDetail.vue";
 import whitelistStore from "@/stores/model/whitelist.js";
@@ -43,7 +42,7 @@ const createPlayerPalsColumns = () => {
         return h(NAvatar, {
           size: "small",
           src: getPalAvatar(row.type),
-          fallbackSrc: getUnknowPalAvatar(),
+          fallbackSrc: getUnknowPalAvatar(row.is_boss),
         });
       },
     },
@@ -77,7 +76,10 @@ const createPlayerPalsColumns = () => {
               },
             },
             {
-              default: () => row.typeName,
+              default: () =>
+                palMap[locale.value][row.type]
+                  ? palMap[locale.value][row.type]
+                  : row.type,
             }
           ),
         ];
@@ -108,7 +110,10 @@ const createPlayerPalsColumns = () => {
               bordered: false,
             },
             {
-              default: () => skill,
+              default: () =>
+                skillMap[locale.value][skill]
+                  ? skillMap[locale.value][skill].name
+                  : skill,
             }
           );
         });
@@ -350,18 +355,19 @@ const getUserAvatar = () => {
   return new URL("@/assets/avatar.webp", import.meta.url).href;
 };
 const getSkillTypeList = () => {
-  if (locale.value === "zh") {
-    return Object.values(palZHSkills);
-  } else if (locale.value === "ja") {
-    return Object.values(palJASkills);
-  } else if (locale.value === "en") {
-    return Object.keys(palZHSkills);
+  if (skillMap[locale.value]) {
+    return Object.values(skillMap[locale.value]).map((item) => item.name);
+  } else {
+    return [];
   }
 };
 const getPalAvatar = (name) => {
   return new URL(`../../../assets/pal/${name}.png`, import.meta.url).href;
 };
-const getUnknowPalAvatar = () => {
+const getUnknowPalAvatar = (is_boss = false) => {
+  if (is_boss) {
+    return new URL("@/assets/pal/BOSS_Unknown.png", import.meta.url).href;
+  }
   return new URL("@/assets/pal/Unknown.png", import.meta.url).href;
 };
 const isPlayerOnline = (last_online) => {
@@ -615,10 +621,8 @@ const percentageHP = (hp, max_hp) => {
     </template>
     <template #header>
       {{
-        locale === "zh"
-          ? palZHTypes[palDetail.type]
-            ? palZHTypes[palDetail.type]
-            : palDetail.type
+        palMap[locale][palDetail.type]
+          ? palMap[locale][palDetail.type]
           : palDetail.type
       }}
     </template>

@@ -6,11 +6,8 @@ import dayjs from "dayjs";
 import { computed } from "vue";
 import { NTag, NButton, NAvatar, useMessage, useDialog } from "naive-ui";
 import { useI18n } from "vue-i18n";
-import skillDescMap from "@/assets/skillDesc.json";
-import palZHTypes from "@/assets/zhTypes.json";
-import palZHSkills from "@/assets/zhSkills.json";
-import palJATypes from "@/assets/jaTypes.json";
-import palJASkills from "@/assets/jaSkills.json";
+import palMap from "@/assets/pal.json";
+import skillMap from "@/assets/skill.json";
 import PalDetail from "./PalDetail.vue";
 
 const { t, locale } = useI18n();
@@ -137,7 +134,7 @@ const getUnknowPalAvatar = () => {
   <div class="player-detail">
     <n-layout :native-scrollbar="false">
       <!-- ban / kick -->
-      <div class="pt-2 px-3 bg-transparent" position="absolute">
+      <div v-if="isLogin" class="pt-2 px-3 bg-transparent" position="absolute">
         <n-flex justify="space-between">
           <n-button
             @click="handelPlayerAction('ban')"
@@ -310,7 +307,9 @@ const getUnknowPalAvatar = () => {
                   :type="pal.gender == 'Male' ? 'primary' : 'danger'"
                   >{{ pal.gender == "Male" ? "♂" : "♀" }}</van-tag
                 >
-                <span class="px-3 flex-1 line-clamp-1">{{ pal.typeName }}</span>
+                <span class="px-3 flex-1 line-clamp-1">{{
+                  palMap[locale][pal.type] ? palMap[locale][pal.type] : pal.type
+                }}</span>
                 <span>{{ "Lv." + pal.level }}</span>
               </div>
             </div>
@@ -322,7 +321,9 @@ const getUnknowPalAvatar = () => {
                 :key="skill"
                 color="#fcf0e0"
                 text-color="#ee9b2f"
-                >{{ skill }}</van-tag
+                >{{
+                  skillMap[locale][skill] ? skillMap[locale][skill].name : skill
+                }}</van-tag
               >
             </div>
           </div>
@@ -356,15 +357,9 @@ const getUnknowPalAvatar = () => {
     </template>
     <template #header>
       {{
-        locale === "zh"
-          ? palZHTypes[palDetail.type]
-            ? palZHTypes[palDetail.type]
-            : palDetail.type
-          : locale === "ja"
-            ? palJATypes[palDetail.type]
-              ? palJATypes[palDetail.type]
-              : palDetail.type
-            : palDetail.type
+        palMap[locale][palDetail.type]
+          ? palMap[locale][palDetail.type]
+          : palDetail.type
       }}
     </template>
     <pal-detail :palDetail="palDetail"></pal-detail>

@@ -18,8 +18,7 @@ import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
 import pageStore from "@/stores/model/page.js";
 import dayjs from "dayjs";
-import palZHSkills from "@/assets/zhSkills.json";
-import palJASkills from "@/assets/jaSkills.json";
+import skillMap from "@/assets/skill.json";
 import PlayerList from "./component/PlayerList.vue";
 import GuildList from "./component/GuildList.vue";
 import whitelistStore from "@/stores/model/whitelist";
@@ -84,12 +83,10 @@ const handleSelectLanguage = (key) => {
 };
 
 const getSkillTypeList = () => {
-  if (locale.value === "zh") {
-    return Object.values(palZHSkills);
-  } else if (locale.value === "ja") {
-    return Object.values(palJASkills);
-  } else if (locale.value === "en") {
-    return Object.keys(palZHSkills);
+  if (skillMap[locale.value]) {
+    return Object.values(skillMap[locale.value]).map((item) => item.name);
+  } else {
+    return [];
   }
 };
 

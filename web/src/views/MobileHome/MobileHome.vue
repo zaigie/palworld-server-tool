@@ -12,10 +12,7 @@ import { NTag, NButton, useMessage, useDialog } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
 import dayjs from "dayjs";
-import palZHTypes from "@/assets/zhTypes.json";
-import palZHSkills from "@/assets/zhSkills.json";
-import palJATypes from "@/assets/jaTypes.json";
-import palJASkills from "@/assets/jaSkills.json";
+import skillMap from "@/assets/skill.json";
 import PlayerList from "./component/PlayerList.vue";
 import GuildList from "./component/GuildList.vue";
 import PlayerDetail from "./component/PlayerDetail.vue";
@@ -54,10 +51,6 @@ const updateDarkMode = (e) => {
   isDarkMode.value = e.matches;
 };
 
-const getUserAvatar = () => {
-  return new URL("@/assets/avatar.webp", import.meta.url).href;
-};
-
 const handleSelectLanguage = (key) => {
   message.info(t("message.changelanguage"));
   if (key === "zh") {
@@ -76,20 +69,11 @@ const handleSelectLanguage = (key) => {
 };
 
 const getSkillTypeList = () => {
-  if (locale.value === "zh") {
-    return Object.values(palZHSkills);
-  } else if (locale.value === "ja") {
-    return Object.values(palJASkills);
-  } else if (locale.value === "en") {
-    return Object.keys(palZHSkills);
+  if (skillMap[locale.value]) {
+    return Object.values(skillMap[locale.value]).map((item) => item.name);
+  } else {
+    return [];
   }
-};
-
-const getPalAvatar = (name) => {
-  return new URL(`../../assets/pal/${name}.png`, import.meta.url).href;
-};
-const getUnknowPalAvatar = () => {
-  return new URL("@/assets/pal/Unknown.png", import.meta.url).href;
 };
 
 // get data
@@ -112,25 +96,6 @@ const getGuildList = async () => {
 const getPlayerInfo = async (player_uid) => {
   const { data } = await new ApiService().getPlayer({ playerUid: player_uid });
   playerInfo.value = data.value;
-  if (locale.value === "zh") {
-    playerInfo.value.pals.forEach((pal) => {
-      pal.skills = pal.skills.map((skill) => {
-        return palZHSkills[skill] ? palZHSkills[skill] : skill;
-      });
-      pal.typeName = palZHTypes[pal.type] ? palZHTypes[pal.type] : pal.type;
-    });
-  } else if (locale.value === "ja") {
-    playerInfo.value.pals.forEach((pal) => {
-      pal.skills = pal.skills.map((skill) => {
-        return palJASkills[skill] ? palJASkills[skill] : skill;
-      });
-      pal.typeName = palJATypes[pal.type] ? palJATypes[pal.type] : pal.type;
-    });
-  } else {
-    playerInfo.value.pals.forEach((pal) => {
-      pal.typeName = pal.type;
-    });
-  }
   playerPalsList.value = JSON.parse(JSON.stringify(playerInfo.value.pals));
   currentPlayerPalsList.value = playerPalsList.value.slice(0, pageSize.value);
   isShowDetail.value = true;
@@ -201,59 +166,13 @@ const onContentScroll = () => {
   }
 };
 
-const showPalDetailModal = ref(false);
-const palDetail = ref({});
-
-const showPalDetail = (pal) => {
-  palDetail.value = pal;
-  showPalDetailModal.value = true;
-};
-const dataRowProps = (row) => {
-  return {
-    onClick: () => showPalDetail(row),
-  };
-};
-
 const isPlayerOnline = (last_online) => {
   return dayjs() - dayjs(last_online) < 120000;
-};
-const displayLastOnline = (last_online) => {
-  if (dayjs(last_online).year() < 1970) {
-    return "Unknown";
-  }
-  return dayjs(last_online).format("YYYY-MM-DD HH:mm:ss");
 };
 const getOnlineList = () => {
   return playerList.value.filter((player) =>
     isPlayerOnline(player.last_online)
   );
-};
-
-const displayHP = (hp, max_hp) => {
-  return (hp / 1000).toFixed(0) + "/" + (max_hp / 1000).toFixed(0);
-};
-
-const percentageHP = (hp, max_hp) => {
-  if (max_hp === 0) {
-    return 0;
-  }
-  return ((hp / max_hp) * 100).toFixed(2);
-};
-
-const copyText = (text) => {
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  document.body.appendChild(textarea);
-  textarea.select();
-
-  try {
-    const successful = document.execCommand("copy");
-    message.success(t("message.copysuccess"));
-  } catch (err) {
-    message.error(t("message.copyerr", { err: err }));
-  }
-
-  document.body.removeChild(textarea);
 };
 
 // login
@@ -274,41 +193,6 @@ const handleLogin = async () => {
   message.success(t("message.authsuccess"));
   showLoginModal.value = false;
   isLogin.value = true;
-};
-
-const handelPlayerAction = async (type) => {
-  if (!checkAuthToken()) {
-    message.error($t("message.requireauth"));
-    showLoginModal.value = true;
-    return;
-  }
-  dialog.warning({
-    title: type === "ban" ? t("message.bantitle") : t("message.kicktitle"),
-    content: type === "ban" ? t("message.banwarn") : t("message.kickwarn"),
-    positiveText: t("button.confirm"),
-    negativeText: t("button.cancel"),
-    onPositiveClick: async () => {
-      if (type === "ban") {
-        const { data, statusCode } = await new ApiService().banPlayer({
-          playerUid: playerInfo.value.player_uid,
-        });
-        if (statusCode.value === 200) {
-          message.success(t("message.bansuccess"));
-        } else {
-          message.error(t("message.banfail", { err: data.value?.error }));
-        }
-      } else if (type === "kick") {
-        const { data, statusCode } = await new ApiService().kickPlayer({
-          playerUid: playerInfo.value.player_uid,
-        });
-        if (statusCode.value === 200) {
-          message.success(t("message.kicksuccess"));
-        } else {
-          message.error(t("message.kickfail", { err: data.value?.error }));
-        }
-      }
-    },
-  });
 };
 
 // broadcast

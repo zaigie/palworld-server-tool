@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import skillDescMap from "@/assets/skillDesc.json";
+import skillMap from "@/assets/skill.json";
 
 const { t, locale } = useI18n();
 
@@ -11,7 +11,10 @@ const palDetail = computed(() => props.palDetail);
 const getPalAvatar = (name) => {
   return new URL(`../../../assets/pal/${name}.png`, import.meta.url).href;
 };
-const getUnknowPalAvatar = () => {
+const getUnknowPalAvatar = (is_boss = false) => {
+  if (is_boss) {
+    return new URL("@/assets/pal/BOSS_Unknown.png", import.meta.url).href;
+  }
   return new URL("@/assets/pal/Unknown.png", import.meta.url).href;
 };
 const displayHP = (hp, max_hp) => {
@@ -31,7 +34,7 @@ const percentageHP = (hp, max_hp) => {
       <n-avatar
         :size="64"
         :src="getPalAvatar(palDetail.type)"
-        :fallback-src="getUnknowPalAvatar()"
+        :fallback-src="getUnknowPalAvatar(palDetail.is_boss)"
       ></n-avatar>
     </n-space>
     <n-space class="mb-2" justify="center">
@@ -71,11 +74,11 @@ const percentageHP = (hp, max_hp) => {
     </n-space>
     <n-space vertical>
       <div v-for="skill in palDetail.skills" :key="skill">
-        <n-tag type="warning">{{ skill }}</n-tag>
+        <n-tag type="warning">{{
+          skillMap[locale][skill] ? skillMap[locale][skill].name : skill
+        }}</n-tag>
         :
-        {{
-          skillDescMap[locale][skill] ? skillDescMap[locale][skill] : "Unknown"
-        }}
+        {{ skillMap[locale][skill] ? skillMap[locale][skill].desc : "-" }}
       </div>
     </n-space>
   </div>

@@ -1,5 +1,5 @@
 <script setup>
-import skillDescMap from "@/assets/skillDesc.json";
+import skillMap from "@/assets/skill.json";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 
@@ -73,11 +73,11 @@ const percentageHP = (hp, max_hp) => {
     </n-space>
     <n-space vertical>
       <div v-for="skill in palDetail.skills" :key="skill">
-        <n-tag type="warning">{{ skill }}</n-tag>
+        <n-tag type="warning">{{
+          skillMap[locale][skill] ? skillMap[locale][skill].name : skill
+        }}</n-tag>
         :
-        {{
-          skillDescMap[locale][skill] ? skillDescMap[locale][skill] : "Unknown"
-        }}
+        {{ skillMap[locale][skill] ? skillMap[locale][skill].desc : "-" }}
       </div>
     </n-space>
   </div>

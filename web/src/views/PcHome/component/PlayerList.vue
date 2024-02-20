@@ -4,10 +4,7 @@ import pageStore from "@/stores/model/page.js";
 import { ref, onMounted, computed } from "vue";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n";
-import palZHTypes from "@/assets/zhTypes.json";
-import palZHSkills from "@/assets/zhSkills.json";
-import palJATypes from "@/assets/jaTypes.json";
-import palJASkills from "@/assets/jaSkills.json";
+import skillMap from "@/assets/skill.json";
 import { NAvatar, NTag } from "naive-ui";
 import PlayerDetail from "./PlayerDetail.vue";
 import playerToGuildStore from "@/stores/model/playerToGuild";
@@ -45,25 +42,6 @@ const getPlayerList = async () => {
 const getPlayerInfo = async (player_uid) => {
   const { data } = await new ApiService().getPlayer({ playerUid: player_uid });
   playerInfo.value = data.value;
-  if (locale.value === "zh") {
-    playerInfo.value.pals.forEach((pal) => {
-      pal.skills = pal.skills.map((skill) => {
-        return palZHSkills[skill] ? palZHSkills[skill] : skill;
-      });
-      pal.typeName = palZHTypes[pal.type] ? palZHTypes[pal.type] : pal.type;
-    });
-  } else if (locale.value === "ja") {
-    playerInfo.value.pals.forEach((pal) => {
-      pal.skills = pal.skills.map((skill) => {
-        return palJASkills[skill] ? palJASkills[skill] : skill;
-      });
-      pal.typeName = palJATypes[pal.type] ? palJATypes[pal.type] : pal.type;
-    });
-  } else {
-    playerInfo.value.pals.forEach((pal) => {
-      pal.typeName = pal.type;
-    });
-  }
   playerPalsList.value = JSON.parse(JSON.stringify(playerInfo?.value.pals));
   nextTick(() => {
     const playerInfoEL = document.getElementById("player-info");
@@ -129,12 +107,10 @@ const getUserAvatar = () => {
   return new URL("@/assets/avatar.webp", import.meta.url).href;
 };
 const getSkillTypeList = () => {
-  if (locale.value === "zh") {
-    return Object.values(palZHSkills);
-  } else if (locale.value === "ja") {
-    return Object.values(palJASkills);
-  } else if (locale.value === "en") {
-    return Object.keys(palZHSkills);
+  if (skillMap[locale.value]) {
+    return Object.values(skillMap[locale.value]).map((item) => item.name);
+  } else {
+    return [];
   }
 };
 const isPlayerOnline = (last_online) => {
