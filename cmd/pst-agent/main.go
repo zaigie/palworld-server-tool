@@ -70,21 +70,21 @@ func main() {
 func copyFile(src, dst string) bool {
 	source, err := os.Open(src)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return false
 	}
 	defer source.Close()
 
 	destination, err := os.Create(dst)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return false
 	}
 	defer destination.Close()
 
 	_, err = io.Copy(destination, source)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return false
 	}
 	return true
