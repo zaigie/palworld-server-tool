@@ -332,6 +332,7 @@ const isWhite = (player) => {
 onMounted(async () => {
   skillTypeList.value = getSkillTypeList();
   await getWhiteList();
+  checkAuthToken();
 });
 
 // 其他操作
@@ -438,6 +439,7 @@ const percentageHP = (hp, max_hp) => {
               type="info"
               size="small"
               icon-placement="right"
+              v-if="isLogin"
               ghost
             >
               UID: {{ playerInfo?.player_uid }}
@@ -450,6 +452,7 @@ const percentageHP = (hp, max_hp) => {
               type="info"
               size="small"
               icon-placement="right"
+              v-if="isLogin"
               ghost
             >
               Steam64:
@@ -543,7 +546,7 @@ const percentageHP = (hp, max_hp) => {
     <n-flex
       justify="end"
       class="absolute bottom-3 right-4"
-      v-if="playerInfo != null && !loadingPlayerDetail"
+      v-if="playerInfo != null && !loadingPlayerDetail && isLogin"
     >
       <n-button
         @click="

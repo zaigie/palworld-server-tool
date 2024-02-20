@@ -128,6 +128,10 @@ const getPalAvatar = (name) => {
 const getUnknowPalAvatar = () => {
   return new URL("@/assets/pal/Unknown.png", import.meta.url).href;
 };
+
+onMounted(async () => {
+  checkAuthToken();
+});
 </script>
 
 <template>
@@ -208,6 +212,7 @@ const getUnknowPalAvatar = () => {
               type="info"
               size="small"
               icon-placement="right"
+              v-if="isLogin"
               ghost
             >
               UID: {{ playerInfo.player_uid }}
@@ -221,6 +226,7 @@ const getUnknowPalAvatar = () => {
               type="info"
               size="small"
               icon-placement="right"
+              v-if="isLogin"
               ghost
             >
               Steam64:
