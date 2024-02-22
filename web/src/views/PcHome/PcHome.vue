@@ -171,7 +171,7 @@ const showCurrentPlayer = (id) => {
 };
 // 从白名单中移除该玩家
 const removeWhiteList = async (player) => {
-  if (!player.player_uid || !player.steam_id) {
+  if (!player.player_uid && !player.steam_id) {
     message.error(
       t("message.removewhitefail", {
         err: "player_uid or steam_id is required",
