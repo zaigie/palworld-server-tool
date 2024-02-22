@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"sort"
@@ -41,7 +42,11 @@ func main() {
 		os.MkdirAll(cacheDir, os.ModePerm)
 
 		destFile := filepath.Join(cacheDir, "Level.sav")
-		copyFile(viper.GetString("sav_file"), destFile)
+		copyStatus := copyFile(viper.GetString("sav_file"), destFile)
+		if !copyStatus {
+			c.Redirect(http.StatusFound, "/404")
+			return
+		}
 
 		c.File(destFile)
 	})
@@ -64,23 +69,27 @@ func main() {
 	r.Run(":" + strconv.Itoa(port))
 }
 
-func copyFile(src, dst string) {
+func copyFile(src, dst string) bool {
 	source, err := os.Open(src)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return false
 	}
 	defer source.Close()
 
 	destination, err := os.Create(dst)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return false
 	}
 	defer destination.Close()
 
 	_, err = io.Copy(destination, source)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return false
 	}
+	return true
 }
 
 // limitCacheFiles keeps only the latest `n` files in the cache directory
