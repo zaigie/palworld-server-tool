@@ -44,6 +44,7 @@ type TersePlayer struct {
 	MaxStatusPoint int32            `json:"max_status_point"`
 	StatusPoint    map[string]int32 `json:"status_point"`
 	FullStomach    float64          `json:"full_stomach"`
+	SaveLastOnline string           `json:"save_last_online"`
 	PlayerRcon
 }
 

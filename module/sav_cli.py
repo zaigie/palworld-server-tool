@@ -29,8 +29,18 @@ if __name__ == "__main__":
             output = args.output + ".json"
 
     converted = convert_sav(args.file)
+    filetime = os.stat(args.file).st_mtime
     players = structure_player(converted)
-    guilds = structure_guild(converted)
+    guilds = structure_guild(converted, filetime)
+
+    # Add last_online to players
+    for player in players:
+        for guild in guilds:
+            guild_players = guild["players"]
+            for guild_player in guild_players:
+                if player["player_uid"] == guild_player["player_uid"]:
+                    player["save_last_online"] = guild_player["last_online"]
+                    break
 
     if args.request == "":
         with open(output, "w", encoding="utf-8") as f:

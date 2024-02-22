@@ -101,7 +101,7 @@ const messages = {
     status: {
       online: "在线",
       offline: "离线",
-      last_online: "最后上线",
+      last_online: "最后在线",
       authenticated: "已进入管理模式",
       master: "会长",
       player_number: "玩家: {number}",

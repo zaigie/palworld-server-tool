@@ -173,16 +173,21 @@ def structure_player(converted):
     return list(sorted_players)
 
 
-def structure_guild(converted):
+def structure_guild(converted, filetime: int = -1):
     log("Structuring guilds...")
     if not converted["worldSaveData"]["value"].get("GroupSaveDataMap"):
         return []
+    real_date_time_ticks = converted["worldSaveData"]["value"]["GameTimeSaveData"][
+        "value"
+    ]["RealDateTimeTicks"]["value"]
     groups = (
         g["value"]["RawData"]["value"]
         for g in converted["worldSaveData"]["value"]["GroupSaveDataMap"]["value"]
         if g["value"]["GroupType"]["value"]["value"] == "EPalGroupType::Guild"
     )
-    guilds_generator = (Guild(g).to_dict() for g in groups)
+    guilds_generator = (
+        Guild(g, real_date_time_ticks, filetime).to_dict() for g in groups
+    )
     sorted_guilds = sorted(
         guilds_generator, key=lambda g: g["base_camp_level"], reverse=True
     )

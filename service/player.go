@@ -35,10 +35,9 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 				if existingPlayer.SteamId != "" {
 					p.SteamId = existingPlayer.SteamId
 				}
-				emptyTime := time.Time{}
-				if existingPlayer.LastOnline != emptyTime {
-					p.LastOnline = existingPlayer.LastOnline
-				}
+			}
+			if p.SaveLastOnline != "" {
+				p.LastOnline, _ = time.Parse(time.RFC3339, p.SaveLastOnline)
 			}
 			v, err := json.Marshal(p)
 			if err != nil {

@@ -1,3 +1,4 @@
+import datetime
 from uuid import UUID
 from logger import log
 
@@ -11,6 +12,13 @@ def hexuid_to_decimal(uuid):
         return str(decimal_number)
     elif isinstance(uuid, UUID):
         return str(uuid.int)
+
+
+def tick2local(tick, real_date_time_ticks, filetime):
+    ts = filetime + (tick - real_date_time_ticks) / 1e7
+    # to RFC3339 like 2006-01-02T15:04:05Z07:00
+    t = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
+    return t.strftime("%Y-%m-%dT%H:%M:%SZ%z").replace("+0000", "")
 
 
 class Player:
@@ -144,7 +152,7 @@ class Pal:
 
 
 class Guild:
-    def __init__(self, data):
+    def __init__(self, data, real_date_time_ticks, filetime):
         self.name = data["guild_name"]
         self.base_camp_level = data["base_camp_level"]
         self.admin_player_uid = hexuid_to_decimal(data["admin_player_uid"])
@@ -152,6 +160,15 @@ class Guild:
             {
                 "player_uid": hexuid_to_decimal(player["player_uid"]),
                 "nickname": player["player_info"]["player_name"],
+                "last_online": (
+                    tick2local(
+                        player["player_info"]["last_online_real_time"],
+                        real_date_time_ticks,
+                        filetime,
+                    )
+                    if player["player_info"].get("last_online_real_time")
+                    else ""
+                ),
             }
             for player in data["players"]
         ]
