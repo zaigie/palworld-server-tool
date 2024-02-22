@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"sort"
@@ -43,6 +44,7 @@ func main() {
 		destFile := filepath.Join(cacheDir, "Level.sav")
 		copyStatus := copyFile(viper.GetString("sav_file"), destFile)
 		if !copyStatus {
+			c.Redirect(http.StatusFound, "/404")
 			return
 		}
 
