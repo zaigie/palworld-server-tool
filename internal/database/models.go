@@ -66,3 +66,13 @@ type PlayerW struct {
 	SteamID   string `json:"steam_id"`
 	PlayerUID string `json:"player_uid"`
 }
+
+type RconCommand struct {
+	Command string `json:"command"`
+	Remark  string `json:"remark"`
+}
+
+type RconCommandList struct {
+	UUID string `json:"uuid"`
+	RconCommand
+}
