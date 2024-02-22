@@ -12,6 +12,7 @@ import { useDialog, useMessage, NAvatar, NTag, NButton } from "naive-ui";
 import PalDetail from "./PalDetail.vue";
 import whitelistStore from "@/stores/model/whitelist.js";
 import playerToGuildStore from "@/stores/model/playerToGuild.js";
+import userStore from "@/stores/model/user";
 
 const { t, locale } = useI18n();
 const PALWORLD_TOKEN = "palworld_token";
@@ -19,8 +20,7 @@ const props = defineProps(["playerInfo", "playerPalsList"]);
 const playerInfo = computed(() => props.playerInfo);
 const playerPalsList = computed(() => props.playerPalsList);
 
-const isLogin = ref(false);
-const authToken = ref("");
+const isLogin = computed(() => userStore().getLoginInfo().isLogin);
 
 const message = useMessage();
 const dialog = useDialog();
@@ -242,7 +242,7 @@ const addWhiteList = async () => {
   }
 };
 const handleAddWhiteList = () => {
-  if (checkAuthToken()) {
+  if (isLogin) {
     addWhiteData.value.name = playerInfo.value.nickname;
     addWhiteData.value.player_uid = playerInfo.value.player_uid;
     addWhiteData.value.steam_id = playerInfo.value.steam_id;
@@ -267,7 +267,7 @@ const removeWhitelist = async (player) => {
 
 // 封禁、踢出
 const handelPlayerAction = async (type) => {
-  if (!checkAuthToken()) {
+  if (!isLogin) {
     message.error($t("message.requireauth"));
     showLoginModal.value = true;
     return;
@@ -304,14 +304,15 @@ const handelPlayerAction = async (type) => {
 // 获取白名单列表
 const whiteList = computed(() => whitelistStore().getWhitelist());
 const getWhiteList = async () => {
-  if (!checkAuthToken()) {
-    return;
-  }
-  const { data } = await new ApiService().getWhitelist();
-  if (data.value) {
-    whitelistStore().setWhitelist(data.value);
-  } else {
-    whitelistStore().setWhitelist([]);
+  if (isLogin) {
+    const { data, statusCode } = await new ApiService().getWhitelist();
+    if (statusCode.value === 200) {
+      if (data.value) {
+        whitelistStore().setWhitelist(data.value);
+      } else {
+        whitelistStore().setWhitelist([]);
+      }
+    }
   }
 };
 
@@ -332,22 +333,9 @@ const isWhite = (player) => {
 onMounted(async () => {
   skillTypeList.value = getSkillTypeList();
   await getWhiteList();
-  checkAuthToken();
 });
 
 // 其他操作
-/**
- * 检测 token
- */
-const checkAuthToken = () => {
-  const token = localStorage.getItem(PALWORLD_TOKEN);
-  if (token && token !== "") {
-    isLogin.value = true;
-    authToken.value = token;
-    return true;
-  }
-  return false;
-};
 const getDarkModeColor = () => {
   return isDarkMode.value ? "#fff" : "#000";
 };

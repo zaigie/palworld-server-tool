@@ -24,6 +24,7 @@ import GuildList from "./component/GuildList.vue";
 import whitelistStore from "@/stores/model/whitelist";
 import playerToGuildStore from "@/stores/model/playerToGuild";
 import { watch } from "vue";
+import userStore from "@/stores/model/user";
 
 const { t, locale } = useI18n();
 
@@ -127,6 +128,8 @@ const handleLogin = async () => {
   }
   let token = data.value.token;
   localStorage.setItem(PALWORLD_TOKEN, token);
+  userStore().setIsLogin(true, token);
+  await getWhiteList();
   authToken.value = token;
   message.success(t("message.authsuccess"));
   showLoginModal.value = false;
@@ -146,21 +149,22 @@ const handleWhiteList = () => {
   }
 };
 const getWhiteList = async () => {
-  if (!checkAuthToken()) {
-    return;
-  }
-  const { data } = await new ApiService().getWhitelist();
-  if (data.value) {
-    whitelistStore().setWhitelist(data.value);
-    whiteList.value = [];
-    data.value.forEach((item) => {
-      whiteList.value.push({
-        ...item,
-        isNew: false,
-      });
-    });
-  } else {
-    whiteList.value = [];
+  if (checkAuthToken()) {
+    const { data, statusCode } = await new ApiService().getWhitelist();
+    if (statusCode.value === 200) {
+      if (data.value) {
+        whitelistStore().setWhitelist(data.value);
+        whiteList.value = [];
+        data.value.forEach((item) => {
+          whiteList.value.push({
+            ...item,
+            isNew: false,
+          });
+        });
+      } else {
+        whiteList.value = [];
+      }
+    }
   }
 };
 // 查看白名单中的该玩家
