@@ -1,0 +1,776 @@
+{
+    "en": {
+        "ElementResist_Normal_1_PAL": {
+            "name": "Abnormal",
+            "desc": "-10% damage received from Neutral attacks"
+        },
+        "ElementResist_Dark_1_PAL": {
+            "name": "Cheery",
+            "desc": "-10% damage received from Dark attacks"
+        },
+        "ElementResist_Dragon_1_PAL": {
+            "name": "Dragonkiller",
+            "desc": "-10% damage received from Dragon attacks"
+        },
+        "ElementResist_Ice_1_PAL": {
+            "name": "Heated Body",
+            "desc": "-10% damage received from Ice attacks"
+        },
+        "ElementResist_Fire_1_PAL": {
+            "name": "Suntan Lover",
+            "desc": "-10% damage received from Fire attacks"
+        },
+        "ElementResist_Leaf_1_PAL": {
+            "name": "Botanical Barrier",
+            "desc": "-10% damage received from Grass attacks"
+        },
+        "ElementResist_Earth_1_PAL": {
+            "name": "Earthquake Resistant",
+            "desc": "-10% damage received from Ground attacks"
+        },
+        "ElementResist_Thunder_1_PAL": {
+            "name": "Insulated Body",
+            "desc": "-10% damage received from Electric attacks"
+        },
+        "ElementResist_Aqua_1_PAL": {
+            "name": "Waterproof",
+            "desc": "-10% damage received from Water attacks"
+        },
+        "ElementBoost_Normal_1_PAL": {
+            "name": "Zen Mind",
+            "desc": "+10% damage dealt with Neutral attacks"
+        },
+        "ElementBoost_Dark_1_PAL": {
+            "name": "Veil of Darkness",
+            "desc": "+10% damage dealt with Dark attacks"
+        },
+        "ElementBoost_Dragon_1_PAL": {
+            "name": "Blood of the Dragon",
+            "desc": "+10% damage dealt with Dragon attacks"
+        },
+        "ElementBoost_Ice_1_PAL": {
+            "name": "Coldblooded",
+            "desc": "+10% damage dealt with Ice attacks"
+        },
+        "ElementBoost_Fire_1_PAL": {
+            "name": "Pyromaniac",
+            "desc": "+10% damage dealt with Fire attacks"
+        },
+        "ElementBoost_Leaf_1_PAL": {
+            "name": "Fragrant Foliage",
+            "desc": "+10% damage dealt with Grass attacks"
+        },
+        "ElementBoost_Earth_1_PAL": {
+            "name": "Power of Gaia",
+            "desc": "+10% damage dealt with Ground attacks"
+        },
+        "ElementBoost_Thunder_1_PAL": {
+            "name": "Capacitor",
+            "desc": "+10% damage dealt with Electric attacks"
+        },
+        "ElementBoost_Aqua_1_PAL": {
+            "name": "Hydromaniac",
+            "desc": "+10% damage dealt with Water attacks"
+        },
+        "ElementBoost_Normal_2_PAL": {
+            "name": "Celestial Emperor",
+            "desc": "+20% damage dealt with Neutral attacks; Paladius' signature ability"
+        },
+        "ElementBoost_Dark_2_PAL": {
+            "name": "Lord of the Underworld",
+            "desc": "+20% damage dealt with Dark attacks; Necromus' signature ability"
+        },
+        "ElementBoost_Dragon_2_PAL": {
+            "name": "Divine Dragon",
+            "desc": "+20% damage dealt with Dragon attacks; Jetragon's signature ability"
+        },
+        "ElementBoost_Ice_2_PAL": {
+            "name": "Ice Emperor",
+            "desc": "+20% damage dealt with Ice attacks; Frostallion's signature ability"
+        },
+        "ElementBoost_Fire_2_PAL": {
+            "name": "Flame Emperor",
+            "desc": "+20% damage dealt with Fire attacks; Blazamut's signature ability"
+        },
+        "ElementBoost_Leaf_2_PAL": {
+            "name": "Spirit Emperor",
+            "desc": "+20% damage dealt with Grass attacks; Lyleen's signature ability"
+        },
+        "ElementBoost_Earth_2_PAL": {
+            "name": "Earth Emperor",
+            "desc": "+20% damage dealt with Ground attacks; Anubis' signature ability"
+        },
+        "ElementBoost_Thunder_2_PAL": {
+            "name": "Lord of Lightning",
+            "desc": "+20% damage dealt with Electric attacks; Orserk's signature ability"
+        },
+        "ElementBoost_Aqua_2_PAL": {
+            "name": "Lord of the Sea",
+            "desc": "+20% damage dealt with Water attacks; Jormuntide's signature ability"
+        },
+        "PAL_ALLAttack_up1": {
+            "name": "Brave",
+            "desc": "+10% to Attack stat"
+        },
+        "PAL_ALLAttack_up2": {
+            "name": "Ferocious",
+            "desc": "+20% to Attack stat"
+        },
+        "PAL_ALLAttack_down1": {
+            "name": "Coward",
+            "desc": "-10% to Attack stat"
+        },
+        "PAL_ALLAttack_down2": {
+            "name": "Pacifist",
+            "desc": "-20% to Attack stat"
+        },
+        "Deffence_up1": {
+            "name": "Hard Skin",
+            "desc": "+10% to Defence stat"
+        },
+        "Deffence_up2": {
+            "name": "Burly Body",
+            "desc": "+20% to Defence stat"
+        },
+        "Deffence_down1": {
+            "name": "Downtrodden",
+            "desc": "-10% to Defence stat"
+        },
+        "Deffence_down2": {
+            "name": "Brittle",
+            "desc": "-20% to Defence stat"
+        },
+        "TrainerMining_up1": {
+            "name": "Mine Foreman",
+            "desc": "+25% to Player mining efficiency"
+        },
+        "TrainerLogging_up1": {
+            "name": "Logging Foreman",
+            "desc": "+25% to Player logging efficiency"
+        },
+        "TrainerATK_UP_1": {
+            "name": "Vanguard",
+            "desc": "+10% to Player attack stat"
+        },
+        "TrainerWorkSpeed_UP_1": {
+            "name": "Motivational Leader",
+            "desc": "+25% to Player move speed"
+        },
+        "TrainerDEF_UP_1": {
+            "name": "Stronghold Strategist",
+            "desc": "+10% to Player defence stat"
+        },
+        "PAL_Sanity_Down_1": {
+            "name": "Positive Thinker",
+            "desc": "Sanity drops 10% slower"
+        },
+        "PAL_Sanity_Down_2": {
+            "name": "Workaholic",
+            "desc": "Sanity drops 15% slower"
+        },
+        "PAL_Sanity_Up_1": {
+            "name": "Unstable",
+            "desc": "Sanity drops 10% faster"
+        },
+        "PAL_Sanity_Up_2": {
+            "name": "Destructive",
+            "desc": "Sanity drops 15% faster"
+        },
+        "PAL_FullStomach_Down_1": {
+            "name": "Dainty Eater",
+            "desc": "Hunger drops 10% slower"
+        },
+        "PAL_FullStomach_Down_2": {
+            "name": "Diet Lover",
+            "desc": "Chance to lose hunger -15%"
+        },
+        "PAL_FullStomach_Up_1": {
+            "name": "Glutton",
+            "desc": "Hunger drops 10% faster"
+        },
+        "PAL_FullStomach_Up_2": {
+            "name": "Bottomless Stomach",
+            "desc": "Hunger drops 15% faster"
+        },
+        "CraftSpeed_up1": {
+            "name": "Serious",
+            "desc": "+20% work speed"
+        },
+        "CraftSpeed_up2": {
+            "name": "Artisan",
+            "desc": "+50% work speed"
+        },
+        "CraftSpeed_down1": {
+            "name": "Clumsy",
+            "desc": "-10% work speed"
+        },
+        "CraftSpeed_down2": {
+            "name": "Slacker",
+            "desc": "-30% work speed"
+        },
+        "MoveSpeed_up_1": {
+            "name": "Nimble",
+            "desc": "+10% movement speed"
+        },
+        "MoveSpeed_up_2": {
+            "name": "Runner",
+            "desc": "+20% movement speed"
+        },
+        "MoveSpeed_up_3": {
+            "name": "Swift",
+            "desc": "+30% movement speed"
+        },
+        "PAL_CorporateSlave": {
+            "name": "Work Slave",
+            "desc": "+30% work speed, -30% attack"
+        },
+        "PAL_rude": {
+            "name": "Hooligan",
+            "desc": "+15% attack, -10% work speed"
+        },
+        "Noukin": {
+            "name": "Musclehead",
+            "desc": "+30% attack, -50% work speed"
+        },
+        "PAL_oraora": {
+            "name": "Aggressive",
+            "desc": "+10% attack, -20% defence"
+        },
+        "PAL_conceited": {
+            "name": "Conceited",
+            "desc": "+10% work speed, -20% defence"
+        },
+        "PAL_masochist": {
+            "name": "Masochist",
+            "desc": "+15% defence, -15% attack"
+        },
+        "PAL_sadist": {
+            "name": "Sadist",
+            "desc": "+15% attack, +15% defence"
+        },
+        "Rare": {
+            "name": "Lucky",
+            "desc": "+15% attack, +15% work speed"
+        },
+        "Legend": {
+            "name": "Legend",
+            "desc": "+20% attack, +20% defence, +15% move speed"
+        }
+    },
+    "zh": {
+        "ElementResist_Normal_1_PAL": {
+            "name": "一反常态",
+            "desc": "-10% 中立攻击伤害"
+        },
+        "ElementResist_Dark_1_PAL": {
+            "name": "阳光开朗",
+            "desc": "-10% 暗系攻击伤害"
+        },
+        "ElementResist_Dragon_1_PAL": {
+            "name": "屠龙者",
+            "desc": "-10% 龙系攻击伤害"
+        },
+        "ElementResist_Ice_1_PAL": {
+            "name": "高温体质",
+            "desc": "-10% 冰系攻击伤害"
+        },
+        "ElementResist_Fire_1_PAL": {
+            "name": "拥抱烈日",
+            "desc": "-10% 火焰攻击伤害"
+        },
+        "ElementResist_Leaf_1_PAL": {
+            "name": "除草效果",
+            "desc": "-10% 草系攻击伤害"
+        },
+        "ElementResist_Earth_1_PAL": {
+            "name": "抗震结构",
+            "desc": "-10% 地面攻击伤害"
+        },
+        "ElementResist_Thunder_1_PAL": {
+            "name": "绝缘体",
+            "desc": "-10% 电系攻击伤害"
+        },
+        "ElementResist_Aqua_1_PAL": {
+            "name": "防水性能",
+            "desc": "-10% 水系攻击伤害"
+        },
+        "ElementBoost_Normal_1_PAL": {
+            "name": "禅境",
+            "desc": "+10% 中立攻击伤害"
+        },
+        "ElementBoost_Dark_1_PAL": {
+            "name": "夜幕",
+            "desc": "+10% 暗系攻击伤害"
+        },
+        "ElementBoost_Dragon_1_PAL": {
+            "name": "龙之血脉",
+            "desc": "+10% 龙系攻击伤害"
+        },
+        "ElementBoost_Ice_1_PAL": {
+            "name": "冷血",
+            "desc": "+10% 冰系攻击伤害"
+        },
+        "ElementBoost_Fire_1_PAL": {
+            "name": "喜欢玩火",
+            "desc": "+10% 火焰攻击伤害"
+        },
+        "ElementBoost_Leaf_1_PAL": {
+            "name": "草木馨香",
+            "desc": "+10% 草系攻击伤害"
+        },
+        "ElementBoost_Earth_1_PAL": {
+            "name": "大地之力",
+            "desc": "+10% 地面攻击伤害"
+        },
+        "ElementBoost_Thunder_1_PAL": {
+            "name": "电容",
+            "desc": "+10% 电系攻击伤害"
+        },
+        "ElementBoost_Aqua_1_PAL": {
+            "name": "喜欢戏水",
+            "desc": "+10% 水系攻击伤害"
+        },
+        "ElementBoost_Normal_2_PAL": {
+            "name": "圣天",
+            "desc": "+20% 中立攻击伤害；圣光骑士的特有技能"
+        },
+        "ElementBoost_Dark_2_PAL": {
+            "name": "冥王",
+            "desc": "+20% 暗系攻击伤害；混沌骑士的特有技能"
+        },
+        "ElementBoost_Dragon_2_PAL": {
+            "name": "神龙",
+            "desc": "+20% 龙系攻击伤害；空涡龙的特有技能"
+        },
+        "ElementBoost_Ice_2_PAL": {
+            "name": "冰帝",
+            "desc": "+20% 冰系攻击伤害；唤冬兽的特有技能"
+        },
+        "ElementBoost_Fire_2_PAL": {
+            "name": "炎帝",
+            "desc": "+20% 火焰攻击伤害；焰煌的特有技能"
+        },
+        "ElementBoost_Leaf_2_PAL": {
+            "name": "精灵王",
+            "desc": "+20% 草系攻击伤害；百合女王的特有技能"
+        },
+        "ElementBoost_Earth_2_PAL": {
+            "name": "岩帝",
+            "desc": "+20% 地面攻击伤害；阿努比斯的特有技能"
+        },
+        "ElementBoost_Thunder_2_PAL": {
+            "name": "雷帝",
+            "desc": "+20% 电系攻击伤害；波鲁杰克斯的特有技能"
+        },
+        "ElementBoost_Aqua_2_PAL": {
+            "name": "海皇",
+            "desc": "+20% 水系攻击伤害；覆海龙的特有技能"
+        },
+        "PAL_ALLAttack_up1": {
+            "name": "勇敢",
+            "desc": "攻击力+10%"
+        },
+        "PAL_ALLAttack_up2": {
+            "name": "凶猛",
+            "desc": "攻击力+20%"
+        },
+        "PAL_ALLAttack_down1": {
+            "name": "胆小",
+            "desc": "攻击力-10%"
+        },
+        "PAL_ALLAttack_down2": {
+            "name": "消极主义",
+            "desc": "攻击力-20%"
+        },
+        "Deffence_up1": {
+            "name": "坚硬皮肤",
+            "desc": "防御力+10%"
+        },
+        "Deffence_up2": {
+            "name": "顽强肉体",
+            "desc": "防御力+20%"
+        },
+        "Deffence_down1": {
+            "name": "弱不禁风",
+            "desc": "防御力-10%"
+        },
+        "Deffence_down2": {
+            "name": "骨质疏松",
+            "desc": "防御力-20%"
+        },
+        "TrainerMining_up1": {
+            "name": "矿山首领",
+            "desc": "玩家挖矿效率+25%"
+        },
+        "TrainerLogging_up1": {
+            "name": "采伐领袖",
+            "desc": "玩家伐木效率+25%"
+        },
+        "TrainerATK_UP_1": {
+            "name": "突袭指挥官",
+            "desc": "玩家攻击力+10%"
+        },
+        "TrainerWorkSpeed_UP_1": {
+            "name": "啦啦队",
+            "desc": "玩家移动速度+25%"
+        },
+        "TrainerDEF_UP_1": {
+            "name": "铁壁军师",
+            "desc": "玩家防御力+10%"
+        },
+        "PAL_Sanity_Down_1": {
+            "name": "积极思维",
+            "desc": "理智下降速度减慢10%"
+        },
+        "PAL_Sanity_Down_2": {
+            "name": "工作狂",
+            "desc": "理智下降速度减慢15%"
+        },
+        "PAL_Sanity_Up_1": {
+            "name": "情绪不稳",
+            "desc": "理智下降速度加快10%"
+        },
+        "PAL_Sanity_Up_2": {
+            "name": "毁灭欲望",
+            "desc": "理智下降速度加快15%"
+        },
+        "PAL_FullStomach_Down_1": {
+            "name": "小胃",
+            "desc": "饥饿下降速度减慢10%"
+        },
+        "PAL_FullStomach_Down_2": {
+            "name": "节食大师",
+            "desc": "减少饥饿概率-15%"
+        },
+        "PAL_FullStomach_Up_1": {
+            "name": "贪吃",
+            "desc": "饥饿下降速度加快10%"
+        },
+        "PAL_FullStomach_Up_2": {
+            "name": "无底之胃",
+            "desc": "饥饿下降速度加快15%"
+        },
+        "CraftSpeed_up1": {
+            "name": "认真",
+            "desc": "工作速度+20%"
+        },
+        "CraftSpeed_up2": {
+            "name": "工匠精神",
+            "desc": "工作速度+50%"
+        },
+        "CraftSpeed_down1": {
+            "name": "笨手笨脚",
+            "desc": "工作速度-10%"
+        },
+        "CraftSpeed_down2": {
+            "name": "偷懒成瘾",
+            "desc": "工作速度-30%"
+        },
+        "MoveSpeed_up_1": {
+            "name": "灵活",
+            "desc": "移动速度+10%"
+        },
+        "MoveSpeed_up_2": {
+            "name": "运动健将",
+            "desc": "移动速度+20%"
+        },
+        "MoveSpeed_up_3": {
+            "name": "神速",
+            "desc": "移动速度+30%"
+        },
+        "PAL_CorporateSlave": {
+            "name": "社畜",
+            "desc": "工作速度+30%，攻击力-30%"
+        },
+        "PAL_rude": {
+            "name": "粗暴",
+            "desc": "攻击力+15%，工作速度-10%"
+        },
+        "Noukin": {
+            "name": "脑筋",
+            "desc": "攻击力+30%，工作速度-50%"
+        },
+        "PAL_oraora": {
+            "name": "强势",
+            "desc": "攻击力+10%，防御力-20%"
+        },
+        "PAL_conceited": {
+            "name": "自恋狂",
+            "desc": "工作速度+10%，防御力-20%"
+        },
+        "PAL_masochist": {
+            "name": "受虐狂",
+            "desc": "防御力+15%，攻击力-15%"
+        },
+        "PAL_sadist": {
+            "name": "虐待狂",
+            "desc": "攻击力+15%，防御力+15%"
+        },
+        "Rare": {
+            "name": "稀有",
+            "desc": "攻击力+15%，工作速度+15%"
+        },
+        "Legend": {
+            "name": "传说",
+            "desc": "攻击力+20%，防御力+20%，移动速度+15%"
+        }
+    },
+    "ja": {
+        "ElementResist_Normal_1_PAL": {
+            "name": "アブノーマル",
+            "desc": "無属性ダメージ軽減10%"
+        },
+        "ElementResist_Dark_1_PAL": {
+            "name": "陽キャラ",
+            "desc": "闇属性ダメージ軽減10%"
+        },
+        "ElementResist_Dragon_1_PAL": {
+            "name": "ドラゴンキラー",
+            "desc": "竜属性ダメージ軽減10%"
+        },
+        "ElementResist_Ice_1_PAL": {
+            "name": "高温体質",
+            "desc": "氷属性ダメージ軽減10%"
+        },
+        "ElementResist_Fire_1_PAL": {
+            "name": "日焼け好き",
+            "desc": "炎属性ダメージ軽減10%"
+        },
+        "ElementResist_Leaf_1_PAL": {
+            "name": "防草効果",
+            "desc": "草属性ダメージ軽減10%"
+        },
+        "ElementResist_Earth_1_PAL": {
+            "name": "耐震構造",
+            "desc": "地属性ダメージ軽減10%"
+        },
+        "ElementResist_Thunder_1_PAL": {
+            "name": "絶縁体",
+            "desc": "雷属性ダメージ軽減10%"
+        },
+        "ElementResist_Aqua_1_PAL": {
+            "name": "防水加工",
+            "desc": "水属性ダメージ軽減10%"
+        },
+        "ElementBoost_Normal_1_PAL": {
+            "name": "無の境地",
+            "desc": "無属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Dark_1_PAL": {
+            "name": "夜の帳",
+            "desc": "闇属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Dragon_1_PAL": {
+            "name": "竜の血族",
+            "desc": "竜属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Ice_1_PAL": {
+            "name": "冷血",
+            "desc": "氷属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Fire_1_PAL": {
+            "name": "火遊び好き",
+            "desc": "炎属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Leaf_1_PAL": {
+            "name": "草木の香り",
+            "desc": "草属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Earth_1_PAL": {
+            "name": "大地の力",
+            "desc": "地属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Thunder_1_PAL": {
+            "name": "コンデンサ",
+            "desc": "雷属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Aqua_1_PAL": {
+            "name": "水遊び好き",
+            "desc": "水属性攻撃ダメージ増加+10%"
+        },
+        "ElementBoost_Normal_2_PAL": {
+            "name": "聖天",
+            "desc": "無属性攻撃ダメージ増加+20%（セイントールの固有スキル）"
+        },
+        "ElementBoost_Dark_2_PAL": {
+            "name": "冥王",
+            "desc": "闇属性攻撃ダメージ増加+20%（ベイントールの固有スキル）"
+        },
+        "ElementBoost_Dragon_2_PAL": {
+            "name": "神龍",
+            "desc": "竜属性攻撃ダメージ増加+20%（ジェッドランの固有スキル）"
+        },
+        "ElementBoost_Ice_2_PAL": {
+            "name": "氷帝",
+            "desc": "氷属性攻撃ダメージ増加+20%（グレイシャルの固有スキル）"
+        },
+        "ElementBoost_Fire_2_PAL": {
+            "name": "炎帝",
+            "desc": "炎属性攻撃ダメージ増加+20%（ボルカイザーの固有スキル）"
+        },
+        "ElementBoost_Leaf_2_PAL": {
+            "name": "精霊王",
+            "desc": "草属性攻撃ダメージ増加+20%（リリクインの固有スキル）"
+        },
+        "ElementBoost_Earth_2_PAL": {
+            "name": "地帝",
+            "desc": "地属性攻撃ダメージ増加+20%（アヌビスの固有スキル）"
+        },
+        "ElementBoost_Thunder_2_PAL": {
+            "name": "雷帝",
+            "desc": "雷属性攻撃ダメージ増加+20%（ボルゼクスの固有スキル）"
+        },
+        "ElementBoost_Aqua_2_PAL": {
+            "name": "海皇",
+            "desc": "水属性攻撃ダメージ増加+20%（レヴィドラの固有スキル）"
+        },
+        "PAL_ALLAttack_up1": {
+            "name": "勇敢",
+            "desc": "攻撃+10%"
+        },
+        "PAL_ALLAttack_up2": {
+            "name": "獰猛",
+            "desc": "攻撃+20%"
+        },
+        "PAL_ALLAttack_down1": {
+            "name": "ビビり",
+            "desc": "攻撃-10%"
+        },
+        "PAL_ALLAttack_down2": {
+            "name": "ことなかれ主義",
+            "desc": "攻撃-20%"
+        },
+        "Deffence_up1": {
+            "name": "硬い皮膚",
+            "desc": "防御+10%"
+        },
+        "Deffence_up2": {
+            "name": "屈強な肉体",
+            "desc": "防御+20%"
+        },
+        "Deffence_down1": {
+            "name": "うたれ弱い",
+            "desc": "防御-10%"
+        },
+        "Deffence_down2": {
+            "name": "すぐ骨折する",
+            "desc": "防御-20%"
+        },
+        "TrainerMining_up1": {
+            "name": "鉱山のチーフ",
+            "desc": "プレイヤーの採掘効率増加+25%"
+        },
+        "TrainerLogging_up1": {
+            "name": "伐採リーダー",
+            "desc": "プレイヤーの伐採効率増加+25%"
+        },
+        "TrainerATK_UP_1": {
+            "name": "突撃指揮者",
+            "desc": "プレイヤーの攻撃増加+10%"
+        },
+        "TrainerWorkSpeed_UP_1": {
+            "name": "モチベーター",
+            "desc": "プレイヤーの作業速度+25%"
+        },
+        "TrainerDEF_UP_1": {
+            "name": "堅城の軍師",
+            "desc": "プレイヤーの防御増加+10%"
+        },
+        "PAL_Sanity_Down_1": {
+            "name": "ポジティブ思考",
+            "desc": "SAN値が減りにくい+10%"
+        },
+        "PAL_Sanity_Down_2": {
+            "name": "ワーカーホリック",
+            "desc": "SAN値が減りにくい+15%"
+        },
+        "PAL_Sanity_Up_1": {
+            "name": "精神が不安定",
+            "desc": "SAN値が減りやすい+10%"
+        },
+        "PAL_Sanity_Up_2": {
+            "name": "破滅願望",
+            "desc": "SAN値が減りやすい+15%"
+        },
+        "PAL_FullStomach_Down_1": {
+            "name": "小食",
+            "desc": "満腹度が減りにくい+10%"
+        },
+        "PAL_FullStomach_Down_2": {
+            "name": "ダイエットマスター",
+            "desc": "満腹度が減りにくい+15%"
+        },
+        "PAL_FullStomach_Up_1": {
+            "name": "食いしんぼ",
+            "desc": "満腹度が減りやすい+10%"
+        },
+        "PAL_FullStomach_Up_2": {
+            "name": "無限の胃袋",
+            "desc": "満腹度が減りやすい+15%"
+        },
+        "CraftSpeed_up1": {
+            "name": "まじめ",
+            "desc": "作業速度+20%"
+        },
+        "CraftSpeed_up2": {
+            "name": "職人気質",
+            "desc": "作業速度+50%"
+        },
+        "CraftSpeed_down1": {
+            "name": "不器用",
+            "desc": "作業速度-10%"
+        },
+        "CraftSpeed_down2": {
+            "name": "サボり癖",
+            "desc": "作業速度-30%"
+        },
+        "MoveSpeed_up_1": {
+            "name": "すばしこい",
+            "desc": "移動速度上昇+10%"
+        },
+        "MoveSpeed_up_2": {
+            "name": "走るのが得意",
+            "desc": "移動速度上昇+20%"
+        },
+        "MoveSpeed_up_3": {
+            "name": "神速",
+            "desc": "移動速度上昇+30%"
+        },
+        "PAL_CorporateSlave": {
+            "name": "社畜",
+            "desc": "作業速度+30%, 攻撃-30%"
+        },
+        "PAL_rude": {
+            "name": "粗暴",
+            "desc": "攻撃+15%, 作業速度-10%"
+        },
+        "Noukin": {
+            "name": "脳筋",
+            "desc": "攻撃+30%, 作業速度-50%"
+        },
+        "PAL_oraora": {
+            "name": "オラオラ系",
+            "desc": "攻撃+10%, 防御-10%"
+        },
+        "PAL_conceited": {
+            "name": "うぬぼれ屋",
+            "desc": "作業速度+10%, 防御-10%"
+        },
+        "PAL_masochist": {
+            "name": "マゾヒスト",
+            "desc": "防御+15%, 攻撃-15%"
+        },
+        "PAL_sadist": {
+            "name": "サディスト",
+            "desc": "攻撃+15%, 防御+15%"
+        },
+        "Rare": {
+            "name": "希少",
+            "desc": "攻撃+15%, 作業速度+15%"
+        },
+        "Legend": {
+            "name": "伝説",
+            "desc": "攻撃+20%, 防御+20%, 移動速度上昇+15%"
+        }
+    }
+}
