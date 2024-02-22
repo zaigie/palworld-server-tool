@@ -9,15 +9,14 @@ import { useI18n } from "vue-i18n";
 import palMap from "@/assets/pal.json";
 import skillMap from "@/assets/skill.json";
 import PalDetail from "./PalDetail.vue";
+import userStore from "@/stores/model/user";
 
 const { t, locale } = useI18n();
 
 const message = useMessage();
 const dialog = useDialog();
-const PALWORLD_TOKEN = "palworld_token";
 
-const isLogin = ref(false);
-const authToken = ref("");
+const isLogin = computed(() => userStore().getLoginInfo().isLogin);
 
 const props = defineProps(["playerInfo", "currentPlayerPalsList", "finished"]);
 const playerInfo = computed(() => props.playerInfo);
@@ -27,38 +26,39 @@ const finished = computed(() => props.finished);
 const emits = defineEmits(["onSearch"]);
 
 const handelPlayerAction = async (type) => {
-  if (!checkAuthToken()) {
+  if (!isLogin) {
     message.error($t("message.requireauth"));
     showLoginModal.value = true;
     return;
+  } else {
+    dialog.warning({
+      title: type === "ban" ? t("message.bantitle") : t("message.kicktitle"),
+      content: type === "ban" ? t("message.banwarn") : t("message.kickwarn"),
+      positiveText: t("button.confirm"),
+      negativeText: t("button.cancel"),
+      onPositiveClick: async () => {
+        if (type === "ban") {
+          const { data, statusCode } = await new ApiService().banPlayer({
+            playerUid: playerInfo.value.player_uid,
+          });
+          if (statusCode.value === 200) {
+            message.success(t("message.bansuccess"));
+          } else {
+            message.error(t("message.banfail", { err: data.value?.error }));
+          }
+        } else if (type === "kick") {
+          const { data, statusCode } = await new ApiService().kickPlayer({
+            playerUid: playerInfo.value.player_uid,
+          });
+          if (statusCode.value === 200) {
+            message.success(t("message.kicksuccess"));
+          } else {
+            message.error(t("message.kickfail", { err: data.value?.error }));
+          }
+        }
+      },
+    });
   }
-  dialog.warning({
-    title: type === "ban" ? t("message.bantitle") : t("message.kicktitle"),
-    content: type === "ban" ? t("message.banwarn") : t("message.kickwarn"),
-    positiveText: t("button.confirm"),
-    negativeText: t("button.cancel"),
-    onPositiveClick: async () => {
-      if (type === "ban") {
-        const { data, statusCode } = await new ApiService().banPlayer({
-          playerUid: playerInfo.value.player_uid,
-        });
-        if (statusCode.value === 200) {
-          message.success(t("message.bansuccess"));
-        } else {
-          message.error(t("message.banfail", { err: data.value?.error }));
-        }
-      } else if (type === "kick") {
-        const { data, statusCode } = await new ApiService().kickPlayer({
-          playerUid: playerInfo.value.player_uid,
-        });
-        if (statusCode.value === 200) {
-          message.success(t("message.kicksuccess"));
-        } else {
-          message.error(t("message.kickfail", { err: data.value?.error }));
-        }
-      }
-    },
-  });
 };
 
 const searchValue = ref("");
@@ -73,19 +73,6 @@ const palDetail = ref({});
 const showPalDetail = (pal) => {
   palDetail.value = pal;
   showPalDetailModal.value = true;
-};
-
-/**
- * check auth token
- */
-const checkAuthToken = () => {
-  const token = localStorage.getItem(PALWORLD_TOKEN);
-  if (token && token !== "") {
-    isLogin.value = true;
-    authToken.value = token;
-    return true;
-  }
-  return false;
 };
 
 const isPlayerOnline = (last_online) => {
@@ -128,10 +115,6 @@ const getPalAvatar = (name) => {
 const getUnknowPalAvatar = () => {
   return new URL("@/assets/pal/Unknown.png", import.meta.url).href;
 };
-
-onMounted(async () => {
-  checkAuthToken();
-});
 </script>
 
 <template>

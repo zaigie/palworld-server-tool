@@ -17,6 +17,7 @@ import PlayerList from "./component/PlayerList.vue";
 import GuildList from "./component/GuildList.vue";
 import PlayerDetail from "./component/PlayerDetail.vue";
 import GuildDetail from "./component/GuildDetail.vue";
+import userStore from "@/stores/model/user";
 
 const { t, locale } = useI18n();
 
@@ -189,6 +190,7 @@ const handleLogin = async () => {
   }
   let token = data.value.token;
   localStorage.setItem(PALWORLD_TOKEN, token);
+  userStore().setIsLogin(true, token);
   authToken.value = token;
   message.success(t("message.authsuccess"));
   showLoginModal.value = false;
