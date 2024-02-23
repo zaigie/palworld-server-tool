@@ -146,25 +146,48 @@ mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
 
    关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli` ，如果不知道绝对路径，在终端执行 `pwd` 即可
 
-   ```yaml
-   web: # web 相关配置
-     password: "" # web 管理模式密码
-     port: 8080 # web 服务端口
-     tls: false # 是否开启 TLS
-     cert_path: "" # Cert 文件路径
-     key_path: "" # Key 文件路径
-   rcon: # RCON 相关配置
-     address: "127.0.0.1:25575" # RCON 地址
-     password: "" # 设置的 AdminPassword
-     timeout: 5 # 请求 RCON 超时时间，推荐 <= 5
-     sync_interval: 60 # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
-   save: # 存档文件解析相关配置
-     path: "/path/to/your/Pal/Saved" # 存档文件路径
-     decode_path: "/path/to/your/sav_cli" # 存档解析工具路径，一般和 pst 在同一目录
-     sync_interval: 120 # 定时从存档获取数据的间隔，单位秒，推荐 >= 120
-   manage: # 管理相关
-     kick_non_whitelist: false # 玩家不在白名单是否自动踢出
-   ```
+```yaml
+    # WebUI 设置
+    web:
+      # WebUI 管理员密码
+      password: ""
+      # WebUI 访问端口
+      port: 8080
+      # 是否开启使用 HTTPS TLS 访问
+      tls: false
+      # TLS Cert 如果开启使用 HTTPS 请输入证书文件路径
+      cert_path: ""
+      # TLS Key 如果开启使用 HTTPS 请输入证书密钥文件路径
+      key_path: ""
+      # 若开启 HTTPS 访问请填写你的 HTTPS 证书绑定的域名 eg. https://yourdomain.com
+      public_url: ""
+
+    # RCON 相关设置
+    rcon:
+      # RCON 的地址和端口
+      address: "127.0.0.1:25575"
+      # 服务 端设置的 RCON AdminPassword
+      password: ""
+      # RCON 通信超时时间，推荐 <= 5
+      timeout: 5
+      # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
+      sync_interval: 60
+
+    # sav_cli Config 存档文件解析相关配置
+    save:
+      # 存档文件路径
+      path: "/path/to/your/Pal/Saved"
+      # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录
+      decode_path: "/path/to/your/sav_cli"
+      # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
+      sync_interval: 120
+      
+    # Automation Config 自动化管理相关
+    manage:
+      # 玩家不在白名单是否自动踢出
+      kick_non_whitelist: false
+```
+
 
 ##### 运行
 
