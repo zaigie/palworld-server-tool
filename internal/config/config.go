@@ -9,11 +9,12 @@ import (
 
 type Config struct {
 	Web struct {
-		Port     int    `mapstructure:"port"`
-		Password string `mapstructure:"password"`
-		Tls      bool   `mapstructure:"tls"`
-		CertPath string `mapstructure:"cert_path"`
-		KeyPath  string `mapstructure:"key_path"`
+		Port      int    `mapstructure:"port"`
+		Password  string `mapstructure:"password"`
+		Tls       bool   `mapstructure:"tls"`
+		CertPath  string `mapstructure:"cert_path"`
+		KeyPath   string `mapstructure:"key_path"`
+		PublicUrl string `mapstructure:"public_url"`
 	}
 	Rcon struct {
 		Address      string `mapstructure:"address"`
