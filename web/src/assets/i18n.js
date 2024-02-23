@@ -86,8 +86,8 @@ const messages = {
     input: {
       searchPlaceholder: "Search for pal type and skills",
       nickname: "Nickname",
-      player_uid: "Player Uid",
-      steam_id: "Steam Id",
+      player_uid: "Player UID",
+      steam_id: "Steam64",
     },
   },
   zh: {
@@ -174,8 +174,8 @@ const messages = {
     input: {
       searchPlaceholder: "搜索帕鲁类型、技能",
       nickname: "昵称",
-      player_uid: "玩家 Uid",
-      steam_id: "Steam Id",
+      player_uid: "玩家 UID",
+      steam_id: "Steam64",
     },
   },
   ja: {
@@ -249,8 +249,8 @@ const messages = {
     },
     input: {
       nickname: "ニックネーム",
-      player_uid: "プレイヤー Uid",
-      steam_id: "Steam Id",
+      player_uid: "プレイヤー UID",
+      steam_id: "Steam64",
     },
     pal: {
       type: "タイプ",
