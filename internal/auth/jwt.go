@@ -8,9 +8,10 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
-var SecretKey = []byte("75v=*_klfg10wnrn0n)8$^+l3kl#19go&)pduf18+di1#a@!rs")
+var SecretKey = []byte(viper.GetString("web.password"))
 
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
