@@ -5,11 +5,14 @@ import {
   SettingsPowerRound,
   DeleteOutlineTwotone,
   RemoveRedEyeTwotone,
+  DeleteFilled,
 } from "@vicons/material";
 import {
   GameController,
   LanguageSharp,
   ShieldCheckmarkSharp,
+  Terminal,
+  ArchiveOutline,
 } from "@vicons/ionicons5";
 import { BroadcastTower } from "@vicons/fa";
 import { computed, onMounted, ref } from "vue";
@@ -134,6 +137,92 @@ const handleLogin = async () => {
   message.success(t("message.authsuccess"));
   showLoginModal.value = false;
   isLogin.value = true;
+};
+const showRconDrawer = ref(false);
+const rconCommands = ref([]);
+const rconCommandsExtra = ref({});
+const handleRconDrawer = () => {
+  if (checkAuthToken()) {
+    showRconDrawer.value = true;
+    getRconCommands();
+  } else {
+    message.error(t("message.requireauth"));
+    showRconDrawer.value = true;
+  }
+};
+const getRconCommands = async () => {
+  if (checkAuthToken()) {
+    const { data, statusCode } = await new ApiService().getRconCommands();
+    if (statusCode.value === 200) {
+      rconCommands.value = data.value;
+      rconCommands.value.forEach((item) => {
+        rconCommandsExtra.value[item.uuid] = "";
+      });
+    }
+  }
+};
+const sendRconCommand = async (uuid) => {
+  const content = rconCommandsExtra.value[uuid];
+  if (checkAuthToken()) {
+    const { data, statusCode } = await new ApiService().sendRconCommand({
+      uuid,
+      content,
+    });
+    if (statusCode.value === 200) {
+      message.info(data.value?.message);
+    } else {
+      message.error(t("message.rconfail", { err: data.value?.error }));
+    }
+  }
+};
+
+const showRconAddModal = ref(false);
+const newRconCommand = ref("");
+const newRconRemark = ref("");
+const handleAddRconCommand = () => {
+  showRconAddModal.value = true;
+  newRconCommand.value = "";
+  newRconRemark.value = "";
+};
+const handleImportRconFinish = (options) => {
+  getRconCommands();
+  setTimeout(() => {
+    message.success(t("message.importRconSuccess"));
+    showRconAddModal.value = false;
+  }, 500);
+};
+const handleImportRconError = (options) => {
+  let err = options.event?.target?.response
+    ? JSON.parse(options.event?.target?.response).error
+    : "";
+  message.error(t("message.importRconFail", { err }));
+};
+const addRconCommand = async () => {
+  if (checkAuthToken()) {
+    const { data, statusCode } = await new ApiService().addRconCommand({
+      command: newRconCommand.value,
+      remark: newRconRemark.value,
+    });
+    if (statusCode.value === 200) {
+      message.success(t("message.addrconsuccess"));
+      await getRconCommands();
+      newRconCommand.value = "";
+      newRconRemark.value = "";
+    } else {
+      message.error(t("message.addrconfail", { err: data.value?.error }));
+    }
+  }
+};
+const removeRconCommand = async (uuid) => {
+  if (checkAuthToken()) {
+    const { data, statusCode } = await new ApiService().removeRconCommand(uuid);
+    if (statusCode.value === 200) {
+      message.success(t("message.removerconsuccess"));
+      await getRconCommands();
+    } else {
+      message.error(t("message.removerconfail", { err: data.value?.error }));
+    }
+  }
 };
 
 // 白名单
@@ -482,6 +571,21 @@ onMounted(async () => {
               </n-button>
               <n-button
                 :size="smallScreen ? 'medium' : 'large'"
+                type="primary"
+                secondary
+                strong
+                round
+                @click="handleRconDrawer"
+              >
+                <template #icon>
+                  <n-icon>
+                    <Terminal />
+                  </n-icon>
+                </template>
+                {{ $t("button.rcon") }}
+              </n-button>
+              <n-button
+                :size="smallScreen ? 'medium' : 'large'"
                 type="success"
                 secondary
                 strong
@@ -605,6 +709,126 @@ onMounted(async () => {
       </div>
     </template>
   </n-modal>
+
+  <!-- custom rcon drawer -->
+  <n-modal
+    v-model:show="showRconAddModal"
+    class="custom-card"
+    preset="card"
+    style="width: 90%; max-width: 600px"
+    footer-style="padding: 12px;"
+    content-style="padding: 12px;"
+    header-style="padding: 12px;"
+    :title="$t('button.addRcon')"
+    size="huge"
+    :bordered="false"
+    :segmented="segmented"
+  >
+    <n-tabs default-value="import" size="large" justify-content="space-evenly">
+      <n-tab-pane name="import" :tab="t('button.import')">
+        <n-upload
+          multiple
+          directory-dnd
+          action="/api/rcon/import"
+          :headers="{ Authorization: `Bearer ${authToken}` }"
+          :max="1"
+          @finish="handleImportRconFinish"
+          @error="handleImportRconError"
+        >
+          <n-upload-dragger>
+            <div style="margin-bottom: 12px">
+              <n-icon size="48" :depth="3">
+                <ArchiveOutline />
+              </n-icon>
+            </div>
+            <n-text style="font-size: 16px">
+              {{ $t("message.importRconTitle") }}
+            </n-text>
+            <n-p depth="3" style="margin: 8px 0 0 0">
+              {{ $t("message.importRconDesc") }}
+            </n-p>
+          </n-upload-dragger>
+        </n-upload>
+      </n-tab-pane>
+      <n-tab-pane name="add" :tab="t('button.add')">
+        <n-input
+          v-model:value="newRconCommand"
+          size="large"
+          round
+          :placeholder="t('input.rcon')"
+        ></n-input>
+        <n-input
+          class="mt-5"
+          v-model:value="newRconRemark"
+          size="large"
+          round
+          :placeholder="t('input.remark')"
+        ></n-input>
+        <n-button
+          class="mt-5"
+          style="width: 100%"
+          type="primary"
+          @click="addRconCommand"
+          strong
+          secondary
+        >
+          {{ $t("button.add") }}
+        </n-button>
+      </n-tab-pane>
+    </n-tabs>
+  </n-modal>
+  <n-drawer v-model:show="showRconDrawer" :width="502" placement="right">
+    <n-drawer-content :title="t('modal.rcon')">
+      <template #footer>
+        <n-button type="primary" strong secondary @click="handleAddRconCommand">
+          {{ $t("button.addRcon") }}
+        </n-button>
+      </template>
+      <n-collapse>
+        <n-collapse-item
+          v-for="rconCommand in rconCommands"
+          :key="rconCommand.uuid"
+          :title="rconCommand.command"
+          :name="rconCommand.uuid"
+        >
+          <template #header-extra> {{ rconCommand.remark }} </template>
+          <n-input-group>
+            <n-input
+              round
+              :placeholder="t('input.extraContent')"
+              v-model:value="rconCommandsExtra[rconCommand.uuid]"
+            >
+              <template #prefix>
+                <n-text>{{ rconCommand.command + "  +" }}</n-text>
+              </template>
+            </n-input>
+            <n-button
+              type="primary"
+              ghost
+              round
+              @click="sendRconCommand(rconCommand.uuid)"
+            >
+              {{ $t("button.execute") }}
+            </n-button>
+          </n-input-group>
+          <n-button
+            class="mt-3"
+            style="width: 100%"
+            type="error"
+            dashed
+            @click="removeRconCommand(rconCommand.uuid)"
+          >
+            <template #icon>
+              <n-icon>
+                <DeleteFilled />
+              </n-icon>
+            </template>
+            {{ $t("button.remove") }}
+          </n-button>
+        </n-collapse-item>
+      </n-collapse>
+    </n-drawer-content>
+  </n-drawer>
 
   <!-- whitelist modal -->
   <n-modal

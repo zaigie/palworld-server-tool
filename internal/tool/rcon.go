@@ -3,10 +3,11 @@ package tool
 import (
 	"errors"
 	"fmt"
-	"github.com/zaigie/palworld-server-tool/service"
-	"go.etcd.io/bbolt"
 	"regexp"
 	"strings"
+
+	"github.com/zaigie/palworld-server-tool/service"
+	"go.etcd.io/bbolt"
 
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/database"
@@ -25,6 +26,16 @@ func executeCommand(command string) (*executor.Executor, string, error) {
 
 	response, err := exec.Execute(command)
 	return exec, response, err
+}
+
+func CustomCommand(command string) (string, error) {
+	exec, response, err := executeCommand(command)
+	if err != nil {
+		return "", err
+	}
+	defer exec.Close()
+
+	return response, nil
 }
 
 func Info() (map[string]string, error) {

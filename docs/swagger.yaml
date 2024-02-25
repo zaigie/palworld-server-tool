@@ -16,6 +16,18 @@ definitions:
       password:
         type: string
     type: object
+  api.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  api.SendRconCommandRequest:
+    properties:
+      content:
+        type: string
+      uuid:
+        type: string
+    type: object
   api.ServerInfo:
     properties:
       name:
@@ -118,6 +130,8 @@ definitions:
         type: array
       player_uid:
         type: string
+      save_last_online:
+        type: string
       shield_hp:
         type: integer
       shield_max_hp:
@@ -136,6 +150,22 @@ definitions:
       player_uid:
         type: string
       steam_id:
+        type: string
+    type: object
+  database.RconCommand:
+    properties:
+      command:
+        type: string
+      remark:
+        type: string
+    type: object
+  database.RconCommandList:
+    properties:
+      command:
+        type: string
+      remark:
+        type: string
+      uuid:
         type: string
     type: object
   database.TersePlayer:
@@ -157,6 +187,8 @@ definitions:
       nickname:
         type: string
       player_uid:
+        type: string
+      save_last_online:
         type: string
       shield_hp:
         type: integer
@@ -445,6 +477,174 @@ paths:
       summary: Kick Player
       tags:
       - Player
+  /api/rcon:
+    get:
+      consumes:
+      - application/json
+      description: List Rcon Commands
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.RconCommandList'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: List Rcon Commands
+      tags:
+      - Rcon
+    post:
+      consumes:
+      - application/json
+      description: Add Rcon Command
+      parameters:
+      - description: Rcon Command
+        in: body
+        name: command
+        required: true
+        schema:
+          $ref: '#/definitions/database.RconCommand'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add Rcon Command
+      tags:
+      - Rcon
+  /api/rcon/{uuid}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove Rcon Command
+      parameters:
+      - description: UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Remove Rcon Command
+      tags:
+      - Rcon
+    put:
+      consumes:
+      - application/json
+      description: Put Rcon Command
+      parameters:
+      - description: UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: Rcon Command
+        in: body
+        name: command
+        required: true
+        schema:
+          $ref: '#/definitions/database.RconCommand'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Put Rcon Command
+      tags:
+      - Rcon
+  /api/rcon/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Import Rcon Commands from a TXT file
+      parameters:
+      - description: Upload txt file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Import Rcon Commands
+      tags:
+      - Rcon
+  /api/rcon/send:
+    post:
+      consumes:
+      - application/json
+      description: Send Rcon Command
+      parameters:
+      - description: Rcon Command
+        in: body
+        name: command
+        required: true
+        schema:
+          $ref: '#/definitions/api.SendRconCommandRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Send Rcon Command
+      tags:
+      - Rcon
   /api/server:
     get:
       consumes:
