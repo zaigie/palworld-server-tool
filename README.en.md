@@ -1,7 +1,7 @@
 <h1 align='center'>PalWorld Server Tool</h1>
 
 <p align="center">
-   <a href="/README.md">简体中文</a> | <strong>English</strong>
+   <a href="/README.md">简体中文</a> | <strong>English</strong> | <a href="/README.ja.md">日本語</a>
 </p>
 
 <p align='center'> 
@@ -22,12 +22,11 @@
 >
 > Of course, the dark mode is also arranged no problem ~
 
-Features and roadmap based on parsing of `Level.sav` save files:
+Features based on parsing of `Level.sav` save files:
 
 - [x] Complete player data
 - [x] Player Palworld data
 - [x] Guild data
-- [ ] Player inventory data
 
 Features implemented using official RCON commands (available only for servers):
 
@@ -36,6 +35,11 @@ Features implemented using official RCON commands (available only for servers):
 - [x] Kick/ban players
 - [x] In-game broadcasting
 - [x] Smooth server shutdown with broadcast message
+
+Additional features provided by the tool:
+
+- [x] Whitelist management
+- [x] Defines and executes the RCON command
 
 This tool uses bbolt for single file storage, fetching and saving data from RCON and Level.sav files via scheduled tasks. It provides a simple visual interface and REST API for easy management and development.
 
@@ -77,9 +81,7 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
 
 - [File Deployment](#file-deployment)
   - [Linux](#linux)
-    - [pst-agent deployment](./README.agent.en.md#linux)
   - [Windows](#windows)
-    - [pst-agent deployment](./README.agent.en.md#windows)
 - [Docker Depolyment](#docker-deployment)
   - [Monolithic Deployment](#monolithic-deployment)
   - [Agent Deployment](#agent-deployment)
@@ -88,7 +90,7 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
 
 Make sure RCON first [How to Enable RCON for Private Servers](#how-to-enable-rcon-for-private-servers)
 
-> The task of parsing `Level.sav` requires some system memory (often 1GB-3GB) in a short period (<20s) , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory.If you do not meet the requirements, use the following methods below
+> The task of parsing `Level.sav` requires some system memory (often 1GB-3GB) in a short period (<20s) , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory.
 
 Rimer believes that by **putting the pst tool and the game server on the same physical machine**, there are some situations where you might not want to deploy them on the same machine:
 
@@ -110,7 +112,7 @@ Download the latest executable files at:
 
 ```bash
 # Download pst_{version}_{platform}_{arch}.tar.gz and extract to the pst directory
-mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.6_linux_x86_64.tar.gz -C pst
 ```
 
 ##### Configuration
@@ -127,23 +129,45 @@ mkdir -p pst && tar -xzf pst_v0.5.4_linux_x86_64.tar.gz -C pst
    For `decode_path`, it's usually the pst directory plus `sav_cli`. If unsure about the absolute path, execute `pwd` in the terminal.
 
    ```yaml
-   web: # web configuration
-     password: "" # web management mode password
-     port: 8080 # web service port
-     tls: false # Whether to enable TLS
-     cert_path: "" # Cert File Path
-     key_path: "" # Key File Path
-   rcon: # RCON configuration
-     address: "127.0.0.1:25575" # RCON address
-     password: "" # Set AdminPassword
-     timeout: 5 # RCON request timeout, recommended <= 5
-     sync_interval: 60 # Interval for syncing online player status with RCON service, in seconds
-   save: # Save file parsing configuration
-     path: "/path/to/your/Pal/Saved" # Save file path
-     decode_path: "/path/to/your/sav_cli" # Save file parsing tool path, usually in the same directory as pst
-     sync_interval: 120 # Interval for syncing data from save file, in seconds, recommended >= 120
-   manage: # manage configuration
-     kick_non_whitelist: false # is the player not in whitelist then kick
+   # WebUI Config
+   web:
+     # WebUI Admin Password
+     password: ""
+     # WebUI Port
+     port: 8080
+     # Enable TLS
+     tls: false
+     # TLS Cert File Path if Enable TLS
+     cert_path: ""
+     # TLS Key File Path if Enable TLS
+     key_path: ""
+     # TLS url for sav_cli to communicate eg. https://yourdomain.com
+     public_url: ""
+
+   # RCON Config
+   rcon:
+     # RCON Address Port
+     address: "127.0.0.1:25575"
+     # Server AdminPassword
+     password: ""
+     # RCON Timeout Sec
+     timeout: 5
+     # RCON Communication Interval Sec
+     sync_interval: 60
+
+   # sav_cli Config
+   save:
+     # Sav File Path
+     path: "/path/to/your/Pal/Saved"
+     # Sav_cli Path
+     decode_path: "/path/to/your/sav_cli"
+     # Sav Decode Interval Sec
+     sync_interval: 120
+
+   # Automation Config
+   manage:
+     # Auto Kick non-whitelisted
+     kick_non_whitelist: false
    ```
 
 ##### Run
@@ -189,7 +213,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 ##### Download and Extract
 
-Extract `pst_v0.5.4_windows_x86_64.zip` to any directory (recommend naming the folder `pst`).
+Extract `pst_v0.5.6_windows_x86_64.zip` to any directory (recommend naming the folder `pst`).
 
 ##### Configuration
 
@@ -206,47 +230,47 @@ You can also right-click - "Properties", view the path and file name, and then c
 >
 > It is also important to make sure that the `config.yaml` file is **ANSI encoded**, other encoding formats will cause problems such as path errors!!
 
-   ```yaml
-    # WebUI Config
-    web:
-      # WebUI Admin Password
-      password: ""
-      # WebUI Port
-      port: 8080
-      # Enable TLS
-      tls: false
-      # TLS Cert File Path if Enable TLS
-      cert_path: ""
-      # TLS Key File Path if Enable TLS
-      key_path: ""
-      # TLS url for sav_cli to communicate eg. https://yourdomain.com
-      public_url: ""
+```yaml
+# WebUI Config
+web:
+  # WebUI Admin Password
+  password: ""
+  # WebUI Port
+  port: 8080
+  # Enable TLS
+  tls: false
+  # TLS Cert File Path if Enable TLS
+  cert_path: ""
+  # TLS Key File Path if Enable TLS
+  key_path: ""
+  # TLS url for sav_cli to communicate eg. https://yourdomain.com
+  public_url: ""
 
-    # RCON Config
-    rcon:
-      # RCON Address Port
-      address: "127.0.0.1:25575"
-      # Server AdminPassword
-      password: ""
-      # RCON Timeout Sec
-      timeout: 5
-      # RCON Communication Interval Sec
-      sync_interval: 60
+# RCON Config
+rcon:
+  # RCON Address Port
+  address: "127.0.0.1:25575"
+  # Server AdminPassword
+  password: ""
+  # RCON Timeout Sec
+  timeout: 5
+  # RCON Communication Interval Sec
+  sync_interval: 60
 
-    # sav_cli Config
-    save:
-      # Sav File Path
-      path: "/path/to/your/Pal/Saved"
-      # Sav_cli Path
-      decode_path: "/path/to/your/sav_cli"
-      # Sav Decode Interval Sec
-      sync_interval: 120
+# sav_cli Config
+save:
+  # Sav File Path
+  path: "C:\\path\\to\\your\\Pal\\Saved"
+  # Sav_cli Path
+  decode_path: "C:\\path\\to\\your\\sav_cli.exe"
+  # Sav Decode Interval Sec
+  sync_interval: 120
 
-    # Automation Config
-    manage:
-      # Auto Kick non-whitelisted
-      kick_non_whitelist: false
-   ```
+# Automation Config
+manage:
+  # Auto Kick non-whitelisted
+  kick_non_whitelist: false
+```
 
 ##### Running
 
@@ -352,7 +376,6 @@ Applicable for:
 
 ```bash
 docker run -d --name pst-agent \
--m 256M --memory-swap=4G `# optional limit memory to 256M and memory-swap to 4G` \
 -p 8081:8081 \
 -v /path/to/your/Pal/Saved:/game \
 -e SAV_FILE="/game" \

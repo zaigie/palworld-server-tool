@@ -1,7 +1,7 @@
 <h1 align='center'>pst-agent 部署</h1>
 
 <p align="center">
-   <strong>简体中文</strong> | <a href="/README.agent.en.md">English</a>
+   <strong>简体中文</strong> | <a href="/README.agent.en.md">English</a> | <a href="/README.agent.ja.md">日本語</a>
 </p>
 
 ### Linux
@@ -14,7 +14,7 @@
 
 ```bash
 # 下载并重命名
-mv pst-agent_v0.5.0_linux_amd64 pst-agent
+mv pst-agent_v0.5.6_linux_x86_64 pst-agent
 chmod +x pst-agent
 ```
 
@@ -65,7 +65,7 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 #### 下载
 
-下载 pst-agent 工具并重命名，如将 `pst-agent_v0.5.0_windows_x86.exe` 重命名为 `pst-agent.exe`
+下载 pst-agent 工具并重命名，如将 `pst-agent_v0.5.6_windows_x86_64.exe` 重命名为 `pst-agent.exe`
 
 #### 运行
 
