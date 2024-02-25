@@ -414,12 +414,16 @@ watch(
  */
 const checkAuthToken = () => {
   const token = localStorage.getItem(PALWORLD_TOKEN);
-  if (token && token !== "") {
+  if (token && token !== "" && !isTokenExpired(token)) {
     isLogin.value = true;
     authToken.value = token;
     return true;
   }
   return false;
+};
+const isTokenExpired = (token) => {
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  return payload.exp < Date.now() / 1000;
 };
 
 onMounted(async () => {
