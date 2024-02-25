@@ -42,8 +42,8 @@ dependencies:
     specifier: ^12.1.0
     version: 12.1.0(less@4.2.0)(webpack@5.90.0)
   naive-ui:
-    specifier: ^2.37.3
-    version: 2.37.3(vue@3.4.15)
+    specifier: ^2.38.0
+    version: 2.38.0(vue@3.4.15)
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(vue@3.4.15)
@@ -2575,8 +2575,8 @@ packages:
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
-  /naive-ui@2.37.3(vue@3.4.15):
-    resolution: {integrity: sha512-aUkHFXVIluSi8Me+npbcsdv1NYhVMj5t9YaruoCESlqmfqspj+R2QHEVXkTtUI1kQwVrABMCtAGq/wountqjZA==}
+  /naive-ui@2.38.0(vue@3.4.15):
+    resolution: {integrity: sha512-Sa1hPUSTaOBvFy5hBcdQ6ajGVqt59QHN4p6wcsC5stVo6JjQPnbRTUvWtNG3gAsLhCvHQBm9NXeJG5Ne1OFQ4Q==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
