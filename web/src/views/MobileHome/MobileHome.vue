@@ -301,7 +301,11 @@ const returnList = () => {
  */
 const checkAuthToken = () => {
   const token = localStorage.getItem(PALWORLD_TOKEN);
-  if (token && token !== "" && !isTokenExpired(token)) {
+  if (token && token !== "") {
+    if (isTokenExpired(token)) {
+      localStorage.removeItem(PALWORLD_TOKEN);
+      return false;
+    }
     isLogin.value = true;
     authToken.value = token;
     return true;

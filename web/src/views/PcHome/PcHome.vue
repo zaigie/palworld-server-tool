@@ -414,7 +414,11 @@ watch(
  */
 const checkAuthToken = () => {
   const token = localStorage.getItem(PALWORLD_TOKEN);
-  if (token && token !== "" && !isTokenExpired(token)) {
+  if (token && token !== "") {
+    if (isTokenExpired(token)) {
+      localStorage.removeItem(PALWORLD_TOKEN);
+      return false;
+    }
     isLogin.value = true;
     authToken.value = token;
     return true;
@@ -729,7 +733,7 @@ onMounted(async () => {
     :segmented="segmented"
   >
     <n-tabs default-value="import" size="large" justify-content="space-evenly">
-      <n-tab-pane name="import" :tab="t('button.import')">
+      <n-tab-pane name="import" :tab="$t('button.import')">
         <n-upload
           multiple
           directory-dnd
@@ -754,19 +758,19 @@ onMounted(async () => {
           </n-upload-dragger>
         </n-upload>
       </n-tab-pane>
-      <n-tab-pane name="add" :tab="t('button.add')">
+      <n-tab-pane name="add" :tab="$t('button.add')">
         <n-input
           v-model:value="newRconCommand"
           size="large"
           round
-          :placeholder="t('input.rcon')"
+          :placeholder="$t('input.rcon')"
         ></n-input>
         <n-input
           class="mt-5"
           v-model:value="newRconRemark"
           size="large"
           round
-          :placeholder="t('input.remark')"
+          :placeholder="$t('input.remark')"
         ></n-input>
         <n-button
           class="mt-5"
@@ -799,7 +803,7 @@ onMounted(async () => {
           <n-input-group>
             <n-input
               round
-              :placeholder="t('input.extraContent')"
+              :placeholder="$t('input.extraContent')"
               v-model:value="rconCommandsExtra[rconCommand.uuid]"
             >
               <template #prefix>

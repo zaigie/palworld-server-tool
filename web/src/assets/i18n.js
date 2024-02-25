@@ -305,6 +305,7 @@ const messages = {
       search: "検索",
     },
     input: {
+      searchPlaceholder: "パルのタイプやスキルで検索してください",
       nickname: "ニックネーム",
       player_uid: "プレイヤー UID",
       steam_id: "Steam64",
@@ -322,9 +323,6 @@ const messages = {
       rank: "ランク",
       tower: "タワーボス",
       lucky: "ラッキーパル",
-    },
-    input: {
-      searchPlaceholder: "パルのタイプやスキルで検索してください",
     },
   },
 };
