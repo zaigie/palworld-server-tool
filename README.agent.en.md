@@ -1,7 +1,7 @@
 <h1 align='center'>pst-agent deployment</h1>
 
 <p align="center">
-   <a href="/README.agent.md">简体中文</a> | <strong>English</strong>
+   <a href="/README.agent.md">简体中文</a> | <strong>English</strong> | <a href="/README.agent.ja.md">日本語</a>
 </p>
 
 ### Linux
@@ -14,7 +14,7 @@ Download the pst-agent tool, rename it, and ensure it's executable
 
 ```bash
 # Download and rename
-mv pst-agent_v0.5.0_linux_amd64 pst-agent
+mv pst-agent_v0.5.6_linux_x86_64 pst-agent
 chmod +x pst-agent
 ```
 
@@ -65,7 +65,7 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 #### Download
 
-Download the pst-agent tool and rename it, e.g., rename `pst-agent_v0.5.0_windows_x86.exe` to `pst-agent.exe`
+Download the pst-agent tool and rename it, e.g., rename `pst-agent_v0.5.6_windows_x86_64.exe` to `pst-agent.exe`
 
 #### Run
 
