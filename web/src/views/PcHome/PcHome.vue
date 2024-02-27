@@ -309,6 +309,7 @@ const putWhiteList = async () => {
   );
   if (statusCode.value === 200) {
     message.success(t("message.addwhitesuccess"));
+    getWhiteList();
     showWhiteListModal.value = false;
   } else {
     message.error(t("message.addwhitefail", { err: data.value?.error }));
