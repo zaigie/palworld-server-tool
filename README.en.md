@@ -65,6 +65,11 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/42d4c5db-8799-496
 
 ## How to Enable RCON for Private Servers
 
+> [!CAUTION]
+> In version v0.1.5.0 of the game server, `RCONPort` and `RCONEnable` in `PalWorldSettings.ini` **do not take effect**
+>
+> Please add `-RCONPort=25575` after `./PalServer.sh` (Linux) or `PalServer.exe` (Windows) to enable
+
 You need to enable RCON functionality on your server. If your private server tutorial includes this, great. If not, modify the `PalWorldSettings.ini` file.
 
 **This is the file where various in-game multipliers and probabilities are set.** At the end of the file, you'll find:
@@ -112,7 +117,7 @@ Download the latest executable files at:
 
 ```bash
 # Download pst_{version}_{platform}_{arch}.tar.gz and extract to the pst directory
-mkdir -p pst && tar -xzf pst_v0.5.6_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
 ```
 
 ##### Configuration
@@ -213,7 +218,7 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 ##### Download and Extract
 
-Extract `pst_v0.5.6_windows_x86_64.zip` to any directory (recommend naming the folder `pst`).
+Extract `pst_v0.5.7_windows_x86_64.zip` to any directory (recommend naming the folder `pst`).
 
 ##### Configuration
 

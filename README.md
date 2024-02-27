@@ -72,6 +72,11 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4ef
 
 ## 如何开启私服 RCON
 
+> [!CAUTION]
+> 游戏服务器 v0.1.5.0 版本中，PalWorldSettings.ini 中的 RCONPort 和 RCONEnable **不生效**
+>
+> 请在 `./PalServer.sh` (Linux) 或 `PalServer.exe` (Windows) 后添加 -RCONPort=25575 来开启
+
 需要开启服务器的 RCON 功能，如果你的私服教程有写更好，没有的话，修改 `PalWorldSettings.ini` 文件
 
 **也就是修改游戏内各种倍数、概率的那个文件**，里面最后的位置有如下：
@@ -132,7 +137,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ```bash
 # 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
-mkdir -p pst && tar -xzf pst_v0.5.6_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
 ```
 
 ##### 配置
@@ -233,7 +238,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 ##### 下载解压
 
-解压 `pst_v0.5.6_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
+解压 `pst_v0.5.7_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
 
 ##### 配置
 

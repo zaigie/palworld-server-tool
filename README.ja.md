@@ -65,6 +65,11 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4ef
 
 ## プライベートサーバー RCON の有効化方法
 
+> [!CAUTION]
+> ゲームサーバーのバージョン v0.1.5.0 では、`PalWorldSettings.ini`内の`RCONPort`と`RCONEnable`が**有効になりません**
+>
+> 有効にするには、`./PalServer.sh` (Linux) または `PalServer.exe` (Windows) の後に `-RCONPort=25575` を追加してください
+
 サーバーの RCON 機能を有効にする必要があります。プライベートサーバーのチュートリアルに記載されている場合はそれに従ってください。記載がない場合は、`PalWorldSettings.ini`ファイルを編集してください。
 
 **つまり、ゲーム内の各種倍率や確率を設定するファイルです**。ファイルの最後に以下のように追加します：
@@ -112,7 +117,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ```bash
 # pst_{version}_{platform}_{arch}.tar.gz ファイルをダウンロードしてpstディレクトリに解凍します
-mkdir -p pst && tar -xzf pst_v0.5.6_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
 ```
 
 ##### 設定
@@ -213,7 +218,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 ##### ダウンロードと解凍
 
-`pst_v0.5.6_windows_x86_64.zip`を任意のディレクトリに解凍します（`pst`というディレクトリ名を推奨）。
+`pst_v0.5.7_windows_x86_64.zip`を任意のディレクトリに解凍します（`pst`というディレクトリ名を推奨）。
 
 ##### 設定
 
