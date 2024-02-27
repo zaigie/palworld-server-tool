@@ -124,7 +124,12 @@ const createPlayerPalsColumns = () => {
         value,
       })),
       filter(value, row) {
-        return ~row.skills.indexOf(value);
+        return row.skills.some((skill) => {
+          const skillName = skillMap[locale.value][skill]
+            ? skillMap[locale.value][skill].name
+            : skill;
+          return skillName.includes(value);
+        });
       },
     },
     {
@@ -175,8 +180,16 @@ const clickSearch = () => {
   if (searchValue.value && !pattern.test(searchValue.value)) {
     currentPalsList.value = playerInfo?.value.pals.filter((item) => {
       return (
-        item.skills.some((skill) => skill.includes(searchValue.value)) ||
-        item.typeName.includes(searchValue.value)
+        item.skills.some((skill) => {
+          const skillName = skillMap[locale.value][skill]
+            ? skillMap[locale.value][skill].name
+            : skill;
+          return skillName.includes(searchValue.value);
+        }) ||
+        (palMap[locale.value][item.type]
+          ? palMap[locale.value][item.type]
+          : item.type
+        ).includes(searchValue.value)
       );
     });
   } else {
