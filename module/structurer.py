@@ -162,6 +162,8 @@ def structure_player(converted):
         if c.get("IsPlayer") and c["IsPlayer"]["value"]:
             players.append(Player(uid, c).to_dict())
         else:
+            if not c.get("OwnerPlayerUId"):
+                continue
             pals.append(Pal(c).to_dict())
     for pal in pals:
         for player in players:
