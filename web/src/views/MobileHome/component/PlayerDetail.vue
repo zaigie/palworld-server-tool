@@ -26,7 +26,7 @@ const finished = computed(() => props.finished);
 const emits = defineEmits(["onSearch"]);
 
 const handelPlayerAction = async (type) => {
-  if (!isLogin) {
+  if (!isLogin.value) {
     message.error($t("message.requireauth"));
     showLoginModal.value = true;
     return;

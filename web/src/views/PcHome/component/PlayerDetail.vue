@@ -125,10 +125,11 @@ const createPlayerPalsColumns = () => {
       })),
       filter(value, row) {
         return row.skills.some((skill) => {
-          const skillName = skillMap[locale.value][skill]
-            ? skillMap[locale.value][skill].name
-            : skill;
-          return skillName.includes(value);
+          return (
+            skillMap[locale.value][skill]
+              ? skillMap[locale.value][skill].name
+              : skill
+          ).includes(value);
         });
       },
     },
@@ -181,10 +182,11 @@ const clickSearch = () => {
     currentPalsList.value = playerInfo?.value.pals.filter((item) => {
       return (
         item.skills.some((skill) => {
-          const skillName = skillMap[locale.value][skill]
-            ? skillMap[locale.value][skill].name
-            : skill;
-          return skillName.includes(searchValue.value);
+          return (
+            skillMap[locale.value][skill]
+              ? skillMap[locale.value][skill].name
+              : skill
+          ).includes(searchValue.value);
         }) ||
         (palMap[locale.value][item.type]
           ? palMap[locale.value][item.type]
@@ -255,7 +257,7 @@ const addWhiteList = async () => {
   }
 };
 const handleAddWhiteList = () => {
-  if (isLogin) {
+  if (isLogin.value) {
     addWhiteData.value.name = playerInfo.value.nickname;
     addWhiteData.value.player_uid = playerInfo.value.player_uid;
     addWhiteData.value.steam_id = playerInfo.value.steam_id;
@@ -280,7 +282,7 @@ const removeWhitelist = async (player) => {
 
 // 封禁、踢出
 const handelPlayerAction = async (type) => {
-  if (!isLogin) {
+  if (!isLogin.value) {
     message.error($t("message.requireauth"));
     showLoginModal.value = true;
     return;
@@ -317,7 +319,7 @@ const handelPlayerAction = async (type) => {
 // 获取白名单列表
 const whiteList = computed(() => whitelistStore().getWhitelist());
 const getWhiteList = async () => {
-  if (isLogin) {
+  if (isLogin.value) {
     const { data, statusCode } = await new ApiService().getWhitelist();
     if (statusCode.value === 200) {
       if (data.value) {
