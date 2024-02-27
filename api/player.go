@@ -127,15 +127,35 @@ func getPlayer(c *gin.Context) {
 //	@Success		200			{object}	SuccessResponse
 //	@Failure		400			{object}	ErrorResponse
 //	@Failure		401			{object}	ErrorResponse
+//	@Failure		404			{object}	ErrorResponse
 //	@Router			/api/player/{player_uid}/kick [post]
 func kickPlayer(c *gin.Context) {
 	playerUid := c.Param("player_uid")
-	if err := tool.KickPlayer(playerUid); err != nil {
+	player, err := service.GetPlayer(database.GetDB(), playerUid)
+	if err != nil {
+		if err == service.ErrNoRecord {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Player not found"})
+			return
+		}
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	err = tool.KickPlayer(playerUid)
+	if err != nil {
+		if player.SteamId == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		err = tool.KickPlayer(player.SteamId)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		} else {
+			c.JSON(http.StatusOK, gin.H{"success": true})
+			return
+		}
+	}
 	c.JSON(http.StatusOK, gin.H{"success": true})
-
 }
 
 // banPlayer godoc
@@ -151,12 +171,33 @@ func kickPlayer(c *gin.Context) {
 //	@Success		200			{object}	SuccessResponse
 //	@Failure		400			{object}	ErrorResponse
 //	@Failure		401			{object}	ErrorResponse
+//	@Failure		404			{object}	ErrorResponse
 //	@Router			/api/player/{player_uid}/ban [post]
 func banPlayer(c *gin.Context) {
 	playerUid := c.Param("player_uid")
-	if err := tool.BanPlayer(playerUid); err != nil {
+	player, err := service.GetPlayer(database.GetDB(), playerUid)
+	if err != nil {
+		if err == service.ErrNoRecord {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Player not found"})
+			return
+		}
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+	err = tool.BanPlayer(playerUid)
+	if err != nil {
+		if player.SteamId == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		err = tool.BanPlayer(player.SteamId)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		} else {
+			c.JSON(http.StatusOK, gin.H{"success": true})
+			return
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true})
 }
