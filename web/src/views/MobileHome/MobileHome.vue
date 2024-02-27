@@ -12,6 +12,7 @@ import { NTag, NButton, useMessage, useDialog } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
 import dayjs from "dayjs";
+import palMap from "@/assets/pal.json";
 import skillMap from "@/assets/skill.json";
 import PlayerList from "./component/PlayerList.vue";
 import GuildList from "./component/GuildList.vue";
@@ -126,8 +127,17 @@ const clickSearch = (searchValue) => {
   if (searchValue && !pattern.test(searchValue)) {
     playerPalsList.value = playerInfo.value.pals.filter((item) => {
       return (
-        item.skills.some((skill) => skill.includes(searchValue)) ||
-        item.typeName.includes(searchValue)
+        item.skills.some((skill) => {
+          return (
+            skillMap[locale.value][skill]
+              ? skillMap[locale.value][skill].name
+              : skill
+          ).includes(searchValue);
+        }) ||
+        (palMap[locale.value][item.type]
+          ? palMap[locale.value][item.type]
+          : item.type
+        ).includes(searchValue)
       );
     });
   } else {
