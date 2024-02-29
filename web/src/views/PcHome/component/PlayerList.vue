@@ -42,7 +42,7 @@ const getPlayerList = async () => {
 const getPlayerInfo = async (player_uid) => {
   const { data } = await new ApiService().getPlayer({ playerUid: player_uid });
   playerInfo.value = data.value;
-  playerPalsList.value = JSON.parse(JSON.stringify(playerInfo?.value.pals));
+  playerPalsList.value = playerInfo?.value.pals ? JSON.parse(JSON.stringify(playerInfo?.value.pals)) : [];
   nextTick(() => {
     const playerInfoEL = document.getElementById("player-info");
     if (playerInfoEL) {

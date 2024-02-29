@@ -13,6 +13,7 @@ import PalDetail from "./PalDetail.vue";
 import whitelistStore from "@/stores/model/whitelist.js";
 import playerToGuildStore from "@/stores/model/playerToGuild.js";
 import userStore from "@/stores/model/user";
+import palItems from "@/assets/items.json";
 
 const { t, locale } = useI18n();
 const PALWORLD_TOKEN = "palworld_token";
@@ -157,6 +158,7 @@ watch(
     paginationReactive.page = 1;
     paginationReactive.pageSize = 10;
     searchValue.value = "";
+    mergeItems();
   }
 );
 
@@ -368,6 +370,9 @@ const getSkillTypeList = () => {
 const getPalAvatar = (name) => {
   return new URL(`../../../assets/pal/${name}.png`, import.meta.url).href;
 };
+const getItemIcon = (id) => {
+  return new URL(`../../../assets/items/${id}.webp`, import.meta.url).href;
+};
 const getUnknowPalAvatar = (is_boss = false) => {
   if (is_boss) {
     return new URL("@/assets/pal/BOSS_Unknown.png", import.meta.url).href;
@@ -388,6 +393,62 @@ const percentageHP = (hp, max_hp) => {
   }
   return ((hp / max_hp) * 100).toFixed(2);
 };
+
+const mergedItems = ref({});
+const mergeItems = () => {
+  mergedItems.value = {};
+
+  if(!playerInfo.value.items) return;
+  for (const [containerId, items] of Object.entries(playerInfo.value.items)) {
+    mergedItems.value[containerId] = items
+        .filter(item => item.ItemId !== "none")
+        .map(item => {
+          const frontendItem = palItems[locale.value].find(frontItem => frontItem.id === item.ItemId);
+          if (frontendItem) {
+            return {
+              ...item,
+              id: frontendItem.id,
+              name: frontendItem.name,
+              iconPath: frontendItem.iconPath,
+              description: frontendItem.description
+            };
+          }
+        });
+  }
+
+};
+
+const createPlayerItemsColumns = () => {
+  return [
+    {
+      title: "",
+      key: "",
+      render(row) {
+        return h(NAvatar, {
+          size: "small",
+          src: getItemIcon(row.id),
+          fallbackSrc: getUnknowPalAvatar(),
+        });
+      },
+    },
+    {
+      title: t("item.name"),
+      key: "name",
+    },
+    {
+      title: t("item.description"),
+      key: "description",
+      defaultSortOrder: "descend",
+    },
+    {
+      title: t("item.count"),
+      key: "StackCount",
+      width: 170,
+      defaultSortOrder: "descend",
+      sorter: "default",
+    }
+  ];
+};
 </script>
 
 <template>
@@ -401,7 +462,7 @@ const percentageHP = (hp, max_hp) => {
       <n-page-header>
         <n-grid :cols="6">
           <n-gi
-            v-for="status in Object.entries(playerInfo?.status_point)"
+            v-for="status in Object.entries(playerInfo?.status_point || {})"
             :key="status[0]"
           >
             <n-statistic :label="status[0]" :value="status[1]" />
@@ -525,29 +586,78 @@ const percentageHP = (hp, max_hp) => {
           }}</n-progress
         >
       </n-space>
-      <div class="w-full mt-5">
-        <n-input-group class="w-full flex justify-end">
-          <n-input
-            v-model:value="searchValue"
-            clearable
-            :placeholder="$t('input.searchPlaceholder')"
-            :on-clear="clearSearch"
-          />
-          <n-button type="primary" class="w-20" @click="clickSearch">
-            {{ $t("button.search") }}
-          </n-button>
-        </n-input-group>
+      <div class="mt-2">
+        <n-tabs type="line" size="large" animated>
+          <n-tab-pane :name="$t('item.palList')" >
+            <div class="w-full mt-5">
+              <n-input-group class="w-full flex justify-end">
+                <n-input
+                    v-model:value="searchValue"
+                    clearable
+                    :placeholder="$t('input.searchPlaceholder')"
+                    :on-clear="clearSearch"
+                />
+                <n-button type="primary" class="w-20" @click="clickSearch">
+                  {{ $t("button.search") }}
+                </n-button>
+              </n-input-group>
+            </div>
+            <n-data-table
+                class="mt-2"
+                size="small"
+                :columns="createPlayerPalsColumns()"
+                :row-props="dataRowProps"
+                :data="currentPalsList"
+                :bordered="false"
+                striped
+                :pagination="paginationReactive"
+            />
+          </n-tab-pane>
+          <n-tab-pane :name="$t('item.itemList')">
+            <n-tabs type="segment" animated>
+              <n-tab-pane :name="$t('item.commonContainer')" >
+                <n-data-table
+                    size="small"
+                    :columns="createPlayerItemsColumns()"
+                    :data="mergedItems['CommonContainerId']"
+                    :bordered="false"
+                    striped
+                    :pagination="paginationReactive"
+                />
+              </n-tab-pane>
+              <n-tab-pane :name="$t('item.essentialContainer')">
+                <n-data-table
+                    size="small"
+                    :columns="createPlayerItemsColumns()"
+                    :data="mergedItems['EssentialContainerId']"
+                    :bordered="false"
+                    striped
+                    :pagination="paginationReactive"
+                />
+              </n-tab-pane>
+              <n-tab-pane :name="$t('item.weaponContainer')">
+                <n-data-table
+                    size="small"
+                    :columns="createPlayerItemsColumns()"
+                    :data="mergedItems['WeaponLoadOutContainerId']"
+                    :bordered="false"
+                    striped
+                />
+              </n-tab-pane>
+              <n-tab-pane :name="$t('item.armorContainer')">
+                <n-data-table
+                    class="mt-1"
+                    size="small"
+                    :columns="createPlayerItemsColumns()"
+                    :data="mergedItems['PlayerEquipArmorContainerId']"
+                    :bordered="false"
+                    striped
+                />
+              </n-tab-pane>
+            </n-tabs>
+          </n-tab-pane>
+        </n-tabs>
       </div>
-      <n-data-table
-        class="mt-2"
-        size="small"
-        :columns="createPlayerPalsColumns()"
-        :row-props="dataRowProps"
-        :data="currentPalsList"
-        :bordered="false"
-        striped
-        :pagination="paginationReactive"
-      />
     </n-card>
     <!-- 加入白名单，封禁，踢出 -->
     <n-flex
