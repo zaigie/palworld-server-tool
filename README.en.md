@@ -27,6 +27,7 @@ Features based on parsing of `Level.sav` save files:
 - [x] Complete player data
 - [x] Player Palworld data
 - [x] Guild data
+- [x] Player Backpack Item data
 
 Features implemented using official RCON commands (available only for servers):
 
@@ -383,15 +384,15 @@ Applicable for:
 docker run -d --name pst-agent \
 -p 8081:8081 \
 -v /path/to/your/Pal/Saved:/game \
--e SAV_FILE="/game" \
+-e SAV_DIR="/game" \
 jokerwho/palworld-server-tool-agent:latest
 ```
 
 You need to `-v` to the directory where the game save file (Level.sav) is located, mapping it to the `/game` directory in the container.
 
-| Variable Name | Default Value | Type |                             Description                             |
-| :-----------: | :-----------: | :--: | :-----------------------------------------------------------------: |
-|   SAV_FILE    |      ""       | Text | Game save path **be sure to fill in the path inside the container** |
+| Variable Name | Default Value | Type |                              Description                               |
+| :-----------: | :-----------: | :--: | :--------------------------------------------------------------------: |
+|    SAV_DIR    |      ""       | Text | Game `Saved` path **be sure to fill in the path inside the container** |
 
 ##### Then, run the pst container
 
@@ -440,6 +441,8 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 #### Synchronizing Archives from k8s-pod
 
 Starting from v0.5.3, it is supported to synchronize game server archives within a cluster without the need for an agent.
+
+> After v0.5.8, due to the addition of player backpack data viewing, the directory of the entire Sav file is copied, and you must ensure that the Palu server container has a tar tool in order to compress and decompress.
 
 > Make sure that the serviceaccount used by pst has "pods/exec" permissions!
 
