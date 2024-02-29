@@ -2,9 +2,9 @@ import os
 import json
 import shutil
 import time
-import requests
 import argparse
 from urllib.parse import urljoin
+import requests
 
 from structurer import convert_sav, structure_player, structure_guild
 from logger import log
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     filetime = os.stat(args.file).st_mtime
 
     # 同路径下的Players文件夹
-    dir_path = os.path.join(os.path.dirname(args.file), 'Players')
+    dir_path = os.path.join(os.path.dirname(args.file), "Players")
 
     players = structure_player(dir_path)
     guilds = structure_guild(filetime)

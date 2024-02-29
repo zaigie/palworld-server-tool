@@ -1,6 +1,5 @@
 import datetime
 from uuid import UUID
-from logger import log
 
 
 def hexuid_to_decimal(uuid):
@@ -53,14 +52,18 @@ class Player:
         )
         self.full_stomach = round(full_stomach, 2)
         self.pals = []
-        self.items = data["Items"] if data["Items"] is not None else {
-            "CommonContainerId": [],
-            "DropSlotContainerId": [],
-            "EssentialContainerId": [],
-            "FoodEquipContainerId": [],
-            "PlayerEquipArmorContainerId": [],
-            "WeaponLoadOutContainerId": [],
-        }
+        self.items = (
+            data["Items"]
+            if data["Items"] is not None
+            else {
+                "CommonContainerId": [],
+                "DropSlotContainerId": [],
+                "EssentialContainerId": [],
+                "FoodEquipContainerId": [],
+                "PlayerEquipArmorContainerId": [],
+                "WeaponLoadOutContainerId": [],
+            }
+        )
 
         self.__order = [
             "player_uid",
