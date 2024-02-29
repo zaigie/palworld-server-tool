@@ -35,6 +35,13 @@ definitions:
       version:
         type: string
     type: object
+  api.ServerToolResponse:
+    properties:
+      latest:
+        type: string
+      version:
+        type: string
+    type: object
   api.ShutdownRequest:
     properties:
       message:
@@ -70,6 +77,42 @@ definitions:
         type: string
       player_uid:
         type: string
+    type: object
+  database.Item:
+    properties:
+      ItemId:
+        type: string
+      SlotIndex:
+        type: integer
+      StackCount:
+        type: integer
+    type: object
+  database.Items:
+    properties:
+      CommonContainerId:
+        items:
+          $ref: '#/definitions/database.Item'
+        type: array
+      DropSlotContainerId:
+        items:
+          $ref: '#/definitions/database.Item'
+        type: array
+      EssentialContainerId:
+        items:
+          $ref: '#/definitions/database.Item'
+        type: array
+      FoodEquipContainerId:
+        items:
+          $ref: '#/definitions/database.Item'
+        type: array
+      PlayerEquipArmorContainerId:
+        items:
+          $ref: '#/definitions/database.Item'
+        type: array
+      WeaponLoadOutContainerId:
+        items:
+          $ref: '#/definitions/database.Item'
+        type: array
     type: object
   database.Pal:
     properties:
@@ -114,6 +157,8 @@ definitions:
         type: number
       hp:
         type: integer
+      items:
+        $ref: '#/definitions/database.Items'
       last_online:
         type: string
       level:
@@ -734,6 +779,21 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Shutdown Server
+      tags:
+      - Server
+  /api/server/tool:
+    get:
+      consumes:
+      - application/json
+      description: Get PalWorld Server Tool
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.ServerToolResponse'
+      summary: Get PalWorld Server Tool
       tags:
       - Server
   /api/sync:

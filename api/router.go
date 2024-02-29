@@ -44,8 +44,7 @@ func Logger() gin.HandlerFunc {
 	})
 }
 
-func RegisterRouter() *gin.Engine {
-	r := gin.New()
+func RegisterRouter(r *gin.Engine) {
 	r.Use(Logger(), gin.Recovery())
 
 	r.POST("/api/login", loginHandler)
@@ -56,6 +55,7 @@ func RegisterRouter() *gin.Engine {
 	anonymousGroup := apiGroup.Group("")
 	{
 		anonymousGroup.GET("/server", getServer)
+		anonymousGroup.GET("/server/tool", getServerTool)
 		anonymousGroup.GET("/player", listPlayers)
 		anonymousGroup.GET("/player/:player_uid", getPlayer)
 		anonymousGroup.GET("/guild", listGuilds)
@@ -83,6 +83,4 @@ func RegisterRouter() *gin.Engine {
 		authGroup.PUT("/rcon/:uuid", putRconCommand)
 		authGroup.DELETE("/rcon/:uuid", removeRconCommand)
 	}
-
-	return r
 }
