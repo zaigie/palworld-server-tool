@@ -170,14 +170,22 @@ func BanPlayer(steamID string) error {
 }
 
 func Broadcast(message string) error {
-	message = strings.ReplaceAll(message, " ", "_")
-	exec, response, err := executeCommand("Broadcast " + message)
+	isPalguard := viper.GetBool("rcon.is_palguard")
+	broadcastCmd := "pgbroadcast "
+	if !isPalguard {
+		message = strings.ReplaceAll(message, " ", "_")
+		broadcastCmd = "Broadcast "
+	}
+	fullCommand := broadcastCmd + message
+	expectedResponse := fmt.Sprintf("Broadcasted: %s", message)
+
+	exec, response, err := executeCommand(fullCommand)
 	if err != nil {
 		return err
 	}
 	defer exec.Close()
 
-	if response != fmt.Sprintf("Broadcasted: %s", message) {
+	if response != expectedResponse {
 		return errors.New(response)
 	}
 	return nil

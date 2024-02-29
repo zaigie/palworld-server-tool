@@ -20,6 +20,7 @@ type Config struct {
 		Address      string `mapstructure:"address"`
 		Password     string `mapstructure:"password"`
 		Timeout      int    `mapstructure:"timeout"`
+		IsPalGuard   bool   `mapstructure:"is_palguard"`
 		SyncInterval int    `mapstructure:"sync_interval"`
 	} `mapstructure:"rcon"`
 	Save struct {
@@ -53,6 +54,7 @@ func Init(cfgFile string, conf *Config) {
 
 	viper.SetDefault("web.port", 8080)
 	viper.SetDefault("rcon.timeout", 5)
+	viper.SetDefault("rcon.is_palguard", false)
 	viper.SetDefault("rcon.sync_interval", 60)
 	viper.SetDefault("save.sync_interval", 600)
 
