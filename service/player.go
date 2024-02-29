@@ -21,18 +21,6 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 					return err
 				}
 
-				/// 数据合并逻辑
-				if existingPlayer.Level > p.Level || (existingPlayer.Level == p.Level && existingPlayer.Exp > p.Exp) {
-					if len(p.Pals) > len(existingPlayer.Pals) {
-						existingPlayer.Pals = p.Pals
-					}
-					p = existingPlayer
-				} else if len(p.Pals) < len(existingPlayer.Pals) {
-					p.Pals = existingPlayer.Pals
-				}
-				//直接修改现有数据 不合并
-				p.Items = existingPlayer.Items
-
 				// Rcon data already has this player
 				if existingPlayer.SteamId != "" {
 					p.SteamId = existingPlayer.SteamId

@@ -382,7 +382,7 @@ Applicable for:
 docker run -d --name pst-agent \
 -p 8081:8081 \
 -v /path/to/your/Pal/Saved:/game \
--e SAV_DIR="/game" \
+-e SAVED_DIR="/game" \
 jokerwho/palworld-server-tool-agent:latest
 ```
 
@@ -390,7 +390,7 @@ You need to `-v` to the directory where the game save file (Level.sav) is locate
 
 | Variable Name | Default Value | Type |                              Description                               |
 | :-----------: | :-----------: | :--: | :--------------------------------------------------------------------: |
-|    SAV_DIR    |      ""       | Text | Game `Saved` path **be sure to fill in the path inside the container** |
+|   SAVED_DIR   |      ""       | Text | Game `Saved` path **be sure to fill in the path inside the container** |
 
 ##### Then, run the pst container
 
