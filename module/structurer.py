@@ -11,7 +11,12 @@ from palworld_save_tools.gvas import GvasFile
 from palworld_save_tools.palsav import decompress_sav_to_gvas
 from palworld_save_tools.paltypes import PALWORLD_CUSTOM_PROPERTIES, PALWORLD_TYPE_HINTS
 from palworld_save_tools.archive import FArchiveReader, FArchiveWriter
-from palworld_save_tools.rawdata import character, group, item_container, item_container_slots
+from palworld_save_tools.rawdata import (
+    character,
+    group,
+    item_container,
+    item_container_slots,
+)
 
 from world_types import Player, Pal, Guild
 from logger import log
@@ -38,7 +43,7 @@ gvas_file = None
 
 
 def skip_decode(
-        reader: FArchiveReader, type_name: str, size: int, path: str
+    reader: FArchiveReader, type_name: str, size: int, path: str
 ) -> dict[str, Any]:
     if type_name == "ArrayProperty":
         array_type = reader.fstring()
@@ -75,10 +80,10 @@ def skip_decode(
 
 
 def skip_encode(
-        writer: FArchiveWriter, property_type: str, properties: dict[str, Any]
+    writer: FArchiveWriter, property_type: str, properties: dict[str, Any]
 ) -> int:
     if "skip_type" not in properties:
-        if properties['custom_type'] in PALWORLD_CUSTOM_PROPERTIES is not None:
+        if properties["custom_type"] in PALWORLD_CUSTOM_PROPERTIES is not None:
             return PALWORLD_CUSTOM_PROPERTIES[properties["custom_type"]][1](
                 writer, property_type, properties
             )
@@ -125,17 +130,47 @@ def load_skiped_decode(wsd, skip_paths, recursive=True):
 
 
 SKP_PALWORLD_CUSTOM_PROPERTIES = copy.deepcopy(PALWORLD_CUSTOM_PROPERTIES)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSaveData"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.FoliageGridSaveDataMap"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSpawnerInStageSaveData"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.DynamicItemSaveData"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.CharacterContainerSaveData"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.CharacterContainerSaveData.Value.Slots"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.CharacterContainerSaveData.Value.RawData"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData.Value.BelongInfo"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData.Value.Slots"] = (skip_decode, skip_encode)
-SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData.Value.RawData"] = (skip_decode, skip_encode)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.FoliageGridSaveDataMap"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.MapObjectSpawnerInStageSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.DynamicItemSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.CharacterContainerSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[
+    ".worldSaveData.CharacterContainerSaveData.Value.Slots"
+] = (skip_decode, skip_encode)
+SKP_PALWORLD_CUSTOM_PROPERTIES[
+    ".worldSaveData.CharacterContainerSaveData.Value.RawData"
+] = (skip_decode, skip_encode)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[
+    ".worldSaveData.ItemContainerSaveData.Value.BelongInfo"
+] = (skip_decode, skip_encode)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData.Value.Slots"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData.Value.RawData"] = (
+    skip_decode,
+    skip_encode,
+)
 
 
 def convert_sav(file):
@@ -156,7 +191,7 @@ def convert_sav(file):
         log("This .sav file is corrupted. :(", "ERROR")
         sys.exit(1)
     # return json.dumps(gvas_file.dump(), cls=CustomEncoder)
-    wsd = gvas_file.properties['worldSaveData']['value']
+    wsd = gvas_file.properties["worldSaveData"]["value"]
 
 
 def structure_player(dir_path, data_source=None):
@@ -213,21 +248,31 @@ def parse_skiped_item(properties, skip_path, recursive=True):
         return properties
 
     with FArchiveReader(
-            properties['value'], PALWORLD_TYPE_HINTS,
-            SKP_PALWORLD_CUSTOM_PROPERTIES if recursive == False else PALWORLD_CUSTOM_PROPERTIES
+        properties["value"],
+        PALWORLD_TYPE_HINTS,
+        (
+            SKP_PALWORLD_CUSTOM_PROPERTIES
+            if recursive == False
+            else PALWORLD_CUSTOM_PROPERTIES
+        ),
     ) as reader:
         if properties["skip_type"] == "ArrayProperty":
-            properties['value'] = reader.array_property(properties["array_type"], len(properties['value']) - 4,
-                                                        ".worldSaveData.%s" % skip_path)
+            properties["value"] = reader.array_property(
+                properties["array_type"],
+                len(properties["value"]) - 4,
+                ".worldSaveData.%s" % skip_path,
+            )
         elif properties["skip_type"] == "StructProperty":
-            properties['value'] = reader.struct_value(properties['struct_type'], ".worldSaveData.%s" % skip_path)
+            properties["value"] = reader.struct_value(
+                properties["struct_type"], ".worldSaveData.%s" % skip_path
+            )
         elif properties["skip_type"] == "MapProperty":
             reader.u32()
             count = reader.u32()
             path = ".worldSaveData.%s" % skip_path
             key_path = path + ".Key"
-            key_type = properties['key_type']
-            value_type = properties['value_type']
+            key_type = properties["key_type"]
+            value_type = properties["value_type"]
             if key_type == "StructProperty":
                 key_struct_type = reader.get_type_or(key_path, "Guid")
             else:
@@ -250,7 +295,7 @@ def parse_skiped_item(properties, skip_path, recursive=True):
             properties["key_struct_type"] = key_struct_type
             properties["value_struct_type"] = value_struct_type
             properties["value"] = values
-        del properties['custom_type']
+        del properties["custom_type"]
         del properties["skip_type"]
     return properties
 
@@ -259,15 +304,22 @@ def parse_item(properties, skip_path):
     if isinstance(properties, dict):
         for key in properties:
             call_skip_path = skip_path + "." + key[0].upper() + key[1:]
-            if isinstance(properties[key], dict) and \
-                    'type' in properties[key] and \
-                    properties[key]['type'] in ['StructProperty', 'ArrayProperty', 'MapProperty']:
-                if 'skip_type' in properties[key]:
+            if (
+                isinstance(properties[key], dict)
+                and "type" in properties[key]
+                and properties[key]["type"]
+                in ["StructProperty", "ArrayProperty", "MapProperty"]
+            ):
+                if "skip_type" in properties[key]:
                     # print("Parsing worldSaveData.%s..." % call_skip_path, end="", flush=True)
-                    properties[key] = parse_skiped_item(properties[key], call_skip_path, True)
+                    properties[key] = parse_skiped_item(
+                        properties[key], call_skip_path, True
+                    )
                     # print("Done")
                 else:
-                    properties[key]['value'] = parse_item(properties[key]['value'], call_skip_path)
+                    properties[key]["value"] = parse_item(
+                        properties[key]["value"], call_skip_path
+                    )
             else:
                 properties[key] = parse_item(properties[key], call_skip_path)
     elif isinstance(properties, list):
@@ -278,42 +330,52 @@ def parse_item(properties, skip_path):
 
 
 def getPlayerItems(player_uid, dir_path):
-    load_skiped_decode(wsd, ['ItemContainerSaveData'], False)
+    load_skiped_decode(wsd, ["ItemContainerSaveData"], False)
     item_containers = {}
-    for item_container in wsd["ItemContainerSaveData"]['value']:
-        item_containers[str(item_container['key']['ID']['value'])] = item_container
+    for item_container in wsd["ItemContainerSaveData"]["value"]:
+        item_containers[str(item_container["key"]["ID"]["value"])] = item_container
 
-    player_sav_file = os.path.join(dir_path, str(player_uid).upper().replace(
-        "-",
-        "") + ".sav")
+    player_sav_file = os.path.join(
+        dir_path, str(player_uid).upper().replace("-", "") + ".sav"
+    )
     if not os.path.exists(player_sav_file):
         # log("Player Sav file Not exists: %s" % player_sav_file)
         return
     else:
         with open(player_sav_file, "rb") as f:
             raw_gvas, _ = decompress_sav_to_gvas(f.read())
-            player_gvas_file = GvasFile.read(raw_gvas, PALWORLD_TYPE_HINTS, PALWORLD_CUSTOM_PROPERTIES)
-        player_gvas = player_gvas_file.properties['SaveData']['value']
+            player_gvas_file = GvasFile.read(
+                raw_gvas, PALWORLD_TYPE_HINTS, PALWORLD_CUSTOM_PROPERTIES
+            )
+        player_gvas = player_gvas_file.properties["SaveData"]["value"]
     containers_data = {
-        'CommonContainerId': [],
-        'DropSlotContainerId': [],
-        'EssentialContainerId': [],
-        'FoodEquipContainerId': [],
-        'PlayerEquipArmorContainerId': [],
-        'WeaponLoadOutContainerId': []
+        "CommonContainerId": [],
+        "DropSlotContainerId": [],
+        "EssentialContainerId": [],
+        "FoodEquipContainerId": [],
+        "PlayerEquipArmorContainerId": [],
+        "WeaponLoadOutContainerId": [],
     }
     for idx_key in containers_data.keys():
-        container_id = str(player_gvas['inventoryInfo']['value'][idx_key]['value']['ID']['value'])
+        container_id = str(
+            player_gvas["inventoryInfo"]["value"][idx_key]["value"]["ID"]["value"]
+        )
         if container_id in item_containers:
             # 解析对应的物品容器数据
-            item_container = parse_item(item_containers[container_id], "ItemContainerSaveData")
+            item_container = parse_item(
+                item_containers[container_id], "ItemContainerSaveData"
+            )
 
             # 提取每个物品的相关数据并保存到字典中
-            containers_data[idx_key] = [{
-                'SlotIndex': item['SlotIndex']['value'],
-                'ItemId': item['ItemId']['value']['StaticId']['value'].lower(),
-                'StackCount': item['StackCount']['value']
-            } for item in item_container['value']['Slots']['value']['values']]
+            containers_data[idx_key] = [
+                {
+                    "SlotIndex": item["SlotIndex"]["value"],
+                    "ItemId": item["ItemId"]["value"]["StaticId"]["value"].lower(),
+                    "StackCount": item["StackCount"]["value"],
+                }
+                for item in item_container["value"]["Slots"]["value"]["values"]
+                if item["ItemId"]["value"]["StaticId"]["value"].lower() != "none"
+            ]
     return containers_data
 
 
@@ -326,7 +388,7 @@ def structure_guild(filetime: int = -1):
         for g in wsd["GroupSaveDataMap"]["value"]
         if g["value"]["GroupType"]["value"]["value"] == "EPalGroupType::Guild"
     )
-    Ticks = wsd['GameTimeSaveData']['value']['RealDateTimeTicks']['value']
+    Ticks = wsd["GameTimeSaveData"]["value"]["RealDateTimeTicks"]["value"]
     guilds_generator = (Guild(g, Ticks, filetime).to_dict() for g in groups)
     sorted_guilds = sorted(
         guilds_generator, key=lambda g: g["base_camp_level"], reverse=True
