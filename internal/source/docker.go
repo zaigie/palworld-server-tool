@@ -37,6 +37,7 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	relatedSavHash := filepath.Base(savDir)
 
 	reader, _, err := cli.CopyFromContainer(ctx, containerID, savDir)
 	if err != nil {
@@ -84,7 +85,7 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 		}
 	}
 
-	levelFilePath := filepath.Join(absPath, "Level.sav")
+	levelFilePath := filepath.Join(absPath, relatedSavHash, "Level.sav")
 	return levelFilePath, nil
 }
 
