@@ -58,7 +58,12 @@ func main() {
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	gin.SetMode(gin.ReleaseMode)
-	router := api.RegisterRouter()
+	router := gin.New()
+	router.Use(func(c *gin.Context) {
+		c.Set("version", version)
+		c.Next()
+	})
+	api.RegisterRouter(router)
 
 	assetsFS, _ := fs.Sub(assets, "assets")
 	router.StaticFS("/assets", http.FS(assetsFS))

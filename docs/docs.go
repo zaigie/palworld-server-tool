@@ -847,6 +847,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/server/tool": {
+            "get": {
+                "description": "Get PalWorld Server Tool",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Server"
+                ],
+                "summary": "Get PalWorld Server Tool",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.ServerToolResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/sync": {
             "post": {
                 "security": [
@@ -1131,6 +1154,17 @@ const docTemplate = `{
                 }
             }
         },
+        "api.ServerToolResponse": {
+            "type": "object",
+            "properties": {
+                "latest": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
         "api.ShutdownRequest": {
             "type": "object",
             "properties": {
@@ -1184,6 +1218,61 @@ const docTemplate = `{
                 },
                 "player_uid": {
                     "type": "string"
+                }
+            }
+        },
+        "database.Item": {
+            "type": "object",
+            "properties": {
+                "ItemId": {
+                    "type": "string"
+                },
+                "SlotIndex": {
+                    "type": "integer"
+                },
+                "StackCount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "database.Items": {
+            "type": "object",
+            "properties": {
+                "CommonContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "DropSlotContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "EssentialContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "FoodEquipContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "PlayerEquipArmorContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "WeaponLoadOutContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
                 }
             }
         },
@@ -1251,6 +1340,9 @@ const docTemplate = `{
                 },
                 "hp": {
                     "type": "integer"
+                },
+                "items": {
+                    "$ref": "#/definitions/database.Items"
                 },
                 "last_online": {
                     "type": "string"
