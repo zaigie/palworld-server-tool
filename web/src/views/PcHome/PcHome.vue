@@ -479,7 +479,7 @@ onMounted(async () => {
         <n-tag type="default" :size="smallScreen ? 'medium' : 'large'">{{
           serverInfo?.name
             ? `${serverInfo.name + " " + serverInfo.version}`
-            : "获取中..."
+            : $t("message.loading")
         }}</n-tag>
       </n-space>
 

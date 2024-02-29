@@ -30,6 +30,8 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 				} else if len(p.Pals) < len(existingPlayer.Pals) {
 					p.Pals = existingPlayer.Pals
 				}
+				//直接修改现有数据 不合并
+				p.Items = existingPlayer.Items
 
 				// Rcon data already has this player
 				if existingPlayer.SteamId != "" {
