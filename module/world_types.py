@@ -53,6 +53,14 @@ class Player:
         )
         self.full_stomach = round(full_stomach, 2)
         self.pals = []
+        self.items = data["Items"] if data["Items"] is not None else {
+            "CommonContainerId": [],
+            "DropSlotContainerId": [],
+            "EssentialContainerId": [],
+            "FoodEquipContainerId": [],
+            "PlayerEquipArmorContainerId": [],
+            "WeaponLoadOutContainerId": [],
+        }
 
         self.__order = [
             "player_uid",
@@ -67,6 +75,7 @@ class Player:
             "status_point",
             "full_stomach",
             "pals",
+            "items",
         ]
 
     def to_dict(self):

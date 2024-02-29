@@ -62,6 +62,7 @@ const messages = {
         "Make sure your file content is in the format of command,remark per line",
       importRconSuccess: "Import RCON commands success!",
       importRconFail: "Import RCON commands fail: {err}",
+      loading: "Loading...",
     },
     button: {
       auth: "Admin Mode",
@@ -99,6 +100,17 @@ const messages = {
       rank: "Rank",
       tower: "Tower",
       lucky: "Lucky",
+    },
+    item:{
+      palList: "Pal List",
+      itemList: "Item List",
+      commonContainer: "Common Container",
+      essentialContainer: "Essential Container",
+      weaponContainer: "Weapon Container",
+      armorContainer: "Armor Container",
+      name: "Name",
+      description: "Description",
+      count: "Count",
     },
     input: {
       searchPlaceholder: "Search for pal type and skills",
@@ -169,6 +181,7 @@ const messages = {
       importRconDesc: "请确保你的文件内容每一行是 command,remark 的格式",
       importRconSuccess: "导入RCON命令成功!",
       importRconFail: "导入RCON命令失败: {err}",
+      loading: "加载中...",
     },
     button: {
       auth: "管理模式",
@@ -206,6 +219,17 @@ const messages = {
       rank: "队伍序",
       tower: "塔主",
       lucky: "稀有",
+    },
+    item:{
+      palList: "幻兽列表",
+      itemList: "物品列表",
+      commonContainer: "物品栏",
+      essentialContainer: "重要物品",
+      weaponContainer: "武器栏",
+      armorContainer: "防具栏",
+      name: "名字",
+      description: "描述",
+      count: "数量",
     },
     input: {
       searchPlaceholder: "搜索帕鲁类型、技能",
@@ -279,6 +303,7 @@ const messages = {
         "ファイルの内容が1行につき command,remark の形式であることを確認してください",
       importRconSuccess: "RCONコマンドを導入しました！",
       importRconFail: "RCONコマンド導入に失敗しました: {err}",
+      loading: "読み込み中...",
     },
     button: {
       auth: "管理者モード",
@@ -303,6 +328,17 @@ const messages = {
       joinWhitelist: "ホワイトリストに追加",
       removeWhitelist: "ホワイトリストを削除します",
       search: "検索",
+    },
+    item:{
+      palList: "幻獣リスト",
+      itemList: "アイテムリスト",
+      commonContainer: "一般アイテム",
+      essentialContainer: "重要アイテム",
+      weaponContainer: "武器アイテム",
+      armorContainer: "防具アイテム",
+      name: "名前",
+      description: "説明",
+      count: "数",
     },
     input: {
       searchPlaceholder: "パルのタイプやスキルで検索してください",
