@@ -21,16 +21,16 @@ chmod +x pst-agent
 #### Run
 
 ```bash
-# ./pst-agent --port 8081 -f {Absolute path of the Level.sav save file}
+# ./pst-agent --port 8081 -d {Absolute path of the Level.sav save file}
 # For example:
-./pst-agent --port 8081 -f /home/lighthouse/game/Saved/0/S12ASNDDSAIF813412EERGH1EF134/Level.sav
+./pst-agent --port 8081 -d /home/lighthouse/game/Saved/
 ```
 
 After confirming it's running normally, run it in the background (it will continue to run after closing the ssh window)
 
 ```bash
 # Run in the background and save logs in agent.log
-nohup ./pst-agent --port 8081 -f ...{manually omitted}.../Level.sav > agent.log 2>&1 &
+nohup ./pst-agent --port 8081 -d ...{manually omitted}.../Saved > agent.log 2>&1 &
 # View the log
 tail -f agent.log
 ```
@@ -63,6 +63,8 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 ### Windows
 
+This refers to the scenario where your game server is a Windows version, and you want to deploy the pst main body elsewhere. For the deployment of the pst main body, refer to the previous [Installation and Deployment](./README.md#installation-and-deployment). The impact of pst-agent is only on the modification of the configuration file.
+
 #### Download
 
 Download the pst-agent tool and rename it, e.g., rename `pst-agent_v0.5.6_windows_x86_64.exe` to `pst-agent.exe`
@@ -72,11 +74,9 @@ Download the pst-agent tool and rename it, e.g., rename `pst-agent_v0.5.6_window
 Press `Win + R`, type `powershell` to open Powershell, use the `cd` command to navigate to the directory of the downloaded executable
 
 ```powershell
-# .\pst-agent.exe --port Access Port -f Save file Level.sav location
-.\pst-agent.exe --port 8081 -f C:\Users\ZaiGie\...\Level.sav
+# .\pst-agent.exe --port Access Port -d Save file Level.sav location
+.\pst-agent.exe --port 8081 -d C:\Users\ZaiGie\...\Pal\Saved
 ```
-
-![](./docs/img/windows_agent.png)
 
 After successful operation, please keep the window open
 

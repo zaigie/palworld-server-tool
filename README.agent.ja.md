@@ -3,6 +3,7 @@
 <p align="center">
    <a href="/README.agent.md">简体中文</a> | <a href="/README.agent.en.md">English</a> | <strong>日本語</strong>
 </p>
+
 ### Linux
 
 これは、ゲームサーバーが Linux バージョンであり、pst 本体を他の場所にデプロイしたい場合について説明しています。デプロイには前述の[インストールとデプロイメント](./README.ja.md#インストールとデプロイメント)を参照してください。pst-agent の影響は設定ファイルの変更のみです。
@@ -20,16 +21,16 @@ chmod +x pst-agent
 #### 実行
 
 ```bash
-# ./pst-agent --port 8081 -f {Level.sav の絶対パス}
+# ./pst-agent --port 8081 -d {Level.sav の絶対パス}
 # 例：
-./pst-agent --port 8081 -f /home/lighthouse/game/Saved/0/S12ASNDDSAIF813412EERGH1EF134/Level.sav
+./pst-agent --port 8081 -d /home/lighthouse/game/Saved
 ```
 
 正常に動作することを確認した後、バックグラウンドで実行します（ssh ウィンドウを閉じた後も実行を続けます）。
 
 ```bash
 # バックグラウンドで実行し、ログを agent.log に保存
-nohup ./pst-agent --port 8081 -f ...{省略}.../Level.sav > agent.log 2>&1 &
+nohup ./pst-agent --port 8081 -f ...{省略}.../Saved > agent.log 2>&1 &
 # ログを確認
 tail -f agent.log
 ```
@@ -62,6 +63,8 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 ### Windows
 
+これは、ゲームサーバーが Windows バージョンであり、pst 本体を他の場所にデプロイしたい場合について説明しています。デプロイには前述の[インストールとデプロイメント](./README.ja.md#インストールとデプロイメント)を参照してください。pst-agent の影響は設定ファイルの変更のみです。
+
 #### ダウンロード
 
 pst-agent ツールをダウンロードし、名前を変更します。例えば、`pst-agent_v0.5.6_windows_x86_64.exe`を`pst-agent.exe`にリネームします。
@@ -71,11 +74,9 @@ pst-agent ツールをダウンロードし、名前を変更します。例え�
 `Win + R`を押し、`powershell`を入力して Powershell を開き、`cd`コマンドでダウンロードした実行ファイルのディレクトリに移動します。
 
 ```powershell
-# .\pst-agent.exe --port アクセスポート -f セーブファイル Level.sav の場所
-.\pst-agent.exe --port 8081 -f C:\Users\ZaiGie\...\Level.sav
+# .\pst-agent.exe --port アクセスポート -d セーブファイル Level.sav の場所
+.\pst-agent.exe --port 8081 -d C:\Users\ZaiGie\...\Pal\Saved
 ```
-
-![](./docs/img/windows_agent.png)
 
 正常に実行されたら、ウィンドウを開いたままにしてください。
 
