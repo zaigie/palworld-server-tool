@@ -55,15 +55,15 @@
 
 ## 功能截图
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4efe-8274-15df261d50b4
+https://github.com/zaigie/palworld-server-tool/assets/17232619/a30c17f9-286e-41e8-8e14-f19db7ef8e55
 
 ### 桌面端
 
 |                              |                              |
 | :--------------------------: | :--------------------------: |
-| ![](./docs/img/pst-zh-2.png) | ![](./docs/img/pst-zh-4.png) |
+| ![](./docs/img/pst-zh-2.png) | ![](./docs/img/pst-zh-3.png) |
 
-![](./docs/img/pst-zh-3.png)
+![](./docs/img/pst-zh-4.png)
 
 ### 移动端
 
@@ -248,8 +248,6 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli.exe`，可以为空，默认会获取当前目录
 
 你也可以直接鼠标右键——“属性”，查看路径和文件名，再将它们拼接起来。（存档文件路径和工具路径同理）
-
-![](./docs/img/windows_path.png)
 
 > [!WARNING]
 > 请不要直接将复制的路径粘贴到 `config.yaml` 中，而是需要在所有的 '\\' 前面再加一个 '\\'，像下面展示的一样

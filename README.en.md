@@ -48,15 +48,15 @@ Due to limited maintenance and development staff, we welcome front-end, back-end
 
 ## Function screenshot
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/42d4c5db-8799-4962-b762-ae22eebbfeb9
+https://github.com/zaigie/palworld-server-tool/assets/17232619/6384dd72-f5d0-430b-91d3-9b687044967b
 
 ### Desktop
 
 |                              |                              |
 | :--------------------------: | :--------------------------: |
-| ![](./docs/img/pst-en-2.png) | ![](./docs/img/pst-en-4.png) |
+| ![](./docs/img/pst-en-2.png) | ![](./docs/img/pst-en-3.png) |
 
-![](./docs/img/pst-en-3.png)
+![](./docs/img/pst-en-4.png)
 
 ### Mobile
 
@@ -228,8 +228,6 @@ Find the `config.yaml` file in the extracted directory and modify it according t
 For `decode_path`, it's typically the pst directory plus `sav_cli.exe`. Can be empty, the current directory will be obtained by default
 
 You can also right-click - "Properties", view the path and file name, and then concatenate them. (Same for archive file path and tool path)
-
-![](./docs/img/windows_path.png)
 
 > [!WARNING]
 > Instead of pasting the copied path directly into `config.yaml`, add another '\\' in front of all '\\', as shown below

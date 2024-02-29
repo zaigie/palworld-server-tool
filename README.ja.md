@@ -16,7 +16,7 @@
 <img alt="Vue" src="https://img.shields.io/badge/Vue%20js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D">
 </p>
 
-![PC](./docs/img/pst-en-1.png)
+![PC](./docs/img/pst-ja-1.png)
 
 > 現在、モバイル端末にも良好に対応しており、下記の [機能スクリーンショット](#機能スクリーンショット) をご覧ください。
 >
@@ -48,20 +48,20 @@
 
 ## 機能スクリーンショット
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4efe-8274-15df261d50b4
+https://github.com/zaigie/palworld-server-tool/assets/17232619/6a8fba98-6966-4650-90f9-a0ea42d9a6a9
 
 ### デスクトップ
 
 |                              |                              |
 | :--------------------------: | :--------------------------: |
-| ![](./docs/img/pst-en-2.png) | ![](./docs/img/pst-en-4.png) |
+| ![](./docs/img/pst-ja-2.png) | ![](./docs/img/pst-ja-3.png) |
 
-![](./docs/img/pst-en-3.png)
+![](./docs/img/pst-ja-4.png)
 
 ### モバイル
 
 <p align="center">
-<img src="./docs/img/pst-en-m-1.png" width="30%" /><img src="./docs/img/pst-en-m-2.png" width="30%" /><img src="./docs/img/pst-en-m-3.png" width="30%" />
+<img src="./docs/img/pst-ja-m-1.png" width="30%" /><img src="./docs/img/pst-ja-m-2.png" width="30%" /><img src="./docs/img/pst-ja-m-3.png" width="30%" />
 </p>
 
 ## プライベートサーバー RCON の有効化方法
@@ -228,8 +228,6 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 `decode_path`に関しては、解凍後の pst ディレクトリに`sav_cli.exe`を追加するだけです。空にすることができ、デフォルトで現在のディレクトリを取得します。
 
 マウスの右クリックから「プロパティ」を選択し、パスとファイル名を確認してから、それらを結合してください。（存档ファイルのパスとツールのパスも同様）
-
-![](./docs/img/windows_path.png)
 
 > [!WARNING]
 > コピーしたパスを`config.yaml`に直接貼り付けるのではなく、すべての'\\'の前にもう一つ'\\'を追加する必要があります。以下に示すように
