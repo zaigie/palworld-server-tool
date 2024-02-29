@@ -12,7 +12,7 @@ rcon:
   sync_interval: 60
 save:
   path: "/path/to/your/Pal/Saved"
-  decode_path: "/path/to/your/sav_cli"
+  decode_path: ""
   sync_interval: 120
 manage:
   kick_non_whitelist: false

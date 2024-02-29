@@ -152,7 +152,7 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
 
 2. 找到其中的 `config.yaml` 文件并按照说明修改。
 
-   关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli` ，如果不知道绝对路径，在终端执行 `pwd` 即可
+   关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli` ，可以为空，默认会获取当前目录
 
    ```yaml
    # WebUI 设置
@@ -185,8 +185,8 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
    save:
      # 存档文件路径
      path: "/path/to/your/Pal/Saved"
-     # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录
-     decode_path: "/path/to/your/sav_cli"
+     # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录，可以为空
+     decode_path: ""
      # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
      sync_interval: 120
 
@@ -245,7 +245,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 找到解压目录中的 `config.yaml` 文件并按照说明修改。
 
-关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli.exe`
+关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli.exe`，可以为空，默认会获取当前目录
 
 你也可以直接鼠标右键——“属性”，查看路径和文件名，再将它们拼接起来。（存档文件路径和工具路径同理）
 
@@ -287,8 +287,8 @@ rcon:
 save:
   # 存档文件路径
   path: "C:\\path\\to\\your\\Pal\\Saved"
-  # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录
-  decode_path: "C:\\path\\to\\your\\sav_cli.exe"
+  # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录，可以为空
+  decode_path: ""
   # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
   sync_interval: 120
 

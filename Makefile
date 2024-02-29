@@ -37,10 +37,10 @@ build-all:
 	cp module/dist/sav_cli_linux_aarch64 dist/linux_aarch64/sav_cli
 	cp module/dist/sav_cli_darwin_arm64 dist/darwin_arm64/sav_cli
 
-	cp test/config.yaml dist/windows_x86_64/config.yaml
-	cp test/config.yaml dist/linux_x86_64/config.yaml
-	cp test/config.yaml dist/linux_aarch64/config.yaml
-	cp test/config.yaml dist/darwin_arm64/config.yaml
+	cp example/config.yaml dist/windows_x86_64/config.yaml
+	cp example/config.yaml dist/linux_x86_64/config.yaml
+	cp example/config.yaml dist/linux_aarch64/config.yaml
+	cp example/config.yaml dist/darwin_arm64/config.yaml
 
 	cp script/start.bat dist/windows_x86_64/start.bat
 

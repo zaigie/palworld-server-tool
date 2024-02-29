@@ -132,7 +132,7 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
 
 2. `config.yaml`ファイルを見つけて、指示に従って変更します。
 
-   `decode_path`については、通常は pst ディレクトリに`sav_cli`を追加するだけです。絶対パスがわからない場合は、ターミナルで`pwd`を実行してください
+   `decode_path`については、通常は pst ディレクトリに`sav_cli`を追加するだけです。空にすることができ、デフォルトで現在のディレクトリを取得します。
 
    ```yaml
    # WebUI設定
@@ -165,8 +165,8 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
    save:
      # 存档ファイルパス
      path: "/path/to/your/Pal/Saved"
-     # Sav_cli Path 存档解析ツールのパス、通常はpstと同一ディレクトリ
-     decode_path: "/path/to/your/sav_cli"
+     # Sav_cli Path 存档解析ツールのパス、通常はpstと同一ディレクトリ、空にすることができます
+     decode_path: ""
      # Sav Decode Interval Sec 存档からデータを取得する間隔、秒単位、>= 120を推奨
      sync_interval: 120
 
@@ -225,7 +225,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 解凍ディレクトリ内の`config.yaml`ファイルを見つけ、指示に従って変更します。
 
-`decode_path`に関しては、解凍後の pst ディレクトリに`sav_cli.exe`を追加するだけです。
+`decode_path`に関しては、解凍後の pst ディレクトリに`sav_cli.exe`を追加するだけです。空にすることができ、デフォルトで現在のディレクトリを取得します。
 
 マウスの右クリックから「プロパティ」を選択し、パスとファイル名を確認してから、それらを結合してください。（存档ファイルのパスとツールのパスも同様）
 

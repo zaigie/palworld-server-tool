@@ -70,7 +70,7 @@ func main() {
 
 	localIp, err := system.GetLocalIP()
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("%v\n", err)
 	}
 	logger.Info("Starting PalWorld Server Tool...\n")
 	logger.Infof("Version: %s\n", version)

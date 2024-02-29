@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/auth"
 	"github.com/zaigie/palworld-server-tool/internal/database"
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/source"
 )
 
@@ -20,6 +23,17 @@ type Sturcture struct {
 
 func getSavCli() (string, error) {
 	savCliPath := viper.GetString("save.decode_path")
+	if savCliPath == "" || savCliPath == "/path/to/your/sav_cli" {
+		wd, err := os.Getwd()
+		if err != nil {
+			logger.Errorf("error getting working directory: %s", err)
+			return "", err
+		}
+		savCliPath = filepath.Join(wd, "sav_cli")
+		if runtime.GOOS == "windows" {
+			savCliPath += ".exe"
+		}
+	}
 	if _, err := os.Stat(savCliPath); err != nil {
 		return "", err
 	}

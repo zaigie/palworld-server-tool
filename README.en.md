@@ -132,7 +132,7 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
 
 2. Find the `config.yaml` file and modify it as per the instructions.
 
-   For `decode_path`, it's usually the pst directory plus `sav_cli`. If unsure about the absolute path, execute `pwd` in the terminal.
+   For `decode_path`, it's usually the pst directory plus `sav_cli`. Can be empty, the current directory will be obtained by default
 
    ```yaml
    # WebUI Config
@@ -165,8 +165,8 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
    save:
      # Sav File Path
      path: "/path/to/your/Pal/Saved"
-     # Sav_cli Path
-     decode_path: "/path/to/your/sav_cli"
+     # Sav_cli Path, Could be empty
+     decode_path: ""
      # Sav Decode Interval Sec
      sync_interval: 120
 
@@ -225,7 +225,7 @@ Extract `pst_v0.5.7_windows_x86_64.zip` to any directory (recommend naming the f
 
 Find the `config.yaml` file in the extracted directory and modify it according to the instructions.
 
-For `decode_path`, it's typically the pst directory plus `sav_cli.exe`.
+For `decode_path`, it's typically the pst directory plus `sav_cli.exe`. Can be empty, the current directory will be obtained by default
 
 You can also right-click - "Properties", view the path and file name, and then concatenate them. (Same for archive file path and tool path)
 
@@ -267,8 +267,8 @@ rcon:
 save:
   # Sav File Path
   path: "C:\\path\\to\\your\\Pal\\Saved"
-  # Sav_cli Path
-  decode_path: "C:\\path\\to\\your\\sav_cli.exe"
+  # Sav_cli Path, Could be empty
+  decode_path: ""
   # Sav Decode Interval Sec
   sync_interval: 120
 

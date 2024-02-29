@@ -19,11 +19,11 @@ func RconSync(db *bbolt.DB) {
 	logger.Info("Scheduling Rcon sync...\n")
 	playersRcon, err := tool.ShowPlayers()
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("%v\n", err)
 	}
 	err = service.PutPlayersRcon(db, playersRcon)
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("%v\n", err)
 	}
 	logger.Info("Rcon sync done\n")
 
@@ -36,7 +36,7 @@ func RconSync(db *bbolt.DB) {
 func CheckAndKickPlayers(db *bbolt.DB, players []database.PlayerRcon) {
 	err := tool.CheckAndKickPlayers(db, players)
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("%v\n", err)
 	}
 	logger.Info("Check whitelist done\n")
 }
@@ -45,7 +45,7 @@ func SavSync() {
 	logger.Info("Scheduling Sav sync...\n")
 	err := tool.ConversionLoading(viper.GetString("save.path"))
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("%v\n", err)
 	}
 	logger.Info("Sav sync done\n")
 }
@@ -63,7 +63,7 @@ func Schedule(db *bbolt.DB) {
 			gocron.NewTask(RconSync, db),
 		)
 		if err != nil {
-			logger.Error(err)
+			logger.Errorf("%v\n", err)
 		}
 	}
 
@@ -74,7 +74,7 @@ func Schedule(db *bbolt.DB) {
 			gocron.NewTask(SavSync),
 		)
 		if err != nil {
-			logger.Error(err)
+			logger.Errorf("%v\n", err)
 		}
 	}
 
@@ -85,14 +85,14 @@ func Shutdown() {
 	s := getScheduler()
 	err := s.Shutdown()
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("%v\n", err)
 	}
 }
 
 func initScheduler() gocron.Scheduler {
 	s, err := gocron.NewScheduler()
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("%v\n", err)
 	}
 	return s
 }
