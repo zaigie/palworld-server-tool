@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/auth"
 	"github.com/zaigie/palworld-server-tool/internal/database"
-	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/source"
 )
 
@@ -28,7 +27,7 @@ func getSavCli() (string, error) {
 }
 
 func ConversionLoading(file string) error {
-	var tmpFile string
+	var levelFilePath string
 	var err error
 
 	savCli, err := getSavCli()
@@ -38,42 +37,38 @@ func ConversionLoading(file string) error {
 
 	if strings.HasPrefix(file, "http://") || strings.HasPrefix(file, "https://") {
 		// http(s)://url
-		logger.Infof("downloading Level.sav from %s\n", file)
-		tmpFile, err = source.DownloadFromHttp(file)
+		levelFilePath, err = source.DownloadFromHttp(file)
 		if err != nil {
 			return errors.New("error downloading file: " + err.Error())
 		}
-		logger.Info("Level.sav downloaded\n")
 	} else if strings.HasPrefix(file, "k8s://") {
 		// k8s://namespace/pod/container:remotePath
-		logger.Infof("copy Level.sav from %s\n", file)
 		namespace, podName, container, remotePath, err := source.ParseK8sAddress(file)
 		if err != nil {
 			return errors.New("error parsing k8s address: " + err.Error())
 		}
-		tmpFile, err = source.CopyFromPod(namespace, podName, container, remotePath)
+		levelFilePath, err = source.CopyFromPod(namespace, podName, container, remotePath)
 		if err != nil {
 			return errors.New("error copying file from pod: " + err.Error())
 		}
 	} else if strings.HasPrefix(file, "docker://") {
 		// docker://containerID(Name):remotePath
-		logger.Infof("copy Level.sav from %s\n", file)
 		containerId, remotePath, err := source.ParseDockerAddress(file)
 		if err != nil {
 			return errors.New("error parsing docker address: " + err.Error())
 		}
-		tmpFile, err = source.CopyFromContainer(containerId, remotePath)
+		levelFilePath, err = source.CopyFromContainer(containerId, remotePath)
 		if err != nil {
 			return errors.New("error copying file from container: " + err.Error())
 		}
 	} else {
 		// local file
-		tmpFile, err = source.CopyFromLocal(file)
+		levelFilePath, err = source.CopyFromLocal(file)
 		if err != nil {
 			return errors.New("error copying file to temporary directory: " + err.Error())
 		}
 	}
-	defer os.Remove(tmpFile)
+	defer os.RemoveAll(levelFilePath)
 
 	baseUrl := "http://127.0.0.1"
 	if viper.GetBool("web.tls") && !strings.HasSuffix(baseUrl, "/") {
@@ -85,7 +80,7 @@ func ConversionLoading(file string) error {
 	if err != nil {
 		return errors.New("error generating token: " + err.Error())
 	}
-	execArgs := []string{"-f", tmpFile, "--request", requestUrl, "--token", tokenString, "--clear"}
+	execArgs := []string{"-f", levelFilePath, "--request", requestUrl, "--token", tokenString, "--clear"}
 	cmd := exec.Command(savCli, execArgs...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
