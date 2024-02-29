@@ -177,7 +177,12 @@ func Broadcast(message string) error {
 		broadcastCmd = "Broadcast "
 	}
 	fullCommand := broadcastCmd + message
-	expectedResponse := fmt.Sprintf("Broadcasted: %s", message)
+
+	// 创建一个正则表达式对象 Broadacasted! or :Broadcasted: message
+	re, err := regexp.Compile("Broadcasted.?")
+	if err != nil {
+		return err
+	}
 
 	exec, response, err := executeCommand(fullCommand)
 	if err != nil {
@@ -185,7 +190,7 @@ func Broadcast(message string) error {
 	}
 	defer exec.Close()
 
-	if response != expectedResponse {
+	if !re.MatchString(response) {
 		return errors.New(response)
 	}
 	return nil
