@@ -47,6 +47,12 @@ func getServerTool(c *gin.Context) {
 	if err != nil {
 		logger.Errorf("%v\n", err)
 	}
+	if latest == "" {
+		latest, err = tool.GetLatestTagFromGitee()
+		if err != nil {
+			logger.Errorf("%v\n", err)
+		}
+	}
 	c.JSON(http.StatusOK, gin.H{"version": version, "latest": latest})
 }
 

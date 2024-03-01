@@ -40,3 +40,29 @@ func GetLatestTag() (string, error) {
 	}
 	return tags[0].Name, nil
 }
+
+func GetLatestTagFromGitee() (string, error) {
+	url := "https://gitee.com/api/v5/repos/zaigie/palworld-server-tool/tags"
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var tags []Tag
+	err = json.Unmarshal(body, &tags)
+	if err != nil {
+		return "", err
+	}
+
+	if len(tags) > 0 {
+		return tags[len(tags)-1].Name, nil
+	}
+
+	return "", fmt.Errorf("no tags found")
+}
