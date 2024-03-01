@@ -2,6 +2,10 @@
 import dayjs from "dayjs";
 import { computed } from "vue";
 
+const isDarkMode = ref(
+  window.matchMedia("(prefers-color-scheme: dark)").matches
+);
+
 const props = defineProps(["playerList"]);
 const playerList = computed(() => props.playerList);
 

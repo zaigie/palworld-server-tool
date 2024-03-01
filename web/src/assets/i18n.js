@@ -90,6 +90,7 @@ const messages = {
       addNew: "Add New",
       save: "Save",
       palconf: "PalConf",
+      controlCenter: "Control Center",
     },
     pal: {
       type: "Type",
@@ -210,6 +211,7 @@ const messages = {
       addNew: "新增",
       save: "保存",
       palconf: "配置生成器",
+      controlCenter: "控制中心",
     },
     pal: {
       type: "类型",
@@ -331,6 +333,7 @@ const messages = {
       removeWhitelist: "ホワイトリストを削除します",
       search: "検索",
       palconf: "パルの設定",
+      controlCenter: "コントロールセンター",
     },
     item: {
       palList: "幻獣リスト",

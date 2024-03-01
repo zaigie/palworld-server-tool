@@ -7,7 +7,6 @@ import App from "./App.vue";
 import router from "./router";
 
 import "virtual:uno.css";
-import "vant/lib/index.css";
 
 import i18n from "@/assets/i18n.js";
 

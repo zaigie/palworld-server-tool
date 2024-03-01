@@ -17,7 +17,7 @@ import {
 } from "@vicons/ionicons5";
 import { BroadcastTower } from "@vicons/fa";
 import { computed, onMounted, ref } from "vue";
-import { NTag, NButton, useMessage, useDialog } from "naive-ui";
+import { NTag, NButton, NIcon, useMessage, useDialog } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
 import pageStore from "@/stores/model/page.js";
@@ -107,7 +107,9 @@ const hasNewVersion = ref(false);
 const getServerToolInfo = async () => {
   const { data } = await new ApiService().getServerToolInfo();
   serverToolInfo.value = data.value;
-  hasNewVersion.value = isNewVersion(data.value.version, data.value.latest);
+  if (data.value) {
+    hasNewVersion.value = isNewVersion(data.value?.version, data.value?.latest);
+  }
 };
 const isNewVersion = (version, latest) => {
   if (version == "Unknown" || version == "Develop" || latest == "") {
@@ -257,6 +259,90 @@ const removeRconCommand = async (uuid) => {
     } else {
       message.error(t("message.removerconfail", { err: data.value?.error }));
     }
+  }
+};
+
+// 控制中心（下拉菜单）
+// 包含：白名单管理、RCON 命令、游戏内广播、关闭服务器
+const renderIcon = (icon, color = "#666") => {
+  return () => {
+    return h(
+      NIcon,
+      {
+        color: color,
+      },
+      {
+        default: () => h(icon),
+      }
+    );
+  };
+};
+const controlCenterOption = [
+  {
+    label: () => {
+      return h("div", null, {
+        default: () => t("button.palconf"),
+      });
+    },
+    key: "palconf",
+    icon: renderIcon(Settings),
+  },
+  {
+    label: () => {
+      return h("div", null, {
+        default: () => t("button.whitelist"),
+      });
+    },
+    key: "whitelist",
+    icon: renderIcon(ShieldCheckmarkSharp),
+  },
+  {
+    label: () => {
+      return h("div", null, {
+        default: () => t("button.rcon"),
+      });
+    },
+    key: "rcon",
+    icon: renderIcon(Terminal),
+  },
+  {
+    label: () => {
+      return h("div", null, {
+        default: () => t("button.broadcast"),
+      });
+    },
+    key: "broadcast",
+    icon: renderIcon(BroadcastTower),
+  },
+  {
+    label: () => {
+      return h(
+        "div",
+        {
+          style: { color: "#cc2d48" },
+        },
+        {
+          default: () => t("button.shutdown"),
+        }
+      );
+    },
+    key: "shutdown",
+    icon: renderIcon(SettingsPowerRound, "#cc2d48"),
+  },
+];
+const handleSelectControlCenter = (key) => {
+  if (key === "palconf") {
+    toPalConf();
+  } else if (key === "whitelist") {
+    handleWhiteList();
+  } else if (key === "rcon") {
+    handleRconDrawer();
+  } else if (key === "broadcast") {
+    handleStartBrodcast();
+  } else if (key === "shutdown") {
+    handleShutdown();
+  } else {
+    message.error("错误");
   }
 };
 
@@ -513,7 +599,7 @@ onMounted(async () => {
           >{{ $t("title") }}</span
         >
         <n-badge
-          v-if="serverToolInfo.version"
+          v-if="serverToolInfo?.version"
           :value="hasNewVersion ? 'new' : ''"
         >
           <n-tag
@@ -611,8 +697,16 @@ onMounted(async () => {
                 $t("status.online_number", { number: getOnlineList().length })
               }}</n-tag>
             </n-space>
-            <n-space v-if="isLogin">
-              <n-button
+            <n-space v-if="isLogin" class="flex items-center">
+              <n-dropdown
+                trigger="click"
+                size="large"
+                :options="controlCenterOption"
+                @select="handleSelectControlCenter"
+              >
+                <n-button round>{{ $t("button.controlCenter") }}</n-button>
+              </n-dropdown>
+              <!-- <n-button
                 :size="smallScreen ? 'medium' : 'large'"
                 type="default"
                 secondary
@@ -686,7 +780,7 @@ onMounted(async () => {
                   </n-icon>
                 </template>
                 {{ $t("button.shutdown") }}
-              </n-button>
+              </n-button> -->
             </n-space>
           </n-layout-header>
           <div class="overflow-hidden" style="height: calc(100% - 64px)">
