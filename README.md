@@ -73,11 +73,6 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/a30c17f9-286e-41e
 
 ## 如何开启私服 RCON
 
-> [!CAUTION]
-> 游戏服务器 v0.1.5.0 版本中，PalWorldSettings.ini 中的 RCONPort 和 RCONEnable **不生效**
->
-> 请在 `./PalServer.sh` (Linux) 或 `PalServer.exe` (Windows) 后添加 -RCONPort=25575 来开启
-
 需要开启服务器的 RCON 功能，如果你的私服教程有写更好，没有的话，修改 `PalWorldSettings.ini` 文件
 
 **也就是修改游戏内各种倍数、概率的那个文件**，里面最后的位置有如下：

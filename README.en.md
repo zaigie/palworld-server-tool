@@ -66,11 +66,6 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/6384dd72-f5d0-430
 
 ## How to Enable RCON for Private Servers
 
-> [!CAUTION]
-> In version v0.1.5.0 of the game server, `RCONPort` and `RCONEnable` in `PalWorldSettings.ini` **do not take effect**
->
-> Please add `-RCONPort=25575` after `./PalServer.sh` (Linux) or `PalServer.exe` (Windows) to enable
-
 You need to enable RCON functionality on your server. If your private server tutorial includes this, great. If not, modify the `PalWorldSettings.ini` file.
 
 **This is the file where various in-game multipliers and probabilities are set.** At the end of the file, you'll find:

@@ -66,11 +66,6 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/6a8fba98-6966-465
 
 ## プライベートサーバー RCON の有効化方法
 
-> [!CAUTION]
-> ゲームサーバーのバージョン v0.1.5.0 では、`PalWorldSettings.ini`内の`RCONPort`と`RCONEnable`が**有効になりません**
->
-> 有効にするには、`./PalServer.sh` (Linux) または `PalServer.exe` (Windows) の後に `-RCONPort=25575` を追加してください
-
 サーバーの RCON 機能を有効にする必要があります。プライベートサーバーのチュートリアルに記載されている場合はそれに従ってください。記載がない場合は、`PalWorldSettings.ini`ファイルを編集してください。
 
 **つまり、ゲーム内の各種倍率や確率を設定するファイルです**。ファイルの最後に以下のように追加します：
