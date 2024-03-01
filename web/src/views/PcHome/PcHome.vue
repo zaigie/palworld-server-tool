@@ -609,6 +609,13 @@ const backupColumns = [
       return dayjs(row.save_time).format("YYYY-MM-DD HH:mm:ss");
     },
   },
+  // {
+  //   title: t("item.backupFile"),
+  //   key: "path",
+  //   render: (row) => {
+  //     return row.path;
+  //   },
+  // },
   {
     title: "",
     key: "action",
@@ -836,6 +843,21 @@ onMounted(async () => {
                 strong
                 round
                 @click="handleBackupList"
+              >
+                <template #icon>
+                  <n-icon>
+                    <ArchiveOutlined />
+                  </n-icon>
+                </template>
+                {{ $t("button.backup") }}
+              </n-button>
+              <n-button
+                :size="smallScreen ? 'medium' : 'large'"
+                type="default"
+                secondary
+                strong
+                round
+                @click="toPalConf"
               >
                 <template #icon>
                   <n-icon>

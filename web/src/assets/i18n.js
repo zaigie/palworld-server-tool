@@ -98,7 +98,6 @@ const messages = {
       controlCenter: "Control Center",
       download: "Download",
       backup: "Backup",
-      controlCenter: "Control Center",
     },
     pal: {
       type: "Type",
@@ -228,7 +227,6 @@ const messages = {
       controlCenter: "控制中心",
       download: "下载",
       backup: "存档管理",
-      controlCenter: "控制中心",
     },
     pal: {
       type: "类型",
@@ -359,7 +357,6 @@ const messages = {
       controlCenter: "コントロールセンター",
       download: "ダウンロード",
       backup: "バックアップ",
-      controlCenter: "コントロールセンター",
     },
     item: {
       palList: "幻獣リスト",
