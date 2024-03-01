@@ -92,3 +92,9 @@ type Item struct {
 	ItemId     string `json:"ItemId"`
 	StackCount int32  `json:"StackCount"`
 }
+
+type Backup struct {
+	BackupId string    `json:"backup_id"`
+	SaveTime time.Time `json:"save_time"`
+	Path     string    `json:"path"`
+}

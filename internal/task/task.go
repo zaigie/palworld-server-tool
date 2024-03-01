@@ -3,6 +3,7 @@ package task
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/database"
 
 	"github.com/go-co-op/gocron/v2"
@@ -14,6 +15,25 @@ import (
 )
 
 var s gocron.Scheduler
+
+func BackupTask(db *bbolt.DB) {
+	logger.Info("Scheduling backup...\n")
+	path, err := tool.Backup()
+	if err != nil {
+		logger.Errorf("%v\n", err)
+		return
+	}
+	err = service.AddBackup(db, database.Backup{
+		BackupId: uuid.New().String(),
+		Path:     path,
+		SaveTime: time.Now(),
+	})
+	if err != nil {
+		logger.Errorf("%v\n", err)
+		return
+	}
+	logger.Infof("Auto backup to %s\n", path)
+}
 
 func RconSync(db *bbolt.DB) {
 	logger.Info("Scheduling Rcon sync...\n")
@@ -43,7 +63,7 @@ func CheckAndKickPlayers(db *bbolt.DB, players []database.PlayerRcon) {
 
 func SavSync() {
 	logger.Info("Scheduling Sav sync...\n")
-	err := tool.ConversionLoading(viper.GetString("save.path"))
+	err := tool.Decode(viper.GetString("save.path"))
 	if err != nil {
 		logger.Errorf("%v\n", err)
 	}
@@ -55,6 +75,7 @@ func Schedule(db *bbolt.DB) {
 
 	rconSyncInterval := time.Duration(viper.GetInt("rcon.sync_interval"))
 	savSyncInterval := time.Duration(viper.GetInt("save.sync_interval"))
+	backupInterval := time.Duration(viper.GetInt("save.backup_interval"))
 
 	if rconSyncInterval > 0 {
 		go RconSync(db)
@@ -75,6 +96,17 @@ func Schedule(db *bbolt.DB) {
 		)
 		if err != nil {
 			logger.Errorf("%v\n", err)
+		}
+	}
+
+	if backupInterval > 0 {
+		go BackupTask(db)
+		_, err := s.NewJob(
+			gocron.DurationJob(backupInterval*time.Second),
+			gocron.NewTask(BackupTask, db),
+		)
+		if err != nil {
+			logger.Error(err)
 		}
 	}
 

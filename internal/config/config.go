@@ -17,10 +17,11 @@ type Config struct {
 		PublicUrl string `mapstructure:"public_url"`
 	}
 	Rcon struct {
-		Address      string `mapstructure:"address"`
-		Password     string `mapstructure:"password"`
-		Timeout      int    `mapstructure:"timeout"`
-		SyncInterval int    `mapstructure:"sync_interval"`
+		Address        string `mapstructure:"address"`
+		Password       string `mapstructure:"password"`
+		Timeout        int    `mapstructure:"timeout"`
+		SyncInterval   int    `mapstructure:"sync_interval"`
+		BackupInterval int    `mapstructure:"backup_interval"`
 	} `mapstructure:"rcon"`
 	Save struct {
 		Path         string `mapstructure:"path"`
@@ -55,6 +56,7 @@ func Init(cfgFile string, conf *Config) {
 	viper.SetDefault("rcon.timeout", 5)
 	viper.SetDefault("rcon.sync_interval", 60)
 	viper.SetDefault("save.sync_interval", 600)
+	viper.SetDefault("save.backup_interval", 14400)
 
 	viper.SetEnvPrefix("")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__"))

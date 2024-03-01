@@ -9,7 +9,7 @@ import (
 	"github.com/zaigie/palworld-server-tool/internal/system"
 )
 
-func CopyFromLocal(src string) (string, error) {
+func CopyFromLocal(src, way string) (string, error) {
 	var savDir string
 	var err error
 	var isDir bool
@@ -32,7 +32,7 @@ func CopyFromLocal(src string) (string, error) {
 		}
 	}
 
-	tempDir := filepath.Join(os.TempDir(), "palworldsav")
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-"+way)
 	absPath, err := filepath.Abs(tempDir)
 	if err != nil {
 		return "", err

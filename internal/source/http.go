@@ -10,7 +10,7 @@ import (
 	"github.com/zaigie/palworld-server-tool/internal/system"
 )
 
-func DownloadFromHttp(url string) (string, error) {
+func DownloadFromHttp(url, way string) (string, error) {
 	logger.Infof("downloading sav.zip from %s\n", url)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -18,7 +18,7 @@ func DownloadFromHttp(url string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	tempPath := filepath.Join(os.TempDir(), "palworldsav-http")
+	tempPath := filepath.Join(os.TempDir(), "palworldsav-http-"+way)
 	absPath, err := filepath.Abs(tempPath)
 	if err != nil {
 		return "", err

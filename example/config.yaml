@@ -14,5 +14,6 @@ save:
   path: "/path/to/your/Pal/Saved"
   decode_path: ""
   sync_interval: 120
+  backup_interval: 14400
 manage:
   kick_non_whitelist: false
