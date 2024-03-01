@@ -28,14 +28,14 @@
                 "summary": "List backups within a specified time range",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Start time of the backup range in RFC3339 format",
+                        "type": "integer",
+                        "description": "Start time of the backup range in timestamp",
                         "name": "startTime",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "End time of the backup range in RFC3339 format",
+                        "type": "integer",
+                        "description": "End time of the backup range in timestamp",
                         "name": "endTime",
                         "in": "query"
                     }

@@ -88,8 +88,9 @@ class ApiService extends Service {
     return this.fetch(`/api/rcon/${uuid}`).delete().json();
   }
 
-  async getBackupList() {
-    return this.fetch(`/api/backup`).get().json();
+  async getBackupList(param) {
+    const query = this.generateQuery(param);
+    return this.fetch(`/api/backup?${query}`).get().json();
   }
 
   async removeBackup(uuid) {

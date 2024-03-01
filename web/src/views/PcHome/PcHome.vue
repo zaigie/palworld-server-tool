@@ -7,7 +7,7 @@ import {
   RemoveRedEyeTwotone,
   DeleteFilled,
   ArchiveOutlined,
-  CloudDownloadOutlined
+  CloudDownloadOutlined,
 } from "@vicons/material";
 import {
   GameController,
@@ -31,6 +31,7 @@ import whitelistStore from "@/stores/model/whitelist";
 import playerToGuildStore from "@/stores/model/playerToGuild";
 import { watch } from "vue";
 import userStore from "@/stores/model/user";
+import { h } from "vue";
 
 const { t, locale } = useI18n();
 
@@ -481,23 +482,89 @@ const handleBackupList = () => {
 };
 const getBackupList = async () => {
   if (checkAuthToken()) {
-    const {data, statusCode} = await new ApiService().getBackupList();
+    const { data, statusCode } = await new ApiService().getBackupList({
+      startTime: range.value[0],
+      endTime: range.value[1],
+    });
     if (statusCode.value === 200) {
       backupList.value = data.value;
     }
   }
 };
+const getBackupListWithRange = async (selectRange) => {
+  let startTime = selectRange[0] ? selectRange[0] : 0;
+  let endTime = selectRange[1] ? selectRange[1] : 0;
+  if (checkAuthToken()) {
+    const { data, statusCode } = await new ApiService().getBackupList({
+      startTime,
+      endTime,
+    });
+    if (statusCode.value === 200) {
+      backupList.value = data.value;
+    }
+  }
+};
+const backupColumns = [
+  {
+    title: t("item.time"),
+    key: "save_time",
+    width: "200px",
+    render: (row) => {
+      return dayjs(row.save_time).format("YYYY-MM-DD HH:mm:ss");
+    },
+  },
+  // {
+  //   title: t("item.backupFile"),
+  //   key: "path",
+  //   render: (row) => {
+  //     return row.path;
+  //   },
+  // },
+  {
+    title: "",
+    key: "action",
+    width: "200px",
+    render: (row) => {
+      return [
+        h(
+          NButton,
+          {
+            type: "primary",
+            size: "small",
+            renderIcon: () => h(CloudDownloadOutlined),
+            onClick: () => downloadBackup(row.backup_id),
+          },
+          { default: () => t("button.download") }
+        ),
+        h(
+          NButton,
+          {
+            type: "error",
+            size: "small",
+            renderIcon: () => h(DeleteOutlineTwotone),
+            style: "margin-left: 20px",
+            onClick: () => removeBackup(row.backup_id),
+          },
+          { default: () => t("button.remove") }
+        ),
+      ];
+    },
+  },
+];
 
+const range = ref([Date.now() - 1 * 24 * 60 * 60 * 1000, Date.now()]);
 const isDownloading = ref(false);
 const removeBackup = async (item) => {
   if (checkAuthToken()) {
     isDownloading.value = true;
-    const {data, statusCode} = await new ApiService().removeBackup(item.backup_id);
+    const { data, statusCode } = await new ApiService().removeBackup(
+      item.backup_id
+    );
     if (statusCode.value === 200) {
       message.success(t("message.removebackupsuccess"));
       await getBackupList();
     } else {
-      message.error(t("message.removebackupfail", {err: data.value?.error}));
+      message.error(t("message.removebackupfail", { err: data.value?.error }));
     }
     isDownloading.value = false;
   }
@@ -507,21 +574,20 @@ const downloadBackup = async (item) => {
   if (checkAuthToken()) {
     isDownloading.value = true;
     try {
-      const {data: blobData, execute: fetchBlob} = await new ApiService().downloadBackup(item.backup_id);
+      const { data: blobData, execute: fetchBlob } =
+        await new ApiService().downloadBackup(item.backup_id);
       await fetchBlob();
       const url = URL.createObjectURL(blobData.value);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', item.path);
+      link.setAttribute("download", item.path);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      message.success(
-          t("message.downloadsuccess")
-      );
+      message.success(t("message.downloadsuccess"));
     } catch (error) {
-      console.error('Download failed', error);
+      console.error("Download failed", error);
     }
     isDownloading.value = false;
   }
@@ -675,12 +741,12 @@ onMounted(async () => {
             </n-space>
             <n-space v-if="isLogin">
               <n-button
-                  :size="smallScreen ? 'medium' : 'large'"
-                  type="default"
-                  secondary
-                  strong
-                  round
-                  @click="handleBackupList"
+                :size="smallScreen ? 'medium' : 'large'"
+                type="default"
+                secondary
+                strong
+                round
+                @click="handleBackupList"
               >
                 <template #icon>
                   <n-icon>
@@ -1095,90 +1161,50 @@ onMounted(async () => {
   </n-modal>
   <!-- backup modal -->
   <n-modal
-      v-model:show="backupModal"
-      class="custom-card"
-      preset="card"
-      style="width: 90%; max-width: 700px"
-      footer-style="padding: 12px;"
-      content-style="padding: 12px;"
-      header-style="padding: 12px;"
-      :title="$t('modal.backup')"
-      size="small"
-      :bordered="false"
-      :mask-closable="false"
-      :close-on-esc="false"
-      :segmented="segmented"
+    v-model:show="backupModal"
+    class="custom-card"
+    preset="card"
+    style="width: 90%; max-width: 700px"
+    footer-style="padding: 12px;"
+    content-style="padding: 12px;"
+    header-style="padding: 12px;"
+    :title="$t('modal.backup')"
+    size="small"
+    :bordered="false"
+    :mask-closable="false"
+    :close-on-esc="false"
+    :segmented="segmented"
   >
     <div>
       <n-empty description="empty" v-if="backupList.length == 0"> </n-empty>
-      <n-spin :show="isDownloading" v-else>
-        <n-virtual-list
-
-            ref="virtualListInst"
-            style="height: 320px"
-            :item-size="42"
-            :items="backupList"
-            item-resizable
-        >
-          <template #default="{ item }">
-            <div
-                :key="item.backup_id"
-                class="flex flex-col item mlr-3 mb-3 p-1"
-            >
-              <n-grid>
-                <n-gi span="14" class="flex justify-center items-center">
-                  <div >
-                    {{item.path}}
-                  </div>
-                </n-gi>
-                <n-gi span="10">
-                  <div class="flex justify-end mr-3">
-                    <n-space >
-                      <n-button
-                          @click="removeBackup(item)"
-                          strong
-                          secondary
-                          type="error"
-                      >
-                        <template #icon>
-                          <n-icon><DeleteOutlineTwotone /></n-icon>
-                        </template>
-                        {{ $t("button.remove") }}
-                      </n-button>
-                      <n-button
-                          @click="downloadBackup(item)"
-                          strong
-                          secondary
-                          type="success"
-                      >
-                        <template #icon>
-                          <n-icon><CloudDownloadOutlined /></n-icon>
-                        </template>
-                        {{ $t("button.download") }}
-                      </n-button>
-                    </n-space>
-                  </div>
-                </n-gi>
-              </n-grid>
-            </div>
-
-          </template>
-        </n-virtual-list>
-      </n-spin>
-
+      <div class="flex flex-col item mlr-3 mb-3 p-1" v-else>
+        <n-date-picker
+          class="mb-4"
+          v-model:value="range"
+          type="datetimerange"
+          @confirm="getBackupListWithRange"
+        />
+        <n-scrollbar style="max-height: 320px">
+          <n-data-table
+            :columns="backupColumns"
+            :data="backupList"
+            :bordered="false"
+          />
+        </n-scrollbar>
+      </div>
     </div>
     <template #footer>
       <div class="flex justify-end">
         <n-space>
           <n-button
-              type="tertiary"
-              @click="
+            type="tertiary"
+            @click="
               () => {
-                showWhiteListModal = false;
+                backupModal = false;
               }
             "
           >
-            {{ $t("button.cancel") }}
+            {{ $t("button.close") }}
           </n-button>
         </n-space>
       </div>

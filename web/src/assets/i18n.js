@@ -82,6 +82,7 @@ const messages = {
       detail: "Detail",
       confirm: "Confirm",
       cancel: "Cancel",
+      close: "Close",
       remove: "Remove",
       import: "Import",
       add: "Add",
@@ -118,6 +119,7 @@ const messages = {
       name: "Name",
       description: "Description",
       count: "Count",
+      time: "Time",
     },
     input: {
       searchPlaceholder: "Search for pal type and skills",
@@ -137,7 +139,7 @@ const messages = {
       whitelist: "白名单管理",
       addWhitelist: "添加白名单",
       rcon: "自定义RCON命令",
-      backup: "备份文件管理",
+      backup: "备份存档管理",
     },
     status: {
       online: "在线",
@@ -208,6 +210,7 @@ const messages = {
       detail: "详情",
       confirm: "确认",
       cancel: "取消",
+      close: "关闭",
       remove: "删除",
       import: "导入",
       add: "新增",
@@ -244,6 +247,7 @@ const messages = {
       name: "名字",
       description: "描述",
       count: "数量",
+      time: "时间",
     },
     input: {
       searchPlaceholder: "搜索帕鲁类型、技能",
@@ -337,6 +341,7 @@ const messages = {
       detail: "詳細",
       confirm: "確定",
       cancel: "キャンセル",
+      close: "閉じる",
       remove: "削除",
       import: "導入",
       add: "追加",
@@ -360,6 +365,7 @@ const messages = {
       name: "名前",
       description: "説明",
       count: "数",
+      time: "時間",
     },
     input: {
       searchPlaceholder: "パルのタイプやスキルで検索してください",

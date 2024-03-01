@@ -267,14 +267,14 @@ paths:
       - application/json
       description: List all backups or backups within a specific time range.
       parameters:
-      - description: Start time of the backup range in RFC3339 format
+      - description: Start time of the backup range in timestamp
         in: query
         name: startTime
-        type: string
-      - description: End time of the backup range in RFC3339 format
+        type: integer
+      - description: End time of the backup range in timestamp
         in: query
         name: endTime
-        type: string
+        type: integer
       produces:
       - application/json
       responses:

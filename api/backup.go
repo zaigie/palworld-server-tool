@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -21,30 +22,34 @@ import (
 //	@Accept			json
 //	@Produce		json
 //	@Security		ApiKeyAuth
-//	@Param			startTime	query		string	false	"Start time of the backup range in RFC3339 format"
-//	@Param			endTime		query		string	false	"End time of the backup range in RFC3339 format"
+//	@Param			startTime	query		int	false	"Start time of the backup range in timestamp"
+//	@Param			endTime		query		int	false	"End time of the backup range in timestamp"
 //	@Success		200			{array}		database.Backup
 //	@Failure		400			{object}	ErrorResponse
 //	@Router			/api/backup [get]
 func listBackups(c *gin.Context) {
-	startStr, endStr := c.Query("startTime"), c.Query("endTime")
+	var startTimestamp, endTimestamp int64
 	var startTime, endTime time.Time
 	var err error
 
-	if startStr != "" {
-		startTime, err = time.Parse(time.RFC3339, startStr)
+	startTimeStr, endTimeStr := c.Query("startTime"), c.Query("endTime")
+
+	if startTimeStr != "" {
+		startTimestamp, err = strconv.ParseInt(startTimeStr, 10, 64)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid start time"})
 			return
 		}
+		startTime = time.Unix(0, startTimestamp*int64(time.Millisecond))
 	}
 
-	if endStr != "" {
-		endTime, err = time.Parse(time.RFC3339, endStr)
+	if endTimeStr != "" {
+		endTimestamp, err = strconv.ParseInt(endTimeStr, 10, 64)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid end time"})
 			return
 		}
+		endTime = time.Unix(0, endTimestamp*int64(time.Millisecond))
 	}
 
 	backups, err := service.ListBackups(database.GetDB(), startTime, endTime)
