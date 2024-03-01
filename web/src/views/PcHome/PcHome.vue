@@ -853,21 +853,6 @@ onMounted(async () => {
               </n-button>
               <n-button
                 :size="smallScreen ? 'medium' : 'large'"
-                type="default"
-                secondary
-                strong
-                round
-                @click="toPalConf"
-              >
-                <template #icon>
-                  <n-icon>
-                    <ArchiveOutlined />
-                  </n-icon>
-                </template>
-                {{ $t("button.backup") }}
-              </n-button>
-              <n-button
-                :size="smallScreen ? 'medium' : 'large'"
                 type="primary"
                 secondary
                 strong
