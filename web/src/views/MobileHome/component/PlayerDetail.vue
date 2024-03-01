@@ -66,8 +66,8 @@ const handelPlayerAction = async (type) => {
 };
 
 const searchValue = ref("");
-const clickSearch = () => {
-  emits("onSearch", searchValue.value);
+const clickSearch = (input) => {
+  emits("onSearch", input);
 };
 
 // 查看帕鲁详情
@@ -274,7 +274,7 @@ const getUnknowPalAvatar = () => {
           <n-input
             v-model="searchValue"
             :placeholder="$t('input.searchPlaceholder')"
-            @update="clickSearch"
+            @update:value="clickSearch"
             style="border: none"
           >
             <template #suffix>
