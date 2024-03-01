@@ -33,6 +33,9 @@ var assets embed.FS
 //go:embed index.html
 var indexHTML embed.FS
 
+//go:embed pal-conf.html
+var palConfHTML embed.FS
+
 func setupFlags() {
 	flag.StringVar(&cfgFile, "config", "", "config file")
 	flag.Parse()
@@ -70,6 +73,11 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 		c.Writer.WriteHeader(http.StatusOK)
 		file, _ := indexHTML.ReadFile("index.html")
+		c.Writer.Write(file)
+	})
+	router.GET("/pal-conf", func(c *gin.Context) {
+		c.Writer.WriteHeader(http.StatusOK)
+		file, _ := palConfHTML.ReadFile("pal-conf.html")
 		c.Writer.Write(file)
 	})
 

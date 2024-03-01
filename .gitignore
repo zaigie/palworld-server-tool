@@ -31,8 +31,10 @@ go.work
 dist
 
 /assets
+/*-assets
 /favicon.ico
 /index.html
+/pal-conf.html
 
 *.sav
 *.sav.json

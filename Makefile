@@ -19,7 +19,12 @@ build:
 build-all:
 	rm -rf dist/ && mkdir -p dist/
 
+	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
 	cd web && pnpm i && pnpm build && cd ..
+	git submodule update --init --recursive
+	cd pal-conf && pnpm i && pnpm build && cd ..
+	mv pal-conf/dist/assets/* assets/
+	mv pal-conf/dist/index.html ./pal-conf.html
 
 	mkdir -p dist/windows_x86_64 && mkdir -p dist/linux_x86_64 && mkdir -p dist/linux_aarch64 && mkdir -p dist/darwin_arm64
 	GOOS=windows GOARCH=386 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/windows_x86_64/pst.exe main.go
