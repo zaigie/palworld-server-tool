@@ -189,6 +189,8 @@ mkdir -p pst && tar -xzf pst_v0.5.8_linux_x86_64.tar.gz -C pst
      decode_path: ""
      # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
      sync_interval: 120
+     # Save Backup Interval Sec 存档定时备份间隔，单位秒
+     backup_interval: 14400
 
    # Automation Config 自动化管理相关
    manage:
@@ -289,6 +291,8 @@ save:
   decode_path: ""
   # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
   sync_interval: 120
+  # Save Backup Interval Sec 存档定时备份间隔，单位秒
+  backup_interval: 14400
 
 # Automation Config 自动化管理相关
 manage:
@@ -384,6 +388,7 @@ touch pst.db
 |         SAVE\_\_PATH         |        ""         | 文本 |    游戏存档所在路径 **请务必填写为容器内的路径**     |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文本 |    ⚠️ 容器内置，禁止修改，会导致存档解析工具错误     |
 |    SAVE\_\_SYNC_INTERVAL     |        600        | 数字 |                同步玩家存档数据的间隔                |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       | 数字 |              自动备份玩家存档数据的间隔              |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       | 布尔 |        当检测到玩家不在白名单却在线时自动踢出        |
 
 #### Agent 部署
@@ -456,6 +461,7 @@ touch pst.db
 |         SAVE\_\_PATH         |        ""         | 文本 | pst-agent 所在服务地址，格式为<br> http://{游戏服务器 IP}:{Agent 端口}/sync |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文本 |                ⚠️ 容器内置，禁止修改，会导致存档解析工具错误                |
 |    SAVE\_\_SYNC_INTERVAL     |        600        | 数字 |                           同步玩家存档数据的间隔                            |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       | 数字 |                         自动备份玩家存档数据的间隔                          |
 |                              |                   |      |                                                                             |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       | 布尔 |                   当检测到玩家不在白名单却在线时自动踢出                    |
 
