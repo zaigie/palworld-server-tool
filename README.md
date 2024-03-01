@@ -56,7 +56,7 @@
 
 ## 功能截图
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/a30c17f9-286e-41e8-8e14-f19db7ef8e55
+https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491d-9c1f-1eb82e8060a1
 
 ### 桌面端
 
@@ -343,6 +343,7 @@ docker run -d --name pst \
 -p 8080:8080 \
 -m 256M --memory-swap=4G `# 可选参数 设置可用内存为256M 交换分区为4G` \
 -v /path/to/your/Pal/Saved:/game \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
@@ -420,6 +421,7 @@ jokerwho/palworld-server-tool-agent:latest
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="游戏服务器IP:25575" \
 -e RCON__PASSWORD="your password" \

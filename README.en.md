@@ -49,7 +49,7 @@ Due to limited maintenance and development staff, we welcome front-end, back-end
 
 ## Function screenshot
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/6384dd72-f5d0-430b-91d3-9b687044967b
+https://github.com/zaigie/palworld-server-tool/assets/17232619/49abcd34-0752-487e-8588-b6d1834f07d5
 
 ### Desktop
 
@@ -323,6 +323,7 @@ docker run -d --name pst \
 -p 8080:8080 \
 -m 256M --memory-swap=4G `# optional limit memory to 256M and memory-swap to 4G` \
 -v /path/to/your/Pal/Saved:/game \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
@@ -398,6 +399,7 @@ You need to `-v` to the directory where the game save file (Level.sav) is locate
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="Game server IP:25575" \
 -e RCON__PASSWORD="your password" \

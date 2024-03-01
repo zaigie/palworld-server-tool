@@ -49,7 +49,7 @@
 
 ## 機能スクリーンショット
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/6a8fba98-6966-4650-90f9-a0ea42d9a6a9
+https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491d-9c1f-1eb82e8060a1
 
 ### デスクトップ
 
@@ -325,6 +325,7 @@ docker run -d --name pst \
 -p 8080:8080 \
 -m 256M --memory-swap=4G `# オプション メモリを256Mに設定し、スワップ領域を4Gに設定` \
 -v /path/to/your/Pal/Saved:/game \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
@@ -404,6 +405,7 @@ jokerwho/palworld-server-tool-agent:latest
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="ゲームサーバーIP:25575" \
 -e RCON__PASSWORD="your password" \
