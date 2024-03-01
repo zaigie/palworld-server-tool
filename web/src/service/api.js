@@ -87,6 +87,18 @@ class ApiService extends Service {
   async removeRconCommand(uuid) {
     return this.fetch(`/api/rcon/${uuid}`).delete().json();
   }
+
+  async getBackupList() {
+    return this.fetch(`/api/backup`).get().json();
+  }
+
+  async removeBackup(uuid) {
+    return this.fetch(`/api/backup/${uuid}`).delete().json();
+  }
+
+  async downloadBackup(uuid) {
+    return this.fetch(`/api/backup/${uuid}`).get().blob();
+  }
 }
 
 export default ApiService;

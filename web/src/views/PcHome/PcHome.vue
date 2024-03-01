@@ -6,6 +6,8 @@ import {
   DeleteOutlineTwotone,
   RemoveRedEyeTwotone,
   DeleteFilled,
+  ArchiveOutlined,
+  CloudDownloadOutlined
 } from "@vicons/material";
 import {
   GameController,
@@ -466,6 +468,65 @@ const isTokenExpired = (token) => {
   return payload.exp < Date.now() / 1000;
 };
 
+const backupModal = ref(false);
+const backupList = ref([]);
+
+const handleBackupList = () => {
+  if (checkAuthToken()) {
+    backupModal.value = true;
+  } else {
+    message.error(t("message.requireauth"));
+    showLoginModal.value = true;
+  }
+};
+const getBackupList = async () => {
+  if (checkAuthToken()) {
+    const {data, statusCode} = await new ApiService().getBackupList();
+    if (statusCode.value === 200) {
+      backupList.value = data.value;
+    }
+  }
+};
+
+const isDownloading = ref(false);
+const removeBackup = async (item) => {
+  if (checkAuthToken()) {
+    isDownloading.value = true;
+    const {data, statusCode} = await new ApiService().removeBackup(item.backup_id);
+    if (statusCode.value === 200) {
+      message.success(t("message.removebackupsuccess"));
+      await getBackupList();
+    } else {
+      message.error(t("message.removebackupfail", {err: data.value?.error}));
+    }
+    isDownloading.value = false;
+  }
+};
+
+const downloadBackup = async (item) => {
+  if (checkAuthToken()) {
+    isDownloading.value = true;
+    try {
+      const {data: blobData, execute: fetchBlob} = await new ApiService().downloadBackup(item.backup_id);
+      await fetchBlob();
+      const url = URL.createObjectURL(blobData.value);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', item.path);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      message.success(
+          t("message.downloadsuccess")
+      );
+    } catch (error) {
+      console.error('Download failed', error);
+    }
+    isDownloading.value = false;
+  }
+};
+
 onMounted(async () => {
   locale.value = localStorage.getItem("locale");
   languageOptions.value = [
@@ -497,6 +558,7 @@ onMounted(async () => {
   getPlayerList();
   await getWhiteList();
   loading.value = false;
+  await getBackupList();
 });
 </script>
 
@@ -612,6 +674,21 @@ onMounted(async () => {
               }}</n-tag>
             </n-space>
             <n-space v-if="isLogin">
+              <n-button
+                  :size="smallScreen ? 'medium' : 'large'"
+                  type="default"
+                  secondary
+                  strong
+                  round
+                  @click="handleBackupList"
+              >
+                <template #icon>
+                  <n-icon>
+                    <ArchiveOutlined />
+                  </n-icon>
+                </template>
+                {{ $t("button.backup") }}
+              </n-button>
               <n-button
                 :size="smallScreen ? 'medium' : 'large'"
                 type="default"
@@ -1011,6 +1088,97 @@ onMounted(async () => {
             type="success"
           >
             {{ $t("button.save") }}
+          </n-button>
+        </n-space>
+      </div>
+    </template>
+  </n-modal>
+  <!-- backup modal -->
+  <n-modal
+      v-model:show="backupModal"
+      class="custom-card"
+      preset="card"
+      style="width: 90%; max-width: 700px"
+      footer-style="padding: 12px;"
+      content-style="padding: 12px;"
+      header-style="padding: 12px;"
+      :title="$t('modal.backup')"
+      size="small"
+      :bordered="false"
+      :mask-closable="false"
+      :close-on-esc="false"
+      :segmented="segmented"
+  >
+    <div>
+      <n-empty description="empty" v-if="backupList.length == 0"> </n-empty>
+      <n-spin :show="isDownloading" v-else>
+        <n-virtual-list
+
+            ref="virtualListInst"
+            style="height: 320px"
+            :item-size="42"
+            :items="backupList"
+            item-resizable
+        >
+          <template #default="{ item }">
+            <div
+                :key="item.backup_id"
+                class="flex flex-col item mlr-3 mb-3 p-1"
+            >
+              <n-grid>
+                <n-gi span="14" class="flex justify-center items-center">
+                  <div >
+                    {{item.path}}
+                  </div>
+                </n-gi>
+                <n-gi span="10">
+                  <div class="flex justify-end mr-3">
+                    <n-space >
+                      <n-button
+                          @click="removeBackup(item)"
+                          strong
+                          secondary
+                          type="error"
+                      >
+                        <template #icon>
+                          <n-icon><DeleteOutlineTwotone /></n-icon>
+                        </template>
+                        {{ $t("button.remove") }}
+                      </n-button>
+                      <n-button
+                          @click="downloadBackup(item)"
+                          strong
+                          secondary
+                          type="success"
+                      >
+                        <template #icon>
+                          <n-icon><CloudDownloadOutlined /></n-icon>
+                        </template>
+                        {{ $t("button.download") }}
+                      </n-button>
+                    </n-space>
+                  </div>
+                </n-gi>
+              </n-grid>
+            </div>
+
+          </template>
+        </n-virtual-list>
+      </n-spin>
+
+    </div>
+    <template #footer>
+      <div class="flex justify-end">
+        <n-space>
+          <n-button
+              type="tertiary"
+              @click="
+              () => {
+                showWhiteListModal = false;
+              }
+            "
+          >
+            {{ $t("button.cancel") }}
           </n-button>
         </n-space>
       </div>
