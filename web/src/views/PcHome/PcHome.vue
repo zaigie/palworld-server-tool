@@ -17,6 +17,7 @@ import {
   ArchiveOutline,
   Settings,
 } from "@vicons/ionicons5";
+import { GuiManagement } from "@vicons/carbon";
 import { BroadcastTower } from "@vicons/fa";
 import { computed, onMounted, ref } from "vue";
 import { NTag, NButton, NIcon, useMessage, useDialog } from "naive-ui";
@@ -281,6 +282,15 @@ const renderIcon = (icon, color = "#666") => {
   };
 };
 const controlCenterOption = [
+  // {
+  //   label: () => {
+  //     return h("div", null, {
+  //       default: () => t("button.backup"),
+  //     });
+  //   },
+  //   key: "backup",
+  //   icon: renderIcon(ArchiveOutlined),
+  // },
   {
     label: () => {
       return h("div", null, {
@@ -299,15 +309,15 @@ const controlCenterOption = [
     key: "whitelist",
     icon: renderIcon(ShieldCheckmarkSharp),
   },
-  {
-    label: () => {
-      return h("div", null, {
-        default: () => t("button.rcon"),
-      });
-    },
-    key: "rcon",
-    icon: renderIcon(Terminal),
-  },
+  // {
+  //   label: () => {
+  //     return h("div", null, {
+  //       default: () => t("button.rcon"),
+  //     });
+  //   },
+  //   key: "rcon",
+  //   icon: renderIcon(Terminal),
+  // },
   {
     label: () => {
       return h("div", null, {
@@ -599,13 +609,6 @@ const backupColumns = [
       return dayjs(row.save_time).format("YYYY-MM-DD HH:mm:ss");
     },
   },
-  // {
-  //   title: t("item.backupFile"),
-  //   key: "path",
-  //   render: (row) => {
-  //     return row.path;
-  //   },
-  // },
   {
     title: "",
     key: "action",
@@ -618,7 +621,7 @@ const backupColumns = [
             type: "primary",
             size: "small",
             renderIcon: () => h(CloudDownloadOutlined),
-            onClick: () => downloadBackup(row.backup_id),
+            onClick: () => downloadBackup(row),
           },
           { default: () => t("button.download") }
         ),
@@ -629,7 +632,7 @@ const backupColumns = [
             size: "small",
             renderIcon: () => h(DeleteOutlineTwotone),
             style: "margin-left: 20px",
-            onClick: () => removeBackup(row.backup_id),
+            onClick: () => removeBackup(row),
           },
           { default: () => t("button.remove") }
         ),
@@ -826,17 +829,9 @@ onMounted(async () => {
               }}</n-tag>
             </n-space>
             <n-space v-if="isLogin" class="flex items-center">
-              <n-dropdown
-                trigger="click"
-                size="large"
-                :options="controlCenterOption"
-                @select="handleSelectControlCenter"
-              >
-                <n-button round>{{ $t("button.controlCenter") }}</n-button>
-              </n-dropdown>
-              <!-- <n-button
+              <n-button
                 :size="smallScreen ? 'medium' : 'large'"
-                type="default"
+                type="success"
                 secondary
                 strong
                 round
@@ -850,6 +845,42 @@ onMounted(async () => {
                 {{ $t("button.backup") }}
               </n-button>
               <n-button
+                :size="smallScreen ? 'medium' : 'large'"
+                type="primary"
+                secondary
+                strong
+                round
+                @click="handleRconDrawer"
+              >
+                <template #icon>
+                  <n-icon>
+                    <Terminal />
+                  </n-icon>
+                </template>
+                {{ $t("button.rcon") }}
+              </n-button>
+              <n-dropdown
+                trigger="click"
+                size="large"
+                :options="controlCenterOption"
+                @select="handleSelectControlCenter"
+              >
+                <n-button
+                  :size="smallScreen ? 'medium' : 'large'"
+                  type="error"
+                  secondary
+                  strong
+                  round
+                >
+                  <template #icon>
+                    <n-icon>
+                      <GuiManagement />
+                    </n-icon>
+                  </template>
+                  {{ $t("button.controlCenter") }}</n-button
+                >
+              </n-dropdown>
+              <!-- <n-button
                 :size="smallScreen ? 'medium' : 'large'"
                 type="default"
                 secondary
@@ -878,21 +909,6 @@ onMounted(async () => {
                   </n-icon>
                 </template>
                 {{ $t("button.whitelist") }}
-              </n-button>
-              <n-button
-                :size="smallScreen ? 'medium' : 'large'"
-                type="primary"
-                secondary
-                strong
-                round
-                @click="handleRconDrawer"
-              >
-                <template #icon>
-                  <n-icon>
-                    <Terminal />
-                  </n-icon>
-                </template>
-                {{ $t("button.rcon") }}
               </n-button>
               <n-button
                 :size="smallScreen ? 'medium' : 'large'"
