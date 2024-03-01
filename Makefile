@@ -2,6 +2,19 @@ GOHOSTOS:=$(shell go env GOHOSTOS)
 GOPATH:=$(shell go env GOPATH)
 GIT_TAG:=$(shell git describe --tags --abbrev=0)
 PREFIX:=pst_${GIT_TAG}
+OS=$(uname)
+EXT=""
+ifeq ($(OS),Windows_NT)
+    EXT := .exe
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux)
+        EXT :=
+    endif
+    ifeq ($(UNAME_S),Darwin)
+        EXT :=
+    endif
+endif
 
 .PHONY: init
 # 初始化
@@ -12,11 +25,24 @@ init:
 # 构建
 build:
 	rm -rf dist/ && mkdir -p dist/
-	go build -o ./dist/pst main.go
 
-.PHONY: build-all
+	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
+	cd web && pnpm i && pnpm build && cd ..
+	git submodule update --init --recursive
+	cd pal-conf && pnpm i && pnpm build && cd ..
+	mv pal-conf/dist/assets/* assets/
+	mv pal-conf/dist/index.html ./pal-conf.html
+
+	cd module && pip install -r requirements.txt
+	cd module && pyinstaller --onefile sav_cli.py
+	mv module/dist/sav_cli${EXT} ./dist/
+
+	cp example/config.yaml dist/config.yaml
+	go build -o ./dist/pst${EXT} main.go
+
+.PHONY: build-pub
 # 为所有平台构建，确保 module/dist 中有所有平台的 sav_cli
-build-all:
+build-pub:
 	rm -rf dist/ && mkdir -p dist/
 
 	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
