@@ -16,8 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        # with:
-        #   submodules: recursive
+        with:
+          submodules: recursive
       - id: output-id
         run: |
           VERSION=prod

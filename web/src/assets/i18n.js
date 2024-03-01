@@ -89,6 +89,7 @@ const messages = {
       search: "Search",
       addNew: "Add New",
       save: "Save",
+      palconf: "PalConf",
     },
     pal: {
       type: "Type",
@@ -101,7 +102,7 @@ const messages = {
       tower: "Tower",
       lucky: "Lucky",
     },
-    item:{
+    item: {
       palList: "Pal List",
       itemList: "Item List",
       commonContainer: "Common Container",
@@ -208,6 +209,7 @@ const messages = {
       search: "搜索",
       addNew: "新增",
       save: "保存",
+      palconf: "配置生成器",
     },
     pal: {
       type: "类型",
@@ -220,7 +222,7 @@ const messages = {
       tower: "塔主",
       lucky: "稀有",
     },
-    item:{
+    item: {
       palList: "幻兽列表",
       itemList: "物品列表",
       commonContainer: "物品栏",
@@ -328,8 +330,9 @@ const messages = {
       joinWhitelist: "ホワイトリストに追加",
       removeWhitelist: "ホワイトリストを削除します",
       search: "検索",
+      palconf: "パルの設定",
     },
-    item:{
+    item: {
       palList: "幻獣リスト",
       itemList: "アイテムリスト",
       commonContainer: "一般アイテム",
