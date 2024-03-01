@@ -108,7 +108,11 @@ func GetBackupDir() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(wd, "backups"), nil
+	backDir := filepath.Join(wd, "backups")
+	if err = system.CheckAndCreateDir(backDir); err != nil {
+		return "", err
+	}
+	return backDir, nil
 }
 
 func getFromSource(file, way string) (string, error) {
