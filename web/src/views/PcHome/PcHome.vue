@@ -13,6 +13,7 @@ import {
   ShieldCheckmarkSharp,
   Terminal,
   ArchiveOutline,
+  Settings,
 } from "@vicons/ionicons5";
 import { BroadcastTower } from "@vicons/fa";
 import { computed, onMounted, ref } from "vue";
@@ -92,6 +93,10 @@ const getSkillTypeList = () => {
   } else {
     return [];
   }
+};
+
+const toPalConf = () => {
+  window.open("/pal-conf");
 };
 
 const toGithub = () => {
@@ -607,6 +612,21 @@ onMounted(async () => {
               }}</n-tag>
             </n-space>
             <n-space v-if="isLogin">
+              <n-button
+                :size="smallScreen ? 'medium' : 'large'"
+                type="default"
+                secondary
+                strong
+                round
+                @click="toPalConf"
+              >
+                <template #icon>
+                  <n-icon>
+                    <Settings />
+                  </n-icon>
+                </template>
+                {{ $t("button.palconf") }}
+              </n-button>
               <n-button
                 :size="smallScreen ? 'medium' : 'large'"
                 type="warning"
