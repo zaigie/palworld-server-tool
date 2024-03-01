@@ -179,14 +179,10 @@ const displayLastOnline = (last_online) => {
                   player.nickname
                 }}</span>
               </div>
-              <span
-                :class="
-                  isDarkMode ? 'bg-#2f69aa text-#fff' : 'bg-#ddd text-#18181c'
-                "
-                class="inline-block mt-1 rounded-full text-xs px-2 py-0.5"
-                >{{ $t("status.last_online") }}:
-                {{ displayLastOnline(player.last_online) }}</span
-              >
+              <n-tag :bordered="false" round size="small" class="mt-2">
+                {{ $t("status.last_online") }}:
+                {{ displayLastOnline(player.last_online) }}
+              </n-tag>
             </div>
           </n-list-item>
         </n-list>
