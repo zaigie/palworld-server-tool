@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/system"
 )
@@ -18,7 +19,8 @@ func DownloadFromHttp(url, way string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	tempPath := filepath.Join(os.TempDir(), "palworldsav-http-"+way)
+	uuid := uuid.New().String()
+	tempPath := filepath.Join(os.TempDir(), "palworldsav-http-"+way+"-"+uuid)
 	absPath, err := filepath.Abs(tempPath)
 	if err != nil {
 		return "", err

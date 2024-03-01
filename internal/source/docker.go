@@ -11,6 +11,7 @@ import (
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/system"
 )
@@ -45,7 +46,8 @@ func CopyFromContainer(containerID, remotePath, way string) (string, error) {
 	}
 	defer reader.Close()
 
-	tempDir := filepath.Join(os.TempDir(), "palworldsav-docker-"+way)
+	uuid := uuid.New().String()
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-docker-"+way+"-"+uuid)
 	absPath, err := filepath.Abs(tempDir)
 	if err != nil {
 		return "", err

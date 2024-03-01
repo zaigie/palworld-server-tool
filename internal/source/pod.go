@@ -13,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/system"
 	corev1 "k8s.io/api/core/v1"
@@ -68,7 +69,8 @@ func CopyFromPod(namespace, podName, container, remotePath, way string) (string,
 		return "", errors.New("error executing tar command: " + err.Error())
 	}
 
-	tempDir := filepath.Join(os.TempDir(), "palworldsav-pod-"+way)
+	uuid := uuid.New().String()
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-pod-"+way+"-"+uuid)
 	absPath, err := filepath.Abs(tempDir)
 	if err != nil {
 		return "", err

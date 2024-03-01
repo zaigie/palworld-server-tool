@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/system"
 )
@@ -32,7 +33,8 @@ func CopyFromLocal(src, way string) (string, error) {
 		}
 	}
 
-	tempDir := filepath.Join(os.TempDir(), "palworldsav-"+way)
+	uuid := uuid.New().String()
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-"+way+"-"+uuid)
 	absPath, err := filepath.Abs(tempDir)
 	if err != nil {
 		return "", err
