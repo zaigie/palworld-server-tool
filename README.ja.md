@@ -164,6 +164,8 @@ mkdir -p pst && tar -xzf pst_v0.5.8_linux_x86_64.tar.gz -C pst
      decode_path: ""
      # Sav Decode Interval Sec 存档からデータを取得する間隔、秒単位、>= 120を推奨
      sync_interval: 120
+     # Sav Backup Interval Sec アーカイブ自動バックアップ間隔です、秒単位
+     backup_interval: 14400
 
    # Automation Config 自動化管理関連
    manage:
@@ -264,6 +266,8 @@ save:
   decode_path: "C:\\path\\to\\your\\sav_cli.exe"
   # Sav Decode Interval Sec 存档からデータを取得する間隔、秒単位、>= 120を推奨
   sync_interval: 120
+  # Sav Backup Interval Sec アーカイブ自動バックアップ間隔です、秒単位
+  backup_interval: 14400
 
 # Automation Config 自動化管理関連
 manage:
@@ -363,6 +367,7 @@ touch pst.db
 |         SAVE\_\_PATH         |        ""         | 文字列 |       ゲームの存档ファイルのパス **コンテナ内のパスとして必ず記入してください**        |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文字列 |              ⚠️ コンテナ内蔵、変更禁止、存档解析ツールのエラーになります               |
 |    SAVE\_\_SYNC_INTERVAL     |        600        |  数値  |                          プレイヤーの存档データを同期する間隔                          |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       |  数値  |                           アーカイブ自動バックアップ間隔です                           |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       | ブール |            プレイヤーがホワイトリストにない場合に自動的にキックするかどうか            |
 
 #### Agent デプロイメント
@@ -435,6 +440,7 @@ touch pst.db
 |         SAVE\_\_PATH         |        ""         | 文字列 | pst-agent があるサービスのアドレス、形式は<br> http://{ゲームサーバー IP}:{Agent ポート}/sync |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文字列 |                  ⚠️ コンテナ内蔵、変更禁止、存档解析ツールのエラーになります                  |
 |    SAVE\_\_SYNC_INTERVAL     |        600        |  数値  |                             プレイヤーの存档データを同期する間隔                              |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       |  数値  |                              アーカイブ自動バックアップ間隔です                               |
 |                              |                   |        |                                                                                               |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       | ブール |               プレイヤーがホワイトリストにない場合に自動的にキックするかどうか                |
 

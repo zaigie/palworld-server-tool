@@ -6,6 +6,8 @@ import {
   DeleteOutlineTwotone,
   RemoveRedEyeTwotone,
   DeleteFilled,
+  ArchiveOutlined,
+  CloudDownloadOutlined,
 } from "@vicons/material";
 import {
   GameController,
@@ -29,6 +31,7 @@ import whitelistStore from "@/stores/model/whitelist";
 import playerToGuildStore from "@/stores/model/playerToGuild";
 import { watch } from "vue";
 import userStore from "@/stores/model/user";
+import { h } from "vue";
 
 const { t, locale } = useI18n();
 
@@ -552,6 +555,130 @@ const isTokenExpired = (token) => {
   return payload.exp < Date.now() / 1000;
 };
 
+const backupModal = ref(false);
+const backupList = ref([]);
+
+const handleBackupList = () => {
+  if (checkAuthToken()) {
+    backupModal.value = true;
+  } else {
+    message.error(t("message.requireauth"));
+    showLoginModal.value = true;
+  }
+};
+const getBackupList = async () => {
+  if (checkAuthToken()) {
+    const { data, statusCode } = await new ApiService().getBackupList({
+      startTime: range.value[0],
+      endTime: range.value[1],
+    });
+    if (statusCode.value === 200) {
+      backupList.value = data.value;
+    }
+  }
+};
+const getBackupListWithRange = async (selectRange) => {
+  let startTime = selectRange[0] ? selectRange[0] : 0;
+  let endTime = selectRange[1] ? selectRange[1] : 0;
+  if (checkAuthToken()) {
+    const { data, statusCode } = await new ApiService().getBackupList({
+      startTime,
+      endTime,
+    });
+    if (statusCode.value === 200) {
+      backupList.value = data.value;
+    }
+  }
+};
+const backupColumns = [
+  {
+    title: t("item.time"),
+    key: "save_time",
+    width: "200px",
+    render: (row) => {
+      return dayjs(row.save_time).format("YYYY-MM-DD HH:mm:ss");
+    },
+  },
+  // {
+  //   title: t("item.backupFile"),
+  //   key: "path",
+  //   render: (row) => {
+  //     return row.path;
+  //   },
+  // },
+  {
+    title: "",
+    key: "action",
+    width: "200px",
+    render: (row) => {
+      return [
+        h(
+          NButton,
+          {
+            type: "primary",
+            size: "small",
+            renderIcon: () => h(CloudDownloadOutlined),
+            onClick: () => downloadBackup(row.backup_id),
+          },
+          { default: () => t("button.download") }
+        ),
+        h(
+          NButton,
+          {
+            type: "error",
+            size: "small",
+            renderIcon: () => h(DeleteOutlineTwotone),
+            style: "margin-left: 20px",
+            onClick: () => removeBackup(row.backup_id),
+          },
+          { default: () => t("button.remove") }
+        ),
+      ];
+    },
+  },
+];
+
+const range = ref([Date.now() - 1 * 24 * 60 * 60 * 1000, Date.now()]);
+const isDownloading = ref(false);
+const removeBackup = async (item) => {
+  if (checkAuthToken()) {
+    isDownloading.value = true;
+    const { data, statusCode } = await new ApiService().removeBackup(
+      item.backup_id
+    );
+    if (statusCode.value === 200) {
+      message.success(t("message.removebackupsuccess"));
+      await getBackupList();
+    } else {
+      message.error(t("message.removebackupfail", { err: data.value?.error }));
+    }
+    isDownloading.value = false;
+  }
+};
+
+const downloadBackup = async (item) => {
+  if (checkAuthToken()) {
+    isDownloading.value = true;
+    try {
+      const { data: blobData, execute: fetchBlob } =
+        await new ApiService().downloadBackup(item.backup_id);
+      await fetchBlob();
+      const url = URL.createObjectURL(blobData.value);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", item.path);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      message.success(t("message.downloadsuccess"));
+    } catch (error) {
+      console.error("Download failed", error);
+    }
+    isDownloading.value = false;
+  }
+};
+
 onMounted(async () => {
   locale.value = localStorage.getItem("locale");
   languageOptions.value = [
@@ -583,6 +710,7 @@ onMounted(async () => {
   getPlayerList();
   await getWhiteList();
   loading.value = false;
+  await getBackupList();
 });
 </script>
 
@@ -707,6 +835,21 @@ onMounted(async () => {
                 <n-button round>{{ $t("button.controlCenter") }}</n-button>
               </n-dropdown>
               <!-- <n-button
+                :size="smallScreen ? 'medium' : 'large'"
+                type="default"
+                secondary
+                strong
+                round
+                @click="handleBackupList"
+              >
+                <template #icon>
+                  <n-icon>
+                    <ArchiveOutlined />
+                  </n-icon>
+                </template>
+                {{ $t("button.backup") }}
+              </n-button>
+              <n-button
                 :size="smallScreen ? 'medium' : 'large'"
                 type="default"
                 secondary
@@ -1105,6 +1248,57 @@ onMounted(async () => {
             type="success"
           >
             {{ $t("button.save") }}
+          </n-button>
+        </n-space>
+      </div>
+    </template>
+  </n-modal>
+  <!-- backup modal -->
+  <n-modal
+    v-model:show="backupModal"
+    class="custom-card"
+    preset="card"
+    style="width: 90%; max-width: 700px"
+    footer-style="padding: 12px;"
+    content-style="padding: 12px;"
+    header-style="padding: 12px;"
+    :title="$t('modal.backup')"
+    size="small"
+    :bordered="false"
+    :mask-closable="false"
+    :close-on-esc="false"
+    :segmented="segmented"
+  >
+    <div>
+      <n-empty description="empty" v-if="backupList.length == 0"> </n-empty>
+      <div class="flex flex-col item mlr-3 mb-3 p-1" v-else>
+        <n-date-picker
+          class="mb-4"
+          v-model:value="range"
+          type="datetimerange"
+          @confirm="getBackupListWithRange"
+        />
+        <n-scrollbar style="max-height: 320px">
+          <n-data-table
+            :columns="backupColumns"
+            :data="backupList"
+            :bordered="false"
+          />
+        </n-scrollbar>
+      </div>
+    </div>
+    <template #footer>
+      <div class="flex justify-end">
+        <n-space>
+          <n-button
+            type="tertiary"
+            @click="
+              () => {
+                backupModal = false;
+              }
+            "
+          >
+            {{ $t("button.close") }}
           </n-button>
         </n-space>
       </div>

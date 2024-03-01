@@ -40,6 +40,14 @@ func InitDB() *bbolt.DB {
 	if err != nil {
 		logger.Panic(err)
 	}
+	// backups
+	err = db_.Update(func(tx *bbolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte("backups"))
+		return err
+	})
+	if err != nil {
+		logger.Panic(err)
+	}
 	return db_
 }
 

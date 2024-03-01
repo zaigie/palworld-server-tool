@@ -153,6 +153,20 @@ func CleanAndCreateDir(dirPath string) error {
 	return os.MkdirAll(dirPath, 0755)
 }
 
+// CheckAndCreateDir 检查指定路径的文件夹是否存在，如果不存在则创建它。
+func CheckAndCreateDir(path string) error {
+	_, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		err := os.MkdirAll(path, 0755)
+		if err != nil {
+			return err
+		}
+	} else if err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetSavDir(path string) (string, error) {
 	var levelFilePath string
 	levelFilePath, err := GetLevelSavFilePath(path)

@@ -164,6 +164,8 @@ mkdir -p pst && tar -xzf pst_v0.5.8_linux_x86_64.tar.gz -C pst
      decode_path: ""
      # Sav Decode Interval Sec
      sync_interval: 120
+     # Save Backup Interval Sec
+     backup_interval: 14400
 
    # Automation Config
    manage:
@@ -264,6 +266,8 @@ save:
   decode_path: ""
   # Sav Decode Interval Sec
   sync_interval: 120
+  # Save Backup Interval Sec
+  backup_interval: 14400
 
 # Automation Config
 manage:
@@ -359,6 +363,7 @@ Set various environment variables, similar to those in [`config.yaml`](#configur
 |         SAVE\_\_PATH         |        ""         |  Text  |           Game save path **be sure to fill in the path inside the container**           |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
 |    SAVE\_\_SYNC_INTERVAL     |        600        | Number |                          Interval for syncing player save data                          |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       | Number |                        Interval for auto backup player save data                        |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       |  布尔  | Automatically kicked out when it detects that a player is not whitelisted but is online |
 
 #### Agent Deployment
@@ -429,6 +434,7 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 |         SAVE\_\_PATH         |        ""         |  Text  |   pst-agent service address, format as<br> http://{Game server IP}:{Agent port}/sync    |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
 |    SAVE\_\_SYNC_INTERVAL     |        600        | Number |                          Interval for syncing player save data                          |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       | Number |                        Interval for auto backup player save data                        |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       |  布尔  | Automatically kicked out when it detects that a player is not whitelisted but is online |
 
 #### Synchronizing Archives from k8s-pod

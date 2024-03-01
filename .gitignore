@@ -41,3 +41,5 @@ dist
 structure.json
 
 .pnpm-store
+
+backups/

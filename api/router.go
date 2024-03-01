@@ -82,5 +82,8 @@ func RegisterRouter(r *gin.Engine) {
 		authGroup.POST("/rcon/send", sendRconCommand)
 		authGroup.PUT("/rcon/:uuid", putRconCommand)
 		authGroup.DELETE("/rcon/:uuid", removeRconCommand)
+		authGroup.GET("/backup", listBackups)
+		authGroup.GET("/backup/:backup_id", downloadBackup)
+		authGroup.DELETE("/backup/:backup_id", deleteBackup)
 	}
 }
