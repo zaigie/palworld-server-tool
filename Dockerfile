@@ -56,6 +56,7 @@ ADD . .
 
 COPY --from=frontendBuilder /app/assets /app/assets
 COPY --from=frontendBuilder /app/index.html /app/index.html
+COPY --from=frontendBuilder /app/pal-conf.html /app/pal-conf.html
 
 RUN if [ ! -z "$proxy" ]; then \
     export GOPROXY=https://goproxy.io,direct && \
