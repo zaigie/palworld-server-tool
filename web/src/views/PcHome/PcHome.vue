@@ -94,6 +94,36 @@ const getSkillTypeList = () => {
   }
 };
 
+const toGithub = () => {
+  window.open("https://github.com/zaigie/palworld-server-tool/releases");
+};
+const serverToolInfo = ref({});
+const hasNewVersion = ref(false);
+const getServerToolInfo = async () => {
+  const { data } = await new ApiService().getServerToolInfo();
+  serverToolInfo.value = data.value;
+  hasNewVersion.value = isNewVersion(data.value.version, data.value.latest);
+};
+const isNewVersion = (version, latest) => {
+  if (version == "Unknown" || version == "Develop" || latest == "") {
+    return false;
+  }
+  const currentVersion = version.split("v")[1];
+  const latestVersion = latest?.split("v")[1];
+  const currentParts = currentVersion.substring(1).split(".");
+  const latestParts = latestVersion.substring(1).split(".");
+  for (let i = 0; i < currentParts.length; i++) {
+    const currentPart = parseInt(currentParts[i], 10);
+    const latestPart = parseInt(latestParts[i], 10);
+    if (latestPart > currentPart) {
+      return true;
+    } else if (latestPart < currentPart) {
+      return false;
+    }
+  }
+  return false;
+};
+
 // get data
 const getServerInfo = async () => {
   const { data } = await new ApiService().getServerInfo();
@@ -458,6 +488,7 @@ onMounted(async () => {
   loading.value = true;
   checkAuthToken();
   getServerInfo();
+  getServerToolInfo();
   getPlayerList();
   await getWhiteList();
   loading.value = false;
@@ -476,6 +507,19 @@ onMounted(async () => {
           :class="smallScreen ? 'text-lg' : 'text-2xl'"
           >{{ $t("title") }}</span
         >
+        <n-badge
+          v-if="serverToolInfo.version"
+          :value="hasNewVersion ? 'new' : ''"
+        >
+          <n-tag
+            type="warning"
+            :size="smallScreen ? 'mini' : 'medium'"
+            round
+            @click="toGithub"
+            style="cursor: pointer"
+            >{{ serverToolInfo.version }}</n-tag
+          >
+        </n-badge>
         <n-tag type="default" :size="smallScreen ? 'medium' : 'large'">{{
           serverInfo?.name
             ? `${serverInfo.name + " " + serverInfo.version}`

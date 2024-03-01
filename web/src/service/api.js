@@ -6,6 +6,9 @@ class ApiService extends Service {
     return this.fetch(`/api/login`).post(data).json();
   }
 
+  async getServerToolInfo() {
+    return this.fetch(`/api/server/tool`).get().json();
+  }
   async getServerInfo() {
     return this.fetch(`/api/server`).get().json();
   }
