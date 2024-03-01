@@ -24,7 +24,7 @@ func getDockerClient() (*client.Client, error) {
 	}
 }
 
-func CopyFromContainer(containerID, remotePath string) (string, error) {
+func CopyFromContainer(containerID, remotePath, way string) (string, error) {
 	logger.Infof("copying savDir from %s\n", remotePath)
 	ctx := context.Background()
 	cli, err := getDockerClient()
@@ -45,7 +45,7 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 	}
 	defer reader.Close()
 
-	tempDir := filepath.Join(os.TempDir(), "palworldsav-docker")
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-docker-"+way)
 	absPath, err := filepath.Abs(tempDir)
 	if err != nil {
 		return "", err

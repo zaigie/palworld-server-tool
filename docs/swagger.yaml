@@ -54,6 +54,15 @@ definitions:
       success:
         type: boolean
     type: object
+  database.Backup:
+    properties:
+      backup_id:
+        type: string
+      path:
+        type: string
+      save_time:
+        type: string
+    type: object
   database.Guild:
     properties:
       admin_player_uid:
@@ -252,6 +261,99 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 paths:
+  /api/backup:
+    get:
+      consumes:
+      - application/json
+      description: List all backups or backups within a specific time range.
+      parameters:
+      - description: Start time of the backup range in RFC3339 format
+        in: query
+        name: startTime
+        type: string
+      - description: End time of the backup range in RFC3339 format
+        in: query
+        name: endTime
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.Backup'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: List backups within a specified time range
+      tags:
+      - backup
+  /api/backup/{backup_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a backup
+      parameters:
+      - description: Backup ID
+        in: path
+        name: backup_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Backup
+      tags:
+      - backup
+    get:
+      consumes:
+      - application/json
+      description: Download a backup
+      parameters:
+      - description: Backup ID
+        in: path
+        name: backup_id
+        required: true
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: Backupfile
+          schema:
+            type: file
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Download Backup
+      tags:
+      - backup
   /api/guild:
     get:
       consumes:

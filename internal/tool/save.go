@@ -8,12 +8,14 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/auth"
 	"github.com/zaigie/palworld-server-tool/internal/database"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/source"
+	"github.com/zaigie/palworld-server-tool/internal/system"
 )
 
 type Sturcture struct {
@@ -40,47 +42,15 @@ func getSavCli() (string, error) {
 	return savCliPath, nil
 }
 
-func ConversionLoading(file string) error {
-	var levelFilePath string
-	var err error
-
+func Decode(file string) error {
 	savCli, err := getSavCli()
 	if err != nil {
 		return errors.New("error getting executable path: " + err.Error())
 	}
 
-	if strings.HasPrefix(file, "http://") || strings.HasPrefix(file, "https://") {
-		// http(s)://url
-		levelFilePath, err = source.DownloadFromHttp(file)
-		if err != nil {
-			return errors.New("error downloading file: " + err.Error())
-		}
-	} else if strings.HasPrefix(file, "k8s://") {
-		// k8s://namespace/pod/container:remotePath
-		namespace, podName, container, remotePath, err := source.ParseK8sAddress(file)
-		if err != nil {
-			return errors.New("error parsing k8s address: " + err.Error())
-		}
-		levelFilePath, err = source.CopyFromPod(namespace, podName, container, remotePath)
-		if err != nil {
-			return errors.New("error copying file from pod: " + err.Error())
-		}
-	} else if strings.HasPrefix(file, "docker://") {
-		// docker://containerID(Name):remotePath
-		containerId, remotePath, err := source.ParseDockerAddress(file)
-		if err != nil {
-			return errors.New("error parsing docker address: " + err.Error())
-		}
-		levelFilePath, err = source.CopyFromContainer(containerId, remotePath)
-		if err != nil {
-			return errors.New("error copying file from container: " + err.Error())
-		}
-	} else {
-		// local file
-		levelFilePath, err = source.CopyFromLocal(file)
-		if err != nil {
-			return errors.New("error copying file to temporary directory: " + err.Error())
-		}
+	levelFilePath, err := getFromSource(file, "decode")
+	if err != nil {
+		return err
 	}
 	defer os.RemoveAll(levelFilePath)
 
@@ -108,4 +78,75 @@ func ConversionLoading(file string) error {
 	}
 
 	return nil
+}
+
+func Backup() (string, error) {
+	sourcePath := viper.GetString("save.path")
+
+	levelFilePath, err := getFromSource(sourcePath, "backup")
+	if err != nil {
+		return "", err
+	}
+	defer os.RemoveAll(filepath.Dir(levelFilePath))
+
+	backupDir, err := GetBackupDir()
+	if err != nil {
+		return "", fmt.Errorf("failed to get backup directory: %s", err)
+	}
+
+	currentTime := time.Now().Format("2006-01-02-15-04-05")
+	backupZipFile := filepath.Join(backupDir, fmt.Sprintf("%s.zip", currentTime))
+	err = system.ZipDir(filepath.Dir(levelFilePath), backupZipFile)
+	if err != nil {
+		return "", fmt.Errorf("failed to create backup zip: %s", err)
+	}
+	return filepath.Base(backupZipFile), nil
+}
+
+func GetBackupDir() (string, error) {
+	wd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(wd, "backups"), nil
+}
+
+func getFromSource(file, way string) (string, error) {
+	var levelFilePath string
+	var err error
+
+	if strings.HasPrefix(file, "http://") || strings.HasPrefix(file, "https://") {
+		// http(s)://url
+		levelFilePath, err = source.DownloadFromHttp(file, way)
+		if err != nil {
+			return "", errors.New("error downloading file: " + err.Error())
+		}
+	} else if strings.HasPrefix(file, "k8s://") {
+		// k8s://namespace/pod/container:remotePath
+		namespace, podName, container, remotePath, err := source.ParseK8sAddress(file)
+		if err != nil {
+			return "", errors.New("error parsing k8s address: " + err.Error())
+		}
+		levelFilePath, err = source.CopyFromPod(namespace, podName, container, remotePath, way)
+		if err != nil {
+			return "", errors.New("error copying file from pod: " + err.Error())
+		}
+	} else if strings.HasPrefix(file, "docker://") {
+		// docker://containerID(Name):remotePath
+		containerId, remotePath, err := source.ParseDockerAddress(file)
+		if err != nil {
+			return "", errors.New("error parsing docker address: " + err.Error())
+		}
+		levelFilePath, err = source.CopyFromContainer(containerId, remotePath, way)
+		if err != nil {
+			return "", errors.New("error copying file from container: " + err.Error())
+		}
+	} else {
+		// local file
+		levelFilePath, err = source.CopyFromLocal(file, way)
+		if err != nil {
+			return "", errors.New("error copying file to temporary directory: " + err.Error())
+		}
+	}
+	return levelFilePath, nil
 }

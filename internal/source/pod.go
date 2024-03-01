@@ -28,7 +28,7 @@ var (
 	ErrAddressInvalid = errors.New("invalid save.path, eg: k8s://namespace/podName:filePath")
 )
 
-func CopyFromPod(namespace, podName, container, remotePath string) (string, error) {
+func CopyFromPod(namespace, podName, container, remotePath, way string) (string, error) {
 	logger.Infof("copying savDir from %s:%s\n", container, remotePath)
 	config, err := rest.InClusterConfig()
 	if err != nil {
@@ -68,7 +68,7 @@ func CopyFromPod(namespace, podName, container, remotePath string) (string, erro
 		return "", errors.New("error executing tar command: " + err.Error())
 	}
 
-	tempDir := filepath.Join(os.TempDir(), "palworldsav-pod")
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-pod-"+way)
 	absPath, err := filepath.Abs(tempDir)
 	if err != nil {
 		return "", err
