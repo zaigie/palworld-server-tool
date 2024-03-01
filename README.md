@@ -549,6 +549,7 @@ SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 
 - [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) 提供了存档解析工具实现
 - [palworld-server-toolkit](https://github.com/magicbear/palworld-server-toolkit) 提供了存档高性能解析部份实现
+- [pal-conf](https://github.com/Bluefissure/pal-conf) 提供了配置生成器页面
 - [PalEdit](https://github.com/EternalWraith/PalEdit) 提供了最初的数据化思路及逻辑
 - [gorcon](https://github.com/gorcon/rcon) 提供的 RCON 请求/接收基础能力
 

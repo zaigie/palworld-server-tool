@@ -526,6 +526,7 @@ SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 
 - [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) for providing save file parsing tool implementation
 - [palworld-server-toolkit](https://github.com/magicbear/palworld-server-toolkit) for providing high performance save file parsing
+- [pal-conf](https://github.com/Bluefissure/pal-conf) provides the generator configuration page
 - [PalEdit](https://github.com/EternalWraith/PalEdit) for providing the initial conceptualization and logic for data processing
 - [gorcon](https://github.com/gorcon/rcon) for providing the basic ability to send/receive RCON requests
 

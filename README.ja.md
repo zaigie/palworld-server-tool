@@ -535,8 +535,8 @@ SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 
 - [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) は存档解析ツールの実装を提供しました
 - [palworld-server-toolkit](https://github.com/magicbear/palworld-server-toolkit) は存档の高性能解析の一部を提供しました
+- [pal-conf](https://github.com/Bluefissure/pal-conf) 構成生成器ページを提供します
 - [PalEdit](https://github.com/EternalWraith/PalEdit) は最初のデータ化思考とロジックを提供しました
-
 - [gorcon](https://github.com/gorcon/rcon) は RCON リクエスト/レシーブの基本能力を提供しました
 
 ## ライセンス
