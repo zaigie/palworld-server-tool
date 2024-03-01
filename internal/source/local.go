@@ -10,7 +10,7 @@ import (
 )
 
 func CopyFromLocal(src string) (string, error) {
-	var levelDir string
+	var savDir string
 	var err error
 	var isDir bool
 
@@ -20,14 +20,13 @@ func CopyFromLocal(src string) (string, error) {
 	}
 
 	if isDir {
-		levelDir = src
-		_, err = system.GetLevelSavFilePath(src)
+		savDir, err = system.GetSavDir(src)
 		if err != nil {
 			return "", errors.New("error finding Level.sav: \n" + err.Error())
 		}
 	} else {
 		if filepath.Base(src) == "Level.sav" {
-			levelDir = filepath.Dir(src)
+			savDir = filepath.Dir(src)
 		} else {
 			return "", errors.New("specified file is not Level.sav and source is not a directory")
 		}
@@ -43,10 +42,11 @@ func CopyFromLocal(src string) (string, error) {
 		return "", err
 	}
 
-	err = system.CopyDir(levelDir, absPath)
+	err = system.CopyDir(savDir, absPath)
 	if err != nil {
 		return "", err
 	}
+
 	levelFilePath := filepath.Join(absPath, "Level.sav")
 	return levelFilePath, nil
 }
