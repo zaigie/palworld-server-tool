@@ -41,6 +41,7 @@ Additional features provided by the tool:
 
 - [x] Whitelist management
 - [x] Defines and executes the RCON command
+- [x] Automatic archive backup and management
 
 This tool uses bbolt for single file storage, fetching and saving data from RCON and Level.sav files via scheduled tasks. It provides a simple visual interface and REST API for easy management and development.
 
