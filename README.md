@@ -276,7 +276,7 @@ rcon:
   address: "127.0.0.1:25575"
   # 服务 端设置的 RCON AdminPassword
   password: ""
-  # 服务器是否已使用 PalGuard  PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
+  # 服务器是否已使用 PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
   is_palguard: false
   # RCON 通信超时时间，推荐 <= 5
   timeout: 5

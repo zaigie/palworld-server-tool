@@ -21,7 +21,7 @@ rcon:
   password: ""
   # 请求 RCON Timeout 超时时间，推荐 <= 5
   timeout: 5
-  # 服务器是否已使用  PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
+  # 服务器是否已使用 PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
   is_palguard: false
   # 定时向 RCON Interval 服务获取玩家在线情况的间隔，单位秒
   sync_interval: 60
