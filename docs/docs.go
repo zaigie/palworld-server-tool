@@ -19,6 +19,153 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/backup": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List all backups or backups within a specific time range.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "backup"
+                ],
+                "summary": "List backups within a specified time range",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Start time of the backup range in timestamp",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End time of the backup range in timestamp",
+                        "name": "endTime",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/database.Backup"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/backup/{backup_id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Download a backup",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "backup"
+                ],
+                "summary": "Download Backup",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Backup ID",
+                        "name": "backup_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Backupfile",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a backup",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "backup"
+                ],
+                "summary": "Delete Backup",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Backup ID",
+                        "name": "backup_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/guild": {
             "get": {
                 "description": "List Guilds",
@@ -847,6 +994,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/server/tool": {
+            "get": {
+                "description": "Get PalWorld Server Tool",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Server"
+                ],
+                "summary": "Get PalWorld Server Tool",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.ServerToolResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/sync": {
             "post": {
                 "security": [
@@ -1131,6 +1301,17 @@ const docTemplate = `{
                 }
             }
         },
+        "api.ServerToolResponse": {
+            "type": "object",
+            "properties": {
+                "latest": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
         "api.ShutdownRequest": {
             "type": "object",
             "properties": {
@@ -1147,6 +1328,20 @@ const docTemplate = `{
             "properties": {
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "database.Backup": {
+            "type": "object",
+            "properties": {
+                "backup_id": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "save_time": {
+                    "type": "string"
                 }
             }
         },
@@ -1184,6 +1379,61 @@ const docTemplate = `{
                 },
                 "player_uid": {
                     "type": "string"
+                }
+            }
+        },
+        "database.Item": {
+            "type": "object",
+            "properties": {
+                "ItemId": {
+                    "type": "string"
+                },
+                "SlotIndex": {
+                    "type": "integer"
+                },
+                "StackCount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "database.Items": {
+            "type": "object",
+            "properties": {
+                "CommonContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "DropSlotContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "EssentialContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "FoodEquipContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "PlayerEquipArmorContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
+                },
+                "WeaponLoadOutContainerId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/database.Item"
+                    }
                 }
             }
         },
@@ -1251,6 +1501,9 @@ const docTemplate = `{
                 },
                 "hp": {
                     "type": "integer"
+                },
+                "items": {
+                    "$ref": "#/definitions/database.Items"
                 },
                 "last_online": {
                     "type": "string"

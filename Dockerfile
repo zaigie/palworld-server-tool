@@ -17,6 +17,18 @@ RUN cd /app/web/ && pnpm i
 COPY ./web /app/web
 RUN cd /app/web/ && pnpm build
 
+COPY ./pal-conf/pnpm-lock.yaml /app/pal-conf/pnpm-lock.yaml
+COPY ./pal-conf/package.json /app/pal-conf/package.json
+
+RUN cd /app/pal-conf/ && pnpm i
+
+COPY ./pal-conf /app/pal-conf
+RUN cd /app/pal-conf/ && pnpm build
+
+RUN mv /app/pal-conf/dist/assets/* /app/assets
+RUN mv /app/pal-conf/dist/index.html /app/pal-conf.html
+
+
 # --------- sav_cli -----------
 FROM python:3.11-alpine as savBuilder
 
@@ -44,6 +56,7 @@ ADD . .
 
 COPY --from=frontendBuilder /app/assets /app/assets
 COPY --from=frontendBuilder /app/index.html /app/index.html
+COPY --from=frontendBuilder /app/pal-conf.html /app/pal-conf.html
 
 RUN if [ ! -z "$proxy" ]; then \
     export GOPROXY=https://goproxy.io,direct && \

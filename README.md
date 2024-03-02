@@ -27,6 +27,7 @@
 - [x] 完整玩家数据
 - [x] 玩家帕鲁数据
 - [x] 公会数据
+- [x] 玩家背包物品数据
 
 基于官方提供的 RCON 命令（仅服务器可用的）实现功能：
 
@@ -40,6 +41,7 @@
 
 - [x] 白名单管理
 - [x] 自定义 RCON 命令并执行
+- [x] 存档自动备份与管理
 
 本工具使用 bbolt 单文件存储，将 RCON 和 Level.sav 文件的数据通过定时任务获取并保存，提供简单的可视化界面和 REST 接口和便于管理与开发。
 
@@ -54,15 +56,15 @@
 
 ## 功能截图
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4efe-8274-15df261d50b4
+https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491d-9c1f-1eb82e8060a1
 
 ### 桌面端
 
 |                              |                              |
 | :--------------------------: | :--------------------------: |
-| ![](./docs/img/pst-zh-2.png) | ![](./docs/img/pst-zh-4.png) |
+| ![](./docs/img/pst-zh-2.png) | ![](./docs/img/pst-zh-3.png) |
 
-![](./docs/img/pst-zh-3.png)
+![](./docs/img/pst-zh-4.png)
 
 ### 移动端
 
@@ -71,11 +73,6 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4ef
 </p>
 
 ## 如何开启私服 RCON
-
-> [!CAUTION]
-> 游戏服务器 v0.1.5.0 版本中，PalWorldSettings.ini 中的 RCONPort 和 RCONEnable **不生效**
->
-> 请在 `./PalServer.sh` (Linux) 或 `PalServer.exe` (Windows) 后添加 -RCONPort=25575 来开启
 
 需要开启服务器的 RCON 功能，如果你的私服教程有写更好，没有的话，修改 `PalWorldSettings.ini` 文件
 
@@ -137,7 +134,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ```bash
 # 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
-mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.6.0_linux_x86_64.tar.gz -C pst
 ```
 
 ##### 配置
@@ -151,7 +148,7 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
 
 2. 找到其中的 `config.yaml` 文件并按照说明修改。
 
-   关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli` ，如果不知道绝对路径，在终端执行 `pwd` 即可
+   关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli` ，可以为空，默认会获取当前目录
 
    ```yaml
    # WebUI 设置
@@ -186,10 +183,12 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
    save:
      # 存档文件路径
      path: "/path/to/your/Pal/Saved"
-     # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录
-     decode_path: "/path/to/your/sav_cli"
+     # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录，可以为空
+     decode_path: ""
      # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
      sync_interval: 120
+     # Save Backup Interval Sec 存档定时备份间隔，单位秒
+     backup_interval: 14400
 
    # Automation Config 自动化管理相关
    manage:
@@ -240,17 +239,15 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 ##### 下载解压
 
-解压 `pst_v0.5.7_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
+解压 `pst_v0.6.0_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
 
 ##### 配置
 
 找到解压目录中的 `config.yaml` 文件并按照说明修改。
 
-关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli.exe`
+关于其中的 `decode_path`，一般就是解压后的 pst 目录加上 `sav_cli.exe`，可以为空，默认会获取当前目录
 
 你也可以直接鼠标右键——“属性”，查看路径和文件名，再将它们拼接起来。（存档文件路径和工具路径同理）
-
-![](./docs/img/windows_path.png)
 
 > [!WARNING]
 > 请不要直接将复制的路径粘贴到 `config.yaml` 中，而是需要在所有的 '\\' 前面再加一个 '\\'，像下面展示的一样
@@ -290,10 +287,12 @@ rcon:
 save:
   # 存档文件路径
   path: "C:\\path\\to\\your\\Pal\\Saved"
-  # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录
-  decode_path: "C:\\path\\to\\your\\sav_cli.exe"
+  # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录，可以为空
+  decode_path: ""
   # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
   sync_interval: 120
+  # Save Backup Interval Sec 存档定时备份间隔，单位秒
+  backup_interval: 14400
 
 # Automation Config 自动化管理相关
 manage:
@@ -348,6 +347,7 @@ docker run -d --name pst \
 -p 8080:8080 \
 -m 256M --memory-swap=4G `# 可选参数 设置可用内存为256M 交换分区为4G` \
 -v /path/to/your/Pal/Saved:/game \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
@@ -389,6 +389,7 @@ touch pst.db
 |         SAVE\_\_PATH         |        ""         | 文本 |    游戏存档所在路径 **请务必填写为容器内的路径**     |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文本 |    ⚠️ 容器内置，禁止修改，会导致存档解析工具错误     |
 |    SAVE\_\_SYNC_INTERVAL     |        600        | 数字 |                同步玩家存档数据的间隔                |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       | 数字 |              自动备份玩家存档数据的间隔              |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       | 布尔 |        当检测到玩家不在白名单却在线时自动踢出        |
 
 #### Agent 部署
@@ -409,21 +410,22 @@ touch pst.db
 docker run -d --name pst-agent \
 -p 8081:8081 \
 -v /path/to/your/Pal/Saved:/game \
--e SAV_FILE="/game" \
+-e SAVED_DIR="/game" \
 jokerwho/palworld-server-tool-agent:latest
 ```
 
 需要 -v 到游戏存档文件（Level.sav）所在目录，将其映射到容器内的 /game 目录
 
-|  变量名  | 默认值 | 类型 |                     说明                      |
-| :------: | :----: | :--: | :-------------------------------------------: |
-| SAV_FILE |   ""   | 文本 | 游戏存档所在路径 **请务必填写为容器内的路径** |
+|  变量名   | 默认值 | 类型 |                           说明                           |
+| :-------: | :----: | :--: | :------------------------------------------------------: |
+| SAVED_DIR |   ""   | 文本 | 游戏存档 Saved 目录所在路径 **请务必填写为容器内的路径** |
 
 ##### 再运行 pst 容器
 
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="游戏服务器IP:25575" \
 -e RCON__PASSWORD="your password" \
@@ -461,12 +463,15 @@ touch pst.db
 |         SAVE\_\_PATH         |        ""         | 文本 | pst-agent 所在服务地址，格式为<br> http://{游戏服务器 IP}:{Agent 端口}/sync |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文本 |                ⚠️ 容器内置，禁止修改，会导致存档解析工具错误                |
 |    SAVE\_\_SYNC_INTERVAL     |        600        | 数字 |                           同步玩家存档数据的间隔                            |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       | 数字 |                         自动备份玩家存档数据的间隔                          |
 |                              |                   |      |                                                                             |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       | 布尔 |                   当检测到玩家不在白名单却在线时自动踢出                    |
 
 #### 从 k8s-pod 同步存档
 
 从 v0.5.3 开始，支持无需 agent 同步集群内游戏服务器存档。
+
+> v0.5.8 之后，由于增加了玩家背包数据查看，复制的是整个 Sav 文件的目录，须确保帕鲁服务端容器内具有 tar 工具才能压缩和解压
 
 > 请确保 pst 所使用的 serviceaccount 具有 "pods/exec" 权限！
 
@@ -552,6 +557,7 @@ SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 
 - [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) 提供了存档解析工具实现
 - [palworld-server-toolkit](https://github.com/magicbear/palworld-server-toolkit) 提供了存档高性能解析部份实现
+- [pal-conf](https://github.com/Bluefissure/pal-conf) 提供了配置生成器页面
 - [PalEdit](https://github.com/EternalWraith/PalEdit) 提供了最初的数据化思路及逻辑
 - [gorcon](https://github.com/gorcon/rcon) 提供的 RCON 请求/接收基础能力
 

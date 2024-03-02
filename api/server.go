@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/tool"
 )
 
@@ -21,6 +22,38 @@ type BroadcastRequest struct {
 type ShutdownRequest struct {
 	Seconds int    `json:"seconds"`
 	Message string `json:"message"`
+}
+
+type ServerToolResponse struct {
+	Version string `json:"version"`
+	Latest  string `json:"latest"`
+}
+
+// getServerTool godoc
+//
+//	@Summary		Get PalWorld Server Tool
+//	@Description	Get PalWorld Server Tool
+//	@Tags			Server
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	ServerToolResponse
+//	@Router			/api/server/tool [get]
+func getServerTool(c *gin.Context) {
+	version, exists := c.Get("version")
+	if !exists {
+		version = "Unknown"
+	}
+	latest, err := tool.GetLatestTag()
+	if err != nil {
+		logger.Errorf("%v\n", err)
+	}
+	if latest == "" {
+		latest, err = tool.GetLatestTagFromGitee()
+		if err != nil {
+			logger.Errorf("%v\n", err)
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{"version": version, "latest": latest})
 }
 
 // getServer godoc

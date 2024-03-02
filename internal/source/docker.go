@@ -6,11 +6,14 @@ import (
 	"errors"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
+	"github.com/zaigie/palworld-server-tool/internal/system"
 )
 
 func getDockerClient() (*client.Client, error) {
@@ -22,37 +25,78 @@ func getDockerClient() (*client.Client, error) {
 	}
 }
 
-func getValidFilePath(output, expectedStart string) (string, error) {
-	startIndex := strings.Index(output, expectedStart)
-	if startIndex == -1 {
-		return "", errors.New("expected path not found in the output")
-	}
-	validPath := output[startIndex:]
-	return validPath, nil
-}
-
-func CopyFromContainer(containerID, remotePath string) (string, error) {
-	tmpFile, err := os.CreateTemp("", "docker-file-*")
-	if err != nil {
-		return "", err
-	}
-	defer tmpFile.Close()
-
-	execConfig := types.ExecConfig{
-		Cmd:          []string{"find", remotePath, "-name", "Level.sav"},
-		AttachStdout: true,
-		AttachStderr: true,
-	}
-
+func CopyFromContainer(containerID, remotePath, way string) (string, error) {
+	logger.Infof("copying savDir from %s\n", remotePath)
 	ctx := context.Background()
-	// dockerSocket := "unix:///app/run/docker.sock"
-	// cli, err := client.NewClientWithOpts(client.FromEnv, client.WithHost(dockerSocket))
 	cli, err := getDockerClient()
 	if err != nil {
 		return "", err
 	}
 	defer cli.Close()
 
+	savDir, err := getSavDir(containerID, remotePath, cli, ctx)
+	if err != nil {
+		return "", err
+	}
+	relatedSavHash := filepath.Base(savDir)
+
+	reader, _, err := cli.CopyFromContainer(ctx, containerID, savDir)
+	if err != nil {
+		return "", err
+	}
+	defer reader.Close()
+
+	uuid := uuid.New().String()
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-docker-"+way+"-"+uuid)
+	absPath, err := filepath.Abs(tempDir)
+	if err != nil {
+		return "", err
+	}
+
+	if err = system.CleanAndCreateDir(absPath); err != nil {
+		return "", err
+	}
+
+	tarReader := tar.NewReader(reader)
+	for {
+		header, err := tarReader.Next()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return "", err
+		}
+
+		path := filepath.Join(absPath, header.Name)
+
+		switch header.Typeflag {
+		case tar.TypeDir:
+			if err := os.MkdirAll(path, os.FileMode(header.Mode)); err != nil {
+				return "", err
+			}
+		case tar.TypeReg:
+			file, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, os.FileMode(header.Mode))
+			if err != nil {
+				return "", err
+			}
+			if _, err := io.Copy(file, tarReader); err != nil {
+				file.Close()
+				return "", err
+			}
+			file.Close()
+		}
+	}
+
+	levelFilePath := filepath.Join(absPath, relatedSavHash, "Level.sav")
+	return levelFilePath, nil
+}
+
+func getSavDir(containerID, path string, cli *client.Client, ctx context.Context) (string, error) {
+	execConfig := types.ExecConfig{
+		Cmd:          []string{"find", path, "-name", "Level.sav"},
+		AttachStdout: true,
+		AttachStderr: true,
+	}
 	resp, err := cli.ContainerExecCreate(ctx, containerID, execConfig)
 	if err != nil {
 		return "", err
@@ -69,46 +113,25 @@ func CopyFromContainer(containerID, remotePath string) (string, error) {
 		return "", err
 	}
 
-	foundFilePath, err := getValidFilePath(strings.TrimSpace(string(out)), remotePath)
+	levelFilePath, err := getValidFilePath(strings.TrimSpace(string(out)), path)
 	if err != nil {
 		return "", err
 	}
 
-	logger.Debugf("found file: %s\n", foundFilePath)
-	if foundFilePath == "" {
-		return "", errors.New("file Level.sav not found in container")
+	logger.Debugf("docker find Level.sav file: %s\n", levelFilePath)
+	if !strings.HasSuffix(levelFilePath, "Level.sav") {
+		return "", errors.New("file Level.sav not found")
 	}
+	return filepath.Dir(levelFilePath), nil
+}
 
-	reader, _, err := cli.CopyFromContainer(ctx, containerID, foundFilePath)
-	if err != nil {
-		return "", err
+func getValidFilePath(output, expectedStart string) (string, error) {
+	startIndex := strings.Index(output, expectedStart)
+	if startIndex == -1 {
+		return "", errors.New("expected path not found in the output")
 	}
-	defer reader.Close()
-
-	// reader include tar header
-	tarReader := tar.NewReader(reader)
-
-	for {
-		header, err := tarReader.Next()
-
-		switch {
-		case err == io.EOF:
-			return "", errors.New("file not found in tar archive")
-		case err != nil:
-			return "", err
-		case header == nil:
-			continue
-		}
-
-		if header.Typeflag == tar.TypeReg && header.Name == "Level.sav" {
-			logger.Debugf("got file: %s\n", header.Name)
-			_, err = io.Copy(tmpFile, tarReader)
-			if err != nil {
-				return "", err
-			}
-			return tmpFile.Name(), nil
-		}
-	}
+	validPath := output[startIndex:]
+	return validPath, nil
 }
 
 func ParseDockerAddress(address string) (containerID, filePath string, err error) {

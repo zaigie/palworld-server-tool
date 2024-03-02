@@ -373,7 +373,7 @@ onMounted(async () => {
         <n-tag type="default" size="small">{{
           serverInfo?.name
             ? `${serverInfo.name + " " + serverInfo.version}`
-            : "获取中..."
+            : $t("message.loading")
         }}</n-tag>
       </div>
       <n-space vertical>

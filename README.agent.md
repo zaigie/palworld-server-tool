@@ -14,23 +14,23 @@
 
 ```bash
 # 下载并重命名
-mv pst-agent_v0.5.6_linux_x86_64 pst-agent
+mv pst-agent_v0.6.0_linux_x86_64 pst-agent
 chmod +x pst-agent
 ```
 
 #### 运行
 
 ```bash
-# ./pst-agent --port 8081 -f {Level.sav 存档所在绝对路径}
+# ./pst-agent --port 8081 -d {Level.sav 存档所在绝对路径}
 # 例如：
-./pst-agent --port 8081 -f /home/lighthouse/game/Saved/0/S12ASNDDSAIF813412EERGH1EF134/Level.sav
+./pst-agent --port 8081 -d /home/lighthouse/game/Saved/
 ```
 
 检查正常运行后，让其后台运行（关闭 ssh 窗口后仍运行）
 
 ```bash
 # 后台运行并将日志保存在 agent.log
-nohup ./pst-agent --port 8081 -f ...{手动省略}.../Level.sav > agent.log 2>&1 &
+nohup ./pst-agent --port 8081 -d ...{手动省略}.../Saved > agent.log 2>&1 &
 # 查看日志
 tail -f agent.log
 ```
@@ -63,20 +63,20 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 ### Windows
 
+这里指的是，你的游戏服务器是 Windows 版本的，而你想在其它任何地方部署的 pst 本体依然参考前面的 [安装部署](./README.md#安装部署)，pst-agent 对其的影响只是配置文件的修改。
+
 #### 下载
 
-下载 pst-agent 工具并重命名，如将 `pst-agent_v0.5.6_windows_x86_64.exe` 重命名为 `pst-agent.exe`
+下载 pst-agent 工具并重命名，如将 `pst-agent_v0.6.0_windows_x86_64.exe` 重命名为 `pst-agent.exe`
 
 #### 运行
 
 按下 `Win + R`，输入 `powershell` 打开 Powershell，通过 `cd` 命令到下载的可执行文件目录
 
 ```powershell
-# .\pst-agent.exe --port 访问端口 -f 存档文件 Level.sav 所在位置
-.\pst-agent.exe --port 8081 -f C:\Users\ZaiGie\...\Level.sav
+# .\pst-agent.exe --port 访问端口 -d 存档文件 Level.sav 所在位置
+.\pst-agent.exe --port 8081 -d C:\Users\ZaiGie\...\Pal\Saved
 ```
-
-![](./docs/img/windows_agent.png)
 
 成功运行后请保持窗口打开
 

@@ -50,7 +50,8 @@ type TersePlayer struct {
 
 type Player struct {
 	TersePlayer
-	Pals []*Pal `json:"pals"`
+	Pals  []*Pal `json:"pals"`
+	Items *Items `json:"items"`
 }
 
 type Guild struct {
@@ -75,4 +76,25 @@ type RconCommand struct {
 type RconCommandList struct {
 	UUID string `json:"uuid"`
 	RconCommand
+}
+
+type Items struct {
+	CommonContainerId           []*Item `json:"CommonContainerId"`
+	DropSlotContainerId         []*Item `json:"DropSlotContainerId"`
+	EssentialContainerId        []*Item `json:"EssentialContainerId"`
+	FoodEquipContainerId        []*Item `json:"FoodEquipContainerId"`
+	PlayerEquipArmorContainerId []*Item `json:"PlayerEquipArmorContainerId"`
+	WeaponLoadOutContainerId    []*Item `json:"WeaponLoadOutContainerId"`
+}
+
+type Item struct {
+	SlotIndex  int32  `json:"SlotIndex"`
+	ItemId     string `json:"ItemId"`
+	StackCount int32  `json:"StackCount"`
+}
+
+type Backup struct {
+	BackupId string    `json:"backup_id"`
+	SaveTime time.Time `json:"save_time"`
+	Path     string    `json:"path"`
 }

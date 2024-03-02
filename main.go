@@ -33,6 +33,9 @@ var assets embed.FS
 //go:embed index.html
 var indexHTML embed.FS
 
+//go:embed pal-conf.html
+var palConfHTML embed.FS
+
 func setupFlags() {
 	flag.StringVar(&cfgFile, "config", "", "config file")
 	flag.Parse()
@@ -58,7 +61,12 @@ func main() {
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	gin.SetMode(gin.ReleaseMode)
-	router := api.RegisterRouter()
+	router := gin.New()
+	router.Use(func(c *gin.Context) {
+		c.Set("version", version)
+		c.Next()
+	})
+	api.RegisterRouter(router)
 
 	assetsFS, _ := fs.Sub(assets, "assets")
 	router.StaticFS("/assets", http.FS(assetsFS))
@@ -67,10 +75,15 @@ func main() {
 		file, _ := indexHTML.ReadFile("index.html")
 		c.Writer.Write(file)
 	})
+	router.GET("/pal-conf", func(c *gin.Context) {
+		c.Writer.WriteHeader(http.StatusOK)
+		file, _ := palConfHTML.ReadFile("pal-conf.html")
+		c.Writer.Write(file)
+	})
 
 	localIp, err := system.GetLocalIP()
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("%v\n", err)
 	}
 	logger.Info("Starting PalWorld Server Tool...\n")
 	logger.Infof("Version: %s\n", version)

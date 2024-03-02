@@ -16,7 +16,7 @@
 <img alt="Vue" src="https://img.shields.io/badge/Vue%20js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D">
 </p>
 
-![PC](./docs/img/pst-en-1.png)
+![PC](./docs/img/pst-ja-1.png)
 
 > 現在、モバイル端末にも良好に対応しており、下記の [機能スクリーンショット](#機能スクリーンショット) をご覧ください。
 >
@@ -27,6 +27,7 @@
 - [x] 完全なプレイヤーデータ
 - [x] プレイヤーのパルデータ
 - [x] ギルドデータ
+- [x] プレイヤーが荷物のデータをリュックします
 
 公式から提供された RCON コマンド（サーバーでのみ利用可能）に基づく機能：
 
@@ -40,6 +41,7 @@
 
 - [x] ホワイトリスト管理
 - [x] カスタム RCON コマンドの実行
+- [x] アーカイブ自動バックアップと管理です
 
 このツールは bbolt シングルファイルストレージを使用し、RCON と Level.sav ファイルのデータを定期的に取得して保存し、簡単な可視化インターフェースと REST インターフェースを提供し、管理と開発を容易にします。
 
@@ -47,28 +49,23 @@
 
 ## 機能スクリーンショット
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/7a861091-94ee-4efe-8274-15df261d50b4
+https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491d-9c1f-1eb82e8060a1
 
 ### デスクトップ
 
 |                              |                              |
 | :--------------------------: | :--------------------------: |
-| ![](./docs/img/pst-en-2.png) | ![](./docs/img/pst-en-4.png) |
+| ![](./docs/img/pst-ja-2.png) | ![](./docs/img/pst-ja-3.png) |
 
-![](./docs/img/pst-en-3.png)
+![](./docs/img/pst-ja-4.png)
 
 ### モバイル
 
 <p align="center">
-<img src="./docs/img/pst-en-m-1.png" width="30%" /><img src="./docs/img/pst-en-m-2.png" width="30%" /><img src="./docs/img/pst-en-m-3.png" width="30%" />
+<img src="./docs/img/pst-ja-m-1.png" width="30%" /><img src="./docs/img/pst-ja-m-2.png" width="30%" /><img src="./docs/img/pst-ja-m-3.png" width="30%" />
 </p>
 
 ## プライベートサーバー RCON の有効化方法
-
-> [!CAUTION]
-> ゲームサーバーのバージョン v0.1.5.0 では、`PalWorldSettings.ini`内の`RCONPort`と`RCONEnable`が**有効になりません**
->
-> 有効にするには、`./PalServer.sh` (Linux) または `PalServer.exe` (Windows) の後に `-RCONPort=25575` を追加してください
 
 サーバーの RCON 機能を有効にする必要があります。プライベートサーバーのチュートリアルに記載されている場合はそれに従ってください。記載がない場合は、`PalWorldSettings.ini`ファイルを編集してください。
 
@@ -117,7 +114,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ```bash
 # pst_{version}_{platform}_{arch}.tar.gz ファイルをダウンロードしてpstディレクトリに解凍します
-mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.6.0_linux_x86_64.tar.gz -C pst
 ```
 
 ##### 設定
@@ -131,7 +128,7 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
 
 2. `config.yaml`ファイルを見つけて、指示に従って変更します。
 
-   `decode_path`については、通常は pst ディレクトリに`sav_cli`を追加するだけです。絶対パスがわからない場合は、ターミナルで`pwd`を実行してください
+   `decode_path`については、通常は pst ディレクトリに`sav_cli`を追加するだけです。空にすることができ、デフォルトで現在のディレクトリを取得します。
 
    ```yaml
    # WebUI設定
@@ -164,10 +161,12 @@ mkdir -p pst && tar -xzf pst_v0.5.7_linux_x86_64.tar.gz -C pst
    save:
      # 存档ファイルパス
      path: "/path/to/your/Pal/Saved"
-     # Sav_cli Path 存档解析ツールのパス、通常はpstと同一ディレクトリ
-     decode_path: "/path/to/your/sav_cli"
+     # Sav_cli Path 存档解析ツールのパス、通常はpstと同一ディレクトリ、空にすることができます
+     decode_path: ""
      # Sav Decode Interval Sec 存档からデータを取得する間隔、秒単位、>= 120を推奨
      sync_interval: 120
+     # Sav Backup Interval Sec アーカイブ自動バックアップ間隔です、秒単位
+     backup_interval: 14400
 
    # Automation Config 自動化管理関連
    manage:
@@ -218,17 +217,15 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 ##### ダウンロードと解凍
 
-`pst_v0.5.7_windows_x86_64.zip`を任意のディレクトリに解凍します（`pst`というディレクトリ名を推奨）。
+`pst_v0.6.0_windows_x86_64.zip`を任意のディレクトリに解凍します（`pst`というディレクトリ名を推奨）。
 
 ##### 設定
 
 解凍ディレクトリ内の`config.yaml`ファイルを見つけ、指示に従って変更します。
 
-`decode_path`に関しては、解凍後の pst ディレクトリに`sav_cli.exe`を追加するだけです。
+`decode_path`に関しては、解凍後の pst ディレクトリに`sav_cli.exe`を追加するだけです。空にすることができ、デフォルトで現在のディレクトリを取得します。
 
 マウスの右クリックから「プロパティ」を選択し、パスとファイル名を確認してから、それらを結合してください。（存档ファイルのパスとツールのパスも同様）
-
-![](./docs/img/windows_path.png)
 
 > [!WARNING]
 > コピーしたパスを`config.yaml`に直接貼り付けるのではなく、すべての'\\'の前にもう一つ'\\'を追加する必要があります。以下に示すように
@@ -270,6 +267,8 @@ save:
   decode_path: "C:\\path\\to\\your\\sav_cli.exe"
   # Sav Decode Interval Sec 存档からデータを取得する間隔、秒単位、>= 120を推奨
   sync_interval: 120
+  # Sav Backup Interval Sec アーカイブ自動バックアップ間隔です、秒単位
+  backup_interval: 14400
 
 # Automation Config 自動化管理関連
 manage:
@@ -326,6 +325,7 @@ docker run -d --name pst \
 -p 8080:8080 \
 -m 256M --memory-swap=4G `# オプション メモリを256Mに設定し、スワップ領域を4Gに設定` \
 -v /path/to/your/Pal/Saved:/game \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
@@ -369,6 +369,7 @@ touch pst.db
 |         SAVE\_\_PATH         |        ""         | 文字列 |       ゲームの存档ファイルのパス **コンテナ内のパスとして必ず記入してください**        |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文字列 |              ⚠️ コンテナ内蔵、変更禁止、存档解析ツールのエラーになります               |
 |    SAVE\_\_SYNC_INTERVAL     |        600        |  数値  |                          プレイヤーの存档データを同期する間隔                          |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       |  数値  |                           アーカイブ自動バックアップ間隔です                           |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       | ブール |            プレイヤーがホワイトリストにない場合に自動的にキックするかどうか            |
 
 #### Agent デプロイメント
@@ -389,21 +390,22 @@ touch pst.db
 docker run -d --name pst-agent \
 -p 8081:8081 \
 -v /path/to/your/Pal/Saved:/game \
--e SAV_FILE="/game" \
+-e SAVED_DIR="/game" \
 jokerwho/palworld-server-tool-agent:latest
 ```
 
 ゲームの存档ファイル（Level.sav）があるディレクトリを-v オプションでコンテナ内の/game ディレクトリにマッピングする必要があります。
 
-|  変数名  | デフォルト値 | タイプ |                                   説明                                    |
-| :------: | :----------: | :----: | :-----------------------------------------------------------------------: |
-| SAV_FILE |      ""      | 文字列 | ゲームの存档ファイルのパス **コンテナ内のパスとして必ず記入してください** |
+|  変数名   | デフォルト値 | タイプ |                                   説明                                    |
+| :-------: | :----------: | :----: | :-----------------------------------------------------------------------: |
+| SAVED_DIR |      ""      | 文字列 | ゲームの存档ファイルのパス **コンテナ内のパスとして必ず記入してください** |
 
 ##### 次に pst コンテナを実行する
 
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
+-v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="ゲームサーバーIP:25575" \
 -e RCON__PASSWORD="your password" \
@@ -441,12 +443,15 @@ touch pst.db
 |         SAVE\_\_PATH         |        ""         | 文字列 | pst-agent があるサービスのアドレス、形式は<br> http://{ゲームサーバー IP}:{Agent ポート}/sync |
 |     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文字列 |                  ⚠️ コンテナ内蔵、変更禁止、存档解析ツールのエラーになります                  |
 |    SAVE\_\_SYNC_INTERVAL     |        600        |  数値  |                             プレイヤーの存档データを同期する間隔                              |
+|   SAVE\_\_BACKUP_INTERVAL    |       14400       |  数値  |                              アーカイブ自動バックアップ間隔です                               |
 |                              |                   |        |                                                                                               |
 | MANAGE\_\_KICK_NON_WHITELIST |       false       | ブール |               プレイヤーがホワイトリストにない場合に自動的にキックするかどうか                |
 
 #### k8s-pod からの存档同期
 
 v0.5.3 から、agent なしでクラスタ内のゲームサーバーの存档を同期することがサポートされています。
+
+> v0.5.8 の後で、プレーヤーのバックパックのデータを増加して見るため、復制するのは全体 Sav ファイルのディレクトリで、パルのサービスの端の容器の中に tar 工具があることを確保しなければ圧縮して伸張します
 
 > pst が使用する serviceaccount には"pods/exec"権限が必要
 
@@ -534,8 +539,8 @@ SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 
 - [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) は存档解析ツールの実装を提供しました
 - [palworld-server-toolkit](https://github.com/magicbear/palworld-server-toolkit) は存档の高性能解析の一部を提供しました
+- [pal-conf](https://github.com/Bluefissure/pal-conf) 構成生成器ページを提供します
 - [PalEdit](https://github.com/EternalWraith/PalEdit) は最初のデータ化思考とロジックを提供しました
-
 - [gorcon](https://github.com/gorcon/rcon) は RCON リクエスト/レシーブの基本能力を提供しました
 
 ## ライセンス

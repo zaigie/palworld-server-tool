@@ -1,13 +1,13 @@
 import os
 import json
+import shutil
 import time
-import requests
 import argparse
 from urllib.parse import urljoin
+import requests
 
 from structurer import convert_sav, structure_player, structure_guild
 from logger import log
-
 
 if __name__ == "__main__":
     start = time.time()
@@ -28,10 +28,14 @@ if __name__ == "__main__":
         if not args.output.endswith(".json"):
             output = args.output + ".json"
 
-    converted = convert_sav(args.file)
+    convert_sav(args.file)
     filetime = os.stat(args.file).st_mtime
-    players = structure_player(converted)
-    guilds = structure_guild(converted, filetime)
+
+    # 同路径下的Players文件夹
+    dir_path = os.path.join(os.path.dirname(args.file), "Players")
+
+    players = structure_player(dir_path)
+    guilds = structure_guild(filetime)
 
     # Add last_online to players
     for player in players:
@@ -75,7 +79,11 @@ if __name__ == "__main__":
     try:
         if args.clear:
             os.remove(args.file)
+
+            if os.path.exists(dir_path):
+                # 删除Players文件夹
+                shutil.rmtree(dir_path)
     except FileNotFoundError:
         pass
 
-    log(f"Done in {round(time.time() - start,3)}s")
+    log(f"Done in {round(time.time() - start, 3)}s")

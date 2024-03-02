@@ -6,6 +6,9 @@ class ApiService extends Service {
     return this.fetch(`/api/login`).post(data).json();
   }
 
+  async getServerToolInfo() {
+    return this.fetch(`/api/server/tool`).get().json();
+  }
   async getServerInfo() {
     return this.fetch(`/api/server`).get().json();
   }
@@ -83,6 +86,19 @@ class ApiService extends Service {
 
   async removeRconCommand(uuid) {
     return this.fetch(`/api/rcon/${uuid}`).delete().json();
+  }
+
+  async getBackupList(param) {
+    const query = this.generateQuery(param);
+    return this.fetch(`/api/backup?${query}`).get().json();
+  }
+
+  async removeBackup(uuid) {
+    return this.fetch(`/api/backup/${uuid}`).delete().json();
+  }
+
+  async downloadBackup(uuid) {
+    return this.fetch(`/api/backup/${uuid}`).get().blob();
   }
 }
 

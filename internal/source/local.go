@@ -2,79 +2,53 @@ package source
 
 import (
 	"errors"
-	"io"
 	"os"
 	"path/filepath"
 
+	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
+	"github.com/zaigie/palworld-server-tool/internal/system"
 )
 
-func CopyFromLocal(srcFileName string) (string, error) {
-	var levelFile string = srcFileName
+func CopyFromLocal(src, way string) (string, error) {
+	var savDir string
 	var err error
+	var isDir bool
 
-	dir, err := isDir(srcFileName)
+	isDir, err = system.CheckIsDir(src)
 	if err != nil {
-		logger.Errorf("error checking if %s is a directory: %v\n", srcFileName, err)
+		logger.Errorf("error checking if %s is a directory: %v\n", src, err)
 	}
 
-	if dir {
-		levelFile, err = findLevelFile(srcFileName)
+	if isDir {
+		savDir, err = system.GetSavDir(src)
 		if err != nil {
 			return "", errors.New("error finding Level.sav: \n" + err.Error())
 		}
+	} else {
+		if filepath.Base(src) == "Level.sav" {
+			savDir = filepath.Dir(src)
+		} else {
+			return "", errors.New("specified file is not Level.sav and source is not a directory")
+		}
 	}
 
-	srcFile, err := os.Open(levelFile)
-	if err != nil {
-		return "", errors.New("error opening Level.sav: \n" + err.Error())
-	}
-	defer srcFile.Close()
-
-	tempDir := os.TempDir()
-
-	dstFileName := filepath.Join(tempDir, filepath.Base(levelFile))
-	dstFile, err := os.Create(dstFileName)
-	if err != nil {
-		return "", err
-	}
-	defer dstFile.Close()
-
-	_, err = io.Copy(dstFile, srcFile)
+	uuid := uuid.New().String()
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-"+way+"-"+uuid)
+	absPath, err := filepath.Abs(tempDir)
 	if err != nil {
 		return "", err
 	}
 
-	return dstFileName, nil
-}
+	if err = system.CleanAndCreateDir(absPath); err != nil {
+		return "", err
+	}
 
-func isDir(path string) (bool, error) {
-	fileInfo, err := os.Stat(path)
+	err = system.CopyDir(savDir, absPath)
 	if err != nil {
-		return false, err
-	}
-	return fileInfo.IsDir(), nil
-}
-
-func findLevelFile(savePath string) (string, error) {
-	var foundPath string
-	err := filepath.Walk(savePath, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.Name() == "Level.sav" {
-			foundPath = path
-			return errors.New("file found")
-		}
-		return nil
-	})
-
-	if foundPath == "" {
-		if err != nil && !errors.Is(err, errors.New("file found")) {
-			return "", err
-		}
-		return "", errors.New("file Level.sav not found")
+		return "", err
 	}
 
-	return foundPath, nil
+	levelFilePath := filepath.Join(absPath, "Level.sav")
+	return levelFilePath, nil
 }

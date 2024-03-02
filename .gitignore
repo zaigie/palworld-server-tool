@@ -21,19 +21,25 @@
 go.work
 
 *.db
+*.txt
 
 /config.yaml
+/cmd/test
 
 .DS_Store
 
 dist
 
 /assets
+/*-assets
 /favicon.ico
 /index.html
+/pal-conf.html
 
 *.sav
 *.sav.json
 structure.json
 
 .pnpm-store
+
+backups/

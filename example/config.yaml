@@ -1,0 +1,19 @@
+web:
+  password: ""
+  port: 8080
+  tls: false
+  cert_path: ""
+  key_path: ""
+  public_url: ""
+rcon:
+  address: "127.0.0.1:25575"
+  password: ""
+  timeout: 5
+  sync_interval: 60
+save:
+  path: "/path/to/your/Pal/Saved"
+  decode_path: ""
+  sync_interval: 120
+  backup_interval: 14400
+manage:
+  kick_non_whitelist: false
