@@ -398,24 +398,34 @@ const mergedItems = ref({});
 const mergeItems = () => {
   mergedItems.value = {};
 
-  if(!playerInfo.value.items) return;
+  if (!playerInfo.value.items) return;
   for (const [containerId, items] of Object.entries(playerInfo.value.items)) {
-    mergedItems.value[containerId] = items
-        .filter(item => item.ItemId !== "none")
-        .map(item => {
-          const frontendItem = palItems[locale.value].find(frontItem => frontItem.id === item.ItemId);
-          if (frontendItem) {
-            return {
-              ...item,
-              id: frontendItem.id,
-              name: frontendItem.name,
-              iconPath: frontendItem.iconPath,
-              description: frontendItem.description
-            };
-          }
-        });
+    mergedItems.value[containerId] = items.map((item) => {
+      const frontendItem = palItems[locale.value].find(
+        (frontItem) => frontItem.id === item.ItemId
+      );
+      if (frontendItem) {
+        return {
+          ...item,
+          id: frontendItem.id,
+          name: frontendItem.name,
+          iconPath: frontendItem.iconPath,
+          description: frontendItem.description,
+        };
+      } else {
+        const jaFrontendItem = palItems["ja"].find(
+          (frontItem) => frontItem.id === item.ItemId
+        );
+        return {
+          ...item,
+          id: item.ItemId,
+          name: item.ItemId,
+          iconPath: jaFrontendItem?.iconPath || "",
+          description: jaFrontendItem?.description || "",
+        };
+      }
+    });
   }
-
 };
 
 const createPlayerItemsColumns = () => {
@@ -446,7 +456,7 @@ const createPlayerItemsColumns = () => {
       width: 170,
       defaultSortOrder: "descend",
       sorter: "default",
-    }
+    },
   ];
 };
 </script>
@@ -588,14 +598,14 @@ const createPlayerItemsColumns = () => {
       </n-space>
       <div class="mt-2">
         <n-tabs type="line" size="large" animated>
-          <n-tab-pane :name="$t('item.palList')" >
+          <n-tab-pane :name="$t('item.palList')">
             <div class="w-full mt-5">
               <n-input-group class="w-full flex justify-end">
                 <n-input
-                    v-model:value="searchValue"
-                    clearable
-                    :placeholder="$t('input.searchPlaceholder')"
-                    :on-clear="clearSearch"
+                  v-model:value="searchValue"
+                  clearable
+                  :placeholder="$t('input.searchPlaceholder')"
+                  :on-clear="clearSearch"
                 />
                 <n-button type="primary" class="w-20" @click="clickSearch">
                   {{ $t("button.search") }}
@@ -603,55 +613,55 @@ const createPlayerItemsColumns = () => {
               </n-input-group>
             </div>
             <n-data-table
-                class="mt-2"
-                size="small"
-                :columns="createPlayerPalsColumns()"
-                :row-props="dataRowProps"
-                :data="currentPalsList"
-                :bordered="false"
-                striped
-                :pagination="paginationReactive"
+              class="mt-2"
+              size="small"
+              :columns="createPlayerPalsColumns()"
+              :row-props="dataRowProps"
+              :data="currentPalsList"
+              :bordered="false"
+              striped
+              :pagination="paginationReactive"
             />
           </n-tab-pane>
           <n-tab-pane :name="$t('item.itemList')">
             <n-tabs type="segment" animated>
-              <n-tab-pane :name="$t('item.commonContainer')" >
+              <n-tab-pane :name="$t('item.commonContainer')">
                 <n-data-table
-                    size="small"
-                    :columns="createPlayerItemsColumns()"
-                    :data="mergedItems['CommonContainerId']"
-                    :bordered="false"
-                    striped
-                    :pagination="paginationReactive"
+                  size="small"
+                  :columns="createPlayerItemsColumns()"
+                  :data="mergedItems['CommonContainerId']"
+                  :bordered="false"
+                  striped
+                  :pagination="paginationReactive"
                 />
               </n-tab-pane>
               <n-tab-pane :name="$t('item.essentialContainer')">
                 <n-data-table
-                    size="small"
-                    :columns="createPlayerItemsColumns()"
-                    :data="mergedItems['EssentialContainerId']"
-                    :bordered="false"
-                    striped
-                    :pagination="paginationReactive"
+                  size="small"
+                  :columns="createPlayerItemsColumns()"
+                  :data="mergedItems['EssentialContainerId']"
+                  :bordered="false"
+                  striped
+                  :pagination="paginationReactive"
                 />
               </n-tab-pane>
               <n-tab-pane :name="$t('item.weaponContainer')">
                 <n-data-table
-                    size="small"
-                    :columns="createPlayerItemsColumns()"
-                    :data="mergedItems['WeaponLoadOutContainerId']"
-                    :bordered="false"
-                    striped
+                  size="small"
+                  :columns="createPlayerItemsColumns()"
+                  :data="mergedItems['WeaponLoadOutContainerId']"
+                  :bordered="false"
+                  striped
                 />
               </n-tab-pane>
               <n-tab-pane :name="$t('item.armorContainer')">
                 <n-data-table
-                    class="mt-1"
-                    size="small"
-                    :columns="createPlayerItemsColumns()"
-                    :data="mergedItems['PlayerEquipArmorContainerId']"
-                    :bordered="false"
-                    striped
+                  class="mt-1"
+                  size="small"
+                  :columns="createPlayerItemsColumns()"
+                  :data="mergedItems['PlayerEquipArmorContainerId']"
+                  :bordered="false"
+                  striped
                 />
               </n-tab-pane>
             </n-tabs>
