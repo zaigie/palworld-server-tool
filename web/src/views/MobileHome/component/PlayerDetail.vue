@@ -114,10 +114,20 @@ const percentageHP = (hp, max_hp) => {
   return ((hp / max_hp) * 100).toFixed(2);
 };
 const getPalAvatar = (name) => {
-  return new URL(`../../../assets/pal/${name}.png`, import.meta.url).href;
+  const lowerName = name.toLowerCase();
+  return new URL(`../../../assets/pal/${lowerName}.png`, import.meta.url).href;
 };
-const getUnknowPalAvatar = () => {
-  return new URL("@/assets/pal/Unknown.png", import.meta.url).href;
+const getPalName = (name) => {
+  const lowerName = name.toLowerCase();
+  return palMap[locale.value][lowerName]
+    ? palMap[locale.value][lowerName]
+    : name;
+};
+const getUnknowPalAvatar = (is_boss = false) => {
+  if (is_boss) {
+    return new URL("@/assets/pal/boss_unknown.png", import.meta.url).href;
+  }
+  return new URL("@/assets/pal/unknown.png", import.meta.url).href;
 };
 </script>
 
@@ -296,7 +306,7 @@ const getUnknowPalAvatar = () => {
                 class="bg-#c5c5c5 rounded-md"
                 :size="32"
                 :src="getPalAvatar(pal.type)"
-                :fallback-src="getUnknowPalAvatar()"
+                :fallback-src="getUnknowPalAvatar(pal.is_boss)"
               ></n-avatar>
               <div class="flex-1 flex items-center justify-between ml-3">
                 <n-tag
@@ -305,7 +315,7 @@ const getUnknowPalAvatar = () => {
                   >{{ pal.gender == "Male" ? "♂" : "♀" }}</n-tag
                 >
                 <span class="px-3 flex-1 line-clamp-1">{{
-                  palMap[locale][pal.type] ? palMap[locale][pal.type] : pal.type
+                  getPalName(pal.type)
                 }}</span>
                 <span>{{ "Lv." + pal.level }}</span>
               </div>
@@ -356,11 +366,7 @@ const getUnknowPalAvatar = () => {
       </n-tag>
     </template>
     <template #header>
-      {{
-        palMap[locale][palDetail.type]
-          ? palMap[locale][palDetail.type]
-          : palDetail.type
-      }}
+      {{ getPalName(palDetail.type) }}
     </template>
     <pal-detail :palDetail="palDetail"></pal-detail>
   </n-modal>

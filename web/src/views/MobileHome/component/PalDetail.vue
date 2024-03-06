@@ -9,10 +9,14 @@ const props = defineProps(["palDetail"]);
 const palDetail = computed(() => props.palDetail);
 
 const getPalAvatar = (name) => {
-  return new URL(`../../../assets/pal/${name}.png`, import.meta.url).href;
+  const lowerName = name.toLowerCase();
+  return new URL(`../../../assets/pal/${lowerName}.png`, import.meta.url).href;
 };
-const getUnknowPalAvatar = () => {
-  return new URL("@/assets/pal/Unknown.png", import.meta.url).href;
+const getUnknowPalAvatar = (is_boss = false) => {
+  if (is_boss) {
+    return new URL("@/assets/pal/boss_unknown.png", import.meta.url).href;
+  }
+  return new URL("@/assets/pal/unknown.png", import.meta.url).href;
 };
 
 const displayHP = (hp, max_hp) => {
@@ -33,7 +37,7 @@ const percentageHP = (hp, max_hp) => {
       <n-avatar
         :size="64"
         :src="getPalAvatar(palDetail.type)"
-        :fallback-src="getUnknowPalAvatar()"
+        :fallback-src="getUnknowPalAvatar(palDetail.is_boss)"
       ></n-avatar>
     </n-space>
     <n-space class="mb-2" justify="center">

@@ -30,7 +30,8 @@ go.work
 
 dist
 
-/assets
+/assets/
+!web/src/assets/
 /*-assets
 /favicon.ico
 /index.html

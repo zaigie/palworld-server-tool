@@ -121,6 +121,13 @@ const getChooseGuild = (uid) => {
   getGuildInfo(uid);
 };
 
+const getPalName = (name) => {
+  const lowerName = name.toLowerCase();
+  return palMap[locale.value][lowerName]
+    ? palMap[locale.value][lowerName]
+    : name;
+};
+
 // 游戏用户的帕鲁列表分页，搜索
 const clickSearch = (searchValue) => {
   const pattern = /^\s*$|(\s)\1/;
@@ -133,11 +140,7 @@ const clickSearch = (searchValue) => {
               ? skillMap[locale.value][skill].name
               : skill
           ).includes(searchValue);
-        }) ||
-        (palMap[locale.value][item.type]
-          ? palMap[locale.value][item.type]
-          : item.type
-        ).includes(searchValue)
+        }) || getPalName(item.type).includes(searchValue)
       );
     });
   } else {

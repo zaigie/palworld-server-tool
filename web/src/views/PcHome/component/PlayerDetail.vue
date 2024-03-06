@@ -77,10 +77,7 @@ const createPlayerPalsColumns = () => {
               },
             },
             {
-              default: () =>
-                palMap[locale.value][row.type]
-                  ? palMap[locale.value][row.type]
-                  : row.type,
+              default: () => getPalName(row.type),
             }
           ),
         ];
@@ -189,11 +186,7 @@ const clickSearch = () => {
               ? skillMap[locale.value][skill].name
               : skill
           ).includes(searchValue.value);
-        }) ||
-        (palMap[locale.value][item.type]
-          ? palMap[locale.value][item.type]
-          : item.type
-        ).includes(searchValue.value)
+        }) || getPalName(item.type).includes(searchValue.value)
       );
     });
   } else {
@@ -368,16 +361,23 @@ const getSkillTypeList = () => {
   }
 };
 const getPalAvatar = (name) => {
-  return new URL(`../../../assets/pal/${name}.png`, import.meta.url).href;
+  const lowerName = name.toLowerCase();
+  return new URL(`../../../assets/pal/${lowerName}.png`, import.meta.url).href;
+};
+const getPalName = (name) => {
+  const lowerName = name.toLowerCase();
+  return palMap[locale.value][lowerName]
+    ? palMap[locale.value][lowerName]
+    : name;
 };
 const getItemIcon = (id) => {
   return new URL(`../../../assets/items/${id}.webp`, import.meta.url).href;
 };
 const getUnknowPalAvatar = (is_boss = false) => {
   if (is_boss) {
-    return new URL("@/assets/pal/BOSS_Unknown.png", import.meta.url).href;
+    return new URL("@/assets/pal/boss_unknown.png", import.meta.url).href;
   }
-  return new URL("@/assets/pal/Unknown.png", import.meta.url).href;
+  return new URL("@/assets/pal/unknown.png", import.meta.url).href;
 };
 const isPlayerOnline = (last_online) => {
   return dayjs() - dayjs(last_online) < 120000;
