@@ -152,6 +152,8 @@ mkdir -p pst && tar -xzf pst_v0.6.0_linux_x86_64.tar.gz -C pst
      address: "127.0.0.1:25575"
      # サーバー側で設定されたRCON AdminPassword
      password: ""
+     # サーバーがPalGuard機能プラグインのBase64 RCON機能を有効にしているかどうか（自分でインストールする必要があります）
+     is_palguard: false
      # RCON通信のタイムアウト時間、<= 5を推奨
      timeout: 5
      # RCONサービスからプレイヤーのオンライン状況を取得する間隔、秒単位
@@ -254,6 +256,8 @@ rcon:
   address: "127.0.0.1:25575"
   # サーバー側で設定されたRCON AdminPassword
   password: ""
+  # サーバーがPalGuard機能プラグインのBase64 RCON機能を有効にしているかどうか（自分でインストールする必要があります）
+  is_palguard: false
   # RCON通信のタイムアウト時間、<= 5を推奨
   timeout: 5
   # RCONサービスからプレイヤーのオンライン状況を取得する間隔、秒単位

@@ -172,6 +172,8 @@ mkdir -p pst && tar -xzf pst_v0.6.0_linux_x86_64.tar.gz -C pst
      address: "127.0.0.1:25575"
      # 服务 端设置的 RCON AdminPassword
      password: ""
+     # 服务器是否已开启 PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
+     is_palguard: false
      # RCON 通信超时时间，推荐 <= 5
      timeout: 5
      # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
@@ -274,6 +276,8 @@ rcon:
   address: "127.0.0.1:25575"
   # 服务 端设置的 RCON AdminPassword
   password: ""
+  # 服务器是否已使用 PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
+  is_palguard: false
   # RCON 通信超时时间，推荐 <= 5
   timeout: 5
   # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒

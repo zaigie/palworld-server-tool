@@ -42,5 +42,6 @@ dist
 structure.json
 
 .pnpm-store
+.vscode
 
 backups/

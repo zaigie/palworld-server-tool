@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"regexp"
@@ -16,6 +17,8 @@ import (
 )
 
 func executeCommand(command string) (*executor.Executor, string, error) {
+	useBase64 := viper.GetBool("rcon.is_palguard")
+
 	exec, err := executor.NewExecutor(
 		viper.GetString("rcon.address"),
 		viper.GetString("rcon.password"),
@@ -24,8 +27,26 @@ func executeCommand(command string) (*executor.Executor, string, error) {
 		return nil, "", err
 	}
 
+	if useBase64 {
+		command = base64.StdEncoding.EncodeToString([]byte(command))
+	}
+
 	response, err := exec.Execute(command)
-	return exec, response, err
+	if err != nil {
+		return nil, "", err
+	}
+
+	if useBase64 {
+		decoded, err := base64.StdEncoding.DecodeString(response)
+		if err != nil {
+			logger.Warnf("decode base64 error:", err)
+			// 返回未解码的响应
+			return exec, response, nil
+		}
+		response = string(decoded)
+	}
+
+	return exec, response, nil
 }
 
 func CustomCommand(command string) (string, error) {
@@ -170,14 +191,27 @@ func BanPlayer(steamID string) error {
 }
 
 func Broadcast(message string) error {
-	message = strings.ReplaceAll(message, " ", "_")
-	exec, response, err := executeCommand("Broadcast " + message)
+	isPalguard := viper.GetBool("rcon.is_palguard")
+	broadcastCmd := "pgbroadcast "
+	if !isPalguard {
+		message = strings.ReplaceAll(message, " ", "_")
+		broadcastCmd = "Broadcast "
+	}
+	fullCommand := broadcastCmd + message
+
+	// 创建一个正则表达式对象 Broadacasted! or :Broadcasted: message
+	re, err := regexp.Compile("Broadcasted.*")
+	if err != nil {
+		return err
+	}
+
+	exec, response, err := executeCommand(fullCommand)
 	if err != nil {
 		return err
 	}
 	defer exec.Close()
 
-	if response != fmt.Sprintf("Broadcasted: %s", message) {
+	if !re.MatchString(response) {
 		return errors.New(response)
 	}
 	return nil

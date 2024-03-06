@@ -152,6 +152,8 @@ mkdir -p pst && tar -xzf pst_v0.6.0_linux_x86_64.tar.gz -C pst
      address: "127.0.0.1:25575"
      # Server AdminPassword
      password: ""
+     # Use PalGuard base64 RCON pgbroadcast instad of broadcast
+     is_palguard: false
      # RCON Timeout Sec
      timeout: 5
      # RCON Communication Interval Sec
@@ -254,6 +256,8 @@ rcon:
   address: "127.0.0.1:25575"
   # Server AdminPassword
   password: ""
+  # Use PalGuard  base64 RCON pgbroadcast instad of broadcast
+  is_palguard: false
   # RCON Timeout Sec
   timeout: 5
   # RCON Communication Interval Sec

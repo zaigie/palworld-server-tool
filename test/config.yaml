@@ -1,0 +1,41 @@
+# WebUI Config相关配置
+web:
+  # WebUI Admin Password 管理模式密码
+  password: ""
+  # WebUI Port 服务端口
+  port: 8080
+  # Enable TLS 是否开启 TLS HTTPS
+  tls: false
+  # TLS Cert 如果开启使用 HTTPS 请输入证书文件路径
+  cert_path: ""
+  # TLS Key 如果开启使用 HTTPS 请输入证书密钥文件路径
+  key_path: ""
+  # TLS url for sav_cli to communicate 如果开启填入 TLS 证书绑定的地址如 https://yourdomain.com
+  public_url: ""
+
+# RCON Config 相关配置
+rcon:
+  # RCON Address Port 地址
+  address: "127.0.0.1:25575"
+  # 服务器设置的 Server AdminPassword
+  password: ""
+  # 请求 RCON Timeout 超时时间，推荐 <= 5
+  timeout: 5
+  # 服务器是否已使用 PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
+  is_palguard: false
+  # 定时向 RCON Interval 服务获取玩家在线情况的间隔，单位秒
+  sync_interval: 60
+
+# sav_cli Config 存档文件解析相关配置
+save:
+  # Sav File Path 存档文件路径
+  path: "/path/to/your/Pal/Saved"
+  # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录
+  decode_path: "/path/to/your/sav_cli"
+  # Sav Decode Interval 定时从存档获取数据的间隔，单位秒，推荐 >= 120
+  sync_interval: 120
+
+# Automation Config 自动化管理相关
+manage:
+  # Auto Kick non-whitelisted 玩家不在白名单是否自动踢出
+  kick_non_whitelist: false
