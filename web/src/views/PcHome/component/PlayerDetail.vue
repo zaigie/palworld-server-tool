@@ -362,7 +362,7 @@ const getSkillTypeList = () => {
 };
 const getPalAvatar = (name) => {
   const lowerName = name.toLowerCase();
-  return new URL(`../../../assets/pal/${lowerName}.png`, import.meta.url).href;
+  return new URL(`../../../assets/pals/${lowerName}.png`, import.meta.url).href;
 };
 const getPalName = (name) => {
   const lowerName = name.toLowerCase();
@@ -375,9 +375,9 @@ const getItemIcon = (id) => {
 };
 const getUnknowPalAvatar = (is_boss = false) => {
   if (is_boss) {
-    return new URL("@/assets/pal/boss_unknown.png", import.meta.url).href;
+    return new URL("@/assets/pals/boss_unknown.png", import.meta.url).href;
   }
-  return new URL("@/assets/pal/unknown.png", import.meta.url).href;
+  return new URL("@/assets/pals/unknown.png", import.meta.url).href;
 };
 const isPlayerOnline = (last_online) => {
   return dayjs() - dayjs(last_online) < 120000;
@@ -750,11 +750,7 @@ const createPlayerItemsColumns = () => {
       </div>
     </template>
     <template #header>
-      {{
-        palMap[locale][palDetail.type]
-          ? palMap[locale][palDetail.type]
-          : palDetail.type
-      }}
+      {{ getPalName(palDetail.type) }}
     </template>
     <pal-detail :palDetail="palDetail"></pal-detail>
   </n-modal>

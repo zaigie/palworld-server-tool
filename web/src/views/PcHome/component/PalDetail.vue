@@ -10,13 +10,13 @@ const palDetail = computed(() => props.palDetail);
 
 const getPalAvatar = (name) => {
   const lowerName = name.toLowerCase();
-  return new URL(`../../../assets/pal/${lowerName}.png`, import.meta.url).href;
+  return new URL(`../../../assets/pals/${lowerName}.png`, import.meta.url).href;
 };
 const getUnknowPalAvatar = (is_boss = false) => {
   if (is_boss) {
-    return new URL("@/assets/pal/boss_unknown.png", import.meta.url).href;
+    return new URL("@/assets/pals/boss_unknown.png", import.meta.url).href;
   }
-  return new URL("@/assets/pal/unknown.png", import.meta.url).href;
+  return new URL("@/assets/pals/unknown.png", import.meta.url).href;
 };
 const displayHP = (hp, max_hp) => {
   return (hp / 1000).toFixed(0) + "/" + (max_hp / 1000).toFixed(0);
