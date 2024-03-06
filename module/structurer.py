@@ -344,12 +344,19 @@ def getPlayerItems(player_uid, dir_path):
         return
     else:
         with redirect_stdout_stderr():
-            with open(player_sav_file, "rb") as f:
-                raw_gvas, _ = decompress_sav_to_gvas(f.read())
-                player_gvas_file = GvasFile.read(
-                    raw_gvas, PALWORLD_TYPE_HINTS, PALWORLD_CUSTOM_PROPERTIES
+            try:
+                with open(player_sav_file, "rb") as f:
+                    raw_gvas, _ = decompress_sav_to_gvas(f.read())
+                    player_gvas_file = GvasFile.read(
+                        raw_gvas, PALWORLD_TYPE_HINTS, PALWORLD_CUSTOM_PROPERTIES
+                    )
+                player_gvas = player_gvas_file.properties["SaveData"]["value"]
+            except Exception as e:
+                log(
+                    f"Player Sav file is corrupted: {os.path.basename(player_sav_file)}: {str(e)}",
+                    "ERROR",
                 )
-            player_gvas = player_gvas_file.properties["SaveData"]["value"]
+                return
     containers_data = {
         "CommonContainerId": [],
         "DropSlotContainerId": [],
