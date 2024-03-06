@@ -8,6 +8,7 @@ web:
 rcon:
   address: "127.0.0.1:25575"
   password: ""
+  is_palguard: false
   timeout: 5
   sync_interval: 60
 save:
