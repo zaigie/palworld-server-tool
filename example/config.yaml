@@ -18,3 +18,5 @@ save:
   backup_interval: 14400
 manage:
   kick_non_whitelist: false
+db:
+  path: "/app/pst.db"
