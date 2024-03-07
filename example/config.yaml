@@ -19,4 +19,4 @@ save:
 manage:
   kick_non_whitelist: false
 db:
-  path: "/app/pst.db"
+  path: "/app"

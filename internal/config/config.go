@@ -62,7 +62,7 @@ func Init(cfgFile string, conf *Config) {
 	viper.SetDefault("rcon.sync_interval", 60)
 	viper.SetDefault("save.sync_interval", 600)
 	viper.SetDefault("save.backup_interval", 14400)
-	viper.SetDefault("db.path", "/app/pst.db")
+	viper.SetDefault("db.path", "/app")
 
 	viper.SetEnvPrefix("")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__"))
