@@ -200,10 +200,7 @@ func Broadcast(message string) error {
 	fullCommand := broadcastCmd + message
 
 	// 创建一个正则表达式对象 Broadacasted! or :Broadcasted: message
-	re, err := regexp.Compile("Broadcasted.*")
-	if err != nil {
-		return err
-	}
+	re := regexp.MustCompile(`Broad(.*)casted(!|:\s.*)?`)
 
 	exec, response, err := executeCommand(fullCommand)
 	if err != nil {
