@@ -247,6 +247,7 @@ func LimitCacheDir(cacheDirPrefix string, n int) error {
 	tempDir := os.TempDir()
 	entries, err := os.ReadDir(tempDir)
 	if err != nil {
+		logger.Errorf("LimitCacheDir: error reading temp directory: %v\n", err)
 		return err
 	}
 
@@ -267,6 +268,7 @@ func LimitCacheDir(cacheDirPrefix string, n int) error {
 		for _, dir := range dirs[n:] {
 			err := os.RemoveAll(dir.path)
 			if err != nil {
+				logger.Errorf("LimitCacheDir: error removing directory: %v\n", err)
 				return err
 			}
 		}
