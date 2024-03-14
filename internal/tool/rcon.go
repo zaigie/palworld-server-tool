@@ -39,8 +39,7 @@ func executeCommand(command string) (*executor.Executor, string, error) {
 	if useBase64 {
 		decoded, err := base64.StdEncoding.DecodeString(response)
 		if err != nil {
-			logger.Warnf("decode base64 error:", err)
-			// 返回未解码的响应
+			logger.Warnf("decode base64 error: %v\n", err)
 			return exec, response, nil
 		}
 		response = string(decoded)
