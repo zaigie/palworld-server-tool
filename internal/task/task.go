@@ -1,10 +1,13 @@
 package task
 
 import (
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/database"
+	"github.com/zaigie/palworld-server-tool/internal/system"
 
 	"github.com/go-co-op/gocron/v2"
 	"github.com/spf13/viper"
@@ -108,6 +111,14 @@ func Schedule(db *bbolt.DB) {
 		if err != nil {
 			logger.Error(err)
 		}
+	}
+
+	_, err := s.NewJob(
+		gocron.DurationJob(300*time.Second),
+		gocron.NewTask(system.LimitCacheDir, filepath.Join(os.TempDir(), "palworldsav-"), 5),
+	)
+	if err != nil {
+		logger.Errorf("%v\n", err)
 	}
 
 	s.Start()

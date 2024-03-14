@@ -52,7 +52,7 @@ func Decode(file string) error {
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(levelFilePath)
+	defer os.RemoveAll(filepath.Dir(levelFilePath))
 
 	baseUrl := "http://127.0.0.1"
 	if viper.GetBool("web.tls") && !strings.HasSuffix(baseUrl, "/") {

@@ -6,7 +6,11 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
+	"time"
+
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 )
 
 func CheckIsDir(path string) (bool, error) {
@@ -197,4 +201,76 @@ func GetLevelSavFilePath(path string) (string, error) {
 	}
 
 	return foundPath, nil
+}
+
+// LimitCacheZipFiles keeps only the latest `n` zip archives in the cache directory
+func LimitCacheZipFiles(cacheDir string, n int) {
+	files, err := os.ReadDir(cacheDir)
+	if err != nil {
+		logger.Errorf("Error reading cache directory: %v\n", err)
+		return
+	}
+
+	zipFiles := []os.DirEntry{}
+	for _, file := range files {
+		if filepath.Ext(file.Name()) == ".zip" {
+			zipFiles = append(zipFiles, file)
+		}
+	}
+
+	if len(zipFiles) <= n {
+		return
+	}
+
+	sort.Slice(zipFiles, func(i, j int) bool {
+		createTimeI := GetEntryCreateTime(zipFiles[i])
+		createTimeJ := GetEntryCreateTime(zipFiles[j])
+		return createTimeI.After(createTimeJ)
+	})
+
+	for i := n; i < len(zipFiles); i++ {
+		path := filepath.Join(cacheDir, zipFiles[i].Name())
+		err := os.Remove(path)
+		if err != nil {
+			logger.Errorf("Failed to delete excess zip file: %v\n", err)
+		}
+	}
+}
+
+type dirInfo struct {
+	path       string
+	createTime time.Time
+}
+
+// LimitCacheDir keeps only the latest `n` directories in the cache directory
+func LimitCacheDir(cacheDirPrefix string, n int) error {
+	tempDir := os.TempDir()
+	entries, err := os.ReadDir(tempDir)
+	if err != nil {
+		return err
+	}
+
+	var dirs []dirInfo
+	for _, entry := range entries {
+		if entry.IsDir() && strings.HasPrefix(filepath.Base(entry.Name()), cacheDirPrefix) {
+			dirPath := filepath.Join(tempDir, entry.Name())
+			createTime := GetEntryCreateTime(entry)
+			dirs = append(dirs, dirInfo{path: dirPath, createTime: createTime})
+		}
+	}
+
+	sort.Slice(dirs, func(i, j int) bool {
+		return dirs[i].createTime.After(dirs[j].createTime)
+	})
+
+	if len(dirs) > n {
+		for _, dir := range dirs[n:] {
+			err := os.RemoveAll(dir.path)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }

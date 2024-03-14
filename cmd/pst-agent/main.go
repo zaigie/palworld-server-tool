@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"syscall"
 	"time"
@@ -75,7 +74,7 @@ func main() {
 	}
 	_, err = s.NewJob(
 		gocron.DurationJob(60*time.Second),
-		gocron.NewTask(limitCacheFiles, filepath.Join(os.TempDir(), "pst-agent"), 5),
+		gocron.NewTask(system.LimitCacheZipFiles, filepath.Join(os.TempDir(), "pst-agent"), 5),
 	)
 	if err != nil {
 		fmt.Println(err)
@@ -97,38 +96,4 @@ func main() {
 
 	logger.Info("PST-Agent gracefully stopped\n")
 
-}
-
-// limitCacheFiles keeps only the latest `n` zip archives in the cache directory
-func limitCacheFiles(cacheDir string, n int) {
-	files, err := os.ReadDir(cacheDir)
-	if err != nil {
-		logger.Errorf("Error reading cache directory: %v\n", err)
-		return
-	}
-
-	zipFiles := []os.DirEntry{}
-	for _, file := range files {
-		if filepath.Ext(file.Name()) == ".zip" {
-			zipFiles = append(zipFiles, file)
-		}
-	}
-
-	if len(zipFiles) <= n {
-		return
-	}
-
-	sort.Slice(zipFiles, func(i, j int) bool {
-		infoI, _ := zipFiles[i].Info()
-		infoJ, _ := zipFiles[j].Info()
-		return infoI.ModTime().After(infoJ.ModTime())
-	})
-
-	for i := n; i < len(zipFiles); i++ {
-		path := filepath.Join(cacheDir, zipFiles[i].Name())
-		err := os.Remove(path)
-		if err != nil {
-			logger.Errorf("Failed to delete excess zip file: %v\n", err)
-		}
-	}
 }
