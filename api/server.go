@@ -145,10 +145,5 @@ func validateMessage(message string) error {
 	if message == "" {
 		return errors.New("message cannot be empty")
 	}
-	for _, c := range message {
-		if c > 127 {
-			return errors.New("message cannot contain non-ascii characters")
-		}
-	}
 	return nil
 }
