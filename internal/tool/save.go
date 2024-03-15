@@ -54,12 +54,12 @@ func Decode(file string) error {
 	}
 	defer os.RemoveAll(filepath.Dir(levelFilePath))
 
-	baseUrl := "http://127.0.0.1"
+	baseUrl := fmt.Sprintf("http://127.0.0.1:%d", viper.GetInt("web.port"))
 	if viper.GetBool("web.tls") && !strings.HasSuffix(baseUrl, "/") {
 		baseUrl = viper.GetString("web.public_url")
 	}
 
-	requestUrl := fmt.Sprintf("%s:%d/api/", baseUrl, viper.GetInt("web.port"))
+	requestUrl := fmt.Sprintf("%s/api/", baseUrl)
 	tokenString, err := auth.GenerateToken()
 	if err != nil {
 		return errors.New("error generating token: " + err.Error())
