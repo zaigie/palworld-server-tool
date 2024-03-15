@@ -6,13 +6,15 @@ import (
 
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"go.etcd.io/bbolt"
+	"github.com/spf13/viper"
 )
 
 var db *bbolt.DB
 var once sync.Once
 
 func InitDB() *bbolt.DB {
-	db_, err := bbolt.Open("pst.db", 0600, &bbolt.Options{Timeout: 1 * time.Minute})
+	dbPath := viper.GetString("db.path")
+	db_, err := bbolt.Open(dbPath+"/pst.db", 0600, &bbolt.Options{Timeout: 1 * time.Minute})
 	if err != nil {
 		logger.Panic(err)
 	}
