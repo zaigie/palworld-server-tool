@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -78,13 +79,22 @@ func importRconCommands(c *gin.Context) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		parts := strings.Split(line, ",")
-		if len(parts) != 2 {
+		if len(parts) < 2 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file format"})
 			return
+		}
+		var rconType int = database.RconCommandTypeCommon
+		if len(parts) >= 3 {
+			rconType, err = strconv.Atoi(parts[2])
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Can not parse type with int"})
+				return
+			}
 		}
 		rconCommand := database.RconCommand{
 			Command: parts[0],
 			Remark:  parts[1],
+			Type:    rconType,
 		}
 		if err := service.AddRconCommand(database.GetDB(), rconCommand); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
