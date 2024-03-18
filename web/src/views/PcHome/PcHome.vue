@@ -220,6 +220,8 @@ const sendRconCommand = async (uuid) => {
 const showRconAddModal = ref(false);
 const newRconCommand = ref("");
 const newRconRemark = ref("");
+const newRconCommandType = ref(0);
+const rconCommandTypes = ref([]);
 const handleAddRconCommand = () => {
   showRconAddModal.value = true;
   newRconCommand.value = "";
@@ -243,6 +245,7 @@ const addRconCommand = async () => {
     const { data, statusCode } = await new ApiService().addRconCommand({
       command: newRconCommand.value,
       remark: newRconRemark.value,
+      type: newRconCommandType.value,
     });
     if (statusCode.value === 200) {
       message.success(t("message.addrconsuccess"));
@@ -704,6 +707,28 @@ onMounted(async () => {
       disabled: locale.value == "ja",
     },
   ];
+  rconCommandTypes.value = [
+    {
+      label: t("common"),
+      value: 0,
+    },
+    {
+      label: t("input.player_uid"),
+      value: 1,
+    },
+    {
+      label: t("input.steam_id"),
+      value: 2,
+    },
+    {
+      label: t("item.palList"),
+      value: 3,
+    },
+    {
+      label: t("item.itemList"),
+      value: 4,
+    },
+  ];
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   mediaQuery.addEventListener("change", updateDarkMode);
   isDarkMode.value = mediaQuery.matches;
@@ -1093,6 +1118,13 @@ onMounted(async () => {
           round
           :placeholder="$t('input.remark')"
         ></n-input>
+        <n-select
+          class="mt-5"
+          size="large"
+          round
+          v-model:value="newRconCommandType"
+          :options="rconCommandTypes"
+        />
         <n-button
           class="mt-5"
           style="width: 100%"

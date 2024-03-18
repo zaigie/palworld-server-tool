@@ -3,6 +3,7 @@ import { createI18n } from "vue-i18n";
 const messages = {
   en: {
     title: "PalWorld Server Tool",
+    common: "Common",
     modal: {
       auth: "Auth",
       broadcast: "Publish Broadcast",
@@ -133,6 +134,7 @@ const messages = {
   },
   zh: {
     title: "幻兽帕鲁服务器工具",
+    common: "通用",
     modal: {
       auth: "管理认证",
       broadcast: "发布游戏内广播",
@@ -261,6 +263,7 @@ const messages = {
   },
   ja: {
     title: "パルワールドサーバーツール",
+    common: "共通",
     modal: {
       auth: "ログイン",
       broadcast: "全体メッセージ配信",
