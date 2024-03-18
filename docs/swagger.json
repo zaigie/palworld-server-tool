@@ -1560,6 +1560,9 @@
                 },
                 "remark": {
                     "type": "string"
+                },
+                "type": {
+                    "type": "integer"
                 }
             }
         },
@@ -1571,6 +1574,9 @@
                 },
                 "remark": {
                     "type": "string"
+                },
+                "type": {
+                    "type": "integer"
                 },
                 "uuid": {
                     "type": "string"

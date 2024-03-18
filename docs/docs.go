@@ -1571,6 +1571,9 @@ const docTemplate = `{
                 },
                 "remark": {
                     "type": "string"
+                },
+                "type": {
+                    "type": "integer"
                 }
             }
         },
@@ -1582,6 +1585,9 @@ const docTemplate = `{
                 },
                 "remark": {
                     "type": "string"
+                },
+                "type": {
+                    "type": "integer"
                 },
                 "uuid": {
                     "type": "string"

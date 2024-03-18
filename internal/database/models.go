@@ -68,9 +68,18 @@ type PlayerW struct {
 	PlayerUID string `json:"player_uid"`
 }
 
+var (
+	RconCommandTypeCommon        = 0
+	RconCommandTypePlayerUid     = 1
+	RconCommandTypePlayerSteamId = 2
+	RconCommandTypePal           = 3
+	RconCommandTypeItem          = 4
+)
+
 type RconCommand struct {
 	Command string `json:"command"`
 	Remark  string `json:"remark"`
+	Type    int    `json:"type"`
 }
 
 type RconCommandList struct {

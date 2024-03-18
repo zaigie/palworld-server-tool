@@ -212,6 +212,8 @@ definitions:
         type: string
       remark:
         type: string
+      type:
+        type: integer
     type: object
   database.RconCommandList:
     properties:
@@ -219,6 +221,8 @@ definitions:
         type: string
       remark:
         type: string
+      type:
+        type: integer
       uuid:
         type: string
     type: object

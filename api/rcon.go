@@ -138,6 +138,10 @@ func addRconCommand(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	if rcon.Type < database.RconCommandTypeCommon || rcon.Type > database.RconCommandTypeItem {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid type"})
+		return
+	}
 	err := service.AddRconCommand(database.GetDB(), rcon)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -164,6 +168,10 @@ func putRconCommand(c *gin.Context) {
 	var rcon database.RconCommand
 	if err := c.ShouldBindJSON(&rcon); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if rcon.Type < database.RconCommandTypeCommon || rcon.Type > database.RconCommandTypeItem {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid type"})
 		return
 	}
 	err := service.PutRconCommand(database.GetDB(), uuid, rcon)
