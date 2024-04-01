@@ -187,7 +187,7 @@ mkdir -p pst && tar -xzf pst_v0.6.2_linux_x86_64.tar.gz -C pst
      decode_path: ""
      # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
      sync_interval: 120
-     # Save Backup Interval Sec 存档定时备份间隔，单位秒
+     # Save Backup Interval Sec 存档定时备份间隔，单位秒，设置为0时禁用
      backup_interval: 14400
 
    # Automation Config 自动化管理相关
@@ -291,7 +291,7 @@ save:
   decode_path: ""
   # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
   sync_interval: 120
-  # Save Backup Interval Sec 存档定时备份间隔，单位秒
+  # Save Backup Interval Sec 存档定时备份间隔，单位秒，设置为0时禁用
   backup_interval: 14400
 
 # Automation Config 自动化管理相关
