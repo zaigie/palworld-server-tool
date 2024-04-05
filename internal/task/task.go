@@ -38,9 +38,9 @@ func BackupTask(db *bbolt.DB) {
 	logger.Infof("Auto backup to %s\n", path)
 }
 
-func RconSync(db *bbolt.DB) {
+func PlayerSync(db *bbolt.DB) {
 	logger.Info("Scheduling Rcon sync...\n")
-	playersRcon, err := tool.ShowPlayers()
+	playersRcon, err := tool.GetGameApi().ShowPlayers()
 	if err != nil {
 		logger.Errorf("%v\n", err)
 	}
@@ -56,10 +56,35 @@ func RconSync(db *bbolt.DB) {
 	}
 }
 
+func isPlayerWhitelisted(player database.PlayerRcon, whitelist []database.PlayerW) bool {
+	for _, whitelistedPlayer := range whitelist {
+		if (player.PlayerUid != "" && player.PlayerUid == whitelistedPlayer.PlayerUID) ||
+			(player.SteamId != "" && player.SteamId == whitelistedPlayer.SteamID) {
+			return true
+		}
+	}
+	return false
+}
+
 func CheckAndKickPlayers(db *bbolt.DB, players []database.PlayerRcon) {
-	err := tool.CheckAndKickPlayers(db, players)
+	whitelist, err := service.ListWhitelist(db)
 	if err != nil {
 		logger.Errorf("%v\n", err)
+	}
+	for _, player := range players {
+		if !isPlayerWhitelisted(player, whitelist) {
+			identifier := player.SteamId
+			if identifier == "" {
+				logger.Warnf("Kicked %s fail, SteamId is empty \n", player.Nickname)
+				continue
+			}
+			err := tool.GetGameApi().KickPlayer(identifier)
+			if err != nil {
+				logger.Warnf("Kicked %s fail, %s \n", player.Nickname, err)
+				continue
+			}
+			logger.Warnf("Kicked %s successful \n", player.Nickname)
+		}
 	}
 	logger.Info("Check whitelist done\n")
 }
@@ -76,15 +101,15 @@ func SavSync() {
 func Schedule(db *bbolt.DB) {
 	s := getScheduler()
 
-	rconSyncInterval := time.Duration(viper.GetInt("rcon.sync_interval"))
+	playerSyncInterval := time.Duration(viper.GetInt("api.sync_interval"))
 	savSyncInterval := time.Duration(viper.GetInt("save.sync_interval"))
 	backupInterval := time.Duration(viper.GetInt("save.backup_interval"))
 
-	if rconSyncInterval > 0 {
-		go RconSync(db)
+	if playerSyncInterval > 0 {
+		go PlayerSync(db)
 		_, err := s.NewJob(
-			gocron.DurationJob(rconSyncInterval*time.Second),
-			gocron.NewTask(RconSync, db),
+			gocron.DurationJob(playerSyncInterval*time.Second),
+			gocron.NewTask(PlayerSync, db),
 		)
 		if err != nil {
 			logger.Errorf("%v\n", err)

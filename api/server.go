@@ -3,7 +3,6 @@ package api
 import (
 	"errors"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
@@ -67,7 +66,7 @@ func getServerTool(c *gin.Context) {
 //	@Failure		400	{object}	ErrorResponse
 //	@Router			/api/server [get]
 func getServer(c *gin.Context) {
-	info, err := tool.Info()
+	info, err := tool.GetGameApi().Info()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -100,7 +99,7 @@ func publishBroadcast(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := tool.Broadcast(req.Message); err != nil {
+	if err := tool.GetGameApi().Broadcast(req.Message); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -134,7 +133,7 @@ func shutdownServer(c *gin.Context) {
 	if req.Seconds == 0 {
 		req.Seconds = 60
 	}
-	if err := tool.Shutdown(strconv.Itoa(req.Seconds), req.Message); err != nil {
+	if err := tool.GetGameApi().Shutdown(req.Seconds, req.Message); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

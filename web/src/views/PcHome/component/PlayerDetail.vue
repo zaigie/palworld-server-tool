@@ -282,9 +282,22 @@ const handelPlayerAction = async (type) => {
     showLoginModal.value = true;
     return;
   }
+  const param = {
+    ban: {
+      title: t("message.bantitle"),
+      content: t("message.banwarn")
+    },
+    unban: {
+      title: t("message.unbantitle"),
+      content: t("message.unbanwarn")
+    },
+    kick: {
+      title: t("message.kicktitle"),
+      content: t("message.kickwarn")
+    }
+  }[type];
   dialog.warning({
-    title: type === "ban" ? t("message.bantitle") : t("message.kicktitle"),
-    content: type === "ban" ? t("message.banwarn") : t("message.kickwarn"),
+    ...param,
     positiveText: t("button.confirm"),
     negativeText: t("button.cancel"),
     onPositiveClick: async () => {
@@ -296,6 +309,15 @@ const handelPlayerAction = async (type) => {
           message.success(t("message.bansuccess"));
         } else {
           message.error(t("message.banfail", { err: data.value?.error }));
+        }
+      } else if (type === "unban") {
+        const { data, statusCode } = await new ApiService().unbanPlayer({
+          playerUid: playerInfo?.value.player_uid,
+        });
+        if (statusCode.value === 200) {
+          message.success(t("message.unbansuccess"));
+        } else {
+          message.error(t("message.unbanfail", { err: data.value?.error }));
         }
       } else if (type === "kick") {
         const { data, statusCode } = await new ApiService().kickPlayer({
@@ -712,6 +734,21 @@ const createPlayerItemsColumns = () => {
           </n-icon>
         </template>
         {{ $t("button.ban") }}
+      </n-button>
+      <n-button
+          @click="handelPlayerAction('unban')"
+          type="success"
+          size="large"
+          secondary
+          strong
+          round
+      >
+        <template #icon>
+          <n-icon>
+            <Ban />
+          </n-icon>
+        </template>
+        {{ $t("button.unban") }}
       </n-button>
       <n-button
         @click="handelPlayerAction('kick')"

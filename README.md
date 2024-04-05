@@ -166,18 +166,34 @@ mkdir -p pst && tar -xzf pst_v0.6.2_linux_x86_64.tar.gz -C pst
      # 若开启 HTTPS 访问请填写你的 HTTPS 证书绑定的域名 eg. https://yourdomain.com
      public_url: ""
 
+   # API 相关设置
+   api:
+     # 与游戏通信模式 可选：rcon、rest
+     mode: "rcon"
+     # 定时向游戏服务获取玩家在线情况的间隔，单位秒
+     sync_interval: 60
+
    # RCON 相关设置
    rcon:
      # RCON 的地址和端口
      address: "127.0.0.1:25575"
-     # 服务 端设置的 RCON AdminPassword
+     # 服务端设置的 AdminPassword
      password: ""
      # 服务器是否已开启 PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
      is_palguard: false
      # RCON 通信超时时间，推荐 <= 5
      timeout: 5
-     # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
-     sync_interval: 60
+
+   # REST API 相关配置
+   rest:
+     # REST 的地址
+     address: "http://127.0.0.1:8212"
+     # Base Auth 的用户名，固定为 admin
+     username: "admin"
+     # 服务端设置的 AdminPassword
+     password: ""
+     # 通信超时时间，推荐 <= 5
+     timeout: 5
 
    # sav_cli Config 存档文件解析相关配置
    save:
@@ -270,6 +286,13 @@ web:
   # 若开启 HTTPS 访问请填写你的 HTTPS 证书绑定的域名 eg. https://yourdomain.com
   public_url: ""
 
+  # API 相关设置
+api:
+  # 与游戏通信模式 可选：rcon、rest
+  mode: "rcon"
+  # 定时向游戏服务获取玩家在线情况的间隔，单位秒
+  sync_interval: 60
+
 # RCON 相关设置
 rcon:
   # RCON 的地址和端口
@@ -280,8 +303,17 @@ rcon:
   is_palguard: false
   # RCON 通信超时时间，推荐 <= 5
   timeout: 5
-  # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
-  sync_interval: 60
+
+# REST API 相关配置
+rest:
+  # REST 的地址
+  address: "http://127.0.0.1:8212"
+  # Base Auth 的用户名，固定为 admin
+  username: "admin"
+  # 服务端设置的 AdminPassword
+  password: ""
+  # 通信超时时间，推荐 <= 5
+  timeout: 5
 
 # sav_cli Config 存档文件解析相关配置
 save:

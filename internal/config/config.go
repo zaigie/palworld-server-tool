@@ -16,14 +16,23 @@ type Config struct {
 		KeyPath   string `mapstructure:"key_path"`
 		PublicUrl string `mapstructure:"public_url"`
 	}
+	Api struct {
+		Mode         string `mapstructure:"mode"`
+		SyncInterval int    `mapstructure:"sync_interval"`
+	} `mapstructure:"api"`
 	Rcon struct {
 		Address        string `mapstructure:"address"`
 		Password       string `mapstructure:"password"`
 		Timeout        int    `mapstructure:"timeout"`
 		IsPalGuard     bool   `mapstructure:"is_palguard"`
-		SyncInterval   int    `mapstructure:"sync_interval"`
 		BackupInterval int    `mapstructure:"backup_interval"`
 	} `mapstructure:"rcon"`
+	Rest struct {
+		Address  string `mapstructure:"address"`
+		Username string `mapstructure:"username"`
+		Password string `mapstructure:"password"`
+		Timeout  int    `mapstructure:"timeout"`
+	} `mapstructure:"rest"`
 	Save struct {
 		Path         string `mapstructure:"path"`
 		DecodePath   string `mapstructure:"decode_path"`
@@ -54,9 +63,15 @@ func Init(cfgFile string, conf *Config) {
 	}
 
 	viper.SetDefault("web.port", 8080)
+
+	viper.SetDefault("api.mode", "rcon")
+	viper.SetDefault("api.sync_interval", 60)
+
 	viper.SetDefault("rcon.timeout", 5)
 	viper.SetDefault("rcon.is_palguard", false)
-	viper.SetDefault("rcon.sync_interval", 60)
+
+	viper.SetDefault("rest.timeout", 5)
+
 	viper.SetDefault("save.sync_interval", 600)
 	viper.SetDefault("save.backup_interval", 14400)
 

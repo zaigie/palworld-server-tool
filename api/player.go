@@ -140,20 +140,10 @@ func kickPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.KickPlayer(playerUid)
+	err = tool.GetGameApi().KickPlayer(player.SteamId)
 	if err != nil {
-		if player.SteamId == "" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		err = tool.KickPlayer(player.SteamId)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		} else {
-			c.JSON(http.StatusOK, gin.H{"success": true})
-			return
-		}
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true})
 }
@@ -184,20 +174,44 @@ func banPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.BanPlayer(playerUid)
+	err = tool.GetGameApi().BanPlayer(player.SteamId)
 	if err != nil {
-		if player.SteamId == "" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true})
+}
+
+// unbanPlayer godoc
+//
+//	@Summary		Unban Player
+//	@Description	Unban Player
+//	@Tags			Player
+//	@Accept			json
+//	@Produce		json
+//	@Security		ApiKeyAuth
+//	@Param			player_uid	path		string	true	"Player UID"
+//
+//	@Success		200			{object}	SuccessResponse
+//	@Failure		400			{object}	ErrorResponse
+//	@Failure		401			{object}	ErrorResponse
+//	@Failure		404			{object}	ErrorResponse
+//	@Router			/api/player/{player_uid}/unban [post]
+func unbanPlayer(c *gin.Context) {
+	playerUid := c.Param("player_uid")
+	player, err := service.GetPlayer(database.GetDB(), playerUid)
+	if err != nil {
+		if err == service.ErrNoRecord {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Player not found"})
 			return
 		}
-		err = tool.BanPlayer(player.SteamId)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		} else {
-			c.JSON(http.StatusOK, gin.H{"success": true})
-			return
-		}
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err = tool.GetGameApi().UnBanPlayer(player.SteamId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true})
 }
