@@ -19,7 +19,7 @@ type GameApi interface {
 var instance GameApi
 
 func GetGameApi() GameApi {
-	mode := viper.GetString("task.mode")
+	mode := viper.GetString("api.mode")
 	if instance == nil {
 		if mode == "rest" {
 			instance = &GameApiRest{}
