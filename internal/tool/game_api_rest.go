@@ -3,6 +3,7 @@ package tool
 import (
 	"encoding/json"
 	"github.com/zaigie/palworld-server-tool/internal/database"
+	"strconv"
 )
 
 type GameApiRest struct {
@@ -58,14 +59,20 @@ func (g *GameApiRest) ShowPlayers() ([]database.PlayerRcon, error) {
 	}
 	playersRcon := make([]database.PlayerRcon, 0)
 	for _, player := range data.Players {
-		if player.PlayerId != "None" {
-			playerRcon := database.PlayerRcon{
-				PlayerUid: player.PlayerId,
-				SteamId:   player.UserId,
-				Nickname:  player.Name,
-			}
-			playersRcon = append(playersRcon, playerRcon)
+		id, err := strconv.Atoi(player.PlayerId)
+		if err != nil {
+			continue
 		}
+		// 临时处理游戏的BUG
+		if id < 0 {
+			player.PlayerId = strconv.FormatUint(uint64(uint32(id)), 10)
+		}
+		playerRcon := database.PlayerRcon{
+			PlayerUid: player.PlayerId,
+			SteamId:   player.UserId,
+			Nickname:  player.Name,
+		}
+		playersRcon = append(playersRcon, playerRcon)
 	}
 	return playersRcon, nil
 }
