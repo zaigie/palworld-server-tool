@@ -3,6 +3,8 @@ package task
 import (
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -50,6 +52,11 @@ func PlayerSync(db *bbolt.DB) {
 	}
 	logger.Info("Rcon sync done\n")
 
+	playerLogging := viper.GetBool("manage.player_logging")
+	if playerLogging {
+		go PlayerLogging(playersRcon)
+	}
+
 	kickInterval := viper.GetBool("manage.kick_non_whitelist")
 	if kickInterval {
 		go CheckAndKickPlayers(db, playersRcon)
@@ -64,6 +71,45 @@ func isPlayerWhitelisted(player database.PlayerRcon, whitelist []database.Player
 		}
 	}
 	return false
+}
+
+var playerCache map[string]string
+var firstPoll = true
+
+func PlayerLogging(players []database.PlayerRcon) {
+	loginMsg := viper.GetString("manage.player_login_message")
+	logoutMsg := viper.GetString("manage.player_logout_message")
+
+	tmp := make(map[string]string, len(players))
+	for _, player := range players {
+		tmp[player.PlayerUid] = player.Nickname
+	}
+	if !firstPoll {
+		for id, name := range tmp {
+			if _, ok := playerCache[id]; !ok {
+				BroadcastVariableMessage(loginMsg, name, len(players))
+			}
+		}
+		for id, name := range playerCache {
+			if _, ok := tmp[id]; !ok {
+				BroadcastVariableMessage(logoutMsg, name, len(players))
+			}
+		}
+	}
+	firstPoll = false
+	playerCache = tmp
+}
+
+func BroadcastVariableMessage(message string, username string, onlineNum int) {
+	message = strings.ReplaceAll(message, "{username}", username)
+	message = strings.ReplaceAll(message, "{online_num}", strconv.Itoa(onlineNum))
+	arr := strings.Split(message, "\n")
+	for _, msg := range arr {
+		err := tool.GetGameApi().Broadcast(msg)
+		if err != nil {
+			logger.Warnf("Broadcast fail, %s \n", err)
+		}
+	}
 }
 
 func CheckAndKickPlayers(db *bbolt.DB, players []database.PlayerRcon) {

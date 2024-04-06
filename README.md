@@ -210,6 +210,12 @@ mkdir -p pst && tar -xzf pst_v0.6.2_linux_x86_64.tar.gz -C pst
    manage:
      # 玩家不在白名单是否自动踢出
      kick_non_whitelist: false
+     # 玩家进入/离开服务器通知
+     player_logging: true
+     # 玩家进入服务器消息
+     player_login_message: "玩家 {username} 加入服务器!\n当前在线人数: {online_num}"
+     # 玩家离开服务器消息
+     player_logout_message: "玩家 {username} 离开服务器!\n当前在线人数: {online_num}"
    ```
 
 ##### 运行
@@ -330,6 +336,12 @@ save:
 manage:
   # 玩家不在白名单是否自动踢出
   kick_non_whitelist: false
+  # 玩家进入/离开服务器通知
+  player_logging: true
+  # 玩家进入服务器消息
+  player_login_message: "玩家 {username} 加入服务器!\n当前在线人数: {online_num}"
+  # 玩家离开服务器消息
+  player_logout_message: "玩家 {username} 离开服务器!\n当前在线人数: {online_num}"
 ```
 
 ##### 运行

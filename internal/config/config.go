@@ -39,7 +39,10 @@ type Config struct {
 		SyncInterval int    `mapstructure:"sync_interval"`
 	} `mapstructure:"save"`
 	Manage struct {
-		KickNonWhitelist bool `mapstructure:"kick_non_whitelist"`
+		KickNonWhitelist    bool   `mapstructure:"kick_non_whitelist"`
+		PlayerLogging       bool   `mapstructure:"player_logging"`
+		PlayerLoginMessage  string `mapstructure:"player_login_message"`
+		PlayerLogoutMessage string `mapstructure:"player_logout_message"`
 	}
 }
 
