@@ -58,12 +58,14 @@ func (g *GameApiRest) ShowPlayers() ([]database.PlayerRcon, error) {
 	}
 	playersRcon := make([]database.PlayerRcon, 0)
 	for _, player := range data.Players {
-		playerRcon := database.PlayerRcon{
-			PlayerUid: player.PlayerId,
-			SteamId:   player.UserId,
-			Nickname:  player.Name,
+		if player.PlayerId != "None" {
+			playerRcon := database.PlayerRcon{
+				PlayerUid: player.PlayerId,
+				SteamId:   player.UserId,
+				Nickname:  player.Name,
+			}
+			playersRcon = append(playersRcon, playerRcon)
 		}
-		playersRcon = append(playersRcon, playerRcon)
 	}
 	return playersRcon, nil
 }

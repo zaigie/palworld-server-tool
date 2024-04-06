@@ -109,6 +109,8 @@ func BroadcastVariableMessage(message string, username string, onlineNum int) {
 		if err != nil {
 			logger.Warnf("Broadcast fail, %s \n", err)
 		}
+		// 连续发送不知道为啥行会错乱, 只能加点延迟
+		time.Sleep(1000 * time.Millisecond)
 	}
 }
 
