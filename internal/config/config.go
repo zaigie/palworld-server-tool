@@ -16,10 +16,12 @@ type Config struct {
 		KeyPath   string `mapstructure:"key_path"`
 		PublicUrl string `mapstructure:"public_url"`
 	}
-	Api struct {
-		Mode         string `mapstructure:"mode"`
-		SyncInterval int    `mapstructure:"sync_interval"`
-	} `mapstructure:"api"`
+	Task struct {
+		SyncInterval        int    `mapstructure:"sync_interval"`
+		PlayerLogging       bool   `mapstructure:"player_logging"`
+		PlayerLoginMessage  string `mapstructure:"player_login_message"`
+		PlayerLogoutMessage string `mapstructure:"player_logout_message"`
+	} `mapstructure:"task"`
 	Rcon struct {
 		Address        string `mapstructure:"address"`
 		Password       string `mapstructure:"password"`
@@ -39,10 +41,7 @@ type Config struct {
 		SyncInterval int    `mapstructure:"sync_interval"`
 	} `mapstructure:"save"`
 	Manage struct {
-		KickNonWhitelist    bool   `mapstructure:"kick_non_whitelist"`
-		PlayerLogging       bool   `mapstructure:"player_logging"`
-		PlayerLoginMessage  string `mapstructure:"player_login_message"`
-		PlayerLogoutMessage string `mapstructure:"player_logout_message"`
+		KickNonWhitelist bool `mapstructure:"kick_non_whitelist"`
 	}
 }
 
@@ -67,8 +66,7 @@ func Init(cfgFile string, conf *Config) {
 
 	viper.SetDefault("web.port", 8080)
 
-	viper.SetDefault("api.mode", "rcon")
-	viper.SetDefault("api.sync_interval", 60)
+	viper.SetDefault("task.sync_interval", 60)
 
 	viper.SetDefault("rcon.timeout", 5)
 	viper.SetDefault("rcon.is_palguard", false)

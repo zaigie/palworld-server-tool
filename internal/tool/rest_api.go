@@ -1,12 +1,51 @@
 package tool
 
 import (
+	"bytes"
 	"encoding/json"
-	"github.com/zaigie/palworld-server-tool/internal/database"
+	"fmt"
+	"io"
+	"net/http"
+	"net/url"
 	"strconv"
+	"time"
+
+	"github.com/spf13/viper"
+	"github.com/zaigie/palworld-server-tool/internal/database"
 )
 
-type GameApiRest struct {
+var client = &http.Client{}
+
+func callApi(method string, api string, param []byte) ([]byte, error) {
+
+	addr := viper.GetString("rest.address")
+	user := viper.GetString("rest.username")
+	pass := viper.GetString("rest.password")
+	timeout := viper.GetInt("rest.timeout")
+
+	api, err := url.JoinPath(addr, api)
+	if err != nil {
+		return nil, err
+	}
+
+	req, _ := http.NewRequest(method, api, bytes.NewReader(param))
+	req.SetBasicAuth(user, pass)
+
+	client.Timeout = time.Duration(timeout) * time.Second
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("rest: %d %s", resp.StatusCode, b)
+	}
+	return b, nil
 }
 
 type ResponseInfo struct {
@@ -15,7 +54,7 @@ type ResponseInfo struct {
 	Description string `json:"description"`
 }
 
-func (g *GameApiRest) Info() (map[string]string, error) {
+func Info() (map[string]string, error) {
 	resp, err := callApi("GET", "/v1/api/info", nil)
 	if err != nil {
 		return nil, err
@@ -47,7 +86,7 @@ type ResponsePlayers struct {
 	Players []ResponsePlayer `json:"players"`
 }
 
-func (g *GameApiRest) ShowPlayers() ([]database.PlayerRcon, error) {
+func ShowPlayers() ([]database.PlayerRcon, error) {
 	resp, err := callApi("GET", "/v1/api/players", nil)
 	if err != nil {
 		return nil, err
@@ -77,13 +116,13 @@ func (g *GameApiRest) ShowPlayers() ([]database.PlayerRcon, error) {
 	return playersRcon, nil
 }
 
-type RequestUserID struct {
-	UserID string `json:"userid"`
+type RequestUserId struct {
+	UserId string `json:"userid"`
 }
 
-func (g *GameApiRest) KickPlayer(steamID string) error {
-	b, err := json.Marshal(RequestUserID{
-		UserID: steamID,
+func KickPlayer(steamId string) error {
+	b, err := json.Marshal(RequestUserId{
+		UserId: steamId,
 	})
 	if err != nil {
 		return err
@@ -95,9 +134,9 @@ func (g *GameApiRest) KickPlayer(steamID string) error {
 	return nil
 }
 
-func (g *GameApiRest) BanPlayer(steamID string) error {
-	b, err := json.Marshal(RequestUserID{
-		UserID: steamID,
+func BanPlayer(steamId string) error {
+	b, err := json.Marshal(RequestUserId{
+		UserId: steamId,
 	})
 	if err != nil {
 		return err
@@ -109,9 +148,9 @@ func (g *GameApiRest) BanPlayer(steamID string) error {
 	return nil
 }
 
-func (g *GameApiRest) UnBanPlayer(steamID string) error {
-	b, err := json.Marshal(RequestUserID{
-		UserID: steamID,
+func UnBanPlayer(steamId string) error {
+	b, err := json.Marshal(RequestUserId{
+		UserId: steamId,
 	})
 	if err != nil {
 		return err
@@ -127,7 +166,7 @@ type RequestBroadcast struct {
 	Message string `json:"message"`
 }
 
-func (g *GameApiRest) Broadcast(message string) error {
+func Broadcast(message string) error {
 	b, err := json.Marshal(RequestBroadcast{
 		Message: message,
 	})
@@ -146,7 +185,7 @@ type RequestShutdown struct {
 	Message  string `json:"message"`
 }
 
-func (g *GameApiRest) Shutdown(seconds int, message string) error {
+func Shutdown(seconds int, message string) error {
 	b, err := json.Marshal(RequestShutdown{
 		Waittime: seconds,
 		Message:  message,
@@ -161,7 +200,7 @@ func (g *GameApiRest) Shutdown(seconds int, message string) error {
 	return nil
 }
 
-func (g *GameApiRest) DoExit() error {
+func DoExit() error {
 	_, err := callApi("POST", "/v1/api/stop", nil)
 	if err != nil {
 		return err

@@ -140,7 +140,7 @@ func kickPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.GetGameApi().KickPlayer(player.SteamId)
+	err = tool.KickPlayer(player.SteamId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -174,7 +174,7 @@ func banPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.GetGameApi().BanPlayer(player.SteamId)
+	err = tool.BanPlayer(player.SteamId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -208,7 +208,7 @@ func unbanPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.GetGameApi().UnBanPlayer(player.SteamId)
+	err = tool.UnBanPlayer(player.SteamId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

@@ -42,7 +42,7 @@ func BackupTask(db *bbolt.DB) {
 
 func PlayerSync(db *bbolt.DB) {
 	logger.Info("Scheduling Rcon sync...\n")
-	playersRcon, err := tool.GetGameApi().ShowPlayers()
+	playersRcon, err := tool.ShowPlayers()
 	if err != nil {
 		logger.Errorf("%v\n", err)
 	}
@@ -52,7 +52,7 @@ func PlayerSync(db *bbolt.DB) {
 	}
 	logger.Info("Rcon sync done\n")
 
-	playerLogging := viper.GetBool("manage.player_logging")
+	playerLogging := viper.GetBool("task.player_logging")
 	if playerLogging {
 		go PlayerLogging(playersRcon)
 	}
@@ -77,8 +77,8 @@ var playerCache map[string]string
 var firstPoll = true
 
 func PlayerLogging(players []database.PlayerRcon) {
-	loginMsg := viper.GetString("manage.player_login_message")
-	logoutMsg := viper.GetString("manage.player_logout_message")
+	loginMsg := viper.GetString("task.player_login_message")
+	logoutMsg := viper.GetString("task.player_logout_message")
 
 	tmp := make(map[string]string, len(players))
 	for _, player := range players {
@@ -105,7 +105,7 @@ func BroadcastVariableMessage(message string, username string, onlineNum int) {
 	message = strings.ReplaceAll(message, "{online_num}", strconv.Itoa(onlineNum))
 	arr := strings.Split(message, "\n")
 	for _, msg := range arr {
-		err := tool.GetGameApi().Broadcast(msg)
+		err := tool.Broadcast(msg)
 		if err != nil {
 			logger.Warnf("Broadcast fail, %s \n", err)
 		}
@@ -126,7 +126,7 @@ func CheckAndKickPlayers(db *bbolt.DB, players []database.PlayerRcon) {
 				logger.Warnf("Kicked %s fail, SteamId is empty \n", player.Nickname)
 				continue
 			}
-			err := tool.GetGameApi().KickPlayer(identifier)
+			err := tool.KickPlayer(identifier)
 			if err != nil {
 				logger.Warnf("Kicked %s fail, %s \n", player.Nickname, err)
 				continue
@@ -149,7 +149,7 @@ func SavSync() {
 func Schedule(db *bbolt.DB) {
 	s := getScheduler()
 
-	playerSyncInterval := time.Duration(viper.GetInt("api.sync_interval"))
+	playerSyncInterval := time.Duration(viper.GetInt("task.sync_interval"))
 	savSyncInterval := time.Duration(viper.GetInt("save.sync_interval"))
 	backupInterval := time.Duration(viper.GetInt("save.backup_interval"))
 
