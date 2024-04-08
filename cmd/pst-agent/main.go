@@ -42,17 +42,16 @@ func main() {
 			os.Exit(1)
 		}
 		cacheDir := filepath.Dir(levelFile)
+		defer os.RemoveAll(cacheDir)
 
 		cacheFile := cacheDir + ".zip"
-		defer os.RemoveAll(cacheDir)
-		defer os.Remove(cacheFile)
-
 		err = system.ZipDir(cacheDir, cacheFile)
 		if err != nil {
 			logger.Errorf("Failed to create zip: %v\n", err)
 			c.Redirect(http.StatusFound, "/404")
 			return
 		}
+		defer os.Remove(cacheFile)
 
 		c.Header("Content-Disposition", "attachment; filename=sav.zip")
 		c.File(cacheFile)
