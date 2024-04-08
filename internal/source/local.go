@@ -2,6 +2,7 @@ package source
 
 import (
 	"errors"
+	"io/fs"
 	"os"
 	"path/filepath"
 
@@ -11,44 +12,49 @@ import (
 )
 
 func CopyFromLocal(src, way string) (string, error) {
-	var savDir string
-	var err error
-	var isDir bool
 
-	isDir, err = system.CheckIsDir(src)
+	isDir, err := system.CheckIsDir(src)
 	if err != nil {
 		logger.Errorf("error checking if %s is a directory: %v\n", src, err)
 	}
 
+	// 获得Level.sav路径
+	var levelPath string
 	if isDir {
-		savDir, err = system.GetSavDir(src)
+		levelPath, err = system.GetLevelSavFilePath(src)
 		if err != nil {
 			return "", errors.New("error finding Level.sav: \n" + err.Error())
 		}
 	} else {
 		if filepath.Base(src) == "Level.sav" {
-			savDir = filepath.Dir(src)
+			levelPath = src
 		} else {
 			return "", errors.New("specified file is not Level.sav and source is not a directory")
 		}
 	}
+	savDir := filepath.Dir(levelPath)
 
-	uuid := uuid.New().String()
-	tempDir := filepath.Join(os.TempDir(), "palworldsav-"+way+"-"+uuid)
-	absPath, err := filepath.Abs(tempDir)
-	if err != nil {
+	// 创建临时目录
+	randId := uuid.New().String()
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-"+way+"-"+randId)
+	if err = os.MkdirAll(tempDir, fs.ModePerm); err != nil {
 		return "", err
 	}
 
-	if err = system.CleanAndCreateDir(absPath); err != nil {
+	// 拷贝文件
+	files, err := filepath.Glob(filepath.Join(savDir, "*.sav"))
+	for _, file := range files {
+		dist := filepath.Join(tempDir, filepath.Base(file))
+		if err = system.CopyFile(file, dist); err != nil {
+			return "", err
+		}
+	}
+	playerDir := filepath.Join(savDir, "Players")
+	distPlayerDir := filepath.Join(tempDir, "Players")
+	if err = system.CopyDir(playerDir, distPlayerDir); err != nil {
 		return "", err
 	}
 
-	err = system.CopyDir(savDir, absPath)
-	if err != nil {
-		return "", err
-	}
-
-	levelFilePath := filepath.Join(absPath, "Level.sav")
-	return levelFilePath, nil
+	distLevelPath := filepath.Join(tempDir, "Level.sav")
+	return distLevelPath, nil
 }

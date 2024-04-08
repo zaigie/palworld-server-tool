@@ -2,20 +2,17 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"strconv"
 	"syscall"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-co-op/gocron/v2"
-	"github.com/google/uuid"
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
+	"github.com/zaigie/palworld-server-tool/internal/source"
 	"github.com/zaigie/palworld-server-tool/internal/system"
 )
 
@@ -34,30 +31,23 @@ func main() {
 	viper.SetDefault("saved_dir", savedDir)
 	savedDir = viper.GetString("saved_dir")
 
-	savDir, err := system.GetSavDir(savedDir)
-	if err != nil {
-		logger.Errorf("Failed to get directory include Level.sav: %v\n", err)
-		os.Exit(1)
-	}
-
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	r.GET("/sync", func(c *gin.Context) {
-		uuid := uuid.New().String()
-		cacheDir := filepath.Join(os.TempDir(), "pst-agent", uuid)
-		os.MkdirAll(cacheDir, os.ModePerm)
-		defer os.RemoveAll(cacheDir)
 
-		err := system.CopyDir(savDir, cacheDir)
+		levelFile, err := source.CopyFromLocal(savedDir, "agent")
 		if err != nil {
-			logger.Errorf("Failed to copy directory: %v\n", err)
-			c.Redirect(http.StatusFound, "/404")
-			return
+			logger.Errorf("Failed to get directory include Level.sav: %v\n", err)
+			os.Exit(1)
 		}
+		cacheDir := filepath.Dir(levelFile)
 
-		zipFilePath := filepath.Join(os.TempDir(), "pst-agent", uuid+".zip")
-		err = system.ZipDir(cacheDir, zipFilePath)
+		cacheFile := cacheDir + ".zip"
+		defer os.RemoveAll(cacheDir)
+		defer os.Remove(cacheFile)
+
+		err = system.ZipDir(cacheDir, cacheFile)
 		if err != nil {
 			logger.Errorf("Failed to create zip: %v\n", err)
 			c.Redirect(http.StatusFound, "/404")
@@ -65,21 +55,8 @@ func main() {
 		}
 
 		c.Header("Content-Disposition", "attachment; filename=sav.zip")
-		c.File(zipFilePath)
+		c.File(cacheFile)
 	})
-
-	s, err := gocron.NewScheduler()
-	if err != nil {
-		fmt.Println(err)
-	}
-	_, err = s.NewJob(
-		gocron.DurationJob(60*time.Second),
-		gocron.NewTask(system.LimitCacheZipFiles, filepath.Join(os.TempDir(), "pst-agent"), 5),
-	)
-	if err != nil {
-		fmt.Println(err)
-	}
-	s.Start()
 
 	logger.Infof("PST-Agent Listening on port %d\n", port)
 
