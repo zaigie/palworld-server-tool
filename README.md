@@ -166,18 +166,38 @@ mkdir -p pst && tar -xzf pst_v0.6.2_linux_x86_64.tar.gz -C pst
      # 若开启 HTTPS 访问请填写你的 HTTPS 证书绑定的域名 eg. https://yourdomain.com
      public_url: ""
 
+   # 任务相关设置
+   task:
+     # 定时向游戏服务获取玩家在线情况的间隔，单位秒
+     sync_interval: 60
+     # 玩家进入/离开服务器通知
+     player_logging: true
+     # 玩家进入服务器消息
+     player_login_message: "玩家 {username} 加入服务器!\n当前在线人数: {online_num}"
+     # 玩家离开服务器消息
+     player_logout_message: "玩家 {username} 离开服务器!\n当前在线人数: {online_num}"
+
    # RCON 相关设置
    rcon:
      # RCON 的地址和端口
      address: "127.0.0.1:25575"
-     # 服务 端设置的 RCON AdminPassword
+     # 服务端设置的 AdminPassword
      password: ""
      # 服务器是否已开启 PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
      is_palguard: false
      # RCON 通信超时时间，推荐 <= 5
      timeout: 5
-     # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
-     sync_interval: 60
+
+   # REST API 相关配置
+   rest:
+     # REST 的地址
+     address: "http://127.0.0.1:8212"
+     # Base Auth 的用户名，固定为 admin
+     username: "admin"
+     # 服务端设置的 AdminPassword
+     password: ""
+     # 通信超时时间，推荐 <= 5
+     timeout: 5
 
    # sav_cli Config 存档文件解析相关配置
    save:
@@ -270,6 +290,17 @@ web:
   # 若开启 HTTPS 访问请填写你的 HTTPS 证书绑定的域名 eg. https://yourdomain.com
   public_url: ""
 
+# 任务相关设置
+task:
+  # 定时向游戏服务获取玩家在线情况的间隔，单位秒
+  sync_interval: 60
+  # 玩家进入/离开服务器通知
+  player_logging: true
+  # 玩家进入服务器消息
+  player_login_message: "玩家 {username} 加入服务器!\n当前在线人数: {online_num}"
+  # 玩家离开服务器消息
+  player_logout_message: "玩家 {username} 离开服务器!\n当前在线人数: {online_num}"
+  
 # RCON 相关设置
 rcon:
   # RCON 的地址和端口
@@ -280,8 +311,17 @@ rcon:
   is_palguard: false
   # RCON 通信超时时间，推荐 <= 5
   timeout: 5
-  # 定时向 RCON 服务获取玩家在线情况的间隔，单位秒
-  sync_interval: 60
+
+# REST API 相关配置
+rest:
+  # REST 的地址
+  address: "http://127.0.0.1:8212"
+  # Base Auth 的用户名，固定为 admin
+  username: "admin"
+  # 服务端设置的 AdminPassword
+  password: ""
+  # 通信超时时间，推荐 <= 5
+  timeout: 5
 
 # sav_cli Config 存档文件解析相关配置
 save:
@@ -351,6 +391,9 @@ docker run -d --name pst \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
 -e RCON__PASSWORD="your password" \
+-e REST__ADDRESS="your password" \
+-e REST__USERNAME="admin" \
+-e REST__PASSWORD="your password" \
 -e SAVE__PATH="/game" \
 -e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
@@ -376,21 +419,31 @@ touch pst.db
 > [!WARNING]
 > 注意区分单个和多个下划线，若需修改最好请复制下表变量名！
 
-|            变量名            |      默认值       | 类型 |                         说明                         |
-| :--------------------------: | :---------------: | :--: | :--------------------------------------------------: |
-|       WEB\_\_PASSWORD        |        ""         | 文本 |               Web 界面的管理员模式密码               |
-|         WEB\_\_PORT          |       8080        | 数字 |     **若非必要不建议修改，而是更改容器映射端口**     |
-|                              |                   |      |                                                      |
-|       RCON\_\_ADDRESS        | "127.0.0.1:25575" | 文本 | RCON 服务对应的地址，可以用容器网络 172.17.0.1:25575 |
-|       RCON\_\_PASSWORD       |        ""         | 文本 |           服务器配置文件中的 AdminPassword           |
-|       RCON\_\_TIMEOUT        |         5         | 数字 |             单个请求 RCON 服务的超时时间             |
-|    RCON\_\_SYNC_INTERVAL     |        60         | 数字 |        请求 RCON 服务器同步玩家在线数据的间隔        |
-|                              |                   |      |                                                      |
-|         SAVE\_\_PATH         |        ""         | 文本 |    游戏存档所在路径 **请务必填写为容器内的路径**     |
-|     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文本 |    ⚠️ 容器内置，禁止修改，会导致存档解析工具错误     |
-|    SAVE\_\_SYNC_INTERVAL     |        600        | 数字 |                同步玩家存档数据的间隔                |
-|   SAVE\_\_BACKUP_INTERVAL    |       14400       | 数字 |              自动备份玩家存档数据的间隔              |
-| MANAGE\_\_KICK_NON_WHITELIST |       false       | 布尔 |        当检测到玩家不在白名单却在线时自动踢出        |
+|              变量名              |           默认值           | 类型 |                  说明                   |
+|:-----------------------------:|:-----------------------:|:--:|:-------------------------------------:|
+|        WEB\_\_PASSWORD        |           ""            | 文本 |            Web 界面的管理员模式密码             |
+|          WEB\_\_PORT          |          8080           | 数字 |       **若非必要不建议修改，而是更改容器映射端口**        |
+|                               |                         |    |                                       |
+|        RCON\_\_ADDRESS        |    "127.0.0.1:25575"    | 文本 | RCON 服务对应的地址，可以用容器网络 172.17.0.1:25575 |
+|       RCON\_\_PASSWORD        |           ""            | 文本 |        服务器配置文件中的 AdminPassword        |
+|      RCON\_\_IS_PALGUARD      |          false          | 布尔 | 服务器是否开启 PalGuard 功能插件的 Base64 RCON 功能 |
+|        RCON\_\_TIMEOUT        |            5            | 数字 |           单个请求 RCON 服务的超时时间           |
+|                               |                         |    |                                       |
+|     TASK\_\_SYNC_INTERVAL     |           60            | 数字 |           请求服务器同步玩家在线数据的间隔            |
+|    TASK\_\_PLAYER_LOGGING     |          false          | 布尔 |              玩家登录/登出广播消息              |
+| TASK\_\_PLAYER_LOGIN_MESSAGE  |           ""            | 文本 |              玩家登录广播消息内容               |
+| TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            | 文本 |              玩家登出广播消息内容               |
+|                               |                         |    |                                       |
+|        REST\_\_ADDRESS        | "http://127.0.0.1:8212" | 文本 |       服务 REST API 对应的地址，可以用容器网络       |
+|       REST\_\_USERNAME        |         "admin"         | 文本 |             REST API 的用户名             |
+|       REST\_\_PASSWORD        |           ""            | 文本 |             REST API 的密码              |
+|        REST\_\_TIMEOUT        |            5            | 数字 |               单个请求的超时时间               |
+|                               |                         |    |                                       |
+|         SAVE\_\_PATH          |           ""            | 文本 |       游戏存档所在路径 **请务必填写为容器内的路径**       |
+|      SAVE\_\_DECODE_PATH      |     "/app/sav_cli"      | 文本 |       ⚠️ 容器内置，禁止修改，会导致存档解析工具错误        |
+|     SAVE\_\_SYNC_INTERVAL     |           600           | 数字 |              同步玩家存档数据的间隔              |
+|    SAVE\_\_BACKUP_INTERVAL    |          14400          | 数字 |             自动备份玩家存档数据的间隔             |
+| MANAGE\_\_KICK_NON_WHITELIST  |          false          | 布尔 |          当检测到玩家不在白名单却在线时自动踢出          |
 
 #### Agent 部署
 
@@ -429,6 +482,9 @@ docker run -d --name pst \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="游戏服务器IP:25575" \
 -e RCON__PASSWORD="your password" \
+-e REST__ADDRESS="http://游戏服务器IP:8212" \
+-e REST__USERNAME="admin" \
+-e REST__PASSWORD="your password" \
 -e SAVE__PATH="http://游戏服务器IP:Agent端口/sync" \
 -e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
@@ -450,22 +506,32 @@ touch pst.db
 > [!WARNING]
 > 注意区分单个和多个下划线，若需修改最好请复制下表变量名！
 
-|            变量名            |      默认值       | 类型 |                                    说明                                     |
-| :--------------------------: | :---------------: | :--: | :-------------------------------------------------------------------------: |
-|       WEB\_\_PASSWORD        |        ""         | 文本 |                          Web 界面的管理员模式密码                           |
-|         WEB\_\_PORT          |       8080        | 数字 |                **若非必要不建议修改，而是更改容器映射端口**                 |
-|                              |                   |      |                                                                             |
-|       RCON\_\_ADDRESS        | "127.0.0.1:25575" | 文本 |               RCON 服务对应的地址，一般为游戏服务器 IP:25575                |
-|       RCON\_\_PASSWORD       |        ""         | 文本 |                      服务器配置文件中的 AdminPassword                       |
-|       RCON\_\_TIMEOUT        |         5         | 数字 |                        单个请求 RCON 服务的超时时间                         |
-|    RCON\_\_SYNC_INTERVAL     |        60         | 数字 |                   请求 RCON 服务器同步玩家在线数据的间隔                    |
-|                              |                   |      |                                                                             |
-|         SAVE\_\_PATH         |        ""         | 文本 | pst-agent 所在服务地址，格式为<br> http://{游戏服务器 IP}:{Agent 端口}/sync |
-|     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   | 文本 |                ⚠️ 容器内置，禁止修改，会导致存档解析工具错误                |
-|    SAVE\_\_SYNC_INTERVAL     |        600        | 数字 |                           同步玩家存档数据的间隔                            |
-|   SAVE\_\_BACKUP_INTERVAL    |       14400       | 数字 |                         自动备份玩家存档数据的间隔                          |
-|                              |                   |      |                                                                             |
-| MANAGE\_\_KICK_NON_WHITELIST |       false       | 布尔 |                   当检测到玩家不在白名单却在线时自动踢出                    |
+|              变量名              |           默认值           | 类型 |                             说明                             |
+|:-----------------------------:|:-----------------------:|:--:|:----------------------------------------------------------:|
+|        WEB\_\_PASSWORD        |           ""            | 文本 |                       Web 界面的管理员模式密码                       |
+|          WEB\_\_PORT          |          8080           | 数字 |                  **若非必要不建议修改，而是更改容器映射端口**                  |
+|                               |                         |    |                                                            |
+|        RCON\_\_ADDRESS        |    "127.0.0.1:25575"    | 文本 |               RCON 服务对应的地址，一般为游戏服务器 IP:25575               |
+|       RCON\_\_PASSWORD        |           ""            | 文本 |                  服务器配置文件中的 AdminPassword                   |
+|      RCON\_\_IS_PALGUARD      |          false          | 布尔 |           服务器是否开启 PalGuard 功能插件的 Base64 RCON 功能            |
+|        RCON\_\_TIMEOUT        |            5            | 数字 |                     单个请求 RCON 服务的超时时间                      |
+|                               |                         |    |                                                            |
+|     TASK\_\_SYNC_INTERVAL     |           60            | 数字 |                      请求服务器同步玩家在线数据的间隔                      |
+|    TASK\_\_PLAYER_LOGGING     |          false          | 布尔 |                        玩家登录/登出广播消息                         |
+| TASK\_\_PLAYER_LOGIN_MESSAGE  |           ""            | 文本 |                         玩家登录广播消息内容                         |
+| TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            | 文本 |                         玩家登出广播消息内容                         |
+|                               |                         |    |                                                            |
+|        REST\_\_ADDRESS        | "http://127.0.0.1:8212" | 文本 |                 服务 REST API 对应的地址，可以用容器网络                  |
+|       REST\_\_USERNAME        |         "admin"         | 文本 |                       REST API 的用户名                        |
+|       REST\_\_PASSWORD        |           ""            | 文本 |                        REST API 的密码                        |
+|        REST\_\_TIMEOUT        |            5            | 数字 |                         单个请求的超时时间                          |
+|                               |                         |    |                                                            |
+|         SAVE\_\_PATH          |           ""            | 文本 | pst-agent 所在服务地址，格式为<br> http://{游戏服务器 IP}:{Agent 端口}/sync |
+|      SAVE\_\_DECODE_PATH      |     "/app/sav_cli"      | 文本 |                  ⚠️ 容器内置，禁止修改，会导致存档解析工具错误                  |
+|     SAVE\_\_SYNC_INTERVAL     |           600           | 数字 |                        同步玩家存档数据的间隔                         |
+|    SAVE\_\_BACKUP_INTERVAL    |          14400          | 数字 |                       自动备份玩家存档数据的间隔                        |
+|                               |                         |    |                                                            |
+| MANAGE\_\_KICK_NON_WHITELIST  |          false          | 布尔 |                    当检测到玩家不在白名单却在线时自动踢出                     |
 
 #### 从 k8s-pod 同步存档
 

@@ -1,9 +1,7 @@
 package source
 
 import (
-	"archive/tar"
 	"bytes"
-	"compress/gzip"
 	"context"
 	"errors"
 	"fmt"
@@ -80,7 +78,7 @@ func CopyFromPod(namespace, podName, container, remotePath, way string) (string,
 		return "", err
 	}
 
-	err = untar(tarStream, absPath)
+	err = system.UnTarGzDir(tarStream, absPath)
 	if err != nil {
 		return "", err
 	}
@@ -179,48 +177,6 @@ func execPodCommandStream(clientset *kubernetes.Clientset, config *rest.Config, 
 	}()
 
 	return reader, nil
-}
-
-func untar(tarStream io.Reader, destDir string) error {
-	gzr, err := gzip.NewReader(tarStream)
-	if err != nil {
-		return err
-	}
-	defer gzr.Close()
-
-	tr := tar.NewReader(gzr)
-
-	for {
-		header, err := tr.Next()
-
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return err
-		}
-
-		target := filepath.Join(destDir, header.Name)
-
-		switch header.Typeflag {
-		case tar.TypeDir:
-			if err := os.MkdirAll(target, os.FileMode(header.Mode)); err != nil {
-				return err
-			}
-		case tar.TypeReg:
-			f, err := os.OpenFile(target, os.O_CREATE|os.O_RDWR, os.FileMode(header.Mode))
-			if err != nil {
-				return err
-			}
-			if _, err := io.Copy(f, tr); err != nil {
-				f.Close()
-				return err
-			}
-			f.Close()
-		}
-	}
-
-	return nil
 }
 
 func ParseK8sAddress(address string) (namespace, pod, container, filePath string, err error) {

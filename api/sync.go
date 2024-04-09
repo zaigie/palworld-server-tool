@@ -31,7 +31,7 @@ const (
 func syncData(c *gin.Context) {
 	from := c.Query("from")
 	if from == "rcon" {
-		go task.RconSync(database.GetDB())
+		go task.PlayerSync(database.GetDB())
 		c.JSON(http.StatusOK, gin.H{"success": true})
 		return
 	} else if from == "sav" {
