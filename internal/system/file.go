@@ -1,7 +1,9 @@
 package system
 
 import (
+	"archive/tar"
 	"archive/zip"
+	"compress/gzip"
 	"errors"
 	"io"
 	"os"
@@ -271,6 +273,52 @@ func LimitCacheDir(cacheDirPrefix string, n int) error {
 				logger.Errorf("LimitCacheDir: error removing directory: %v\n", err)
 				return err
 			}
+		}
+	}
+
+	return nil
+}
+
+func UnTarGzDir(tarStream io.Reader, destDir string) error {
+	gzr, err := gzip.NewReader(tarStream)
+	if err != nil {
+		return err
+	}
+	defer gzr.Close()
+
+	tr := tar.NewReader(gzr)
+
+	for {
+		header, err := tr.Next()
+
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+
+		target := filepath.Join(destDir, header.Name)
+
+		switch header.Typeflag {
+		case tar.TypeDir:
+			if err := os.MkdirAll(target, os.FileMode(header.Mode)); err != nil {
+				return err
+			}
+		case tar.TypeReg:
+			targetDir := filepath.Dir(target)
+			if err := os.MkdirAll(targetDir, os.FileMode(header.Mode)); err != nil {
+				return err
+			}
+			f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, os.FileMode(header.Mode))
+			if err != nil {
+				return err
+			}
+			if _, err := io.Copy(f, tr); err != nil {
+				f.Close()
+				return err
+			}
+			f.Close()
 		}
 	}
 

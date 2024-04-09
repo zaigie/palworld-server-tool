@@ -1,9 +1,13 @@
 package source
 
 import (
-	"archive/tar"
+	"bytes"
 	"context"
 	"errors"
+	"fmt"
+	"github.com/docker/docker/pkg/stdcopy"
+	"github.com/google/uuid"
+	"github.com/zaigie/palworld-server-tool/internal/system"
 	"io"
 	"os"
 	"path/filepath"
@@ -11,9 +15,7 @@ import (
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
-	"github.com/zaigie/palworld-server-tool/internal/system"
 )
 
 func getDockerClient() (*client.Client, error) {
@@ -27,111 +29,103 @@ func getDockerClient() (*client.Client, error) {
 
 func CopyFromContainer(containerID, remotePath, way string) (string, error) {
 	logger.Infof("copying savDir from %s\n", remotePath)
-	ctx := context.Background()
+
 	cli, err := getDockerClient()
 	if err != nil {
 		return "", err
 	}
 	defer cli.Close()
 
-	savDir, err := getSavDir(containerID, remotePath, cli, ctx)
+	// 取得Level.sav所在目录
+	findCmd := []string{"sh", "-c", fmt.Sprintf("dirname $(find %s -maxdepth 4 -name Level.sav)", remotePath)}
+	savDir, err := execCommand(containerID, findCmd, cli)
 	if err != nil {
 		return "", err
 	}
-	relatedSavHash := filepath.Base(savDir)
+	savDir = strings.TrimSpace(savDir)
+	if savDir == "" {
+		return "", errors.New("directory containing Level.sav not found in container")
+	}
 
-	reader, _, err := cli.CopyFromContainer(ctx, containerID, savDir)
+	// 压缩
+	tarCmd := []string{"sh", "-c", fmt.Sprintf("cd \"%s\" && tar czf - ./*.sav ./Players/*.sav", savDir)}
+	tarReader, err := execCommandStream(containerID, tarCmd, cli)
 	if err != nil {
 		return "", err
 	}
-	defer reader.Close()
 
-	uuid := uuid.New().String()
-	tempDir := filepath.Join(os.TempDir(), "palworldsav-docker-"+way+"-"+uuid)
-	absPath, err := filepath.Abs(tempDir)
+	// 创建临时目录
+	id := uuid.New().String()
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-docker-"+way+"-"+id)
+	err = os.MkdirAll(tempDir, os.ModePerm)
 	if err != nil {
 		return "", err
 	}
 
-	if err = system.CleanAndCreateDir(absPath); err != nil {
+	// 解压文件
+	err = system.UnTarGzDir(tarReader, tempDir)
+	if err != nil {
 		return "", err
 	}
 
-	tarReader := tar.NewReader(reader)
-	for {
-		header, err := tarReader.Next()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return "", err
-		}
-
-		path := filepath.Join(absPath, header.Name)
-
-		switch header.Typeflag {
-		case tar.TypeDir:
-			if err := os.MkdirAll(path, os.FileMode(header.Mode)); err != nil {
-				return "", err
-			}
-		case tar.TypeReg:
-			file, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, os.FileMode(header.Mode))
-			if err != nil {
-				return "", err
-			}
-			if _, err := io.Copy(file, tarReader); err != nil {
-				file.Close()
-				return "", err
-			}
-			file.Close()
-		}
-	}
-
-	levelFilePath := filepath.Join(absPath, relatedSavHash, "Level.sav")
+	levelFilePath := filepath.Join(tempDir, "Level.sav")
 	return levelFilePath, nil
 }
 
-func getSavDir(containerID, path string, cli *client.Client, ctx context.Context) (string, error) {
+func execCommandStream(containerID string, command []string, cli *client.Client) (io.Reader, error) {
+	ctx := context.Background()
 	execConfig := types.ExecConfig{
-		Cmd:          []string{"find", path, "-name", "Level.sav"},
+		Cmd:          command,
 		AttachStdout: true,
 		AttachStderr: true,
 	}
-	resp, err := cli.ContainerExecCreate(ctx, containerID, execConfig)
+	ir, err := cli.ContainerExecCreate(ctx, containerID, execConfig)
 	if err != nil {
-		return "", err
+		return nil, err
+	}
+	hr, err := cli.ContainerExecAttach(ctx, ir.ID, types.ExecStartCheck{})
+	if err != nil {
+		return nil, err
 	}
 
-	response, err := cli.ContainerExecAttach(ctx, resp.ID, types.ExecStartCheck{})
-	if err != nil {
-		return "", err
-	}
-	defer response.Close()
+	reader, writer := io.Pipe()
 
-	out, err := io.ReadAll(response.Reader)
-	if err != nil {
-		return "", err
-	}
+	go func() {
+		defer writer.Close()
+		defer hr.Close()
+		_, err = stdcopy.StdCopy(writer, os.Stderr, hr.Reader)
+		if err != nil {
+			logger.Errorf("Stream to docker failed: %v", err)
+		}
+	}()
 
-	levelFilePath, err := getValidFilePath(strings.TrimSpace(string(out)), path)
-	if err != nil {
-		return "", err
-	}
-
-	logger.Debugf("docker find Level.sav file: %s\n", levelFilePath)
-	if !strings.HasSuffix(levelFilePath, "Level.sav") {
-		return "", errors.New("file Level.sav not found")
-	}
-	return filepath.Dir(levelFilePath), nil
+	return reader, nil
 }
 
-func getValidFilePath(output, expectedStart string) (string, error) {
-	startIndex := strings.Index(output, expectedStart)
-	if startIndex == -1 {
-		return "", errors.New("expected path not found in the output")
+func execCommand(containerID string, command []string, cli *client.Client) (string, error) {
+	ctx := context.Background()
+	execConfig := types.ExecConfig{
+		Cmd:          command,
+		AttachStdout: true,
+		AttachStderr: true,
 	}
-	validPath := output[startIndex:]
-	return validPath, nil
+	ir, err := cli.ContainerExecCreate(ctx, containerID, execConfig)
+	if err != nil {
+		return "", err
+	}
+	hr, err := cli.ContainerExecAttach(ctx, ir.ID, types.ExecStartCheck{})
+	if err != nil {
+		return "", err
+	}
+	defer hr.Close()
+
+	var outBuf bytes.Buffer
+	_, err = stdcopy.StdCopy(&outBuf, os.Stderr, hr.Reader)
+	if err != nil {
+		return "", err
+	}
+
+	return outBuf.String(), nil
 }
 
 func ParseDockerAddress(address string) (containerID, filePath string, err error) {
