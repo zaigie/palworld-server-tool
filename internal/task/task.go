@@ -3,6 +3,8 @@ package task
 import (
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -38,7 +40,7 @@ func BackupTask(db *bbolt.DB) {
 	logger.Infof("Auto backup to %s\n", path)
 }
 
-func RconSync(db *bbolt.DB) {
+func PlayerSync(db *bbolt.DB) {
 	logger.Info("Scheduling Rcon sync...\n")
 	playersRcon, err := tool.ShowPlayers()
 	if err != nil {
@@ -50,16 +52,87 @@ func RconSync(db *bbolt.DB) {
 	}
 	logger.Info("Rcon sync done\n")
 
+	playerLogging := viper.GetBool("task.player_logging")
+	if playerLogging {
+		go PlayerLogging(playersRcon)
+	}
+
 	kickInterval := viper.GetBool("manage.kick_non_whitelist")
 	if kickInterval {
 		go CheckAndKickPlayers(db, playersRcon)
 	}
 }
 
+func isPlayerWhitelisted(player database.PlayerRcon, whitelist []database.PlayerW) bool {
+	for _, whitelistedPlayer := range whitelist {
+		if (player.PlayerUid != "" && player.PlayerUid == whitelistedPlayer.PlayerUID) ||
+			(player.SteamId != "" && player.SteamId == whitelistedPlayer.SteamID) {
+			return true
+		}
+	}
+	return false
+}
+
+var playerCache map[string]string
+var firstPoll = true
+
+func PlayerLogging(players []database.PlayerRcon) {
+	loginMsg := viper.GetString("task.player_login_message")
+	logoutMsg := viper.GetString("task.player_logout_message")
+
+	tmp := make(map[string]string, len(players))
+	for _, player := range players {
+		tmp[player.PlayerUid] = player.Nickname
+	}
+	if !firstPoll {
+		for id, name := range tmp {
+			if _, ok := playerCache[id]; !ok {
+				BroadcastVariableMessage(loginMsg, name, len(players))
+			}
+		}
+		for id, name := range playerCache {
+			if _, ok := tmp[id]; !ok {
+				BroadcastVariableMessage(logoutMsg, name, len(players))
+			}
+		}
+	}
+	firstPoll = false
+	playerCache = tmp
+}
+
+func BroadcastVariableMessage(message string, username string, onlineNum int) {
+	message = strings.ReplaceAll(message, "{username}", username)
+	message = strings.ReplaceAll(message, "{online_num}", strconv.Itoa(onlineNum))
+	arr := strings.Split(message, "\n")
+	for _, msg := range arr {
+		err := tool.Broadcast(msg)
+		if err != nil {
+			logger.Warnf("Broadcast fail, %s \n", err)
+		}
+		// 连续发送不知道为啥行会错乱, 只能加点延迟
+		time.Sleep(1000 * time.Millisecond)
+	}
+}
+
 func CheckAndKickPlayers(db *bbolt.DB, players []database.PlayerRcon) {
-	err := tool.CheckAndKickPlayers(db, players)
+	whitelist, err := service.ListWhitelist(db)
 	if err != nil {
 		logger.Errorf("%v\n", err)
+	}
+	for _, player := range players {
+		if !isPlayerWhitelisted(player, whitelist) {
+			identifier := player.SteamId
+			if identifier == "" {
+				logger.Warnf("Kicked %s fail, SteamId is empty \n", player.Nickname)
+				continue
+			}
+			err := tool.KickPlayer(identifier)
+			if err != nil {
+				logger.Warnf("Kicked %s fail, %s \n", player.Nickname, err)
+				continue
+			}
+			logger.Warnf("Kicked %s successful \n", player.Nickname)
+		}
 	}
 	logger.Info("Check whitelist done\n")
 }
@@ -76,15 +149,15 @@ func SavSync() {
 func Schedule(db *bbolt.DB) {
 	s := getScheduler()
 
-	rconSyncInterval := time.Duration(viper.GetInt("rcon.sync_interval"))
+	playerSyncInterval := time.Duration(viper.GetInt("task.sync_interval"))
 	savSyncInterval := time.Duration(viper.GetInt("save.sync_interval"))
 	backupInterval := time.Duration(viper.GetInt("save.backup_interval"))
 
-	if rconSyncInterval > 0 {
-		go RconSync(db)
+	if playerSyncInterval > 0 {
+		go PlayerSync(db)
 		_, err := s.NewJob(
-			gocron.DurationJob(rconSyncInterval*time.Second),
-			gocron.NewTask(RconSync, db),
+			gocron.DurationJob(playerSyncInterval*time.Second),
+			gocron.NewTask(PlayerSync, db),
 		)
 		if err != nil {
 			logger.Errorf("%v\n", err)

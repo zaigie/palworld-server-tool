@@ -37,6 +37,10 @@ class ApiService extends Service {
     const { playerUid } = param;
     return this.fetch(`/api/player/${playerUid}/ban`).post().json();
   }
+  async unbanPlayer(param) {
+    const { playerUid } = param;
+    return this.fetch(`/api/player/${playerUid}/unban`).post().json();
+  }
 
   async getGuildList() {
     return this.fetch(`/api/guild`).get().json();

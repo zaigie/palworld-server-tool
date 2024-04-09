@@ -5,12 +5,21 @@ web:
   cert_path: ""
   key_path: ""
   public_url: ""
+task:
+  sync_interval: 60
+  player_logging: false
+  player_login_message: "Player {username} has joined the server! Current online player count: {online_num}."
+  player_logout_message: "Player {username} has left the server! Current online player count: {online_num}."
 rcon:
   address: "127.0.0.1:25575"
   password: ""
   is_palguard: false
   timeout: 5
-  sync_interval: 60
+rest:
+  address: "http://127.0.0.1:8212"
+  username: "admin"
+  password: ""
+  timeout: 5
 save:
   path: "/path/to/your/Pal/Saved"
   decode_path: ""

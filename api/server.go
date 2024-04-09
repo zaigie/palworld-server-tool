@@ -3,7 +3,6 @@ package api
 import (
 	"errors"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
@@ -134,7 +133,7 @@ func shutdownServer(c *gin.Context) {
 	if req.Seconds == 0 {
 		req.Seconds = 60
 	}
-	if err := tool.Shutdown(strconv.Itoa(req.Seconds), req.Message); err != nil {
+	if err := tool.Shutdown(req.Seconds, req.Message); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

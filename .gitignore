@@ -43,5 +43,6 @@ structure.json
 
 .pnpm-store
 .vscode
+.idea
 
 backups/
