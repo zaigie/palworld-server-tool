@@ -50,7 +50,7 @@ func CopyFromPod(namespace, podName, container, remotePath, way string) (string,
 		return "", ErrContainerEmpty
 	}
 
-	findCmd := []string{"sh", "-c", fmt.Sprintf("dirname $(find %s -name Level.sav)", remotePath)}
+	findCmd := []string{"sh", "-c", fmt.Sprintf("dirname $(find %s -maxdepth 4 -name Level.sav)", remotePath)}
 	savDir, err := execPodCommand(clientset, config, namespace, podName, container, findCmd)
 	if err != nil {
 		return "", errors.New("error executing find command: " + err.Error())
@@ -59,33 +59,29 @@ func CopyFromPod(namespace, podName, container, remotePath, way string) (string,
 	if savDir == "" {
 		return "", errors.New("directory containing Level.sav not found in Pod")
 	}
-	logger.Debugf("directory path: %s\n", savDir)
+	logger.Debugf("Directory path: %s\n", savDir)
 
-	tarCmd := []string{"sh", "-c", fmt.Sprintf("tar czf - -C %s .", savDir)}
+	tarCmd := []string{"sh", "-c", fmt.Sprintf("cd \"%s\" && tar czf - ./*.sav ./Players/*.sav", savDir)}
 	tarStream, err := execPodCommandStream(clientset, config, namespace, podName, container, tarCmd)
 	if err != nil {
 		return "", errors.New("error executing tar command: " + err.Error())
 	}
 
-	uuid := uuid.New().String()
-	tempDir := filepath.Join(os.TempDir(), "palworldsav-pod-"+way+"-"+uuid)
-	absPath, err := filepath.Abs(tempDir)
+	id := uuid.New().String()
+	tempDir := filepath.Join(os.TempDir(), "palworldsav-pod-"+way+"-"+id)
+	err = os.MkdirAll(tempDir, os.ModePerm)
 	if err != nil {
 		return "", err
 	}
 
-	if err = system.CleanAndCreateDir(absPath); err != nil {
-		return "", err
-	}
-
-	err = system.UnTarGzDir(tarStream, absPath)
+	err = system.UnTarGzDir(tarStream, tempDir)
 	if err != nil {
 		return "", err
 	}
 
-	logger.Debugf("Directory copied from pod: %s\n", absPath)
+	logger.Debugf("Directory copied from pod: %s\n", tempDir)
 
-	levelFilePath := filepath.Join(absPath, "Level.sav")
+	levelFilePath := filepath.Join(tempDir, "Level.sav")
 	return levelFilePath, nil
 }
 
