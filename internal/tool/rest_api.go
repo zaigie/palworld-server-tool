@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"io"
 	"net/http"
 	"net/url"
@@ -98,14 +99,12 @@ func ShowPlayers() ([]database.PlayerRcon, error) {
 	}
 	playersRcon := make([]database.PlayerRcon, 0)
 	for _, player := range data.Players {
-		id, err := strconv.Atoi(player.PlayerId)
+		id, err := strconv.ParseUint(player.PlayerId[:8], 16, 32)
 		if err != nil {
+			logger.Error("Parse PlayerId fail, %s \n", err)
 			continue
 		}
-		// 临时处理游戏的BUG
-		if id < 0 {
-			player.PlayerId = strconv.FormatUint(uint64(uint32(id)), 10)
-		}
+		player.PlayerId = strconv.FormatUint(id, 10)
 		playerRcon := database.PlayerRcon{
 			PlayerUid: player.PlayerId,
 			SteamId:   player.UserId,
