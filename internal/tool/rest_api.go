@@ -99,6 +99,9 @@ func ShowPlayers() ([]database.PlayerRcon, error) {
 	}
 	playersRcon := make([]database.PlayerRcon, 0)
 	for _, player := range data.Players {
+		if player.PlayerId == "None" || len(player.PlayerId) != 32 {
+			continue
+		}
 		id, err := strconv.ParseUint(player.PlayerId[:8], 16, 32)
 		if err != nil {
 			logger.Error("Parse PlayerId fail, %s \n", err)
