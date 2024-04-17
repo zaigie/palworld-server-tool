@@ -9,7 +9,7 @@ import (
 )
 
 func executeCommand(command string) (*executor.Executor, string, error) {
-	useBase64 := viper.GetBool("rcon.is_palguard")
+	useBase64 := viper.GetBool("rcon.use_base64")
 
 	exec, err := executor.NewExecutor(
 		viper.GetString("rcon.address"),

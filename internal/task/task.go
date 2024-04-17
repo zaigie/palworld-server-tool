@@ -41,25 +41,25 @@ func BackupTask(db *bbolt.DB) {
 }
 
 func PlayerSync(db *bbolt.DB) {
-	logger.Info("Scheduling Rcon sync...\n")
-	playersRcon, err := tool.ShowPlayers()
+	logger.Info("Scheduling Player sync...\n")
+	onlinePlayers, err := tool.ShowPlayers()
 	if err != nil {
 		logger.Errorf("%v\n", err)
 	}
-	err = service.PutPlayersRcon(db, playersRcon)
+	err = service.PutPlayersOnline(db, onlinePlayers)
 	if err != nil {
 		logger.Errorf("%v\n", err)
 	}
-	logger.Info("Rcon sync done\n")
+	logger.Info("Player sync done\n")
 
 	playerLogging := viper.GetBool("task.player_logging")
 	if playerLogging {
-		go PlayerLogging(playersRcon)
+		go PlayerLogging(onlinePlayers)
 	}
 
 	kickInterval := viper.GetBool("manage.kick_non_whitelist")
 	if kickInterval {
-		go CheckAndKickPlayers(db, playersRcon)
+		go CheckAndKickPlayers(db, onlinePlayers)
 	}
 }
 

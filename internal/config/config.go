@@ -9,13 +9,13 @@ import (
 
 type Config struct {
 	Web struct {
-		Port      int    `mapstructure:"port"`
 		Password  string `mapstructure:"password"`
+		Port      int    `mapstructure:"port"`
 		Tls       bool   `mapstructure:"tls"`
 		CertPath  string `mapstructure:"cert_path"`
 		KeyPath   string `mapstructure:"key_path"`
 		PublicUrl string `mapstructure:"public_url"`
-	}
+	} `mapstructure:"web"`
 	Task struct {
 		SyncInterval        int    `mapstructure:"sync_interval"`
 		PlayerLogging       bool   `mapstructure:"player_logging"`
@@ -23,11 +23,10 @@ type Config struct {
 		PlayerLogoutMessage string `mapstructure:"player_logout_message"`
 	} `mapstructure:"task"`
 	Rcon struct {
-		Address        string `mapstructure:"address"`
-		Password       string `mapstructure:"password"`
-		Timeout        int    `mapstructure:"timeout"`
-		IsPalGuard     bool   `mapstructure:"is_palguard"`
-		BackupInterval int    `mapstructure:"backup_interval"`
+		Address   string `mapstructure:"address"`
+		Password  string `mapstructure:"password"`
+		UseBase64 bool   `mapstructure:"use_base64"`
+		Timeout   int    `mapstructure:"timeout"`
 	} `mapstructure:"rcon"`
 	Rest struct {
 		Address  string `mapstructure:"address"`
@@ -36,9 +35,10 @@ type Config struct {
 		Timeout  int    `mapstructure:"timeout"`
 	} `mapstructure:"rest"`
 	Save struct {
-		Path         string `mapstructure:"path"`
-		DecodePath   string `mapstructure:"decode_path"`
-		SyncInterval int    `mapstructure:"sync_interval"`
+		Path           string `mapstructure:"path"`
+		DecodePath     string `mapstructure:"decode_path"`
+		SyncInterval   int    `mapstructure:"sync_interval"`
+		BackupInterval int    `mapstructure:"backup_interval"`
 	} `mapstructure:"save"`
 	Manage struct {
 		KickNonWhitelist bool `mapstructure:"kick_non_whitelist"`
@@ -69,7 +69,7 @@ func Init(cfgFile string, conf *Config) {
 	viper.SetDefault("task.sync_interval", 60)
 
 	viper.SetDefault("rcon.timeout", 5)
-	viper.SetDefault("rcon.is_palguard", false)
+	viper.SetDefault("rcon.use_base64", false)
 
 	viper.SetDefault("rest.timeout", 5)
 

@@ -13,7 +13,7 @@ task:
 rcon:
   address: "127.0.0.1:25575"
   password: ""
-  is_palguard: false
+  use_base64: false
   timeout: 5
 rest:
   address: "http://127.0.0.1:8212"
