@@ -15,6 +15,14 @@ import (
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 )
 
+func GetExecDir() (string, error) {
+	exePath, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Dir(exePath), nil
+}
+
 func CheckIsDir(path string) (bool, error) {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
