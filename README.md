@@ -5,7 +5,7 @@
 </p>
 
 <p align='center'>
-  通过可视化界面及 REST 接口管理幻兽帕鲁专用服务器，基于 SAV 存档文件解析及 RCON 实现<br/>
+  通过可视化界面及 REST 接口管理幻兽帕鲁专用服务器，基于 SAV 存档文件解析及 REST&RCON 实现<br/>
   并且花了很漫长且枯燥的时间去做了国际化...
 </p>
 
@@ -29,9 +29,10 @@
 - [x] 公会数据
 - [x] 玩家背包物品数据
 
-基于官方提供的 RCON 命令（仅服务器可用的）实现功能：
+基于官方提供的 REST API 实现功能：
 
 - [x] 获取服务器信息
+- [x] 获取服务器统计数据
 - [x] 在线玩家列表
 - [x] 踢出/封禁玩家
 - [x] 游戏内广播
@@ -72,19 +73,19 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491
 <img src="./docs/img/pst-zh-m-1.png" width="30%" /><img src="./docs/img/pst-zh-m-2.png" width="30%" /><img src="./docs/img/pst-zh-m-3.png" width="30%" />
 </p>
 
-## 如何开启私服 RCON
+## 如何开启 REST API 与 RCON
 
-需要开启服务器的 RCON 功能，如果你的私服教程有写更好，没有的话，修改 `PalWorldSettings.ini` 文件
+本项目必需开启服务器的 REST API 功能才能正常使用，而自定义 RCON 功能则依赖于 RCON 功能。
 
-**也就是修改游戏内各种倍数、概率的那个文件**，里面最后的位置有如下：
+如果你的私服教程有写更好，没有的话，请先关闭服务端，然后在 [Pal-Conf](https://pal-conf.bluefissure.com/) 修改 `PalWorldSettings.ini` 文件或者 `WorldOption.sav` 文件并放到相应位置，启用服务端。
 
-```txt
-AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
-```
+先设置 **管理员密码**
 
-![RCON](./docs/img/rcon.png)
+![ADMIN](./docs/img/admin-zh.png)
 
-请**先关闭服务器再作修改**，你需要设置一个 AdminPassword，然后将 `RCONEnabled` 和 `RCONPort` 填写如上，再重启服务器即可。
+再设置 **RCON** 和 **REST API**
+
+![RCON_REST](./docs/img/rest-rcon-zh.png)
 
 ## 安装部署
 
@@ -134,7 +135,7 @@ AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
 
 ```bash
 # 下载 pst_{version}_{platform}_{arch}.tar.gz 文件并解压到 pst 目录
-mkdir -p pst && tar -xzf pst_v0.6.2_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.7.0_linux_x86_64.tar.gz -C pst
 ```
 
 ##### 配置
@@ -259,7 +260,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 ##### 下载解压
 
-解压 `pst_v0.6.2_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
+解压 `pst_v0.7.0_windows_x86_64.zip` 到任意目录（推荐命名文件夹目录名称为 `pst`）
 
 ##### 配置
 
@@ -385,15 +386,13 @@ manage:
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
--m 256M --memory-swap=4G `# 可选参数 设置可用内存为256M 交换分区为4G` \
 -v /path/to/your/Pal/Saved:/game \
 -v ./backups:/app/backups \
--e WEB__PASSWORD="your password" \
+-e WEB__PASSWORD="your web password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
--e RCON__PASSWORD="your password" \
--e REST__ADDRESS="your password" \
--e REST__USERNAME="admin" \
--e REST__PASSWORD="your password" \
+-e RCON__PASSWORD="your admin password" \
+-e REST__ADDRESS="http://127.0.0.1:8212" \
+-e REST__PASSWORD="your admin password" \
 -e SAVE__PATH="/game" \
 -e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
@@ -435,8 +434,8 @@ touch pst.db
 | TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            | 文本 |                 玩家登出广播消息内容                 |
 |                               |                         |      |                                                      |
 |        REST\_\_ADDRESS        | "http://127.0.0.1:8212" | 文本 |       服务 REST API 对应的地址，可以用容器网络       |
-|       REST\_\_USERNAME        |         "admin"         | 文本 |                  REST API 的用户名                   |
-|       REST\_\_PASSWORD        |           ""            | 文本 |                   REST API 的密码                    |
+|       REST\_\_USERNAME        |         "admin"         | 文本 |      REST API 的用户名，默认即为 admin，不用管       |
+|       REST\_\_PASSWORD        |           ""            | 文本 |           服务器配置文件中的 AdminPassword           |
 |        REST\_\_TIMEOUT        |            5            | 数字 |                  单个请求的超时时间                  |
 |                               |                         |      |                                                      |
 |         SAVE\_\_PATH          |           ""            | 文本 |    游戏存档所在路径 **请务必填写为容器内的路径**     |
@@ -481,10 +480,9 @@ docker run -d --name pst \
 -v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
 -e RCON__ADDRESS="游戏服务器IP:25575" \
--e RCON__PASSWORD="your password" \
+-e RCON__PASSWORD="your admin password" \
 -e REST__ADDRESS="http://游戏服务器IP:8212" \
--e REST__USERNAME="admin" \
--e REST__PASSWORD="your password" \
+-e REST__PASSWORD="your admin password" \
 -e SAVE__PATH="http://游戏服务器IP:Agent端口/sync" \
 -e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
@@ -522,8 +520,8 @@ touch pst.db
 | TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            | 文本 |                            玩家登出广播消息内容                             |
 |                               |                         |      |                                                                             |
 |        REST\_\_ADDRESS        | "http://127.0.0.1:8212" | 文本 |                  服务 REST API 对应的地址，可以用容器网络                   |
-|       REST\_\_USERNAME        |         "admin"         | 文本 |                              REST API 的用户名                              |
-|       REST\_\_PASSWORD        |           ""            | 文本 |                               REST API 的密码                               |
+|       REST\_\_USERNAME        |         "admin"         | 文本 |                  REST API 的用户名，默认即为 admin，不用管                  |
+|       REST\_\_PASSWORD        |           ""            | 文本 |                      服务器配置文件中的 AdminPassword                       |
 |        REST\_\_TIMEOUT        |            5            | 数字 |                             单个请求的超时时间                              |
 |                               |                         |      |                                                                             |
 |         SAVE\_\_PATH          |           ""            | 文本 | pst-agent 所在服务地址，格式为<br> http://{游戏服务器 IP}:{Agent 端口}/sync |
