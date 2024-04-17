@@ -410,7 +410,6 @@ Set various environment variables, similar to those in [`config.yaml`](#configur
 | TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            |  Text  |                    The player logs out the broadcast message content                    |
 |                               |                         |        |                                                                                         |
 |        REST\_\_ADDRESS        | "http://127.0.0.1:8212" |  Text  |  The address corresponding to the service REST API can be used in a container network   |
-|       REST\_\_USERNAME        |         "admin"         |  Text  |                     The default user name of the REST API is admin                      |
 |       REST\_\_PASSWORD        |           ""            |  Text  |                        AdminPassword in the server configuration                        |
 |        REST\_\_TIMEOUT        |            5            | Number |                                     Request Timeout                                     |
 |                               |                         |        |                                                                                         |
@@ -494,7 +493,6 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 | TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            |  Text  |                    The player logs out the broadcast message content                    |
 |                               |                         |        |                                                                                         |
 |        REST\_\_ADDRESS        | "http://127.0.0.1:8212" |  Text  |  The address corresponding to the service REST API can be used in a container network   |
-|       REST\_\_USERNAME        |         "admin"         |  Text  |                     The default user name of the REST API is admin                      |
 |       REST\_\_PASSWORD        |           ""            |  Text  |                        AdminPassword in the server configuration                        |
 |        REST\_\_TIMEOUT        |            5            | Number |                                     Request Timeout                                     |
 |                               |                         |        |                                                                                         |
