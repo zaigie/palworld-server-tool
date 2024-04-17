@@ -42,7 +42,9 @@ const getPlayerList = async () => {
 const getPlayerInfo = async (player_uid) => {
   const { data } = await new ApiService().getPlayer({ playerUid: player_uid });
   playerInfo.value = data.value;
-  playerPalsList.value = playerInfo?.value.pals ? JSON.parse(JSON.stringify(playerInfo?.value.pals)) : [];
+  playerPalsList.value = playerInfo?.value.pals
+    ? JSON.parse(JSON.stringify(playerInfo?.value.pals))
+    : [];
   nextTick(() => {
     const playerInfoEL = document.getElementById("player-info");
     if (playerInfoEL) {
@@ -114,7 +116,7 @@ const getSkillTypeList = () => {
   }
 };
 const isPlayerOnline = (last_online) => {
-  return dayjs() - dayjs(last_online) < 120000;
+  return dayjs() - dayjs(last_online) < 80000;
 };
 const displayLastOnline = (last_online) => {
   if (dayjs(last_online).year() < 1970) {

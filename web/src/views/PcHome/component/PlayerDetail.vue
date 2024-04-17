@@ -416,7 +416,7 @@ const getUnknowPalAvatar = (is_boss = false) => {
   return new URL("@/assets/pals/unknown.png", import.meta.url).href;
 };
 const isPlayerOnline = (last_online) => {
-  return dayjs() - dayjs(last_online) < 120000;
+  return dayjs() - dayjs(last_online) < 80000;
 };
 
 const displayHP = (hp, max_hp) => {
@@ -570,6 +570,30 @@ const createPlayerItemsColumns = () => {
                 <n-icon><PersonSearchSharp /></n-icon>
               </template>
             </n-button>
+          </div>
+          <div class="flex items-center mt-2 space-x-2">
+            <n-tag v-if="playerInfo.ip" :bordered="false" round size="small">
+              IP: {{ playerInfo.ip }}
+            </n-tag>
+            <n-tag v-if="playerInfo.ping" :bordered="false" round size="small">
+              Ping: {{ playerInfo.ping.toFixed(2) }}
+            </n-tag>
+            <n-tag
+              v-if="playerInfo.location_x"
+              :bordered="false"
+              round
+              size="small"
+            >
+              X: {{ playerInfo.location_x }}
+            </n-tag>
+            <n-tag
+              v-if="playerInfo.location_y"
+              :bordered="false"
+              round
+              size="small"
+            >
+              Y: {{ playerInfo.location_y }}
+            </n-tag>
           </div>
         </template>
         <template #avatar>

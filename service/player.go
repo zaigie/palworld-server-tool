@@ -20,11 +20,13 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 				if err := json.Unmarshal(existingPlayerData, &existingPlayer); err != nil {
 					return err
 				}
-
-				// Rcon data already has this player
 				if existingPlayer.SteamId != "" {
 					p.SteamId = existingPlayer.SteamId
 				}
+				p.Ip = existingPlayer.Ip
+				p.Ping = existingPlayer.Ping
+				p.LocationX = existingPlayer.LocationX
+				p.LocationY = existingPlayer.LocationY
 			}
 			if p.SaveLastOnline != "" {
 				p.LastOnline, _ = time.Parse(time.RFC3339, p.SaveLastOnline)
