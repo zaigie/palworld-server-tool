@@ -71,6 +71,7 @@ func Init(cfgFile string, conf *Config) {
 	viper.SetDefault("rcon.timeout", 5)
 	viper.SetDefault("rcon.use_base64", false)
 
+	viper.SetDefault("rest.username", "admin")
 	viper.SetDefault("rest.timeout", 5)
 
 	viper.SetDefault("save.sync_interval", 600)
