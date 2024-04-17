@@ -153,7 +153,7 @@ mkdir -p pst && tar -xzf pst_v0.6.2_linux_x86_64.tar.gz -C pst
      # Server AdminPassword
      password: ""
      # Use PalGuard base64 RCON pgbroadcast instad of broadcast
-     is_palguard: false
+     use_base64: false
      # RCON Timeout Sec
      timeout: 5
      # RCON Communication Interval Sec
@@ -257,7 +257,7 @@ rcon:
   # Server AdminPassword
   password: ""
   # Use PalGuard  base64 RCON pgbroadcast instad of broadcast
-  is_palguard: false
+  use_base64: false
   # RCON Timeout Sec
   timeout: 5
   # RCON Communication Interval Sec
