@@ -104,7 +104,7 @@ const showPalDetail = (pal) => {
 };
 
 const isPlayerOnline = (last_online) => {
-  return dayjs() - dayjs(last_online) < 120000;
+  return dayjs() - dayjs(last_online) < 80000;
 };
 
 const copyText = async (text) => {
