@@ -632,6 +632,41 @@ paths:
       summary: Kick Player
       tags:
       - Player
+  /api/player/{player_uid}/unban:
+    post:
+      consumes:
+      - application/json
+      description: Unban Player
+      parameters:
+      - description: Player UID
+        in: path
+        name: player_uid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Unban Player
+      tags:
+      - Player
   /api/rcon:
     get:
       consumes:
@@ -906,7 +941,7 @@ paths:
       parameters:
       - description: from
         enum:
-        - rcon
+        - rest
         - sav
         in: query
         name: from
