@@ -5,7 +5,7 @@
 </p>
 
 <p align='center'> 
-  Manage your Palworld dedicated server through a visual interface and REST API, using SAV file parsing and RCON functionalities.<br/>
+  Manage your Palworld dedicated server through a visual interface and REST API, using SAV file parsing and REST&RCON functionalities.<br/>
   And it took a long and boring time to i18n...
 </p>
 
@@ -29,9 +29,10 @@ Features based on parsing of `Level.sav` save files:
 - [x] Guild data
 - [x] Player Backpack Item data
 
-Features implemented using official RCON commands (available only for servers):
+Features implemented using official REST API:
 
 - [x] Retrieve server information
+- [x] Obtain server metrics
 - [x] Online player list
 - [x] Kick/ban players
 - [x] In-game broadcasting
@@ -65,19 +66,19 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/49abcd34-0752-487
 <img src="./docs/img/pst-en-m-1.png" width="30%" /><img src="./docs/img/pst-en-m-2.png" width="30%" /><img src="./docs/img/pst-en-m-3.png" width="30%" />
 </p>
 
-## How to Enable RCON for Private Servers
+## Enable REST API and RCON
 
-You need to enable RCON functionality on your server. If your private server tutorial includes this, great. If not, modify the `PalWorldSettings.ini` file.
+In this project, the REST API function of the server must be enabled for normal use, and the custom RCON function depends on the RCON function.
 
-**This is the file where various in-game multipliers and probabilities are set.** At the end of the file, you'll find:
+If your private service tutorial is better written, if not, please close the server first, then modify the `PalWorldSettings.ini` file or `WorldOption.sav` file at [Pal-Conf](https://pal-conf.bluefissure.com/) and place it in the appropriate location to enable the server.
 
-```txt
-AdminPassword=...,...,RCONEnabled=true,RCONPort=25575
-```
+First set **Administrator password**
 
-![RCON](./docs/img/rcon.png)
+![ADMIN](./docs/img/admin-en.png)
 
-Please **shut down the server before making modifications**. Set an AdminPassword, and fill in `RCONEnabled` and `RCONPort` as shown above. Then restart the server.
+Then set **RCON** and **REST API**
+
+![RCON_REST](./docs/img/rest-rcon-en.png)
 
 ## Installation and Deployment
 
@@ -89,8 +90,6 @@ Please **shut down the server before making modifications**. Set an AdminPasswor
   - [Agent Deployment](#agent-deployment)
   - [Synchronizing Archives from k8s-pod](#synchronizing-archives-from-k8s-pod)
 - [Synchronizing Archives from Docker Container](#synchronizing-archives-from-docker-container)
-
-Make sure RCON first [How to Enable RCON for Private Servers](#how-to-enable-rcon-for-private-servers)
 
 > The task of parsing `Level.sav` requires some system memory (often 1GB-3GB) in a short period (<20s) , this portion of memory is released after the parsing task is completed. Ensure your server has enough memory.
 
@@ -146,18 +145,38 @@ mkdir -p pst && tar -xzf pst_v0.7.0_linux_x86_64.tar.gz -C pst
      # TLS url for sav_cli to communicate eg. https://yourdomain.com
      public_url: ""
 
+   # Task Config
+   task:
+     # Regular intervals to get information from the game service about the player's online presence
+     sync_interval: 60
+     # Player entry/exit server notification
+     player_logging: true
+     # Player enters server message
+     player_login_message: "Player {username} has joined the server! Current online player count: {online_num}."
+     # Player leaving server message
+     player_logout_message: "Player {username} has left the server! Current online player count: {online_num}."
+
    # RCON Config
    rcon:
      # RCON Address Port
      address: "127.0.0.1:25575"
      # Server AdminPassword
      password: ""
-     # Use PalGuard base64 RCON pgbroadcast instad of broadcast
+     # Use PalGuard base64 RCON
      use_base64: false
      # RCON Timeout Sec
      timeout: 5
-     # RCON Communication Interval Sec
-     sync_interval: 60
+
+   # REST API Config
+   rest:
+     # REST API address
+     address: "http://127.0.0.1:8212"
+     # User name of Base Auth, which is fixed to admin
+     username: "admin"
+     # Server AdminPassword
+     password: ""
+     # Request Timeout Sec
+     timeout: 5
 
    # sav_cli Config
    save:
@@ -250,18 +269,38 @@ web:
   # TLS url for sav_cli to communicate eg. https://yourdomain.com
   public_url: ""
 
+# Task Config
+task:
+  # Regular intervals to get information from the game service about the player's online presence
+  sync_interval: 60
+  # Player entry/exit server notification
+  player_logging: true
+  # Player enters server message
+  player_login_message: "Player {username} has joined the server! Current online player count: {online_num}."
+  # Player leaving server message
+  player_logout_message: "Player {username} has left the server! Current online player count: {online_num}."
+
 # RCON Config
 rcon:
   # RCON Address Port
   address: "127.0.0.1:25575"
   # Server AdminPassword
   password: ""
-  # Use PalGuard  base64 RCON pgbroadcast instad of broadcast
+  # Use PalGuard base64 RCON
   use_base64: false
   # RCON Timeout Sec
   timeout: 5
-  # RCON Communication Interval Sec
-  sync_interval: 60
+
+# REST API Config
+rest:
+  # REST API address
+  address: "http://127.0.0.1:8212"
+  # User name of Base Auth, which is fixed to admin
+  username: "admin"
+  # Server AdminPassword
+  password: ""
+  # Request Timeout Sec
+  timeout: 5
 
 # sav_cli Config
 save:
@@ -320,17 +359,16 @@ Access at http://{Server IP}:8080 after opening firewall and security group in c
 
 Only one container is needed. Map the game's save directory to the container's internal directory, running on the same physical host as the game server.
 
-> Note: Using swap partitions may cause a decrease in program performance.Do not use it when your server has enough memory.
-
 ```bash
 docker run -d --name pst \
 -p 8080:8080 \
--m 256M --memory-swap=4G `# optional limit memory to 256M and memory-swap to 4G` \
 -v /path/to/your/Pal/Saved:/game \
 -v ./backups:/app/backups \
--e WEB__PASSWORD="your password" \
+-e WEB__PASSWORD="your web password" \
 -e RCON__ADDRESS="172.17.0.1:25575" \
--e RCON__PASSWORD="your password" \
+-e RCON__PASSWORD="your admin password" \
+-e REST__ADDRESS="http://127.0.0.1:8212" \
+-e REST__PASSWORD="your admin password" \
 -e SAVE__PATH="/game" \
 -e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
@@ -356,21 +394,31 @@ Set various environment variables, similar to those in [`config.yaml`](#configur
 > [!WARNING]
 > Pay attention to the distinction between single and multiple underscores. It's best to copy the variable names from the table below for modifications!
 
-|        Variable Name         |   Default Value   |  Type  |                                       Description                                       |
-| :--------------------------: | :---------------: | :----: | :-------------------------------------------------------------------------------------: |
-|       WEB\_\_PASSWORD        |        ""         |  Text  |                          Password for Web interface admin mode                          |
-|         WEB\_\_PORT          |       8080        | Number |    **Changing the container mapping port is recommended instead of modifying this**     |
-|                              |                   |        |                                                                                         |
-|       RCON\_\_ADDRESS        | "127.0.0.1:25575" |  Text  |            RCON service address, can use container network 172.17.0.1:25575             |
-|       RCON\_\_PASSWORD       |        ""         |  Text  |                     AdminPassword in the server configuration file                      |
-|       RCON\_\_TIMEOUT        |         5         | Number |                      Timeout for individual RCON service requests                       |
-|    RCON\_\_SYNC_INTERVAL     |        60         | Number |             Interval for requesting RCON server to sync player online data              |
-|                              |                   |        |                                                                                         |
-|         SAVE\_\_PATH         |        ""         |  Text  |           Game save path **be sure to fill in the path inside the container**           |
-|     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
-|    SAVE\_\_SYNC_INTERVAL     |        600        | Number |                          Interval for syncing player save data                          |
-|   SAVE\_\_BACKUP_INTERVAL    |       14400       | Number |                        Interval for auto backup player save data                        |
-| MANAGE\_\_KICK_NON_WHITELIST |       false       |  布尔  | Automatically kicked out when it detects that a player is not whitelisted but is online |
+|         Variable Name         |      Default Value      |  Type  |                                       Description                                       |
+| :---------------------------: | :---------------------: | :----: | :-------------------------------------------------------------------------------------: |
+|        WEB\_\_PASSWORD        |           ""            |  Text  |                          Password for Web interface admin mode                          |
+|          WEB\_\_PORT          |          8080           | Number |    **Changing the container mapping port is recommended instead of modifying this**     |
+|                               |                         |        |                                                                                         |
+|        RCON\_\_ADDRESS        |    "127.0.0.1:25575"    |  Text  |            RCON service address, can use container network 172.17.0.1:25575             |
+|       RCON\_\_PASSWORD        |           ""            |  Text  |                     AdminPassword in the server configuration file                      |
+|      RCON\_\_USE_BASE64       |          false          |  Bool  |                              Whether to enable RconBase64                               |
+|        RCON\_\_TIMEOUT        |            5            | Number |                      Timeout for individual RCON service requests                       |
+|                               |                         |        |                                                                                         |
+|     TASK\_\_SYNC_INTERVAL     |           60            | Number |                             Synchronize player online data                              |
+|    TASK\_\_PLAYER_LOGGING     |          false          |  Bool  |                      Players log in/log out of broadcast messages                       |
+| TASK\_\_PLAYER_LOGIN_MESSAGE  |           ""            |  Text  |                       Players log in to broadcast message content                       |
+| TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            |  Text  |                    The player logs out the broadcast message content                    |
+|                               |                         |        |                                                                                         |
+|        REST\_\_ADDRESS        | "http://127.0.0.1:8212" |  Text  |  The address corresponding to the service REST API can be used in a container network   |
+|       REST\_\_USERNAME        |         "admin"         |  Text  |                     The default user name of the REST API is admin                      |
+|       REST\_\_PASSWORD        |           ""            |  Text  |                        AdminPassword in the server configuration                        |
+|        REST\_\_TIMEOUT        |            5            | Number |                                     Request Timeout                                     |
+|                               |                         |        |                                                                                         |
+|         SAVE\_\_PATH          |           ""            |  Text  |           Game save path **be sure to fill in the path inside the container**           |
+|      SAVE\_\_DECODE_PATH      |     "/app/sav_cli"      |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
+|     SAVE\_\_SYNC_INTERVAL     |           600           | Number |                          Interval for syncing player save data                          |
+|    SAVE\_\_BACKUP_INTERVAL    |          14400          | Number |                        Interval for auto backup player save data                        |
+| MANAGE\_\_KICK_NON_WHITELIST  |          false          |  Bool  | Automatically kicked out when it detects that a player is not whitelisted but is online |
 
 #### Agent Deployment
 
@@ -405,9 +453,11 @@ docker run -d --name pst \
 -p 8080:8080 \
 -v ./backups:/app/backups \
 -e WEB__PASSWORD="your password" \
--e RCON__ADDRESS="Game server IP:25575" \
--e RCON__PASSWORD="your password" \
--e SAVE__PATH="http://Game server IP:Agent port/sync" \
+-e RCON__ADDRESS="{GameServerIP}:{RconPort}" \
+-e RCON__PASSWORD="your admin password" \
+-e REST__ADDRESS="http://{GameServerIP}:{RestAPIPort}" \
+-e REST__PASSWORD="your admin password" \
+-e SAVE__PATH="http://{GameServerIP}:{AgentPort}/sync" \
 -e SAVE__SYNC_INTERVAL=120 \
 jokerwho/palworld-server-tool:latest
 ```
@@ -428,21 +478,31 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 > [!WARNING]
 > Pay attention to the distinction between single and multiple underscores. It's best to copy the variable names from the table below for modifications!
 
-|        Variable Name         |   Default Value   |  Type  |                                       Description                                       |
-| :--------------------------: | :---------------: | :----: | :-------------------------------------------------------------------------------------: |
-|       WEB\_\_PASSWORD        |        ""         |  Text  |                          Password for Web interface admin mode                          |
-|         WEB\_\_PORT          |       8080        | Number |   **It's recommended to change the container mapping port instead of modifying this**   |
-|                              |                   |        |                                                                                         |
-|       RCON\_\_ADDRESS        | "127.0.0.1:25575" |  Text  |                  RCON service address, typically Game server IP:25575                   |
-|       RCON\_\_PASSWORD       |        ""         |  Text  |                     AdminPassword in the server configuration file                      |
-|       RCON\_\_TIMEOUT        |         5         | Number |                      Timeout for individual RCON service requests                       |
-|    RCON\_\_SYNC_INTERVAL     |        60         | Number |             Interval for requesting RCON server to sync player online data              |
-|                              |                   |        |                                                                                         |
-|         SAVE\_\_PATH         |        ""         |  Text  |   pst-agent service address, format as<br> http://{Game server IP}:{Agent port}/sync    |
-|     SAVE\_\_DECODE_PATH      |  "/app/sav_cli"   |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
-|    SAVE\_\_SYNC_INTERVAL     |        600        | Number |                          Interval for syncing player save data                          |
-|   SAVE\_\_BACKUP_INTERVAL    |       14400       | Number |                        Interval for auto backup player save data                        |
-| MANAGE\_\_KICK_NON_WHITELIST |       false       |  布尔  | Automatically kicked out when it detects that a player is not whitelisted but is online |
+|         Variable Name         |      Default Value      |  Type  |                                       Description                                       |
+| :---------------------------: | :---------------------: | :----: | :-------------------------------------------------------------------------------------: |
+|        WEB\_\_PASSWORD        |           ""            |  Text  |                          Password for Web interface admin mode                          |
+|          WEB\_\_PORT          |          8080           | Number |    **Changing the container mapping port is recommended instead of modifying this**     |
+|                               |                         |        |                                                                                         |
+|        RCON\_\_ADDRESS        |    "127.0.0.1:25575"    |  Text  |            RCON service address, can use container network 172.17.0.1:25575             |
+|       RCON\_\_PASSWORD        |           ""            |  Text  |                     AdminPassword in the server configuration file                      |
+|      RCON\_\_USE_BASE64       |          false          |  Bool  |                              Whether to enable RconBase64                               |
+|        RCON\_\_TIMEOUT        |            5            | Number |                      Timeout for individual RCON service requests                       |
+|                               |                         |        |                                                                                         |
+|     TASK\_\_SYNC_INTERVAL     |           60            | Number |                             Synchronize player online data                              |
+|    TASK\_\_PLAYER_LOGGING     |          false          |  Bool  |                      Players log in/log out of broadcast messages                       |
+| TASK\_\_PLAYER_LOGIN_MESSAGE  |           ""            |  Text  |                       Players log in to broadcast message content                       |
+| TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            |  Text  |                    The player logs out the broadcast message content                    |
+|                               |                         |        |                                                                                         |
+|        REST\_\_ADDRESS        | "http://127.0.0.1:8212" |  Text  |  The address corresponding to the service REST API can be used in a container network   |
+|       REST\_\_USERNAME        |         "admin"         |  Text  |                     The default user name of the REST API is admin                      |
+|       REST\_\_PASSWORD        |           ""            |  Text  |                        AdminPassword in the server configuration                        |
+|        REST\_\_TIMEOUT        |            5            | Number |                                     Request Timeout                                     |
+|                               |                         |        |                                                                                         |
+|         SAVE\_\_PATH          |           ""            |  Text  |   pst-agent service address, format as<br> http://{Game server IP}:{Agent port}/sync    |
+|      SAVE\_\_DECODE_PATH      |     "/app/sav_cli"      |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
+|     SAVE\_\_SYNC_INTERVAL     |           600           | Number |                          Interval for syncing player save data                          |
+|    SAVE\_\_BACKUP_INTERVAL    |          14400          | Number |                        Interval for auto backup player save data                        |
+| MANAGE\_\_KICK_NON_WHITELIST  |          false          |  Bool  | Automatically kicked out when it detects that a player is not whitelisted but is online |
 
 #### Synchronizing Archives from k8s-pod
 

@@ -32,7 +32,7 @@
 基于官方提供的 REST API 实现功能：
 
 - [x] 获取服务器信息
-- [x] 获取服务器统计数据
+- [x] 获取服务器指标数据
 - [x] 在线玩家列表
 - [x] 踢出/封禁玩家
 - [x] 游戏内广播
@@ -73,7 +73,7 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491
 <img src="./docs/img/pst-zh-m-1.png" width="30%" /><img src="./docs/img/pst-zh-m-2.png" width="30%" /><img src="./docs/img/pst-zh-m-3.png" width="30%" />
 </p>
 
-## 如何开启 REST API 与 RCON
+## 开启 REST API 与 RCON
 
 本项目必需开启服务器的 REST API 功能才能正常使用，而自定义 RCON 功能则依赖于 RCON 功能。
 
@@ -98,8 +98,6 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491
   - [Agent 部署](#agent-部署)
   - [从 k8s-pod 同步存档](#从-k8s-pod-同步存档)
 - [从 docker 容器同步存档](#从-docker-容器同步存档)
-
-请确保前提 [开启私服 RCON](#如何开启私服-rcon)
 
 > 解析 `Level.sav` 存档的任务需要在短时间（<20s）耗费一定的系统内存（1GB~3GB），这部分内存会在执行完解析任务后释放，因此你至少需要确保你的服务器有充足的内存。
 
@@ -306,7 +304,7 @@ task:
 rcon:
   # RCON 的地址和端口
   address: "127.0.0.1:25575"
-  # 服务 端设置的 RCON AdminPassword
+  # 服务端设置的 RCON AdminPassword
   password: ""
   # 服务器是否已使用 PalGuard 功能插件的 Base64 RCON 功能(需自行安装)
   use_base64: false
@@ -380,8 +378,6 @@ manage:
 #### 单体部署
 
 只需要一个容器，将游戏存档目录映射至容器内，与游戏服务器在同一物理主机上运行。
-
-> 注意:使用交换分区,可能导致程序性能下降,建议仅在内存不足时使用
 
 ```bash
 docker run -d --name pst \
