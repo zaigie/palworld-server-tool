@@ -73,6 +73,34 @@ func Info() (map[string]string, error) {
 	return result, nil
 }
 
+type ResponseMetrics struct {
+	ServerFps        int     `json:"serverfps"`
+	CurrentPlayerNum int     `json:"currentplayernum"`
+	ServerFrameTime  float64 `json:"serverframetime"`
+	MaxPlayerNum     int     `json:"maxplayernum"`
+	Uptime           int     `json:"uptime"`
+}
+
+func Metrics() (map[string]interface{}, error) {
+	resp, err := callApi("GET", "/v1/api/metrics", nil)
+	if err != nil {
+		return nil, err
+	}
+	var data ResponseMetrics
+	err = json.Unmarshal(resp, &data)
+	if err != nil {
+		return nil, err
+	}
+	result := map[string]interface{}{
+		"server_fps":         data.ServerFps,
+		"current_player_num": data.CurrentPlayerNum,
+		"server_frame_time":  data.ServerFrameTime,
+		"max_player_num":     data.MaxPlayerNum,
+		"uptime":             data.Uptime,
+	}
+	return result, nil
+}
+
 type ResponsePlayer struct {
 	Name      string  `json:"name"`
 	PlayerId  string  `json:"playerId"`
