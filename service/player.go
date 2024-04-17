@@ -41,35 +41,10 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 	})
 }
 
-func isUidMatch(uid1, uid2 string) bool {
-	return strings.Contains(uid1, uid2) || strings.Contains(uid2, uid1)
-}
-
 func PutPlayersOnline(db *bbolt.DB, players []database.OnlinePlayer) error {
 	return db.Update(func(tx *bbolt.Tx) error {
 		b := tx.Bucket([]byte("players"))
 		for _, p := range players {
-
-			// rcon uid may not equal to player uid but may contain
-			var matchedPlayerUid string
-			err := db.View(func(tx *bbolt.Tx) error {
-				b := tx.Bucket([]byte("players"))
-				return b.ForEach(func(k, v []byte) error {
-					if isUidMatch(string(k), p.PlayerUid) {
-						matchedPlayerUid = string(k)
-						return nil
-					}
-					return nil
-				})
-			})
-			if err != nil {
-				return err
-			}
-
-			if matchedPlayerUid != "" {
-				p.PlayerUid = matchedPlayerUid
-			}
-
 			existingPlayerData := b.Get([]byte(p.PlayerUid))
 			var player database.Player
 			if existingPlayerData == nil {
@@ -77,25 +52,19 @@ func PutPlayersOnline(db *bbolt.DB, players []database.OnlinePlayer) error {
 				player.PlayerUid = p.PlayerUid
 				player.SteamId = p.SteamId
 				player.Nickname = p.Nickname
-				player.LastOnline = time.Now()
-
-				v, err := json.Marshal(player)
-				if err != nil {
+			} else {
+				if err := json.Unmarshal(existingPlayerData, &player); err != nil {
 					return err
 				}
-				if err := b.Put([]byte(p.PlayerUid), v); err != nil {
-					return err
+				if player.SteamId == "" || strings.Contains(player.SteamId, "000000") {
+					player.SteamId = p.SteamId
 				}
-				continue
 			}
-
-			if err := json.Unmarshal(existingPlayerData, &player); err != nil {
-				return err
-			}
-
-			if player.SteamId == "" || strings.Contains(player.SteamId, "000000") {
-				player.SteamId = p.SteamId
-			}
+			player.Ip = p.Ip
+			player.Ping = p.Ping
+			player.LocationX = p.LocationX
+			player.LocationY = p.LocationY
+			player.Level = p.Level
 			player.LastOnline = time.Now()
 
 			v, err := json.Marshal(player)

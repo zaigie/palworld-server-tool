@@ -340,6 +340,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/online_player": {
+            "get": {
+                "description": "List Online Players",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Player"
+                ],
+                "summary": "List Online Players",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/database.OnlinePlayer"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/player": {
             "get": {
                 "description": "List Players",
@@ -395,7 +427,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Put Players Only For SavSync,RconSync",
+                "description": "Put Players Only For SavSync,PlayerSync",
                 "consumes": [
                     "application/json"
                 ],
@@ -1541,6 +1573,38 @@ const docTemplate = `{
                 }
             }
         },
+        "database.OnlinePlayer": {
+            "type": "object",
+            "properties": {
+                "ip": {
+                    "type": "string"
+                },
+                "last_online": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "location_x": {
+                    "type": "number"
+                },
+                "location_y": {
+                    "type": "number"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "ping": {
+                    "type": "number"
+                },
+                "player_uid": {
+                    "type": "string"
+                },
+                "steam_id": {
+                    "type": "string"
+                }
+            }
+        },
         "database.Pal": {
             "type": "object",
             "properties": {
@@ -1606,6 +1670,9 @@ const docTemplate = `{
                 "hp": {
                     "type": "integer"
                 },
+                "ip": {
+                    "type": "string"
+                },
                 "items": {
                     "$ref": "#/definitions/database.Items"
                 },
@@ -1614,6 +1681,12 @@ const docTemplate = `{
                 },
                 "level": {
                     "type": "integer"
+                },
+                "location_x": {
+                    "type": "number"
+                },
+                "location_y": {
+                    "type": "number"
                 },
                 "max_hp": {
                     "type": "integer"
@@ -1629,6 +1702,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/database.Pal"
                     }
+                },
+                "ping": {
+                    "type": "number"
                 },
                 "player_uid": {
                     "type": "string"
@@ -1673,6 +1749,9 @@ const docTemplate = `{
                 "command": {
                     "type": "string"
                 },
+                "placeholder": {
+                    "type": "string"
+                },
                 "remark": {
                     "type": "string"
                 }
@@ -1682,6 +1761,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "command": {
+                    "type": "string"
+                },
+                "placeholder": {
                     "type": "string"
                 },
                 "remark": {
@@ -1704,11 +1786,20 @@ const docTemplate = `{
                 "hp": {
                     "type": "integer"
                 },
+                "ip": {
+                    "type": "string"
+                },
                 "last_online": {
                     "type": "string"
                 },
                 "level": {
                     "type": "integer"
+                },
+                "location_x": {
+                    "type": "number"
+                },
+                "location_y": {
+                    "type": "number"
                 },
                 "max_hp": {
                     "type": "integer"
@@ -1718,6 +1809,9 @@ const docTemplate = `{
                 },
                 "nickname": {
                     "type": "string"
+                },
+                "ping": {
+                    "type": "number"
                 },
                 "player_uid": {
                     "type": "string"

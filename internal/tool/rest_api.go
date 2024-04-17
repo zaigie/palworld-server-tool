@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/zaigie/palworld-server-tool/internal/logger"
@@ -128,23 +129,41 @@ func ShowPlayers() ([]database.OnlinePlayer, error) {
 	}
 	onlinePlayers := make([]database.OnlinePlayer, 0)
 	for _, player := range data.Players {
-		if player.PlayerId == "None" || len(player.PlayerId) != 32 {
-			continue
-		}
-		id, err := strconv.ParseUint(player.PlayerId[:8], 16, 32)
-		if err != nil {
-			logger.Error("Parse PlayerId fail, %s \n", err)
-			continue
-		}
-		player.PlayerId = strconv.FormatUint(id, 10)
 		onlinePlayer := database.OnlinePlayer{
-			PlayerUid: player.PlayerId,
-			SteamId:   player.UserId,
-			Nickname:  player.Name,
+			PlayerUid:  getPlayerUid(player.PlayerId),
+			SteamId:    getSteamId(player.UserId),
+			Nickname:   player.Name,
+			Ip:         player.Ip,
+			Ping:       player.Ping,
+			LocationX:  player.LocationX,
+			LocationY:  player.LocationY,
+			Level:      int32(player.Level),
+			LastOnline: time.Now(),
 		}
 		onlinePlayers = append(onlinePlayers, onlinePlayer)
 	}
 	return onlinePlayers, nil
+}
+
+func getSteamId(userId string) string {
+	if userId != "" && strings.HasPrefix(userId, "steam_") {
+		return strings.TrimPrefix(userId, "steam_")
+	}
+	return ""
+}
+
+func getPlayerUid(playerId string) string {
+	if len(playerId) < 8 {
+		logger.Errorf("Parse PlayerId fail: %s\n", playerId)
+		return ""
+	}
+	hexPart := playerId[:8]
+	decimalValue, err := strconv.ParseUint(hexPart, 16, 32)
+	if err != nil {
+		logger.Errorf("Parse PlayerId fail: %s\n", err)
+		return ""
+	}
+	return strconv.FormatUint(decimalValue, 10)
 }
 
 type RequestUserId struct {

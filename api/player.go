@@ -17,10 +17,31 @@ const (
 	OrderByLevel      PlayerOrderBy = "level"
 )
 
+// listOnlinePlayers godoc
+//
+//	@Summary		List Online Players
+//	@Description	List Online Players
+//	@Tags			Player
+//	@Accept			json
+//	@Produce		json
+//
+//	@Success		200	{object}	[]database.OnlinePlayer
+//	@Failure		400	{object}	ErrorResponse
+//	@Router			/api/online_player [get]
+func listOnlinePlayers(c *gin.Context) {
+	onlinePLayers, err := tool.ShowPlayers()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	service.PutPlayersOnline(database.GetDB(), onlinePLayers)
+	c.JSON(http.StatusOK, onlinePLayers)
+}
+
 // putPlayers godoc
 //
 //	@Summary		Put Players
-//	@Description	Put Players Only For SavSync,RconSync
+//	@Description	Put Players Only For SavSync,PlayerSync
 //	@Tags			Player
 //	@Accept			json
 //	@Produce		json

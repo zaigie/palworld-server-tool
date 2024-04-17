@@ -136,6 +136,27 @@ definitions:
           $ref: '#/definitions/database.Item'
         type: array
     type: object
+  database.OnlinePlayer:
+    properties:
+      ip:
+        type: string
+      last_online:
+        type: string
+      level:
+        type: integer
+      location_x:
+        type: number
+      location_y:
+        type: number
+      nickname:
+        type: string
+      ping:
+        type: number
+      player_uid:
+        type: string
+      steam_id:
+        type: string
+    type: object
   database.Pal:
     properties:
       defense:
@@ -179,12 +200,18 @@ definitions:
         type: number
       hp:
         type: integer
+      ip:
+        type: string
       items:
         $ref: '#/definitions/database.Items'
       last_online:
         type: string
       level:
         type: integer
+      location_x:
+        type: number
+      location_y:
+        type: number
       max_hp:
         type: integer
       max_status_point:
@@ -195,6 +222,8 @@ definitions:
         items:
           $ref: '#/definitions/database.Pal'
         type: array
+      ping:
+        type: number
       player_uid:
         type: string
       save_last_online:
@@ -223,12 +252,16 @@ definitions:
     properties:
       command:
         type: string
+      placeholder:
+        type: string
       remark:
         type: string
     type: object
   database.RconCommandList:
     properties:
       command:
+        type: string
+      placeholder:
         type: string
       remark:
         type: string
@@ -243,16 +276,24 @@ definitions:
         type: number
       hp:
         type: integer
+      ip:
+        type: string
       last_online:
         type: string
       level:
         type: integer
+      location_x:
+        type: number
+      location_y:
+        type: number
       max_hp:
         type: integer
       max_status_point:
         type: integer
       nickname:
         type: string
+      ping:
+        type: number
       player_uid:
         type: string
       save_last_online:
@@ -480,6 +521,27 @@ paths:
       summary: Login
       tags:
       - Auth
+  /api/online_player:
+    get:
+      consumes:
+      - application/json
+      description: List Online Players
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.OnlinePlayer'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: List Online Players
+      tags:
+      - Player
   /api/player:
     get:
       consumes:
@@ -516,7 +578,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: Put Players Only For SavSync,RconSync
+      description: Put Players Only For SavSync,PlayerSync
       parameters:
       - description: Players
         in: body

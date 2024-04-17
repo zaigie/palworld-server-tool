@@ -25,6 +25,8 @@ import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
 import pageStore from "@/stores/model/page.js";
 import dayjs from "dayjs";
+import palMap from "@/assets/pal.json";
+import itemMap from "@/assets/items.json";
 import skillMap from "@/assets/skill.json";
 import PlayerList from "./component/PlayerList.vue";
 import GuildList from "./component/GuildList.vue";
@@ -46,8 +48,10 @@ const smallScreen = computed(() => pageWidth.value < 1024);
 
 const loading = ref(false);
 const serverInfo = ref({});
+const serverMetrics = ref({});
 const currentDisplay = ref("players");
 const playerList = ref([]);
+const onlinePlayerList = ref([]);
 const guildList = ref([]);
 const playerInfo = ref({});
 const playerPalsList = ref([]);
@@ -141,21 +145,28 @@ const getServerInfo = async () => {
   serverInfo.value = data.value;
 };
 
+const getServerMetrics = async () => {
+  const { data } = await new ApiService().getServerMetrics();
+  serverMetrics.value = data.value;
+};
+
 const getPlayerList = async () => {
+  getOnlineList();
   const { data } = await new ApiService().getPlayerList({
     order_by: "last_online",
     desc: true,
   });
   playerList.value = data.value;
+  rconPlayerOptions.value = data.value.map((item) => {
+    return {
+      label: `${item.nickname}(${item.player_uid})`,
+      value: `${item.player_uid}-${item.steam_id}`,
+    };
+  });
 };
-
-const isPlayerOnline = (last_online) => {
-  return dayjs() - dayjs(last_online) < 120000;
-};
-const getOnlineList = () => {
-  return playerList.value.filter((player) =>
-    isPlayerOnline(player.last_online)
-  );
+const getOnlineList = async () => {
+  const { data } = await new ApiService().getOnlinePlayerList();
+  onlinePlayerList.value = data.value;
 };
 
 // login
@@ -181,7 +192,39 @@ const handleLogin = async () => {
 };
 const showRconDrawer = ref(false);
 const rconCommands = ref([]);
+const rconSelectedPlayer = ref(null);
+const rconPlayerOptions = ref([]);
+const rconSelectedItem = ref(null);
+const rconItemOptions = ref([]);
+const rconSelectedPal = ref(null);
+const rconPalOptions = ref([]);
 const rconCommandsExtra = ref({});
+const copyText = async (text) => {
+  if (text == "" || text == null) {
+    message.error(t("message.copyempty"));
+    return;
+  }
+  if (navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(text);
+      message.success(t("message.copysuccess"));
+    } catch (err) {
+      message.error(t("message.copyerr", { err }));
+    }
+  } else {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand("copy");
+      message.success(t("message.copysuccess"));
+    } catch (err) {
+      message.error(t("message.copyerr", { err }));
+    }
+    document.body.removeChild(textarea);
+  }
+};
 const handleRconDrawer = () => {
   if (checkAuthToken()) {
     showRconDrawer.value = true;
@@ -219,10 +262,12 @@ const sendRconCommand = async (uuid) => {
 
 const showRconAddModal = ref(false);
 const newRconCommand = ref("");
+const newRconPlaceholder = ref("");
 const newRconRemark = ref("");
 const handleAddRconCommand = () => {
   showRconAddModal.value = true;
   newRconCommand.value = "";
+  newRconPlaceholder.value = "";
   newRconRemark.value = "";
 };
 const handleImportRconFinish = (options) => {
@@ -242,12 +287,14 @@ const addRconCommand = async () => {
   if (checkAuthToken()) {
     const { data, statusCode } = await new ApiService().addRconCommand({
       command: newRconCommand.value,
+      placeholder: newRconPlaceholder.value,
       remark: newRconRemark.value,
     });
     if (statusCode.value === 200) {
       message.success(t("message.addrconsuccess"));
       await getRconCommands();
       newRconCommand.value = "";
+      newRconPlaceholder.value = "";
       newRconRemark.value = "";
     } else {
       message.error(t("message.addrconfail", { err: data.value?.error }));
@@ -708,15 +755,35 @@ onMounted(async () => {
   mediaQuery.addEventListener("change", updateDarkMode);
   isDarkMode.value = mediaQuery.matches;
 
+  rconItemOptions.value = itemMap[locale.value].map((item) => {
+    return {
+      label: item.name,
+      value: item.key,
+    };
+  });
+
+  rconPalOptions.value = Object.entries(palMap[locale.value]).map(
+    ([key, value]) => {
+      return {
+        label: value,
+        value: key,
+      };
+    }
+  );
   skillTypeList.value = getSkillTypeList();
   loading.value = true;
   checkAuthToken();
   getServerInfo();
+  getServerMetrics();
   getServerToolInfo();
   getPlayerList();
   await getWhiteList();
   loading.value = false;
   await getBackupList();
+  setInterval(async () => {
+    await getPlayerList();
+    await getServerMetrics();
+  }, 60000);
 });
 </script>
 
@@ -745,11 +812,26 @@ onMounted(async () => {
             >{{ serverToolInfo.version }}</n-tag
           >
         </n-badge>
-        <n-tag type="default" :size="smallScreen ? 'medium' : 'large'">{{
-          serverInfo?.name
-            ? `${serverInfo.name + " " + serverInfo.version}`
-            : $t("message.loading")
-        }}</n-tag>
+        <n-tooltip trigger="hover">
+          <template #trigger>
+            <n-tag type="default" :size="smallScreen ? 'medium' : 'large'">{{
+              serverInfo?.name
+                ? `${serverInfo.name + " " + serverInfo.version}`
+                : $t("message.loading")
+            }}</n-tag>
+          </template>
+          <div>
+            <p>{{ $t("item.serverFps") }}: {{ serverMetrics?.server_fps }}</p>
+            <p>{{ $t("item.serverUptime") }}: {{ serverMetrics?.uptime }}(s)</p>
+            <p>
+              {{ $t("item.serverFrameTime") }}:
+              {{ serverMetrics?.server_frame_time }}(ms)
+            </p>
+            <p>
+              {{ $t("item.maxPlayerNum") }}: {{ serverMetrics?.max_player_num }}
+            </p>
+          </div>
+        </n-tooltip>
       </n-space>
 
       <n-space>
@@ -828,7 +910,9 @@ onMounted(async () => {
                 $t("status.player_number", { number: playerList?.length })
               }}</n-tag>
               <n-tag type="success" round size="large">{{
-                $t("status.online_number", { number: getOnlineList().length })
+                $t("status.online_number", {
+                  number: serverMetrics?.current_player_num,
+                })
               }}</n-tag>
             </n-space>
             <n-space v-if="isLogin" class="flex items-center">
@@ -1093,6 +1177,13 @@ onMounted(async () => {
           round
           :placeholder="$t('input.remark')"
         ></n-input>
+        <n-input
+          class="mt-5"
+          v-model:value="newRconPlaceholder"
+          size="large"
+          round
+          :placeholder="$t('input.placeholder')"
+        ></n-input>
         <n-button
           class="mt-5"
           style="width: 100%"
@@ -1113,7 +1204,70 @@ onMounted(async () => {
           {{ $t("button.addRcon") }}
         </n-button>
       </template>
-      <n-collapse>
+      <div class="flex w-full items-center">
+        <n-select
+          :placeholder="$t('input.selectPlayer')"
+          v-model:value="rconSelectedPlayer"
+          filterable
+          :options="rconPlayerOptions"
+        />
+        <n-button
+          class="ml-2"
+          type="primary"
+          strong
+          secondary
+          @click="copyText(rconSelectedPlayer?.split('-')[1])"
+        >
+          {{ $t("button.copysid") }}
+        </n-button>
+        <n-button
+          class="ml-2"
+          type="primary"
+          strong
+          secondary
+          @click="copyText(rconSelectedPlayer?.split('-')[0])"
+        >
+          {{ $t("button.copypid") }}
+        </n-button>
+      </div>
+
+      <div class="flex w-full items-center mt-3">
+        <n-select
+          :placeholder="$t('input.selectItem')"
+          v-model:value="rconSelectedItem"
+          filterable
+          :options="rconItemOptions"
+        />
+        <n-button
+          class="ml-2"
+          type="primary"
+          strong
+          secondary
+          @click="copyText(rconSelectedItem)"
+        >
+          {{ $t("button.copyitem") }}
+        </n-button>
+      </div>
+
+      <div class="flex w-full items-center mt-3">
+        <n-select
+          :placeholder="$t('input.selectPal')"
+          v-model:value="rconSelectedPal"
+          filterable
+          :options="rconPalOptions"
+        />
+        <n-button
+          class="ml-2"
+          type="primary"
+          strong
+          secondary
+          @click="copyText(rconSelectedPal)"
+        >
+          {{ $t("button.copypal") }}
+        </n-button>
+      </div>
+      <n-empty class="mt-3" v-if="rconCommands.length == 0"> </n-empty>
+      <n-collapse class="mt-3">
         <n-collapse-item
           v-for="rconCommand in rconCommands"
           :key="rconCommand.uuid"
@@ -1124,11 +1278,13 @@ onMounted(async () => {
           <n-input-group>
             <n-input
               round
-              :placeholder="$t('input.extraContent')"
+              :placeholder="rconCommand.placeholder"
               v-model:value="rconCommandsExtra[rconCommand.uuid]"
             >
               <template #prefix>
-                <n-text>{{ rconCommand.command + "  +" }}</n-text>
+                <n-text>{{
+                  rconCommand.command + (rconCommand.placeholder ? "  +" : "")
+                }}</n-text>
               </template>
             </n-input>
             <n-button
@@ -1176,7 +1332,7 @@ onMounted(async () => {
     :segmented="segmented"
   >
     <div>
-      <n-empty description="什么都没有" v-if="whiteList.length == 0"> </n-empty>
+      <n-empty v-if="whiteList.length == 0"> </n-empty>
       <n-virtual-list
         v-else
         ref="virtualListInst"

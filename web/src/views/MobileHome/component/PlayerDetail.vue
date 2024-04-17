@@ -3,7 +3,7 @@ import { ContentCopyFilled } from "@vicons/material";
 import { LogOut, Ban, Search } from "@vicons/ionicons5";
 import { CrownFilled } from "@vicons/antd";
 import dayjs from "dayjs";
-import { computed } from "vue";
+import { onMounted, computed } from "vue";
 import { NTag, NButton, NAvatar, useMessage, useDialog } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import palMap from "@/assets/pal.json";
@@ -17,6 +17,7 @@ const { t, locale } = useI18n();
 const message = useMessage();
 const dialog = useDialog();
 
+const localeLowerPalMap = ref({});
 const isDarkMode = ref(
   window.matchMedia("(prefers-color-scheme: dark)").matches
 );
@@ -39,16 +40,16 @@ const handelPlayerAction = async (type) => {
     const param = {
       ban: {
         title: t("message.bantitle"),
-        content: t("message.banwarn")
+        content: t("message.banwarn"),
       },
       unban: {
         title: t("message.unbantitle"),
-        content: t("message.unbanwarn")
+        content: t("message.unbanwarn"),
       },
       kick: {
         title: t("message.kicktitle"),
-        content: t("message.kickwarn")
-      }
+        content: t("message.kickwarn"),
+      },
     }[type];
     dialog.warning({
       ...param,
@@ -106,20 +107,27 @@ const isPlayerOnline = (last_online) => {
   return dayjs() - dayjs(last_online) < 120000;
 };
 
-const copyText = (text) => {
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  document.body.appendChild(textarea);
-  textarea.select();
-
-  try {
-    const successful = document.execCommand("copy");
-    message.success(t("message.copysuccess"));
-  } catch (err) {
-    message.error(t("message.copyerr", { err: err }));
+const copyText = async (text) => {
+  if (navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(text);
+      message.success(t("message.copysuccess"));
+    } catch (err) {
+      message.error(t("message.copyerr", { err }));
+    }
+  } else {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand("copy");
+      message.success(t("message.copysuccess"));
+    } catch (err) {
+      message.error(t("message.copyerr", { err }));
+    }
+    document.body.removeChild(textarea);
   }
-
-  document.body.removeChild(textarea);
 };
 
 const getUserAvatar = () => {
@@ -142,8 +150,8 @@ const getPalAvatar = (name) => {
 };
 const getPalName = (name) => {
   const lowerName = name.toLowerCase();
-  return palMap[locale.value][lowerName]
-    ? palMap[locale.value][lowerName]
+  return localeLowerPalMap.value[lowerName]
+    ? localeLowerPalMap.value[lowerName]
     : name;
 };
 const getUnknowPalAvatar = (is_boss = false) => {
@@ -152,6 +160,17 @@ const getUnknowPalAvatar = (is_boss = false) => {
   }
   return new URL("@/assets/pals/unknown.png", import.meta.url).href;
 };
+
+onMounted(async () => {
+  locale.value = localStorage.getItem("locale");
+  localeLowerPalMap.value = Object.keys(palMap[locale.value]).reduce(
+    (acc, key) => {
+      acc[key.toLowerCase()] = palMap[locale.value][key];
+      return acc;
+    },
+    {}
+  );
+});
 </script>
 
 <template>
@@ -161,12 +180,12 @@ const getUnknowPalAvatar = (is_boss = false) => {
       <div v-if="isLogin" class="pt-2 px-3" position="absolute">
         <n-flex justify="space-between">
           <n-button
-              @click="handelPlayerAction('unban')"
-              type="success"
-              size="small"
-              secondary
-              strong
-              round
+            @click="handelPlayerAction('unban')"
+            type="success"
+            size="small"
+            secondary
+            strong
+            round
           >
             <template #icon>
               <n-icon>
@@ -265,9 +284,7 @@ const getUnknowPalAvatar = (is_boss = false) => {
               ghost
             >
               Steam64:
-              {{
-                playerInfo.steam_id ? playerInfo.steam_id : "--"
-              }}
+              {{ playerInfo.steam_id ? playerInfo.steam_id : "--" }}
               <template #icon>
                 <n-icon><ContentCopyFilled /></n-icon>
               </template>
