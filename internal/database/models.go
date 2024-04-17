@@ -20,7 +20,7 @@ type Pal struct {
 	Skills    []string `json:"skills"`
 }
 
-type PlayerRcon struct {
+type OnlinePlayer struct {
 	PlayerUid  string    `json:"player_uid"`
 	SteamId    string    `json:"steam_id"`
 	Nickname   string    `json:"nickname"`
@@ -45,7 +45,7 @@ type TersePlayer struct {
 	StatusPoint    map[string]int32 `json:"status_point"`
 	FullStomach    float64          `json:"full_stomach"`
 	SaveLastOnline string           `json:"save_last_online"`
-	PlayerRcon
+	OnlinePlayer
 }
 
 type Player struct {

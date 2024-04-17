@@ -63,7 +63,7 @@ func PlayerSync(db *bbolt.DB) {
 	}
 }
 
-func isPlayerWhitelisted(player database.PlayerRcon, whitelist []database.PlayerW) bool {
+func isPlayerWhitelisted(player database.OnlinePlayer, whitelist []database.PlayerW) bool {
 	for _, whitelistedPlayer := range whitelist {
 		if (player.PlayerUid != "" && player.PlayerUid == whitelistedPlayer.PlayerUID) ||
 			(player.SteamId != "" && player.SteamId == whitelistedPlayer.SteamID) {
@@ -76,7 +76,7 @@ func isPlayerWhitelisted(player database.PlayerRcon, whitelist []database.Player
 var playerCache map[string]string
 var firstPoll = true
 
-func PlayerLogging(players []database.PlayerRcon) {
+func PlayerLogging(players []database.OnlinePlayer) {
 	loginMsg := viper.GetString("task.player_login_message")
 	logoutMsg := viper.GetString("task.player_logout_message")
 
@@ -114,7 +114,7 @@ func BroadcastVariableMessage(message string, username string, onlineNum int) {
 	}
 }
 
-func CheckAndKickPlayers(db *bbolt.DB, players []database.PlayerRcon) {
+func CheckAndKickPlayers(db *bbolt.DB, players []database.OnlinePlayer) {
 	whitelist, err := service.ListWhitelist(db)
 	if err != nil {
 		logger.Errorf("%v\n", err)

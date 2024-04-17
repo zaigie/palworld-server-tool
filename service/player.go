@@ -45,7 +45,7 @@ func isUidMatch(uid1, uid2 string) bool {
 	return strings.Contains(uid1, uid2) || strings.Contains(uid2, uid1)
 }
 
-func PutPlayersRcon(db *bbolt.DB, players []database.PlayerRcon) error {
+func PutPlayersRcon(db *bbolt.DB, players []database.OnlinePlayer) error {
 	return db.Update(func(tx *bbolt.Tx) error {
 		b := tx.Bucket([]byte("players"))
 		for _, p := range players {
