@@ -26,12 +26,12 @@ type Sturcture struct {
 func getSavCli() (string, error) {
 	savCliPath := viper.GetString("save.decode_path")
 	if savCliPath == "" || savCliPath == "/path/to/your/sav_cli" {
-		wd, err := os.Getwd()
+		ed, err := system.GetExecDir()
 		if err != nil {
-			logger.Errorf("error getting working directory: %s", err)
+			logger.Errorf("error getting exec directory: %s", err)
 			return "", err
 		}
-		savCliPath = filepath.Join(wd, "sav_cli")
+		savCliPath = filepath.Join(ed, "sav_cli")
 		if runtime.GOOS == "windows" {
 			savCliPath += ".exe"
 		}
@@ -64,7 +64,7 @@ func Decode(file string) error {
 	if err != nil {
 		return errors.New("error generating token: " + err.Error())
 	}
-	execArgs := []string{"-f", levelFilePath, "--request", requestUrl, "--token", tokenString, "--clear"}
+	execArgs := []string{"-f", levelFilePath, "--request", requestUrl, "--token", tokenString}
 	cmd := exec.Command(savCli, execArgs...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
