@@ -596,6 +596,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/player/{player_uid}/unban": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Unban Player",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Player"
+                ],
+                "summary": "Unban Player",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Player UID",
+                        "name": "player_uid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/rcon": {
             "get": {
                 "security": [
@@ -1038,7 +1093,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "enum": [
-                            "rcon",
+                            "rest",
                             "sav"
                         ],
                         "type": "string",
