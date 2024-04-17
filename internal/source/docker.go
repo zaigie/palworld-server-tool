@@ -5,13 +5,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/docker/docker/pkg/stdcopy"
-	"github.com/google/uuid"
-	"github.com/zaigie/palworld-server-tool/internal/system"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/docker/docker/pkg/stdcopy"
+	"github.com/google/uuid"
+	"github.com/zaigie/palworld-server-tool/internal/system"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -37,7 +38,7 @@ func CopyFromContainer(containerID, remotePath, way string) (string, error) {
 	defer cli.Close()
 
 	// 取得Level.sav所在目录
-	findCmd := []string{"sh", "-c", fmt.Sprintf("dirname $(find %s -maxdepth 4 -name Level.sav)", remotePath)}
+	findCmd := []string{"sh", "-c", fmt.Sprintf("find %s -maxdepth 4 -path '*/backup/*' -prune -o -name 'Level.sav' -print | xargs dirname", remotePath)}
 	savDir, err := execCommand(containerID, findCmd, cli)
 	if err != nil {
 		return "", err

@@ -310,15 +310,15 @@ func UnTarGzDir(tarStream io.Reader, destDir string) error {
 
 		switch header.Typeflag {
 		case tar.TypeDir:
-			if err := os.MkdirAll(target, os.FileMode(header.Mode)); err != nil {
+			if err := os.MkdirAll(target, os.ModePerm); err != nil {
 				return err
 			}
 		case tar.TypeReg:
 			targetDir := filepath.Dir(target)
-			if err := os.MkdirAll(targetDir, os.FileMode(header.Mode)); err != nil {
+			if err := os.MkdirAll(targetDir, os.ModePerm); err != nil {
 				return err
 			}
-			f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, os.FileMode(header.Mode))
+			f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 			if err != nil {
 				return err
 			}

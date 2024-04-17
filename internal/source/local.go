@@ -43,6 +43,9 @@ func CopyFromLocal(src, way string) (string, error) {
 
 	// 拷贝文件
 	files, err := filepath.Glob(filepath.Join(savDir, "*.sav"))
+	if err != nil {
+		return "", err
+	}
 	for _, file := range files {
 		dist := filepath.Join(tempDir, filepath.Base(file))
 		if err = system.CopyFile(file, dist); err != nil {
