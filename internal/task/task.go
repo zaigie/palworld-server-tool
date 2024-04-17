@@ -1,6 +1,7 @@
 package task
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -126,7 +127,7 @@ func CheckAndKickPlayers(db *bbolt.DB, players []database.OnlinePlayer) {
 				logger.Warnf("Kicked %s fail, SteamId is empty \n", player.Nickname)
 				continue
 			}
-			err := tool.KickPlayer(identifier)
+			err := tool.KickPlayer(fmt.Sprintf("steam_%s", identifier))
 			if err != nil {
 				logger.Warnf("Kicked %s fail, %s \n", player.Nickname, err)
 				continue

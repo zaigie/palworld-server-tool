@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"sort"
 
@@ -161,7 +162,7 @@ func kickPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.KickPlayer(player.SteamId)
+	err = tool.KickPlayer(fmt.Sprintf("steam_%s", player.SteamId))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -195,7 +196,7 @@ func banPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.BanPlayer(player.SteamId)
+	err = tool.BanPlayer(fmt.Sprintf("steam_%s", player.SteamId))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -229,7 +230,7 @@ func unbanPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.UnBanPlayer(player.SteamId)
+	err = tool.UnBanPlayer(fmt.Sprintf("steam_%s", player.SteamId))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
