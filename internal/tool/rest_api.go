@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/zaigie/palworld-server-tool/internal/logger"
 
 	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/database"
@@ -87,7 +88,7 @@ type ResponsePlayers struct {
 	Players []ResponsePlayer `json:"players"`
 }
 
-func ShowPlayers() ([]database.PlayerRcon, error) {
+func ShowPlayers() ([]database.OnlinePlayer, error) {
 	resp, err := callApi("GET", "/v1/api/players", nil)
 	if err != nil {
 		return nil, err
@@ -97,7 +98,7 @@ func ShowPlayers() ([]database.PlayerRcon, error) {
 	if err != nil {
 		return nil, err
 	}
-	playersRcon := make([]database.PlayerRcon, 0)
+	onlinePlayers := make([]database.OnlinePlayer, 0)
 	for _, player := range data.Players {
 		if player.PlayerId == "None" || len(player.PlayerId) != 32 {
 			continue
@@ -108,14 +109,14 @@ func ShowPlayers() ([]database.PlayerRcon, error) {
 			continue
 		}
 		player.PlayerId = strconv.FormatUint(id, 10)
-		playerRcon := database.PlayerRcon{
+		onlinePlayer := database.OnlinePlayer{
 			PlayerUid: player.PlayerId,
 			SteamId:   player.UserId,
 			Nickname:  player.Name,
 		}
-		playersRcon = append(playersRcon, playerRcon)
+		onlinePlayers = append(onlinePlayers, onlinePlayer)
 	}
-	return playersRcon, nil
+	return onlinePlayers, nil
 }
 
 type RequestUserId struct {
