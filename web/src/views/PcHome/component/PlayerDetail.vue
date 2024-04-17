@@ -553,9 +553,7 @@ const createPlayerItemsColumns = () => {
             >
               Steam64:
               {{
-                playerInfo.steam_id && playerInfo.steam_id.length === 17
-                  ? playerInfo.steam_id
-                  : "--"
+                playerInfo.steam_id ? playerInfo.steam_id : "--"
               }}
               <template #icon>
                 <n-icon><ContentCopyFilled /></n-icon>
