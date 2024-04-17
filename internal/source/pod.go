@@ -50,7 +50,7 @@ func CopyFromPod(namespace, podName, container, remotePath, way string) (string,
 		return "", ErrContainerEmpty
 	}
 
-	findCmd := []string{"sh", "-c", fmt.Sprintf("dirname $(find %s -maxdepth 4 -name Level.sav)", remotePath)}
+	findCmd := []string{"sh", "-c", fmt.Sprintf("find %s -maxdepth 4 -path '*/backup/*' -prune -o -name 'Level.sav' -print | xargs dirname", remotePath)}
 	savDir, err := execPodCommand(clientset, config, namespace, podName, container, findCmd)
 	if err != nil {
 		return "", errors.New("error executing find command: " + err.Error())
