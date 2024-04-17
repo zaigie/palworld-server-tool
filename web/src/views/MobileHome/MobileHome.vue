@@ -11,7 +11,6 @@ import { onMounted, ref } from "vue";
 import { NTag, NButton, useMessage, useDialog } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
-import dayjs from "dayjs";
 import palMap from "@/assets/pal.json";
 import skillMap from "@/assets/skill.json";
 import PlayerList from "./component/PlayerList.vue";
@@ -29,9 +28,11 @@ const PALWORLD_TOKEN = "palworld_token";
 
 const loading = ref(false);
 const serverInfo = ref({});
+const localeLowerPalMap = ref({});
 const currentDisplay = ref("players");
 const isShowDetail = ref(false);
 const playerList = ref([]);
+const onlinePlayerList = ref([]);
 const guildList = ref([]);
 const playerInfo = ref({});
 const playerPalsList = ref([]);
@@ -84,6 +85,7 @@ const getServerInfo = async () => {
   serverInfo.value = data.value;
 };
 const getPlayerList = async (is_update_info = true) => {
+  getOnlineList();
   const { data } = await new ApiService().getPlayerList({
     order_by: "last_online",
     desc: true,
@@ -123,8 +125,8 @@ const getChooseGuild = (uid) => {
 
 const getPalName = (name) => {
   const lowerName = name.toLowerCase();
-  return palMap[locale.value][lowerName]
-    ? palMap[locale.value][lowerName]
+  return localeLowerPalMap.value[lowerName]
+    ? localeLowerPalMap.value[lowerName]
     : name;
 };
 
@@ -180,13 +182,9 @@ const onContentScroll = () => {
   }
 };
 
-const isPlayerOnline = (last_online) => {
-  return dayjs() - dayjs(last_online) < 120000;
-};
-const getOnlineList = () => {
-  return playerList.value.filter((player) =>
-    isPlayerOnline(player.last_online)
-  );
+const getOnlineList = async () => {
+  const { data } = await new ApiService().getOnlinePlayerList();
+  onlinePlayerList.value = data.value;
 };
 
 // login
@@ -345,6 +343,13 @@ onMounted(async () => {
       disabled: locale.value == "ja",
     },
   ];
+  localeLowerPalMap.value = Object.keys(palMap[locale.value]).reduce(
+    (acc, key) => {
+      acc[key.toLowerCase()] = palMap[locale.value][key];
+      return acc;
+    },
+    {}
+  );
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   mediaQuery.addEventListener("change", updateDarkMode);
   isDarkMode.value = mediaQuery.matches;
@@ -378,10 +383,10 @@ onMounted(async () => {
       <n-space vertical>
         <n-space justify="end">
           <n-tag type="info" round size="small">{{
-            $t("status.player_number", { number: playerList.length })
+            $t("status.player_number", { number: playerList?.length })
           }}</n-tag>
           <n-tag type="success" round size="small">{{
-            $t("status.online_number", { number: getOnlineList().length })
+            $t("status.online_number", { number: onlinePlayerList?.length })
           }}</n-tag>
         </n-space>
         <n-space justify="end" class="flex items-center">

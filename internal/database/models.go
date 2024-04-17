@@ -24,6 +24,11 @@ type OnlinePlayer struct {
 	PlayerUid  string    `json:"player_uid"`
 	SteamId    string    `json:"steam_id"`
 	Nickname   string    `json:"nickname"`
+	Ip         string    `json:"ip"`
+	Ping       float64   `json:"ping"`
+	LocationX  float64   `json:"location_x"`
+	LocationY  float64   `json:"location_y"`
+	Level      int32     `json:"level"`
 	LastOnline time.Time `json:"last_online"`
 }
 
@@ -69,8 +74,9 @@ type PlayerW struct {
 }
 
 type RconCommand struct {
-	Command string `json:"command"`
-	Remark  string `json:"remark"`
+	Command     string `json:"command"`
+	Placeholder string `json:"placeholder"`
+	Remark      string `json:"remark"`
 }
 
 type RconCommandList struct {

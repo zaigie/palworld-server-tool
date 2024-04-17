@@ -78,13 +78,18 @@ func importRconCommands(c *gin.Context) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		parts := strings.Split(line, ",")
-		if len(parts) != 2 {
+		if len(parts) < 2 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file format"})
 			return
 		}
+		placeholder := ""
+		if len(parts) >= 3 {
+			placeholder = parts[2]
+		}
 		rconCommand := database.RconCommand{
-			Command: parts[0],
-			Remark:  parts[1],
+			Command:     parts[0],
+			Remark:      parts[1],
+			Placeholder: placeholder,
 		}
 		if err := service.AddRconCommand(database.GetDB(), rconCommand); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

@@ -30,6 +30,7 @@ const isDarkMode = ref(
   window.matchMedia("(prefers-color-scheme: dark)").matches
 );
 
+const localeLowerPalMap = ref({});
 const skillTypeList = ref([]);
 
 // 帕鲁列表
@@ -210,22 +211,28 @@ const showPalDetail = (pal) => {
 };
 
 // UID、Steam64 复制
-const copyText = (text) => {
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  document.body.appendChild(textarea);
-  textarea.select();
-
-  try {
-    const successful = document.execCommand("copy");
-    message.success(t("message.copysuccess"));
-  } catch (err) {
-    message.error(t("message.copyerr", { err: err }));
+const copyText = async (text) => {
+  if (navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(text);
+      message.success(t("message.copysuccess"));
+    } catch (err) {
+      message.error(t("message.copyerr", { err }));
+    }
+  } else {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand("copy");
+      message.success(t("message.copysuccess"));
+    } catch (err) {
+      message.error(t("message.copyerr", { err }));
+    }
+    document.body.removeChild(textarea);
   }
-
-  document.body.removeChild(textarea);
 };
-
 // 查看公会
 const toGuilds = async (uid) => {
   playerToGuildStore().setCurrentUid(uid);
@@ -285,16 +292,16 @@ const handelPlayerAction = async (type) => {
   const param = {
     ban: {
       title: t("message.bantitle"),
-      content: t("message.banwarn")
+      content: t("message.banwarn"),
     },
     unban: {
       title: t("message.unbantitle"),
-      content: t("message.unbanwarn")
+      content: t("message.unbanwarn"),
     },
     kick: {
       title: t("message.kicktitle"),
-      content: t("message.kickwarn")
-    }
+      content: t("message.kickwarn"),
+    },
   }[type];
   dialog.warning({
     ...param,
@@ -365,6 +372,13 @@ const isWhite = (player) => {
 onMounted(async () => {
   skillTypeList.value = getSkillTypeList();
   await getWhiteList();
+  localeLowerPalMap.value = Object.keys(palMap[locale.value]).reduce(
+    (acc, key) => {
+      acc[key.toLowerCase()] = palMap[locale.value][key];
+      return acc;
+    },
+    {}
+  );
 });
 
 // 其他操作
@@ -388,8 +402,8 @@ const getPalAvatar = (name) => {
 };
 const getPalName = (name) => {
   const lowerName = name.toLowerCase();
-  return palMap[locale.value][lowerName]
-    ? palMap[locale.value][lowerName]
+  return localeLowerPalMap.value[lowerName]
+    ? localeLowerPalMap.value[lowerName]
     : name;
 };
 const getItemIcon = (id) => {
@@ -426,26 +440,13 @@ const mergeItems = () => {
       const frontendItem = palItems[locale.value].find(
         (frontItem) => frontItem.id === item.ItemId
       );
-      if (frontendItem) {
-        return {
-          ...item,
-          id: frontendItem.id,
-          name: frontendItem.name,
-          iconPath: frontendItem.iconPath,
-          description: frontendItem.description,
-        };
-      } else {
-        const jaFrontendItem = palItems["ja"].find(
-          (frontItem) => frontItem.id === item.ItemId
-        );
-        return {
-          ...item,
-          id: item.ItemId,
-          name: item.ItemId,
-          iconPath: jaFrontendItem?.iconPath || "",
-          description: jaFrontendItem?.description || "",
-        };
-      }
+      return {
+        ...item,
+        id: frontendItem.id,
+        name: frontendItem.name,
+        description: frontendItem.description,
+        key: frontendItem.key,
+      };
     });
   }
 };
@@ -552,9 +553,7 @@ const createPlayerItemsColumns = () => {
               ghost
             >
               Steam64:
-              {{
-                playerInfo.steam_id ? playerInfo.steam_id : "--"
-              }}
+              {{ playerInfo.steam_id ? playerInfo.steam_id : "--" }}
               <template #icon>
                 <n-icon><ContentCopyFilled /></n-icon>
               </template>
@@ -734,12 +733,12 @@ const createPlayerItemsColumns = () => {
         {{ $t("button.ban") }}
       </n-button>
       <n-button
-          @click="handelPlayerAction('unban')"
-          type="success"
-          size="large"
-          secondary
-          strong
-          round
+        @click="handelPlayerAction('unban')"
+        type="success"
+        size="large"
+        secondary
+        strong
+        round
       >
         <template #icon>
           <n-icon>

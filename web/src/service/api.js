@@ -12,6 +12,9 @@ class ApiService extends Service {
   async getServerInfo() {
     return this.fetch(`/api/server`).get().json();
   }
+  async getServerMetrics() {
+    return this.fetch(`/api/server/metrics`).get().json();
+  }
   async sendBroadcast(param) {
     let data = param;
     return this.fetch(`/api/server/broadcast`).post(data).json();
@@ -24,6 +27,9 @@ class ApiService extends Service {
   async getPlayerList(param) {
     const query = this.generateQuery(param);
     return this.fetch(`/api/player?${query}`).get().json();
+  }
+  async getOnlinePlayerList() {
+    return this.fetch(`/api/online_player`).get().json();
   }
   async getPlayer(param) {
     const { playerUid } = param;
