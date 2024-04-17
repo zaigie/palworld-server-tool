@@ -14,6 +14,14 @@ type ServerInfo struct {
 	Name    string `json:"name"`
 }
 
+type ServerMetrics struct {
+	ServerFps        int     `json:"server_fps"`
+	CurrentPlayerNum int     `json:"current_player_num"`
+	ServerFrameTime  float64 `json:"server_frame_time"`
+	MaxPlayerNum     int     `json:"max_player_num"`
+	Uptime           int     `json:"uptime"`
+}
+
 type BroadcastRequest struct {
 	Message string `json:"message"`
 }
@@ -73,6 +81,31 @@ func getServer(c *gin.Context) {
 	}
 	// TODO: add system psutil info
 	c.JSON(http.StatusOK, &ServerInfo{info["version"], info["name"]})
+}
+
+// getServerMetrics godoc
+//
+//	@Summary		Get Server Metrics
+//	@Description	Get Server Metrics
+//	@Tags			Server
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	ServerMetrics
+//	@Failure		400	{object}	ErrorResponse
+//	@Router			/api/server/metrics [get]
+func getServerMetrics(c *gin.Context) {
+	metrics, err := tool.Metrics()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, &ServerMetrics{
+		ServerFps:        metrics["server_fps"].(int),
+		CurrentPlayerNum: metrics["current_player_num"].(int),
+		ServerFrameTime:  metrics["server_frame_time"].(float64),
+		MaxPlayerNum:     metrics["max_player_num"].(int),
+		Uptime:           metrics["uptime"].(int),
+	})
 }
 
 // publishBroadcast godoc

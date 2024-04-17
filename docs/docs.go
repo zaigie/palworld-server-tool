@@ -998,6 +998,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/server/metrics": {
+            "get": {
+                "description": "Get Server Metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Server"
+                ],
+                "summary": "Get Server Metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.ServerMetrics"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/server/shutdown": {
             "post": {
                 "security": [
@@ -1353,6 +1382,26 @@ const docTemplate = `{
                 },
                 "version": {
                     "type": "string"
+                }
+            }
+        },
+        "api.ServerMetrics": {
+            "type": "object",
+            "properties": {
+                "current_player_num": {
+                    "type": "integer"
+                },
+                "max_player_num": {
+                    "type": "integer"
+                },
+                "server_fps": {
+                    "type": "integer"
+                },
+                "server_frame_time": {
+                    "type": "number"
+                },
+                "uptime": {
+                    "type": "integer"
                 }
             }
         },
