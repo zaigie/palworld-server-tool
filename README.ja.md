@@ -416,7 +416,6 @@ touch pst.db
 | TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            |    文字列    |                         プレイヤーが放送メッセージを掲載します                         |
 |                               |                         |              |                                                                                        |
 |        REST\_\_ADDRESS        | "http://127.0.0.1:8212" |    文字列    |                         API に対応したアドレスを提供しています                         |
-|       REST\_\_USERNAME        |         "admin"         |    文字列    |              REST API のユーザー名は、デフォルトで admin になっています。              |
 |       REST\_\_PASSWORD        |           ""            |    文字列    |                          サーバー設定ファイルの AdminPassword                          |
 |        REST\_\_TIMEOUT        |            5            |     数値     |                               タイムアウトをお願いします                               |
 |                               |                         |              |                                                                                        |
@@ -502,7 +501,6 @@ touch pst.db
 | TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            |    文字列    |                            プレイヤーが放送メッセージを掲載します                             |
 |                               |                         |              |                                                                                               |
 |        REST\_\_ADDRESS        | "http://127.0.0.1:8212" |    文字列    |                            API に対応したアドレスを提供しています                             |
-|       REST\_\_USERNAME        |         "admin"         |    文字列    |                 REST API のユーザー名は、デフォルトで admin になっています。                  |
 |       REST\_\_PASSWORD        |           ""            |    文字列    |                             サーバー設定ファイルの AdminPassword                              |
 |        REST\_\_TIMEOUT        |            5            |     数値     |                                  タイムアウトをお願いします                                   |
 |                               |                         |              |                                                                                               |

@@ -202,11 +202,11 @@ mkdir -p pst && tar -xzf pst_v0.7.0_linux_x86_64.tar.gz -C pst
    save:
      # 存档文件路径
      path: "/path/to/your/Pal/Saved"
-     # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录，可以为空
+     # 存档解析工具路径，一般和 pst 在同一目录，可以为空
      decode_path: ""
-     # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
+     # 定时从存档获取数据的间隔，单位秒，推荐 >= 120
      sync_interval: 120
-     # Save Backup Interval Sec 存档定时备份间隔，单位秒，设置为0时禁用
+     # 存档定时备份间隔，单位秒，设置为0时禁用
      backup_interval: 14400
 
    # Automation Config 自动化管理相关
@@ -326,11 +326,11 @@ rest:
 save:
   # 存档文件路径
   path: "C:\\path\\to\\your\\Pal\\Saved"
-  # Sav_cli Path 存档解析工具路径，一般和 pst 在同一目录，可以为空
+  # 存档解析工具路径，一般和 pst 在同一目录，可以为空
   decode_path: ""
-  # Sav Decode Interval Sec 定时从存档获取数据的间隔，单位秒，推荐 >= 120
+  # 定时从存档获取数据的间隔，单位秒，推荐 >= 120
   sync_interval: 120
-  # Save Backup Interval Sec 存档定时备份间隔，单位秒，设置为0时禁用
+  # 存档定时备份间隔，单位秒，设置为0时禁用
   backup_interval: 14400
 
 # Automation Config 自动化管理相关
@@ -430,7 +430,6 @@ touch pst.db
 | TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            | 文本 |                 玩家登出广播消息内容                 |
 |                               |                         |      |                                                      |
 |        REST\_\_ADDRESS        | "http://127.0.0.1:8212" | 文本 |       服务 REST API 对应的地址，可以用容器网络       |
-|       REST\_\_USERNAME        |         "admin"         | 文本 |      REST API 的用户名，默认即为 admin，不用管       |
 |       REST\_\_PASSWORD        |           ""            | 文本 |           服务器配置文件中的 AdminPassword           |
 |        REST\_\_TIMEOUT        |            5            | 数字 |                  单个请求的超时时间                  |
 |                               |                         |      |                                                      |
@@ -516,7 +515,6 @@ touch pst.db
 | TASK\_\_PLAYER_LOGOUT_MESSAGE |           ""            | 文本 |                            玩家登出广播消息内容                             |
 |                               |                         |      |                                                                             |
 |        REST\_\_ADDRESS        | "http://127.0.0.1:8212" | 文本 |                  服务 REST API 对应的地址，可以用容器网络                   |
-|       REST\_\_USERNAME        |         "admin"         | 文本 |                  REST API 的用户名，默认即为 admin，不用管                  |
 |       REST\_\_PASSWORD        |           ""            | 文本 |                      服务器配置文件中的 AdminPassword                       |
 |        REST\_\_TIMEOUT        |            5            | 数字 |                             单个请求的超时时间                              |
 |                               |                         |      |                                                                             |
