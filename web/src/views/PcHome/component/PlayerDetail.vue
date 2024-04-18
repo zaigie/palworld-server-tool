@@ -440,6 +440,15 @@ const mergeItems = () => {
       const frontendItem = palItems[locale.value].find(
         (frontItem) => frontItem.id === item.ItemId
       );
+      if (!frontendItem) {
+        return {
+          ...item,
+          id: item.ItemId,
+          name: item.ItemId,
+          description: "No description.",
+          key: item.ItemId,
+        };
+      }
       return {
         ...item,
         id: frontendItem.id,
