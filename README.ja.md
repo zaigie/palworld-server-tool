@@ -113,7 +113,7 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491
 
 ```bash
 # pst_{version}_{platform}_{arch}.tar.gz ファイルをダウンロードしてpstディレクトリに解凍します
-mkdir -p pst && tar -xzf pst_v0.7.0_linux_x86_64.tar.gz -C pst
+mkdir -p pst && tar -xzf pst_v0.7.1_linux_x86_64.tar.gz -C pst
 ```
 
 ##### 設定
@@ -238,7 +238,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 
 ##### ダウンロードと解凍
 
-`pst_v0.7.0_windows_x86_64.zip`を任意のディレクトリに解凍します（`pst`というディレクトリ名を推奨）。
+`pst_v0.7.1_windows_x86_64.zip`を任意のディレクトリに解凍します（`pst`というディレクトリ名を推奨）。
 
 ##### 設定
 
