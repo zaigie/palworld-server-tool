@@ -757,7 +757,7 @@ onMounted(async () => {
 
   rconItemOptions.value = itemMap[locale.value].map((item) => {
     return {
-      label: item.name,
+      label: `${item.name}-${item.key}`,
       value: item.key,
     };
   });
@@ -765,7 +765,7 @@ onMounted(async () => {
   rconPalOptions.value = Object.entries(palMap[locale.value]).map(
     ([key, value]) => {
       return {
-        label: value,
+        label: `${value}-${key}`,
         value: key,
       };
     }
@@ -1211,7 +1211,7 @@ onMounted(async () => {
           filterable
           :options="rconPlayerOptions"
         />
-        <n-button
+        <!-- <n-button
           class="ml-2"
           type="primary"
           strong
@@ -1228,7 +1228,13 @@ onMounted(async () => {
           @click="copyText(rconSelectedPlayer?.split('-')[0])"
         >
           {{ $t("button.copypid") }}
-        </n-button>
+        </n-button> -->
+      </div>
+      <div class="flex w-full items-center mt-3 justify-between">
+        <n-text
+          >PlayerID: {{ rconSelectedPlayer?.split("-")[0] || "-" }}</n-text
+        >
+        <n-text>Steam64: {{ rconSelectedPlayer?.split("-")[1] || "-" }}</n-text>
       </div>
 
       <div class="flex w-full items-center mt-3">
@@ -1238,7 +1244,7 @@ onMounted(async () => {
           filterable
           :options="rconItemOptions"
         />
-        <n-button
+        <!-- <n-button
           class="ml-2"
           type="primary"
           strong
@@ -1246,7 +1252,10 @@ onMounted(async () => {
           @click="copyText(rconSelectedItem)"
         >
           {{ $t("button.copyitem") }}
-        </n-button>
+        </n-button> -->
+      </div>
+      <div class="flex w-full items-center mt-3 justify-between">
+        <n-text>ID: {{ rconSelectedItem || "-" }}</n-text>
       </div>
 
       <div class="flex w-full items-center mt-3">
@@ -1256,7 +1265,7 @@ onMounted(async () => {
           filterable
           :options="rconPalOptions"
         />
-        <n-button
+        <!-- <n-button
           class="ml-2"
           type="primary"
           strong
@@ -1264,7 +1273,10 @@ onMounted(async () => {
           @click="copyText(rconSelectedPal)"
         >
           {{ $t("button.copypal") }}
-        </n-button>
+        </n-button> -->
+      </div>
+      <div class="flex w-full items-center mt-3 justify-between">
+        <n-text>ID: {{ rconSelectedPal || "-" }}</n-text>
       </div>
       <n-empty class="mt-3" v-if="rconCommands.length == 0"> </n-empty>
       <n-collapse class="mt-3">
