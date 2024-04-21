@@ -83,7 +83,9 @@ func PlayerLogging(players []database.OnlinePlayer) {
 
 	tmp := make(map[string]string, len(players))
 	for _, player := range players {
-		tmp[player.PlayerUid] = player.Nickname
+		if player.PlayerUid != "" {
+			tmp[player.PlayerUid] = player.Nickname
+		}
 	}
 	if !firstPoll {
 		for id, name := range tmp {
