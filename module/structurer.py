@@ -367,7 +367,7 @@ def getPlayerItems(player_uid, dir_path):
     }
     for idx_key in containers_data.keys():
         container_id = str(
-            player_gvas["inventoryInfo"]["value"][idx_key]["value"]["ID"]["value"]
+            player_gvas["InventoryInfo"]["value"][idx_key]["value"]["ID"]["value"]
         )
         if container_id in item_containers:
             # 解析对应的物品容器数据
