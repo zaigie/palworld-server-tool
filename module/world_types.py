@@ -24,7 +24,7 @@ class Player:
     def __init__(self, uid, data):
         self.player_uid = hexuid_to_decimal(uid)
         self.nickname = data["NickName"]["value"] if data.get("NickName") else ""
-        self.level = int(data["Level"]["value"]) if data.get("Level") else 1
+        self.level = int(data["Level"]["value"]["value"]) if data.get("Level") else 1
         self.exp = int(data["Exp"]["value"]) if data.get("Exp") else 0
         self.hp = int(data["HP"]["value"]["Value"]["value"]) if data.get("HP") else 0
         self.max_hp = (
@@ -93,7 +93,7 @@ class Pal:
     def __init__(self, data):
         self.owner = hexuid_to_decimal(data["OwnerPlayerUId"]["value"])
         # self.nickname = data["Nickname"]["value"] if data.get("Nicknme") else ""
-        self.level = int(data["Level"]["value"]) if data.get("Level") else 1
+        self.level = int(data["Level"]["value"]["value"]) if data.get("Level") else 1
         self.exp = int(data["Exp"]["value"]) if data.get("Exp") else 0
         self.hp = int(data["HP"]["value"]["Value"]["value"]) if data.get("HP") else 0
         self.max_hp = (
@@ -123,12 +123,14 @@ class Pal:
             int(data["Talent_Melee"]["value"]) if data.get("Talent_Melee") else 0
         )
         self.ranged = (
-            int(data["Talent_Shot"]["value"]) if data.get("Talent_Shot") else 0
+            int(data["Talent_Shot"]["value"]["value"]) if data.get("Talent_Shot") else 0
         )
         self.defense = (
-            int(data["Talent_Defense"]["value"]) if data.get("Talent_Defense") else 0
+            int(data["Talent_Defense"]["value"]["value"])
+            if data.get("Talent_Defense")
+            else 0
         )
-        self.rank = int(data["Rank"]["value"]) if data.get("Rank") else 1
+        self.rank = int(data["Rank"]["value"]["value"]) if data.get("Rank") else 1
         self.skills = (
             data["PassiveSkillList"]["value"]["values"]
             if data.get("PassiveSkillList")

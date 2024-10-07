@@ -15,8 +15,9 @@ from palworld_save_tools.rawdata import (
     character,
     group,
     item_container,
-    item_container_slots,
+    # item_container_slots,
 )
+import item_container_slots
 
 from world_types import Player, Pal, Guild
 from logger import log, redirect_stdout_stderr
@@ -38,6 +39,12 @@ from logger import log, redirect_stdout_stderr
 #         item_container.encode,
 #     ),
 # }
+PALWORLD_CUSTOM_PROPERTIES[
+    ".worldSaveData.ItemContainerSaveData.Value.Slots.Slots.RawData"
+] = (
+    item_container_slots.decode,
+    item_container_slots.encode,
+)
 wsd = None
 gvas_file = None
 
@@ -258,6 +265,8 @@ def parse_skiped_item(properties, skip_path, recursive=True):
         ),
     ) as reader:
         if properties["skip_type"] == "ArrayProperty":
+            # hack: 0.3.7 later version has a bug that the array type include bytes
+            # current use custom item_container_slots.decode to fix it
             properties["value"] = reader.array_property(
                 properties["array_type"],
                 len(properties["value"]) - 4,
@@ -378,12 +387,15 @@ def getPlayerItems(player_uid, dir_path):
             # 提取每个物品的相关数据并保存到字典中
             containers_data[idx_key] = [
                 {
-                    "SlotIndex": item["SlotIndex"]["value"],
-                    "ItemId": item["ItemId"]["value"]["StaticId"]["value"].lower(),
-                    "StackCount": item["StackCount"]["value"],
+                    "SlotIndex": item["RawData"]["value"]["permission"]["type_a"],
+                    "ItemId": item["RawData"]["value"]["permission"][
+                        "item_static_id"
+                    ].lower(),
+                    "StackCount": item["RawData"]["value"]["permission"]["type_b"],
                 }
                 for item in item_container["value"]["Slots"]["value"]["values"]
-                if item["ItemId"]["value"]["StaticId"]["value"].lower() != "none"
+                if item["RawData"]["value"]["permission"]["item_static_id"].lower()
+                != "none"
             ]
     return containers_data
 
