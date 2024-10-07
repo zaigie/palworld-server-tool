@@ -70,6 +70,10 @@ const refreshPlayer = async () => {
 onMounted(async () => {
   let res = await api.getPlayerList({});
   playerList.value = res.data.value;
+  // 接口中玩家location_x和location_y同时为0时，表示玩家不在线，不显示
+  playerList.value = playerList.value.filter(
+    (i) => i.location_x !== 0 && i.location_y !== 0
+  );
   res = await api.getGuildList();
   guildList.value = res.data.value;
 
