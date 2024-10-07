@@ -26,6 +26,9 @@ init:
 build:
 	rm -rf dist/ && mkdir -p dist/
 
+	pip install requests tdqm
+	python3 map_down.py
+
 	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
 	cd web && pnpm i && pnpm build && cd ..
 	git submodule update --init --recursive
@@ -44,6 +47,9 @@ build:
 # 为所有平台构建，确保 module/dist 中有所有平台的 sav_cli
 build-pub:
 	rm -rf dist/ && mkdir -p dist/
+
+	pip install requests tdqm
+	python3 map_down.py
 
 	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
 	cd web && pnpm i && pnpm build && cd ..
