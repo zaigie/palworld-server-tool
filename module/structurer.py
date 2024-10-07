@@ -11,15 +11,10 @@ from palworld_save_tools.gvas import GvasFile
 from palworld_save_tools.palsav import decompress_sav_to_gvas
 from palworld_save_tools.paltypes import PALWORLD_CUSTOM_PROPERTIES, PALWORLD_TYPE_HINTS
 from palworld_save_tools.archive import FArchiveReader, FArchiveWriter
-from palworld_save_tools.rawdata import (
-    character,
-    group,
-    item_container,
-    # item_container_slots,
-)
 import item_container_slots
+import base_camp
 
-from world_types import Player, Pal, Guild
+from world_types import Player, Pal, Guild, BaseCamp
 from logger import log, redirect_stdout_stderr
 
 # PALWORLD_CUSTOM_PROPERTIES: dict[
@@ -44,6 +39,12 @@ PALWORLD_CUSTOM_PROPERTIES[
 ] = (
     item_container_slots.decode,
     item_container_slots.encode,
+)
+PALWORLD_CUSTOM_PROPERTIES[
+    ".worldSaveData.BaseCampSaveData.Value.WorkerDirector.RawData"
+] = (
+    base_camp.decode,
+    base_camp.encode,
 )
 wsd = None
 gvas_file = None
@@ -400,10 +401,22 @@ def getPlayerItems(player_uid, dir_path):
     return containers_data
 
 
+def structure_base_camp():
+    log("Structuring base camps...")
+    if not wsd.get("BaseCampSaveData"):
+        return []
+    base_camps = (
+        b["value"]["RawData"]["value"] for b in wsd["BaseCampSaveData"]["value"]
+    )
+    base_camps_generator = (BaseCamp(b).to_dict() for b in base_camps)
+    return list(base_camps_generator)
+
+
 def structure_guild(filetime: int = -1):
     log("Structuring guilds...")
     if not wsd.get("GroupSaveDataMap"):
         return []
+    base_camps = structure_base_camp()
     groups = (
         g["value"]["RawData"]["value"]
         for g in wsd["GroupSaveDataMap"]["value"]
@@ -414,6 +427,17 @@ def structure_guild(filetime: int = -1):
     sorted_guilds = sorted(
         guilds_generator, key=lambda g: g["base_camp_level"], reverse=True
     )
+    for guild in sorted_guilds:
+        for camp in base_camps:
+            if camp["id"] in guild["base_ids"]:
+                guild["base_camp"].append(
+                    {
+                        "id": camp["id"],
+                        "area": camp["area_range"],
+                        "location_x": camp["transform"]["x"],
+                        "location_y": camp["transform"]["y"],
+                    }
+                )
     return list(sorted_guilds)
 
 

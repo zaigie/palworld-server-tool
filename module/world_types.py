@@ -186,13 +186,67 @@ class Guild:
             }
             for player in data["players"]
         ]
-        self.base_ids = [str(x) for x in data["base_ids"]]
+        self.base_ids = [hexuid_to_decimal(x) for x in data["base_ids"]]
+        self.base_camp = []
         self.__order = [
             "name",
             "base_camp_level",
             "admin_player_uid",
             "players",
             "base_ids",
+            "base_camp",
+        ]
+
+    def to_dict(self):
+        return {
+            attr: getattr(self, attr)
+            for attr in self.__order
+            if not attr.startswith("_") and not callable(getattr(self, attr))
+        }
+
+
+class BaseCamp:
+    def __init__(self, data):
+        self.id = hexuid_to_decimal(data["id"])
+        # self.name = data["name"]
+        self.state = data["state"]
+        self.transform = {
+            "x": data["transform"]["translation"]["x"],
+            "y": data["transform"]["translation"]["y"],
+            "z": data["transform"]["translation"]["z"],
+            "rotation": {
+                "x": data["transform"]["rotation"]["x"],
+                "y": data["transform"]["rotation"]["y"],
+                "z": data["transform"]["rotation"]["z"],
+                "w": data["transform"]["rotation"]["w"],
+            },
+        }
+        self.area_range = data["area_range"]
+        self.group_id_belong_to = hexuid_to_decimal(data["group_id_belong_to"])
+        # self.fast_travel_local_transform = {
+        #     "x": data["fast_travel_local_transform"]["translation"]["x"],
+        #     "y": data["fast_travel_local_transform"]["translation"]["y"],
+        #     "z": data["fast_travel_local_transform"]["translation"]["z"],
+        #     "rotation": {
+        #         "x": data["fast_travel_local_transform"]["rotation"]["x"],
+        #         "y": data["fast_travel_local_transform"]["rotation"]["y"],
+        #         "z": data["fast_travel_local_transform"]["rotation"]["z"],
+        #         "w": data["fast_travel_local_transform"]["rotation"]["w"],
+        #     },
+        # }
+        self.owner_map_object_instance_id = hexuid_to_decimal(
+            data["owner_map_object_instance_id"]
+        )
+
+        self.__order = [
+            "id",
+            # "name",
+            "state",
+            "transform",
+            "area_range",
+            "group_id_belong_to",
+            # "fast_travel_local_transform",
+            "owner_map_object_instance_id",
         ]
 
     def to_dict(self):
