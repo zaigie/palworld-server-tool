@@ -24,9 +24,19 @@ type ErrorResponse struct {
 
 type EmptyResponse struct{}
 
+func ignoreLogPrefix(path string) bool {
+	prefixes := []string{"/swagger/", "/assets/", "/favicon.ico", "/map"}
+	for _, prefix := range prefixes {
+		if strings.HasPrefix(path, prefix) {
+			return true
+		}
+	}
+	return false
+}
+
 func Logger() gin.HandlerFunc {
 	return gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
-		if !strings.HasPrefix(param.Path, "/swagger/") && !strings.HasPrefix(param.Path, "/assets/") {
+		if !ignoreLogPrefix(param.Path) {
 			statusColor := param.StatusCodeColor()
 			methodColor := param.MethodColor()
 			resetColor := param.ResetColor()
