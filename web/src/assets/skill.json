@@ -573,6 +573,90 @@
         "PAL_ALLAttack_down2": {
             "name": "消极主义",
             "desc": "攻击-20% (对自己生效)"
+        },
+        "WorkSpeed_ACC_up1": {
+            "name": "高速工作Lv1",
+            "desc": "工作速度 10%"
+        },
+        "WorkSpeed_ACC_up2": {
+            "name": "高速工作Lv2",
+            "desc": "工作速度 15%"
+        },
+        "WorkSpeed_ACC_up3": {
+            "name": "高速工作Lv3",
+            "desc": "工作速度 20%"
+        },
+        "defense_ACC_up1": {
+            "name": "提升防御Lv1",
+            "desc": "防御+10%"
+        },
+        "defense_ACC_up2": {
+            "name": "提升防御Lv2",
+            "desc": "防御+20%"
+        },
+        "defense_ACC_up3": {
+            "name": "提升防御Lv3",
+            "desc": "防御+30%"
+        },
+        "HP_ACC_up1": {
+            "name": "提升体力Lv1",
+            "desc": "HP 5%"
+        },
+        "HP_ACC_up2": {
+            "name": "提升体力Lv2",
+            "desc": "HP 10%"
+        },
+        "HP_ACC_up3": {
+            "name": "提升体力Lv3",
+            "desc": "HP 15%"
+        },
+        "Attack_ACC_up1": {
+            "name": "提升攻击Lv1",
+            "desc": "攻击 5%"
+        },
+        "Attack_ACC_up2": {
+            "name": "提升攻击Lv2",
+            "desc": "攻击 10%"
+        },
+        "Attack_ACC_up3": {
+            "name": "提升攻击Lv3",
+            "desc": "攻击 15%"
+        },
+        "MaxInventoryWeight_up": {
+            "name": "提升负重上限Lv1",
+            "desc": ""
+        },
+        "MaxInventoryWeight_up2": {
+            "name": "提升负重上限Lv2",
+            "desc": ""
+        },
+        "MaxInventoryWeight_up3": {
+            "name": "提升负重上限Lv3",
+            "desc": ""
+        },
+        "TemperatureResist_Heat1": {
+            "name": "耐暑Lv1",
+            "desc": ""
+        },
+        "TemperatureResist_Heat2": {
+            "name": "耐暑Lv2",
+            "desc": ""
+        },
+        "TemperatureResist_Heat3": {
+            "name": "耐暑Lv3",
+            "desc": ""
+        },
+        "TemperatureResist_Cold1": {
+            "name": "耐寒Lv1",
+            "desc": ""
+        },
+        "TemperatureResist_Cold2": {
+            "name": "耐寒Lv2",
+            "desc": ""
+        },
+        "TemperatureResist_Cold3": {
+            "name": "耐寒Lv3",
+            "desc": ""
         }
     },
     "ja": {
