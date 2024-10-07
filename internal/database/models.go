@@ -59,12 +59,19 @@ type Player struct {
 	Items *Items `json:"items"`
 }
 
+type BaseCamp struct {
+	Id        string  `json:"id"`
+	Area      float64 `json:"area"`
+	LocationX float64 `json:"location_x"`
+	LocationY float64 `json:"location_y"`
+}
+
 type Guild struct {
 	Name           string         `json:"name"`
 	BaseCampLevel  int32          `json:"base_camp_level"`
 	AdminPlayerUid string         `json:"admin_player_uid"`
 	Players        []*GuildPlayer `json:"players"`
-	BaseIds        []string       `json:"base_ids"`
+	BaseCamp       []BaseCamp     `json:"base_camp"`
 }
 
 type PlayerW struct {

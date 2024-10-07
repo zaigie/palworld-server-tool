@@ -36,6 +36,9 @@ var indexHTML embed.FS
 //go:embed pal-conf.html
 var palConfHTML embed.FS
 
+//go:embed map/*
+var mapTiles embed.FS
+
 func setupFlags() {
 	flag.StringVar(&cfgFile, "config", "", "config file")
 	flag.Parse()
@@ -70,6 +73,10 @@ func main() {
 
 	assetsFS, _ := fs.Sub(assets, "assets")
 	router.StaticFS("/assets", http.FS(assetsFS))
+
+	mapTilesFS, _ := fs.Sub(mapTiles, "map")
+	router.StaticFS("/map/tiles", http.FS(mapTilesFS))
+
 	router.GET("/", func(c *gin.Context) {
 		c.Writer.WriteHeader(http.StatusOK)
 		file, _ := indexHTML.ReadFile("index.html")

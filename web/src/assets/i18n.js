@@ -107,6 +107,7 @@ const messages = {
       copypid: "Copy Player ID",
       copyitem: "Copy Item ID",
       copypal: "Copy Pal ID",
+      map: "Map",
     },
     pal: {
       type: "Type",
@@ -146,6 +147,14 @@ const messages = {
       selectPlayer: "Select Player",
       selectItem: "Select Item",
       selectPal: "Select Pal",
+    },
+    map: {
+      baseCampTitle: 'The base of the "{name}" guild',
+      guildMember: "Member: ",
+      showFastTravel: "Show fast travel",
+      showBossTower: "Show boss tower",
+      showPlayer: "Show online player",
+      showBaseCamp: "Show basecamp",
     },
   },
   zh: {
@@ -253,6 +262,7 @@ const messages = {
       copypid: "复制玩家ID",
       copyitem: "复制物品ID",
       copypal: "复制帕鲁ID",
+      map: "地图",
     },
     pal: {
       type: "类型",
@@ -292,6 +302,14 @@ const messages = {
       selectPlayer: "选择玩家",
       selectItem: "选择物品",
       selectPal: "选择帕鲁",
+    },
+    map: {
+      baseCampTitle: '"{name}" 公会的据点',
+      guildMember: "成员: ",
+      showFastTravel: "显示传送点",
+      showBossTower: "显示高塔",
+      showPlayer: "显示在线玩家",
+      showBaseCamp: "显示据点",
     },
   },
   ja: {
@@ -398,6 +416,7 @@ const messages = {
       copypid: "プレイヤーIDをコピー",
       copyitem: "アイテムIDをコピー",
       copypal: "パルIDをコピー",
+      map: "地図",
     },
     item: {
       palList: "幻獣リスト",
@@ -437,6 +456,14 @@ const messages = {
       rank: "ランク",
       tower: "タワーボス",
       lucky: "ラッキーパル",
+    },
+    map: {
+      baseCampTitle: "「{name}」ギルドの基地",
+      guildMember: "メンバー: ",
+      showFastTravel: "Show fast travel",
+      showBossTower: "Show boss tower",
+      showPlayer: "Show online player",
+      showBaseCamp: "Show basecamp",
     },
   },
 };

@@ -25,8 +25,6 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 				}
 				p.Ip = existingPlayer.Ip
 				p.Ping = existingPlayer.Ping
-				p.LocationX = existingPlayer.LocationX
-				p.LocationY = existingPlayer.LocationY
 			}
 			if p.SaveLastOnline != "" {
 				p.LastOnline, _ = time.Parse(time.RFC3339, p.SaveLastOnline)

@@ -8,6 +8,7 @@ import {
   DeleteFilled,
   ArchiveOutlined,
   CloudDownloadOutlined,
+  PublicRound,
 } from "@vicons/material";
 import {
   GameController,
@@ -30,6 +31,7 @@ import itemMap from "@/assets/items.json";
 import skillMap from "@/assets/skill.json";
 import PlayerList from "./component/PlayerList.vue";
 import GuildList from "./component/GuildList.vue";
+import MapView from "./component/MapView.vue";
 import whitelistStore from "@/stores/model/whitelist";
 import playerToGuildStore from "@/stores/model/playerToGuild";
 import { watch } from "vue";
@@ -108,7 +110,7 @@ const toPalConf = () => {
 };
 
 const toGithub = () => {
-  window.open("https://github.com/zaigie/palworld-server-tool/releases");
+  window.open("https://github.com/qycnet/palworld-server-tool-main/releases");
 };
 const serverToolInfo = ref({});
 const hasNewVersion = ref(false);
@@ -573,6 +575,14 @@ const toGuilds = async () => {
   playerToGuildStore().setUpdateStatus("guilds");
 };
 
+const toMap = async () => {
+  if (currentDisplay.value === "map") {
+    return;
+  }
+  currentDisplay.value = "map";
+  playerToGuildStore().setUpdateStatus("map");
+};
+
 const playerToGuildStatus = computed(() =>
   playerToGuildStore().getUpdateStatus()
 );
@@ -784,6 +794,9 @@ onMounted(async () => {
     await getPlayerList();
     await getServerMetrics();
   }, 60000);
+  // 调试用
+  // currentDisplay.value = "map";
+  // playerToGuildStore().setUpdateStatus("map");
 });
 </script>
 
@@ -903,6 +916,20 @@ onMounted(async () => {
                   </n-icon>
                 </template>
                 {{ $t("button.guilds") }}
+              </n-button>
+              <n-button
+                @click="toMap()"
+                :type="currentDisplay === 'map' ? 'primary' : 'tertiary'"
+                secondary
+                strong
+                round
+              >
+                <template #icon>
+                  <n-icon>
+                    <PublicRound />
+                  </n-icon>
+                </template>
+                {{ $t("button.map") }}
               </n-button>
             </n-button-group>
             <n-space>
@@ -1036,6 +1063,7 @@ onMounted(async () => {
               @onWhitelistStatus="getSonWhitelistStatus"
             ></player-list>
             <guild-list v-if="currentDisplay === 'guilds'"></guild-list>
+            <map-view v-if="currentDisplay === 'map'"></map-view>
           </div>
         </n-layout>
       </div>
