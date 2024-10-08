@@ -110,7 +110,7 @@ const toPalConf = () => {
 };
 
 const toGithub = () => {
-  window.open("https://github.com/qycnet/palworld-server-tool-main/releases");
+  window.open("https://github.com/zaigie/palworld-server-tool/releases");
 };
 const serverToolInfo = ref({});
 const hasNewVersion = ref(false);

@@ -40,6 +40,7 @@ Features implemented using official REST API:
 
 Additional features provided by the tool:
 
+- [x] Visual map management
 - [x] Whitelist management
 - [x] Defines and executes the RCON command
 - [x] Automatic archive backup and management
