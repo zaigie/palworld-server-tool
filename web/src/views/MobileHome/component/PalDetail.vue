@@ -50,7 +50,7 @@ const percentageHP = (hp, max_hp) => {
       }}</n-tag>
     </n-space>
     <n-space vertical>
-      <n-progress
+      <!-- <n-progress
         type="line"
         status="error"
         indicator-placement="inside"
@@ -59,7 +59,7 @@ const percentageHP = (hp, max_hp) => {
         :border-radius="4"
         :fill-border-radius="0"
         >HP: {{ displayHP(palDetail.hp, palDetail.max_hp) }}</n-progress
-      >
+      > -->
       <n-grid cols="4">
         <n-gi>
           <n-statistic :label="$t('pal.ranged')" :value="palDetail.ranged" />

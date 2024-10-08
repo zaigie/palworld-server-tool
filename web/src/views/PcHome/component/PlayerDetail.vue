@@ -622,7 +622,7 @@ const createPlayerItemsColumns = () => {
           <!-- <n-flex justify="end">Updated at 2022-01-01</n-flex> -->
         </template>
       </n-page-header>
-      <n-space vertical>
+      <!-- <n-space vertical>
         <n-progress
           type="line"
           status="error"
@@ -647,7 +647,7 @@ const createPlayerItemsColumns = () => {
             displayHP(playerInfo?.shield_hp, playerInfo?.shield_max_hp)
           }}</n-progress
         >
-      </n-space>
+      </n-space> -->
       <div class="mt-2">
         <n-tabs type="line" size="large" animated>
           <n-tab-pane :name="$t('item.palList')">

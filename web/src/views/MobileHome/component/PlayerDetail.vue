@@ -307,7 +307,7 @@ onMounted(async () => {
             <!-- <n-flex justify="end">Updated at 2022-01-01</n-flex> -->
           </template>
         </n-page-header>
-        <n-space vertical>
+        <!-- <n-space vertical>
           <n-progress
             type="line"
             status="error"
@@ -332,7 +332,7 @@ onMounted(async () => {
               displayHP(playerInfo.shield_hp, playerInfo.shield_max_hp)
             }}</n-progress
           >
-        </n-space>
+        </n-space> -->
         <div class="flex w-full mt-5">
           <n-input
             v-model="searchValue"
