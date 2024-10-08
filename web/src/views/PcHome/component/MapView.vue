@@ -10,6 +10,7 @@ import {
   LTileLayer,
   LTooltip,
 } from "@vue-leaflet/vue-leaflet";
+import { AddCircle20Filled, SubtractCircle20Filled } from "@vicons/fluent";
 import ApiService from "@/service/api.js";
 import IconBase from "@/assets/map/base.webp";
 import IconPlayer from "@/assets/map/player.webp";
@@ -90,6 +91,18 @@ const onMapMouseMove = (event) => {
     event.latlng.lat.toFixed(2),
     event.latlng.lng.toFixed(2),
   ];
+};
+
+// 左下角控件
+const onAddZoom = () => {
+  if (zoom.value !== 6) {
+    zoom.value += 1;
+  }
+};
+const onSubtractZoom = () => {
+  if (zoom.value !== 0) {
+    zoom.value -= 1;
+  }
 };
 
 onMounted(async () => {
@@ -187,6 +200,39 @@ onUnmounted(async () => {
         </template>
       </template>
     </l-map>
+    <div
+      class="min-h-50 p-2 fixed bottom-2 left-2 z-999 flex flex-col justify-end"
+    >
+      <div class="h-40 flex flex-col justify-between items-center">
+        <n-icon
+          class="cursor-pointer"
+          size="24"
+          color="#fff"
+          @click="onAddZoom"
+        >
+          <AddCircle20Filled />
+        </n-icon>
+        <n-slider
+          style="height: 100px"
+          class="border border-solid border-#fff rounded-full"
+          v-model:value="zoom"
+          :tooltip="false"
+          :height="4"
+          :step="1"
+          :min="0"
+          :max="6"
+          vertical
+        />
+        <n-icon
+          class="cursor-pointer"
+          size="24"
+          color="#fff"
+          @click="onSubtractZoom"
+        >
+          <SubtractCircle20Filled />
+        </n-icon>
+      </div>
+    </div>
     <div class="control">
       <div>
         <span>{{ $t("map.showFastTravel") }}</span>
