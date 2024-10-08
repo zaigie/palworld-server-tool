@@ -24,6 +24,7 @@ const LAND_SCAPE = [335112, 617000, -582888, -301000];
 
 const api = new ApiService();
 
+const mousePosition = ref([0, 0]);
 const zoom = ref(2);
 const tiles = ref("map/tiles/{z}/{x}/{y}.png");
 const playerList = ref([]);
@@ -36,12 +37,29 @@ const showFastTravel = ref(false);
 let timer = null;
 
 const toMapPosition = (position) => {
+  // hack
+  if (position[0] >= -256 && position[0] <= 256) {
+    return position;
+  }
   const x =
     -256 +
     (256 * (position[0] - LAND_SCAPE[2])) / (LAND_SCAPE[0] - LAND_SCAPE[2]);
   const y =
     (256 * (position[1] - LAND_SCAPE[3])) / (LAND_SCAPE[1] - LAND_SCAPE[3]);
   return [x, y];
+};
+
+const fromMapPosition = (mapPosition) => {
+  // 还原 x 坐标
+  const worldX =
+    ((mapPosition[0] + 256) * (LAND_SCAPE[0] - LAND_SCAPE[2])) / 256 +
+    LAND_SCAPE[2];
+  // 还原 y 坐标
+  const worldY =
+    (mapPosition[1] * (LAND_SCAPE[1] - LAND_SCAPE[3])) / 256 + LAND_SCAPE[3];
+
+  // 保留两位小数
+  return [worldX.toFixed(2), worldY.toFixed(2)];
 };
 
 const toMapDistance = (distance) => {
@@ -65,6 +83,13 @@ const refreshPlayer = async () => {
     }
   }
   timer = setTimeout(refreshPlayer, 5000);
+};
+
+const onMapMouseMove = (event) => {
+  mousePosition.value = [
+    event.latlng.lat.toFixed(2),
+    event.latlng.lng.toFixed(2),
+  ];
 };
 
 onMounted(async () => {
@@ -97,6 +122,7 @@ onUnmounted(async () => {
       :min-zoom="0"
       :max-zoom="6"
       :options="{ zoomControl: false, attributionControl: false }"
+      @mousemove="onMapMouseMove"
     >
       <l-tile-layer
         :url="tiles"
@@ -178,6 +204,9 @@ onUnmounted(async () => {
         <span>{{ $t("map.showBaseCamp") }}</span>
         <n-switch v-model:value="showBaseCamp" />
       </div>
+      <div>
+        <span>{{ mousePosition[0] }}, {{ mousePosition[1] }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -202,6 +231,7 @@ onUnmounted(async () => {
   position: absolute;
   bottom: 20px;
   right: 20px;
+  color: #fff;
   background-color: rgb(24, 24, 28);
   border-radius: 10px;
   display: flex;
