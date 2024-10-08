@@ -45,6 +45,17 @@ COPY ./module /app
 
 RUN pyinstaller --onefile sav_cli.py
 
+# --------- map tiles -----------
+FROM python:3.11-alpine as mapDownloader
+
+WORKDIR /app
+
+RUN apk update && apk add curl unzip
+
+# https://github.com/zaigie/palworld-server-tool/releases/download/v0.0.1/map.zip
+RUN curl -L -o map.zip https://github.com/zaigie/palworld-server-tool/releases/download/v0.0.1/map.zip
+RUN unzip map.zip -d /app
+
 # --------- backend -----------
 FROM golang:1.21-alpine as backendBuilder
 
@@ -57,6 +68,7 @@ ADD . .
 COPY --from=frontendBuilder /app/assets /app/assets
 COPY --from=frontendBuilder /app/index.html /app/index.html
 COPY --from=frontendBuilder /app/pal-conf.html /app/pal-conf.html
+COPY --from=mapDownloader /app/map /app/map
 
 RUN if [ ! -z "$proxy" ]; then \
     export GOPROXY=https://goproxy.io,direct && \
