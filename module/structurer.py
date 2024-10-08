@@ -376,6 +376,8 @@ def getPlayerItems(player_uid, dir_path):
         "WeaponLoadOutContainerId": [],
     }
     for idx_key in containers_data.keys():
+        if player_gvas.get("InventoryInfo") is None:
+            continue
         container_id = str(
             player_gvas["InventoryInfo"]["value"][idx_key]["value"]["ID"]["value"]
         )
