@@ -378,6 +378,8 @@ def getPlayerItems(player_uid, dir_path):
     for idx_key in containers_data.keys():
         if player_gvas.get("InventoryInfo") is None:
             continue
+        if player_gvas["InventoryInfo"]["value"].get(idx_key) is None:
+            continue
         container_id = str(
             player_gvas["InventoryInfo"]["value"][idx_key]["value"]["ID"]["value"]
         )
