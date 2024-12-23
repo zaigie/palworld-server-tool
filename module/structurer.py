@@ -13,6 +13,7 @@ from palworld_save_tools.paltypes import PALWORLD_CUSTOM_PROPERTIES, PALWORLD_TY
 from palworld_save_tools.archive import FArchiveReader, FArchiveWriter
 import item_container_slots
 import base_camp
+import group
 
 from world_types import Player, Pal, Guild, BaseCamp
 from logger import log, redirect_stdout_stderr
@@ -46,6 +47,9 @@ PALWORLD_CUSTOM_PROPERTIES[
     base_camp.decode,
     base_camp.encode,
 )
+PALWORLD_CUSTOM_PROPERTIES[
+    ".worldSaveData.GroupSaveDataMap"
+] = (group.decode, group.encode)
 wsd = None
 gvas_file = None
 
