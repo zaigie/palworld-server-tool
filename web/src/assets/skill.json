@@ -258,17 +258,17 @@
         }
     },
     "zh": {
-        "CraftSpeed_up2": {
-            "name": "工匠精神",
-            "desc": "工作速度+50% (对自己生效)"
+        "CraftSpeed_up3": {
+            "name": "卓绝技艺",
+            "desc": "工作速度+75% (对帕鲁生效)"
         },
-        "Deffence_up2": {
-            "name": "顽强肉体",
-            "desc": "防御+20% (对自己生效)"
+        "Deffence_up3": {
+            "name": "金刚之躯",
+            "desc": "防御+30% (对帕鲁生效)"
         },
         "Rare": {
             "name": "稀有",
-            "desc": "工作速度+15% (对自己生效)，攻击+15% (对自己生效)"
+            "desc": "工作速度+15% (对帕鲁生效)，攻击+15% (对帕鲁生效)"
         },
         "Legend": {
             "name": "传说",
@@ -282,9 +282,45 @@
             "name": "永炎",
             "desc": "火属性攻击伤害增加30%，雷属性攻击伤害增加30%"
         },
+        "Invader": {
+            "name": "侵略者",
+            "desc": "暗属性攻击伤害增加30%，龙属性攻击伤害增加30%"
+        },
+        "PAL_ALLAttack_up3": {
+            "name": "鬼神",
+            "desc": "攻击+30% (对帕鲁生效)，防御+5% (对帕鲁生效)"
+        },
+        "PAL_FullStomach_Down_3": {
+            "name": "极限绝食",
+            "desc": "减少饱腹度下降速度+20.0%"
+        },
+        "PAL_Sanity_Down_3": {
+            "name": "明镜止水",
+            "desc": "减少SAN值下降速度+20.0%"
+        },
+        "MoveSpeed_up_3": {
+            "name": "神速",
+            "desc": "移动速度提升30%"
+        },
+        "Stamina_Up_3": {
+            "name": "永动机",
+            "desc": "最大耐力+75%，此效果仅对可骑乘的帕鲁有效。"
+        },
+        "Vampire": {
+            "name": "吸血鬼",
+            "desc": "会吸收造成伤害的一部分恢复自身的。即使到夜晚也不会睡觉，可以一直工作。"
+        },
+        "CraftSpeed_up2": {
+            "name": "工匠精神",
+            "desc": "工作速度+50% (对帕鲁生效)"
+        },
+        "Deffence_up2": {
+            "name": "顽强肉体",
+            "desc": "防御+20% (对帕鲁生效)"
+        },
         "PAL_ALLAttack_up2": {
             "name": "凶猛",
-            "desc": "攻击+20% (对自己生效)"
+            "desc": "攻击+20% (对帕鲁生效)"
         },
         "TrainerATK_UP_1": {
             "name": "突袭指挥官",
@@ -308,11 +344,11 @@
         },
         "PAL_FullStomach_Down_2": {
             "name": "节食大师",
-            "desc": "+15%"
+            "desc": "减少饱腹度下降速度+15.0%"
         },
         "PAL_Sanity_Down_2": {
             "name": "工作狂",
-            "desc": "+15%"
+            "desc": "减少SAN值下降速度+15.0%"
         },
         "ElementBoost_Normal_2_PAL": {
             "name": "圣天",
@@ -350,9 +386,9 @@
             "name": "神龙",
             "desc": "龙属性攻击伤害增加20%"
         },
-        "MoveSpeed_up_3": {
-            "name": "神速",
-            "desc": "移动速度提升30%"
+        "MoveSpeed_up_2": {
+            "name": "运动健将",
+            "desc": "移动速度提升20%"
         },
         "Test_PalEgg_HatchingSpeed_Up": {
             "name": "博爱主义者",
@@ -364,7 +400,7 @@
         },
         "Stamina_Up_1": {
             "name": "无限精力",
-            "desc": "最大体力+50%，※此效果仅对可骑乘的帕鲁有效。"
+            "desc": "最大耐力+50%，此效果仅对可骑乘的帕鲁有效。"
         },
         "SalePrice_Up_1": {
             "name": "高贵",
@@ -372,47 +408,43 @@
         },
         "Noukin": {
             "name": "脑筋",
-            "desc": "攻击+30% (对自己生效)，工作速度-50% (对自己生效)"
-        },
-        "MoveSpeed_up_2": {
-            "name": "运动健将",
-            "desc": "移动速度提升20%"
+            "desc": "攻击+30% (对帕鲁生效)，工作速度-50% (对帕鲁生效)"
         },
         "CraftSpeed_up1": {
             "name": "认真",
-            "desc": "工作速度+20% (对自己生效)"
+            "desc": "工作速度+20% (对帕鲁生效)"
         },
         "Deffence_up1": {
             "name": "坚硬皮肤",
-            "desc": "防御+10% (对自己生效)"
+            "desc": "防御+10% (对帕鲁生效)"
         },
         "PAL_ALLAttack_up1": {
             "name": "勇敢",
-            "desc": "攻击+10% (对自己生效)"
+            "desc": "攻击+10% (对帕鲁生效)"
         },
         "PAL_rude": {
             "name": "粗暴",
-            "desc": "攻击+15% (对自己生效)，工作速度-10% (对自己生效)"
+            "desc": "攻击+15% (对帕鲁生效)，工作速度-10% (对帕鲁生效)"
         },
         "PAL_conceited": {
             "name": "自恋狂",
-            "desc": "工作速度+10% (对自己生效)，防御-10% (对自己生效)"
+            "desc": "工作速度+10% (对帕鲁生效)，防御-10% (对帕鲁生效)"
         },
         "PAL_sadist": {
             "name": "虐待狂",
-            "desc": "攻击+15% (对自己生效)，防御-15% (对自己生效)"
+            "desc": "攻击+15% (对帕鲁生效)，防御-15% (对帕鲁生效)"
         },
         "PAL_masochist": {
             "name": "受虐狂",
-            "desc": "防御+15% (对自己生效)，攻击-15% (对自己生效)"
+            "desc": "防御+15% (对帕鲁生效)，攻击-15% (对帕鲁生效)"
         },
         "PAL_CorporateSlave": {
             "name": "社畜",
-            "desc": "工作速度+30% (对自己生效)，攻击-30% (对自己生效)"
+            "desc": "工作速度+30% (对帕鲁生效)，攻击-30% (对帕鲁生效)"
         },
         "PAL_oraora": {
             "name": "强势",
-            "desc": "攻击+10% (对自己生效)，防御-10% (对自己生效)"
+            "desc": "攻击+10% (对帕鲁生效)，防御-10% (对帕鲁生效)"
         },
         "ElementResist_Normal_1_PAL": {
             "name": "一反常态",
@@ -488,11 +520,11 @@
         },
         "PAL_FullStomach_Down_1": {
             "name": "小胃",
-            "desc": "+10%"
+            "desc": "减少饱腹度下降速度+10.0%"
         },
         "PAL_Sanity_Down_1": {
             "name": "积极思维",
-            "desc": "+10%"
+            "desc": "减少SAN值下降速度+10.0%"
         },
         "MoveSpeed_up_1": {
             "name": "灵活",
@@ -507,8 +539,8 @@
             "desc": "主动技能的冷却时间缩短15%"
         },
         "Stamina_Up_2": {
-            "name": "品学兼优",
-            "desc": "最大体力+25%，※此效果仅对可骑乘的帕鲁有效。"
+            "name": "健康宝宝",
+            "desc": "最大耐力+25%，此效果仅对可骑乘的帕鲁有效。"
         },
         "SalePrice_Up_2": {
             "name": "贵族",
@@ -520,27 +552,27 @@
         },
         "CraftSpeed_down1": {
             "name": "笨手笨脚",
-            "desc": "工作速度-10% (对自己生效)"
+            "desc": "工作速度-10% (对帕鲁生效)"
         },
         "Deffence_down1": {
             "name": "弱不禁风",
-            "desc": "防御-10% (对自己生效)"
+            "desc": "防御-10% (对帕鲁生效)"
         },
         "PAL_ALLAttack_down1": {
             "name": "胆小",
-            "desc": "攻击-10% (对自己生效)"
+            "desc": "攻击-10% (对帕鲁生效)"
         },
         "PAL_FullStomach_Up_1": {
             "name": "贪吃",
-            "desc": "+10%"
+            "desc": "增加饱腹度下降速度+10.0%"
         },
         "PAL_Sanity_Up_1": {
             "name": "情绪不稳",
-            "desc": "+10%"
+            "desc": "增加SAN值下降速度+10.0%"
         },
         "NonKilling": {
             "name": "手下留情",
-            "desc": "和平主义者。，使攻击目标的生命值不会小于1。"
+            "desc": "和平主义者。使攻击目标的生命值不会小于1。"
         },
         "CoolTimeReduction_Down_1": {
             "name": "慢性子",
@@ -548,115 +580,31 @@
         },
         "Stamina_Down_1": {
             "name": "家里蹲",
-            "desc": "最大体力-25%，※此效果仅对可骑乘的帕鲁有效。"
+            "desc": "最大耐力-25%，此效果仅对可骑乘的帕鲁有效。"
         },
         "SalePrice_Down_1": {
             "name": "寒酸",
-            "desc": "改善交易价格-10%"
+            "desc": "交易价格恶化-10%"
         },
         "PAL_FullStomach_Up_2": {
             "name": "无底之胃",
-            "desc": "+15%"
+            "desc": "增加饱腹度下降速度+15.0%"
         },
         "PAL_Sanity_Up_2": {
             "name": "毁灭欲望",
-            "desc": "+15%"
+            "desc": "增加SAN值下降速度+15.0%"
         },
         "CraftSpeed_down2": {
             "name": "偷懒成瘾",
-            "desc": "工作速度-30% (对自己生效)"
+            "desc": "工作速度-30% (对帕鲁生效)"
         },
         "Deffence_down2": {
             "name": "骨质疏松",
-            "desc": "防御-20% (对自己生效)"
+            "desc": "防御-20% (对帕鲁生效)"
         },
         "PAL_ALLAttack_down2": {
-            "name": "消极主义",
-            "desc": "攻击-20% (对自己生效)"
-        },
-        "WorkSpeed_ACC_up1": {
-            "name": "高速工作Lv1",
-            "desc": "工作速度 10%"
-        },
-        "WorkSpeed_ACC_up2": {
-            "name": "高速工作Lv2",
-            "desc": "工作速度 15%"
-        },
-        "WorkSpeed_ACC_up3": {
-            "name": "高速工作Lv3",
-            "desc": "工作速度 20%"
-        },
-        "defense_ACC_up1": {
-            "name": "提升防御Lv1",
-            "desc": "防御+10%"
-        },
-        "defense_ACC_up2": {
-            "name": "提升防御Lv2",
-            "desc": "防御+20%"
-        },
-        "defense_ACC_up3": {
-            "name": "提升防御Lv3",
-            "desc": "防御+30%"
-        },
-        "HP_ACC_up1": {
-            "name": "提升体力Lv1",
-            "desc": "HP 5%"
-        },
-        "HP_ACC_up2": {
-            "name": "提升体力Lv2",
-            "desc": "HP 10%"
-        },
-        "HP_ACC_up3": {
-            "name": "提升体力Lv3",
-            "desc": "HP 15%"
-        },
-        "Attack_ACC_up1": {
-            "name": "提升攻击Lv1",
-            "desc": "攻击 5%"
-        },
-        "Attack_ACC_up2": {
-            "name": "提升攻击Lv2",
-            "desc": "攻击 10%"
-        },
-        "Attack_ACC_up3": {
-            "name": "提升攻击Lv3",
-            "desc": "攻击 15%"
-        },
-        "MaxInventoryWeight_up": {
-            "name": "提升负重上限Lv1",
-            "desc": ""
-        },
-        "MaxInventoryWeight_up2": {
-            "name": "提升负重上限Lv2",
-            "desc": ""
-        },
-        "MaxInventoryWeight_up3": {
-            "name": "提升负重上限Lv3",
-            "desc": ""
-        },
-        "TemperatureResist_Heat1": {
-            "name": "耐暑Lv1",
-            "desc": ""
-        },
-        "TemperatureResist_Heat2": {
-            "name": "耐暑Lv2",
-            "desc": ""
-        },
-        "TemperatureResist_Heat3": {
-            "name": "耐暑Lv3",
-            "desc": ""
-        },
-        "TemperatureResist_Cold1": {
-            "name": "耐寒Lv1",
-            "desc": ""
-        },
-        "TemperatureResist_Cold2": {
-            "name": "耐寒Lv2",
-            "desc": ""
-        },
-        "TemperatureResist_Cold3": {
-            "name": "耐寒Lv3",
-            "desc": ""
+            "name": "消极主义者",
+            "desc": "攻击-20% (对帕鲁生效)"
         }
     },
     "ja": {
