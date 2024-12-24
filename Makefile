@@ -43,6 +43,16 @@ build:
 	cp example/config.yaml dist/config.yaml
 	go build -o ./dist/pst${EXT} main.go
 
+.PHONY: frontend
+# 仅构建前端
+frontend:
+	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
+	cd web && pnpm i && pnpm build && cd ..
+	git submodule update --init --recursive
+	cd pal-conf && pnpm i && pnpm build && cd ..
+	mv pal-conf/dist/assets/* assets/
+	mv pal-conf/dist/index.html ./pal-conf.html
+
 .PHONY: build-pub
 # 为所有平台构建，确保 module/dist 中有所有平台的 sav_cli
 build-pub:
