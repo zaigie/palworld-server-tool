@@ -14,7 +14,7 @@
 
 ```bash
 # 下载并重命名
-mv pst-agent_v0.9.3_linux_x86_64 pst-agent
+mv pst-agent_v0.9.4_linux_x86_64 pst-agent
 chmod +x pst-agent
 ```
 
@@ -67,7 +67,7 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 #### 下载
 
-下载 pst-agent 工具并重命名，如将 `pst-agent_v0.9.3_windows_x86_64.exe` 重命名为 `pst-agent.exe`
+下载 pst-agent 工具并重命名，如将 `pst-agent_v0.9.4_windows_x86_64.exe` 重命名为 `pst-agent.exe`
 
 #### 运行
 

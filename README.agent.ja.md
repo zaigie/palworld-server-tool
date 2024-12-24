@@ -14,7 +14,7 @@ pst-agent ツールをダウンロードし、名前を変更して実行可能�
 
 ```bash
 # ダウンロードして名前を変更
-mv pst-agent_v0.9.3_linux_x86_64 pst-agent
+mv pst-agent_v0.9.4_linux_x86_64 pst-agent
 chmod +x pst-agent
 ```
 
@@ -67,7 +67,7 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 #### ダウンロード
 
-pst-agent ツールをダウンロードし、名前を変更します。例えば、`pst-agent_v0.9.3_windows_x86_64.exe`を`pst-agent.exe`にリネームします。
+pst-agent ツールをダウンロードし、名前を変更します。例えば、`pst-agent_v0.9.4_windows_x86_64.exe`を`pst-agent.exe`にリネームします。
 
 #### 実行
 

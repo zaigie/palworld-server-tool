@@ -14,7 +14,7 @@ Download the pst-agent tool, rename it, and ensure it's executable
 
 ```bash
 # Download and rename
-mv pst-agent_v0.9.3_linux_x86_64 pst-agent
+mv pst-agent_v0.9.4_linux_x86_64 pst-agent
 chmod +x pst-agent
 ```
 
@@ -67,7 +67,7 @@ This refers to the scenario where your game server is a Windows version, and you
 
 #### Download
 
-Download the pst-agent tool and rename it, e.g., rename `pst-agent_v0.9.3_windows_x86_64.exe` to `pst-agent.exe`
+Download the pst-agent tool and rename it, e.g., rename `pst-agent_v0.9.4_windows_x86_64.exe` to `pst-agent.exe`
 
 #### Run
 
