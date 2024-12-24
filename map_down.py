@@ -1,9 +1,12 @@
-import os
 import argparse
-import time
-from tqdm import tqdm
 import asyncio
+import json
+import os
+
 import aiohttp
+import js2py
+import requests
+from tqdm import tqdm
 
 # 重试次数常量
 RETRY_TIMES = 3
@@ -31,7 +34,7 @@ z_to_range = {
 }
 
 
-async def download_image(session, url, file_path, headers, progress_bar, redown):
+async def download_image(session, url, file_path, custom_headers, progress_bar, redown):
     # 检查本地文件是否已经存在
     if os.path.exists(file_path) and not redown:
         progress_bar.update(1)
@@ -42,7 +45,7 @@ async def download_image(session, url, file_path, headers, progress_bar, redown)
     success = False
     while attempt < RETRY_TIMES:
         try:
-            async with session.get(url, headers=headers) as response:
+            async with session.get(url, headers=custom_headers) as response:
                 # 检查响应状态码
                 if response.status == 200:
                     # 将图片内容保存到本地
@@ -76,7 +79,9 @@ async def download_image(session, url, file_path, headers, progress_bar, redown)
 
 async def download_images_async(redown=False):
     # 计算总图片数
-    total_images = sum((x_max + 1) * (y_max + 1) for x_max, y_max in z_to_range.values())
+    total_images = sum(
+        (x_max + 1) * (y_max + 1) for x_max, y_max in z_to_range.values()
+    )
 
     # 初始化 tqdm 进度条
     progress_bar = tqdm(total=total_images, desc="Downloading images", unit="img")
@@ -98,7 +103,9 @@ async def download_images_async(redown=False):
                     os.makedirs(save_path, exist_ok=True)
 
                     # 创建任务
-                    task = download_image(session, url, file_path, headers, progress_bar, redown)
+                    task = download_image(
+                        session, url, file_path, headers, progress_bar, redown
+                    )
                     tasks.append(task)
 
         # 等待所有任务完成
@@ -107,11 +114,54 @@ async def download_images_async(redown=False):
     progress_bar.close()
 
 
+def parse_js_file():
+    # 下载JavaScript文件
+    url = "https://paldb.cc/js/map_data_cn.js"
+    response = requests.get(url, timeout=10)
+    with open("map_data_cn.js", "wb") as file:
+        file.write(response.content)
+
+    # 读取JavaScript文件内容
+    with open("map_data_cn.js", "r", encoding="utf-8") as file:
+        js_content = file.read()
+
+    # 使用js2py执行JavaScript代码
+    context = js2py.EvalJs()
+    context.execute(js_content)
+
+    # 提取变量并转换为Python字典
+    fixed_dungeon_obj = context.fixedDungeon.to_dict()
+    fixed_dungeon = list(fixed_dungeon_obj.values())
+
+    # 初始化结果字典
+    result = {"boss_tower": [], "fast_travel": []}
+
+    # 过滤数据并格式化
+    for item in fixed_dungeon:
+        if item["type"] == "Tower":
+            result["boss_tower"].append(
+                [float(item["pos"]["X"]), float(item["pos"]["Y"])]
+            )
+        elif item["type"] == "Fast Travel":
+            result["fast_travel"].append(
+                [float(item["pos"]["X"]), float(item["pos"]["Y"])]
+            )
+
+    # 将结果转换为JSON格式并保存
+    with open("web/src/assets/map/points.json", "w", encoding="utf-8") as json_file:
+        json.dump(result, json_file, ensure_ascii=False, indent=4)
+
+
 if __name__ == "__main__":
     # 添加命令行参数解析
     parser = argparse.ArgumentParser(description="Download tiles from palworld.gg")
-    parser.add_argument('--redown', action='store_true', help='Redownload existing files')
+    parser.add_argument(
+        "--redown", action="store_true", help="Redownload existing files"
+    )
     args = parser.parse_args()
 
     # 运行异步下载
     asyncio.run(download_images_async(args.redown))
+
+    # # 解析JavaScript文件
+    # parse_js_file()
