@@ -52,8 +52,8 @@ WORKDIR /app
 
 RUN apk update && apk add curl unzip
 
-# https://github.com/zaigie/palworld-server-tool/releases/download/v0.0.1/map.zip
-RUN curl -L -o map.zip https://github.com/zaigie/palworld-server-tool/releases/download/v0.0.1/map.zip
+# https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.3/map.zip
+RUN curl -L -o map.zip https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.3/map.zip
 RUN unzip map.zip -d /app
 
 # --------- backend -----------
