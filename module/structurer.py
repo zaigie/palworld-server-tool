@@ -47,9 +47,12 @@ PALWORLD_CUSTOM_PROPERTIES[
     base_camp.decode,
     base_camp.encode,
 )
-PALWORLD_CUSTOM_PROPERTIES[
-    ".worldSaveData.GroupSaveDataMap"
-] = (group.decode, group.encode)
+PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.GroupSaveDataMap"] = (
+    group.decode,
+    group.encode,
+)
+
+
 wsd = None
 gvas_file = None
 
@@ -180,6 +183,10 @@ SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData.Value.Slots
     skip_encode,
 )
 SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData.Value.RawData"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.RandomizerSaveData"] = (
     skip_decode,
     skip_encode,
 )
