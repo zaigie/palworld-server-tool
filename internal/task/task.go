@@ -39,6 +39,15 @@ func BackupTask(db *bbolt.DB) {
 		return
 	}
 	logger.Infof("Auto backup to %s\n", path)
+
+	keepDays := viper.GetInt("save.backup_keep_days")
+	if keepDays == 0 {
+		keepDays = 7
+	}
+	err = tool.CleanOldBackups(db, keepDays)
+	if err != nil {
+		logger.Errorf("Failed to clean old backups: %v\n", err)
+	}
 }
 
 func PlayerSync(db *bbolt.DB) {

@@ -209,6 +209,8 @@ mkdir -p pst && tar -xzf pst_v0.9.5_linux_x86_64.tar.gz -C pst
      sync_interval: 120
      # 存档定时备份间隔，单位秒，设置为0时禁用
      backup_interval: 14400
+     # 存档定时备份保留天数，默认为7天
+     backup_keep_days: 7
 
    # Automation Config 自动化管理相关
    manage:
@@ -274,7 +276,7 @@ kill $(ps aux | grep 'pst' | awk '{print $2}') | head -n 1
 >
 > 还有比较重要的是，请确保 `config.yaml` 文件为 **ANSI 编码**，其它编码格式将会导致路径错误等问题！！
 
-```yaml
+````yaml
 # WebUI 设置
 web:
   # WebUI 管理员密码
@@ -333,12 +335,13 @@ save:
   sync_interval: 120
   # 存档定时备份间隔，单位秒，设置为0时禁用
   backup_interval: 14400
+  # 存档定时备份保留天数，默认为7天
+  backup_keep_days: 7
 
 # Automation Config 自动化管理相关
 manage:
   # 玩家不在白名单是否自动踢出
   kick_non_whitelist: false
-```
 
 ##### 运行
 
@@ -352,7 +355,7 @@ manage:
 
    ```powershell
    .\pst.exe
-   ```
+````
 
 ```log
 2024/01/31 - 22:39:20 | INFO | palworld-server-tool/main.go:75 | Starting PalWorld Server Tool...
@@ -438,6 +441,7 @@ touch pst.db
 |      SAVE\_\_DECODE_PATH      |     "/app/sav_cli"      | 文本 |    ⚠️ 容器内置，禁止修改，会导致存档解析工具错误     |
 |     SAVE\_\_SYNC_INTERVAL     |           600           | 数字 |                同步玩家存档数据的间隔                |
 |    SAVE\_\_BACKUP_INTERVAL    |          14400          | 数字 |              自动备份玩家存档数据的间隔              |
+|   SAVE\_\_BACKUP_KEEP_DAYS    |            7            | 数字 |            自动备份玩家存档数据的保留天数            |
 | MANAGE\_\_KICK_NON_WHITELIST  |          false          | 布尔 |        当检测到玩家不在白名单却在线时自动踢出        |
 
 #### Agent 部署
@@ -523,6 +527,7 @@ touch pst.db
 |      SAVE\_\_DECODE_PATH      |     "/app/sav_cli"      | 文本 |                ⚠️ 容器内置，禁止修改，会导致存档解析工具错误                |
 |     SAVE\_\_SYNC_INTERVAL     |           600           | 数字 |                           同步玩家存档数据的间隔                            |
 |    SAVE\_\_BACKUP_INTERVAL    |          14400          | 数字 |                         自动备份玩家存档数据的间隔                          |
+|   SAVE\_\_BACKUP_KEEP_DAYS    |            7            | 数字 |                       自动备份玩家存档数据的保留天数                        |
 |                               |                         |      |                                                                             |
 | MANAGE\_\_KICK_NON_WHITELIST  |          false          | 布尔 |                   当检测到玩家不在白名单却在线时自动踢出                    |
 

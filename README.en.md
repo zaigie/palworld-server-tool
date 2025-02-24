@@ -189,6 +189,8 @@ mkdir -p pst && tar -xzf pst_v0.9.5_linux_x86_64.tar.gz -C pst
      sync_interval: 120
      # Save Backup Interval Sec
      backup_interval: 14400
+     # Save Backup Keep Days
+     backup_keep_days: 7
 
    # Automation Config
    manage:
@@ -313,6 +315,8 @@ save:
   sync_interval: 120
   # Save Backup Interval Sec
   backup_interval: 14400
+  # Save Backup Keep Days
+  backup_keep_days: 7
 
 # Automation Config
 manage:
@@ -418,6 +422,7 @@ Set various environment variables, similar to those in [`config.yaml`](#configur
 |      SAVE\_\_DECODE_PATH      |     "/app/sav_cli"      |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
 |     SAVE\_\_SYNC_INTERVAL     |           600           | Number |                          Interval for syncing player save data                          |
 |    SAVE\_\_BACKUP_INTERVAL    |          14400          | Number |                        Interval for auto backup player save data                        |
+|   SAVE\_\_BACKUP_KEEP_DAYS    |            7            | Number |                        Interval for auto backup player save data                        |
 | MANAGE\_\_KICK_NON_WHITELIST  |          false          |  Bool  | Automatically kicked out when it detects that a player is not whitelisted but is online |
 
 #### Agent Deployment
@@ -501,6 +506,7 @@ Then add `-v ./pst.db:/app/pst.db` in `docker run -v`.
 |      SAVE\_\_DECODE_PATH      |     "/app/sav_cli"      |  Text  | ⚠️ Built into the container, do not modify, or it will cause save analysis tool errors  |
 |     SAVE\_\_SYNC_INTERVAL     |           600           | Number |                          Interval for syncing player save data                          |
 |    SAVE\_\_BACKUP_INTERVAL    |          14400          | Number |                        Interval for auto backup player save data                        |
+|   SAVE\_\_BACKUP_KEEP_DAYS    |            7            | Number |                        Interval for auto backup player save data                        |
 | MANAGE\_\_KICK_NON_WHITELIST  |          false          |  Bool  | Automatically kicked out when it detects that a player is not whitelisted but is online |
 
 #### Synchronizing Archives from k8s-pod

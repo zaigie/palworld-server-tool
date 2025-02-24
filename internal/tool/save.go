@@ -16,6 +16,8 @@ import (
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/source"
 	"github.com/zaigie/palworld-server-tool/internal/system"
+	"github.com/zaigie/palworld-server-tool/service"
+	"go.etcd.io/bbolt"
 )
 
 type Sturcture struct {
@@ -113,6 +115,38 @@ func GetBackupDir() (string, error) {
 		return "", err
 	}
 	return backDir, nil
+}
+
+func CleanOldBackups(db *bbolt.DB, keepDays int) error {
+	backupDir, err := GetBackupDir()
+	if err != nil {
+		return fmt.Errorf("failed to get backup directory: %s", err)
+	}
+
+	deadline := time.Now().AddDate(0, 0, -keepDays)
+
+	backups, err := service.ListBackups(db, time.Time{}, time.Now())
+	if err != nil {
+		return fmt.Errorf("failed to list backups: %s", err)
+	}
+
+	for _, backup := range backups {
+		if backup.SaveTime.Before(deadline) {
+			err = os.Remove(filepath.Join(backupDir, backup.Path))
+			if err != nil {
+				if !os.IsNotExist(err) {
+					logger.Errorf("failed to delete old backup file %s: %s", backup.Path, err)
+				}
+			}
+
+			err = service.DeleteBackup(db, backup.BackupId)
+			if err != nil {
+				logger.Errorf("failed to delete backup record from database: %s", err)
+			}
+		}
+	}
+
+	return nil
 }
 
 func getFromSource(file, way string) (string, error) {

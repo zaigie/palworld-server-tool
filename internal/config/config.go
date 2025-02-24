@@ -39,6 +39,7 @@ type Config struct {
 		DecodePath     string `mapstructure:"decode_path"`
 		SyncInterval   int    `mapstructure:"sync_interval"`
 		BackupInterval int    `mapstructure:"backup_interval"`
+		BackupKeepDays int    `mapstructure:"backup_keep_days"`
 	} `mapstructure:"save"`
 	Manage struct {
 		KickNonWhitelist bool `mapstructure:"kick_non_whitelist"`
@@ -76,6 +77,7 @@ func Init(cfgFile string, conf *Config) {
 
 	viper.SetDefault("save.sync_interval", 600)
 	viper.SetDefault("save.backup_interval", 14400)
+	viper.SetDefault("save.backup_keep_days", 7)
 
 	viper.SetEnvPrefix("")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__"))

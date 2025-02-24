@@ -25,5 +25,6 @@ save:
   decode_path: ""
   sync_interval: 120
   backup_interval: 14400
+  backup_keep_days: 7
 manage:
   kick_non_whitelist: false
