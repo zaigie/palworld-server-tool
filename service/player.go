@@ -13,22 +13,47 @@ import (
 func PutPlayers(db *bbolt.DB, players []database.Player) error {
 	return db.Update(func(tx *bbolt.Tx) error {
 		b := tx.Bucket([]byte("players"))
+
+		// get existing players
+		existingPlayers := make(map[string]database.Player)
+		err := b.ForEach(func(k, v []byte) error {
+			var player database.Player
+			if err := json.Unmarshal(v, &player); err != nil {
+				return err
+			}
+			existingPlayers[player.PlayerUid] = player
+			return nil
+		})
+		if err != nil {
+			return err
+		}
+
+		// build new players map
+		newPlayers := make(map[string]database.Player)
 		for _, p := range players {
-			existingPlayerData := b.Get([]byte(p.PlayerUid))
-			if existingPlayerData != nil {
-				var existingPlayer database.Player
-				if err := json.Unmarshal(existingPlayerData, &existingPlayer); err != nil {
-					return err
-				}
-				if existingPlayer.SteamId != "" {
+			newPlayers[p.PlayerUid] = p
+		}
+
+		// process new and existing players
+		for _, p := range players {
+			existingPlayer, exists := existingPlayers[p.PlayerUid]
+
+			if exists {
+				if p.SteamId == "" {
 					p.SteamId = existingPlayer.SteamId
 				}
 				p.Ip = existingPlayer.Ip
 				p.Ping = existingPlayer.Ping
+				p.LocationX = existingPlayer.LocationX
+				p.LocationY = existingPlayer.LocationY
 			}
+
 			if p.SaveLastOnline != "" {
-				p.LastOnline, _ = time.Parse(time.RFC3339, p.SaveLastOnline)
+				if parsedTime, err := time.Parse(time.RFC3339, p.SaveLastOnline); err == nil {
+					p.LastOnline = parsedTime
+				}
 			}
+
 			v, err := json.Marshal(p)
 			if err != nil {
 				return err
@@ -37,6 +62,16 @@ func PutPlayers(db *bbolt.DB, players []database.Player) error {
 				return err
 			}
 		}
+
+		// delete old players
+		for uid := range existingPlayers {
+			if _, exists := newPlayers[uid]; !exists {
+				if err := b.Delete([]byte(uid)); err != nil {
+					return err
+				}
+			}
+		}
+
 		return nil
 	})
 }
