@@ -1423,6 +1423,9 @@ const docTemplate = `{
                 "current_player_num": {
                     "type": "integer"
                 },
+                "days": {
+                    "type": "integer"
+                },
                 "max_player_num": {
                     "type": "integer"
                 },
@@ -1481,20 +1484,37 @@ const docTemplate = `{
                 }
             }
         },
+        "database.BaseCamp": {
+            "type": "object",
+            "properties": {
+                "area": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location_x": {
+                    "type": "number"
+                },
+                "location_y": {
+                    "type": "number"
+                }
+            }
+        },
         "database.Guild": {
             "type": "object",
             "properties": {
                 "admin_player_uid": {
                     "type": "string"
                 },
-                "base_camp_level": {
-                    "type": "integer"
-                },
-                "base_ids": {
+                "base_camp": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/database.BaseCamp"
                     }
+                },
+                "base_camp_level": {
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
@@ -1638,10 +1658,22 @@ const docTemplate = `{
                 "melee": {
                     "type": "integer"
                 },
+                "nickname": {
+                    "type": "string"
+                },
                 "ranged": {
                     "type": "integer"
                 },
                 "rank": {
+                    "type": "integer"
+                },
+                "rank_attack": {
+                    "type": "integer"
+                },
+                "rank_craftspeed": {
+                    "type": "integer"
+                },
+                "rank_defence": {
                     "type": "integer"
                 },
                 "skills": {

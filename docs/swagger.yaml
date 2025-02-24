@@ -39,6 +39,8 @@ definitions:
     properties:
       current_player_num:
         type: integer
+      days:
+        type: integer
       max_player_num:
         type: integer
       server_fps:
@@ -76,16 +78,27 @@ definitions:
       save_time:
         type: string
     type: object
+  database.BaseCamp:
+    properties:
+      area:
+        type: number
+      id:
+        type: string
+      location_x:
+        type: number
+      location_y:
+        type: number
+    type: object
   database.Guild:
     properties:
       admin_player_uid:
         type: string
+      base_camp:
+        items:
+          $ref: '#/definitions/database.BaseCamp'
+        type: array
       base_camp_level:
         type: integer
-      base_ids:
-        items:
-          type: string
-        type: array
       name:
         type: string
       players:
@@ -179,9 +192,17 @@ definitions:
         type: integer
       melee:
         type: integer
+      nickname:
+        type: string
       ranged:
         type: integer
       rank:
+        type: integer
+      rank_attack:
+        type: integer
+      rank_craftspeed:
+        type: integer
+      rank_defence:
         type: integer
       skills:
         items:
