@@ -817,7 +817,11 @@ const createPlayerItemsColumns = () => {
       </div>
     </template>
     <template #header>
-      {{ getPalName(palDetail.type) }}
+      {{
+        palDetail.nickname == ""
+          ? getPalName(palDetail.type)
+          : palDetail.nickname + "(" + getPalName(palDetail.type) + ")"
+      }}
     </template>
     <pal-detail :palDetail="palDetail"></pal-detail>
   </n-modal>

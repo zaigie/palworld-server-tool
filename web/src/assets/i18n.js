@@ -119,6 +119,10 @@ const messages = {
       rank: "Rank",
       tower: "Tower",
       lucky: "Lucky",
+      rank_boost: "Rank Boost",
+      rank_attack: "Attack Boost",
+      rank_defence: "Defense Boost",
+      rank_craftspeed: "Work Speed Boost",
     },
     item: {
       palList: "Pal List",
@@ -274,6 +278,10 @@ const messages = {
       rank: "星级",
       tower: "塔主",
       lucky: "稀有",
+      rank_boost: "强化属性",
+      rank_attack: "攻击强化",
+      rank_defence: "防御强化",
+      rank_craftspeed: "作业速度强化",
     },
     item: {
       palList: "幻兽列表",
@@ -456,6 +464,10 @@ const messages = {
       rank: "ランク",
       tower: "タワーボス",
       lucky: "ラッキーパル",
+      rank_boost: "強化ステータス",
+      rank_attack: "攻撃力強化",
+      rank_defence: "防御力強化",
+      rank_craftspeed: "作業速度強化",
     },
     map: {
       baseCampTitle: "「{name}」ギルドの基地",

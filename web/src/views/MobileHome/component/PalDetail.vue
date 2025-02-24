@@ -74,7 +74,29 @@ const percentageHP = (hp, max_hp) => {
           <n-statistic :label="$t('pal.rank')" :value="palDetail.rank" />
         </n-gi>
       </n-grid>
+      <!--div class="text-base font-medium mb-2">{{ $t('pal.rank_boost') }}</div-->
+      <n-grid cols="3">
+        <n-gi>
+          <n-statistic
+            :label="$t('pal.rank_attack')"
+            :value="palDetail.rank_attack"
+          />
+        </n-gi>
+        <n-gi>
+          <n-statistic
+            :label="$t('pal.rank_defence')"
+            :value="palDetail.rank_defence"
+          />
+        </n-gi>
+        <n-gi>
+          <n-statistic
+            :label="$t('pal.rank_craftspeed')"
+            :value="palDetail.rank_craftspeed"
+          />
+        </n-gi>
+      </n-grid>
     </n-space>
+    <div class="my-2"></div>
     <n-space vertical>
       <div v-for="skill in palDetail.skills" :key="skill">
         <n-tag type="warning">{{
