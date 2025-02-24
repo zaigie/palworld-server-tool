@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # 同路径下的Players文件夹
     dir_path = os.path.join(os.path.dirname(args.file), "Players")
 
-    players = structure_player(dir_path)
+    players = structure_player(dir_path, filetime=filetime)
     guilds = structure_guild(filetime)
 
     # Add last_online to players

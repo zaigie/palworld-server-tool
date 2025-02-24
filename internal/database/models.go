@@ -3,21 +3,25 @@ package database
 import "time"
 
 type Pal struct {
-	Level     int32    `json:"level"`
-	Exp       int64    `json:"exp"`
-	Hp        int64    `json:"hp"`
-	MaxHp     int64    `json:"max_hp"`
-	Type      string   `json:"type"`
-	Gender    string   `json:"gender"`
-	IsLucky   bool     `json:"is_lucky"`
-	IsBoss    bool     `json:"is_boss"`
-	IsTower   bool     `json:"is_tower"`
-	Workspeed int32    `json:"workspeed"`
-	Melee     int32    `json:"melee"`
-	Ranged    int32    `json:"ranged"`
-	Defense   int32    `json:"defense"`
-	Rank      int32    `json:"rank"`
-	Skills    []string `json:"skills"`
+	Level          int32    `json:"level"`
+	Exp            int64    `json:"exp"`
+	Hp             int64    `json:"hp"`
+	MaxHp          int64    `json:"max_hp"`
+	Type           string   `json:"type"`
+	Gender         string   `json:"gender"`
+	Nickname       string   `json:"nickname"`
+	IsLucky        bool     `json:"is_lucky"`
+	IsBoss         bool     `json:"is_boss"`
+	IsTower        bool     `json:"is_tower"`
+	Workspeed      int32    `json:"workspeed"`
+	Melee          int32    `json:"melee"`
+	Ranged         int32    `json:"ranged"`
+	Defense        int32    `json:"defense"`
+	Rank           int32    `json:"rank"`
+	RankAttack     int32    `json:"rank_attack"`
+	RankDefence    int32    `json:"rank_defence"`
+	RankCraftspeed int32    `json:"rank_craftspeed"`
+	Skills         []string `json:"skills"`
 }
 
 type OnlinePlayer struct {

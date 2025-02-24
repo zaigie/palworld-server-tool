@@ -90,9 +90,9 @@ class Player:
 
 
 class Pal:
-    def __init__(self, data):
+    def __init__(self, data, real_date_time_ticks, filetime):
         self.owner = hexuid_to_decimal(data["OwnerPlayerUId"]["value"])
-        # self.nickname = data["Nickname"]["value"] if data.get("Nicknme") else ""
+        self.nickname = data["NickName"]["value"] if data.get("NickName") else ""
         self.level = int(data["Level"]["value"]["value"]) if data.get("Level") else 1
         self.exp = int(data["Exp"]["value"]) if data.get("Exp") else 0
         self.hp = int(data["HP"]["value"]["Value"]["value"]) if data.get("HP") else 0
@@ -131,6 +131,29 @@ class Pal:
             else 0
         )
         self.rank = int(data["Rank"]["value"]["value"]) if data.get("Rank") else 1
+        self.rank_attack = (
+            int(data["Rank_Attack"]["value"]["value"]) if data.get("Rank_Attack") else 0
+        )
+        self.rank_defence = (
+            int(data["Rank_Defence"]["value"]["value"])
+            if data.get("Rank_Defence")
+            else 0
+        )
+        self.rank_craftspeed = (
+            int(data["Rank_CraftSpeed"]["value"]["value"])
+            if data.get("Rank_CraftSpeed")
+            else 0
+        )
+
+        # self.owned_time = (
+        #     tick2local(
+        #         data["OwnedTime"]["value"],
+        #         real_date_time_ticks,
+        #         filetime,
+        #     )
+        #     if data.get("OwnedTime")
+        #     else ""
+        # )
         self.skills = (
             data["PassiveSkillList"]["value"]["values"]
             if data.get("PassiveSkillList")
@@ -139,7 +162,7 @@ class Pal:
 
         self.__order = [
             "owner",
-            # "nickname",
+            "nickname",
             "level",
             "exp",
             "hp",
@@ -154,6 +177,10 @@ class Pal:
             "ranged",
             "defense",
             "rank",
+            "rank_attack",
+            "rank_defence",
+            "rank_craftspeed",
+            # "owned_time",
             "skills",
         ]
 

@@ -196,7 +196,7 @@ def convert_sav(file):
     wsd = gvas_file.properties["worldSaveData"]["value"]
 
 
-def structure_player(dir_path, data_source=None):
+def structure_player(dir_path, data_source=None, filetime: int = -1):
     log("Structuring players...")
     global wsd
     if data_source is None:
@@ -213,6 +213,7 @@ def structure_player(dir_path, data_source=None):
 
     players = []
     pals = []
+    ticks = wsd["GameTimeSaveData"]["value"]["RealDateTimeTicks"]["value"]
     for uid, c in uid_character:
         if c.get("IsPlayer") and c["IsPlayer"]["value"]:
             c["Items"] = getPlayerItems(uid, dir_path)
@@ -220,7 +221,7 @@ def structure_player(dir_path, data_source=None):
         else:
             if not c.get("OwnerPlayerUId"):
                 continue
-            pals.append(Pal(c).to_dict())
+            pals.append(Pal(c, ticks, filetime).to_dict())
 
     unique_players_dict = {}
     for player in players:
