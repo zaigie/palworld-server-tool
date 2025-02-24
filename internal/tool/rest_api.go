@@ -80,6 +80,7 @@ type ResponseMetrics struct {
 	ServerFrameTime  float64 `json:"serverframetime"`
 	MaxPlayerNum     int     `json:"maxplayernum"`
 	Uptime           int     `json:"uptime"`
+	Days             int     `json:"days"`
 }
 
 func Metrics() (map[string]interface{}, error) {
@@ -95,9 +96,10 @@ func Metrics() (map[string]interface{}, error) {
 	result := map[string]interface{}{
 		"server_fps":         data.ServerFps,
 		"current_player_num": data.CurrentPlayerNum,
-		"server_frame_time":  data.ServerFrameTime,
+		"server_frame_time":  float64(int64(data.ServerFrameTime*100+0.5)) / 100,
 		"max_player_num":     data.MaxPlayerNum,
 		"uptime":             data.Uptime,
+		"days":               data.Days,
 	}
 	return result, nil
 }
