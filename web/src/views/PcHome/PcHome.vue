@@ -836,6 +836,7 @@ onMounted(async () => {
           <div>
             <p>{{ $t("item.serverFps") }}: {{ serverMetrics?.server_fps }}</p>
             <p>{{ $t("item.serverUptime") }}: {{ serverMetrics?.uptime }}(s)</p>
+            <p>{{ $t("item.serverDays") }}: {{ serverMetrics?.days }}</p>
             <p>
               {{ $t("item.serverFrameTime") }}:
               {{ serverMetrics?.server_frame_time }}(ms)
