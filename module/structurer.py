@@ -1,11 +1,10 @@
 import copy
-import datetime
 import os
 import sys
 import zlib
 import json
 import time
-from typing import Any, Callable
+from typing import Any
 
 from palworld_save_tools.gvas import GvasFile
 from palworld_save_tools.palsav import decompress_sav_to_gvas
@@ -18,23 +17,6 @@ import group
 from world_types import Player, Pal, Guild, BaseCamp
 from logger import log, redirect_stdout_stderr
 
-# PALWORLD_CUSTOM_PROPERTIES: dict[
-#     str,
-#     tuple[
-#         Callable[[FArchiveReader, str, int, str], dict[str, Any]],
-#         Callable[[FArchiveWriter, str, dict[str, Any]], int],
-#     ],
-# ] = {
-#     ".worldSaveData.GroupSaveDataMap": (group.decode, group.encode),
-#     ".worldSaveData.CharacterSaveParameterMap.Value.RawData": (
-#         character.decode,
-#         character.encode,
-#     ),
-#     ".worldSaveData.ItemContainerSaveData.Value.RawData": (
-#         item_container.decode,
-#         item_container.encode,
-#     ),
-# }
 PALWORLD_CUSTOM_PROPERTIES[
     ".worldSaveData.ItemContainerSaveData.Value.Slots.Slots.RawData"
 ] = (

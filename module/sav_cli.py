@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import shutil
 import time
@@ -27,6 +28,10 @@ if __name__ == "__main__":
         output = args.output
         if not args.output.endswith(".json"):
             output = args.output + ".json"
+
+    if not os.path.exists(args.file):
+        log(f"File not exists: {args.file}", "ERROR")
+        sys.exit(1)
 
     convert_sav(args.file)
     filetime = os.stat(args.file).st_mtime
