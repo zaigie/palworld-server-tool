@@ -69,6 +69,14 @@ def skip_decode(
             "id": reader.optional_guid(),
             "value": reader.read(size),
         }
+    elif type_name == "SetProperty":
+        set_type = reader.fstring()
+        value = {
+            "skip_type": type_name,
+            "set_type": set_type,
+            "id": reader.optional_guid(),
+            "value": reader.read(size),
+        }
     else:
         raise Exception(
             f"Expected ArrayProperty or MapProperty or StructProperty, got {type_name} in {path}"
@@ -104,6 +112,13 @@ def skip_encode(
         del properties["skip_type"]
         writer.fstring(properties["struct_type"])
         writer.guid(properties["struct_id"])
+        writer.optional_guid(properties.get("id", None))
+        writer.write(properties["value"])
+        return len(properties["value"])
+    elif property_type == "SetProperty":
+        del properties["custom_type"]
+        del properties["skip_type"]
+        writer.fstring(properties["set_type"])
         writer.optional_guid(properties.get("id", None))
         writer.write(properties["value"])
         return len(properties["value"])
@@ -169,6 +184,10 @@ SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.ItemContainerSaveData.Value.RawDa
     skip_encode,
 )
 SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.RandomizerSaveData"] = (
+    skip_decode,
+    skip_encode,
+)
+SKP_PALWORLD_CUSTOM_PROPERTIES[".worldSaveData.InLockerCharacterInstanceIDArray"] = (
     skip_decode,
     skip_encode,
 )
