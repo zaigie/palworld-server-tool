@@ -28,3 +28,4 @@ save:
   backup_keep_days: 7
 manage:
   kick_non_whitelist: false
+  config_path: "/path/to/your/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini"
