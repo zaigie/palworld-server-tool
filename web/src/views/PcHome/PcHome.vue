@@ -615,6 +615,7 @@ watch(
     } else if (newVal === "guilds") {
     } else if (newVal === "config") {
   }
+ }
 );
 
 /**
