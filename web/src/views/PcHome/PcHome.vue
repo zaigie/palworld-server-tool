@@ -32,6 +32,7 @@ import skillMap from "@/assets/skill.json";
 import PlayerList from "./component/PlayerList.vue";
 import GuildList from "./component/GuildList.vue";
 import MapView from "./component/MapView.vue";
+import ConfigEditor from './component/ConfigEditor.vue';
 import whitelistStore from "@/stores/model/whitelist";
 import playerToGuildStore from "@/stores/model/playerToGuild";
 import { watch } from "vue";
@@ -340,13 +341,22 @@ const controlCenterOption = [
   //   key: "backup",
   //   icon: renderIcon(ArchiveOutlined),
   // },
+  //{
+  //  label: () => {
+  //    return h("div", null, {
+  //      default: () => t("button.palconf"),
+  //    });
+  //  },
+  //  key: "palconf",
+  //  icon: renderIcon(Settings),
+  //},
   {
     label: () => {
       return h("div", null, {
-        default: () => t("button.palconf"),
+        default: () => t("button.config"),
       });
     },
-    key: "palconf",
+    key: "config",
     icon: renderIcon(Settings),
   },
   {
@@ -403,6 +413,8 @@ const handleSelectControlCenter = (key) => {
     handleStartBrodcast();
   } else if (key === "shutdown") {
     handleShutdown();
+  } else if (key === "config") {
+    toConfig();
   } else {
     message.error("错误");
   }
@@ -583,6 +595,14 @@ const toMap = async () => {
   playerToGuildStore().setUpdateStatus("map");
 };
 
+const toConfig = async () => {
+  if (currentDisplay.value === "config") {
+    return;
+  }
+  currentDisplay.value = "config";
+  playerToGuildStore().setUpdateStatus("config");
+};
+
 const playerToGuildStatus = computed(() =>
   playerToGuildStore().getUpdateStatus()
 );
@@ -593,7 +613,7 @@ watch(
     currentDisplay.value = newVal;
     if (newVal === "players") {
     } else if (newVal === "guilds") {
-    }
+    } else if (newVal === "config") {
   }
 );
 
@@ -932,6 +952,20 @@ onMounted(async () => {
                 </template>
                 {{ $t("button.map") }}
               </n-button>
+              <n-button
+                @click="toConfig()"
+                :type="currentDisplay === 'config' ? 'primary' : 'tertiary'"
+                secondary
+                strong
+                round
+              >
+                <template #icon>
+                  <n-icon>
+                    <Settings />
+                  </n-icon>
+                </template>
+                {{ $t("button.config") }}
+              </n-button>
             </n-button-group>
             <n-space>
               <n-tag type="info" round size="large">{{
@@ -1065,6 +1099,7 @@ onMounted(async () => {
             ></player-list>
             <guild-list v-if="currentDisplay === 'guilds'"></guild-list>
             <map-view v-if="currentDisplay === 'map'"></map-view>
+            <config-editor v-if="currentDisplay === 'config'"></config-editor>
           </div>
         </n-layout>
       </div>
