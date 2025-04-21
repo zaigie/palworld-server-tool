@@ -116,6 +116,7 @@ const messages = {
       copyitem: "Copy Item ID",
       copypal: "Copy Pal ID",
       map: "Map",
+      config: "Configuration",
     },
     pal: {
       type: "Type",
@@ -168,6 +169,15 @@ const messages = {
       showBossTower: "Show boss tower",
       showPlayer: "Show online player",
       showBaseCamp: "Show basecamp",
+    },
+    config: {
+      title: "Server Configuration",
+      loadError: "Failed to load configuration",
+      saveError: "Failed to save configuration",
+      saveSuccess: "Configuration saved successfully",
+      confirmSave: "Save Configuration",
+      saveWarning: "Are you sure you want to save these changes? This will restart the server for changes to take effect.",
+      noChanges: "No changes to save",
     },
   },
   zh: {
@@ -284,6 +294,7 @@ const messages = {
       copyitem: "复制物品ID",
       copypal: "复制帕鲁ID",
       map: "地图",
+      config: "配置",
     },
     pal: {
       type: "类型",
@@ -336,6 +347,15 @@ const messages = {
       showBossTower: "显示高塔",
       showPlayer: "显示在线玩家",
       showBaseCamp: "显示据点",
+    },
+    config: {
+      title: "服务器配置",
+      loadError: "加载配置失败",
+      saveError: "保存配置失败",
+      saveSuccess: "配置保存成功",
+      confirmSave: "保存配置",
+      saveWarning: "您确定要保存这些更改吗？这将重新启动服务器以使更改生效。",
+      noChanges: "没有要保存的更改",
     },
   },
   ja: {
@@ -451,6 +471,7 @@ const messages = {
       copyitem: "アイテムIDをコピー",
       copypal: "パルIDをコピー",
       map: "地図",
+      config: "構成",
     },
     item: {
       palList: "幻獣リスト",
@@ -503,6 +524,15 @@ const messages = {
       showBossTower: "Show boss tower",
       showPlayer: "Show online player",
       showBaseCamp: "Show basecamp",
+    },
+    config: {
+      title: "サーバー構成",
+      loadError: "構成の読み込みに失敗しました",
+      saveError: "構成の保存に失敗しました",
+      saveSuccess: "構成が正常に保存されました",
+      confirmSave: "構成を保存",
+      saveWarning: "これらの変更を保存してもよろしいですか？変更を有効にするにはサーバーが再起動します。",
+      noChanges: "保存する変更はありません",
     },
   },
 };
