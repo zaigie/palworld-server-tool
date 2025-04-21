@@ -11,6 +11,14 @@ const messages = {
       rcon: "Customize RCON",
       backup: "Backup File",
     },
+    status_point: {
+      "作業速度": "Work Speed",
+      "所持重量": "Carrying Weight",
+      "捕獲率": "Capture Rate",
+      "攻撃力": "Attack Power",
+      "最大HP": "Max HP",
+      "最大SP": "Max SP"
+    },
     status: {
       online: "Online",
       offline: "Offline",
