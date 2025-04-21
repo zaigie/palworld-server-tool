@@ -37,6 +37,10 @@ type ServerToolResponse struct {
 	Latest  string `json:"latest"`
 }
 
+type ServerConfigRequest struct {
+    Config string `json:"config"`
+}
+
 // getServerTool godoc
 //
 //	@Summary		Get PalWorld Server Tool
@@ -173,6 +177,60 @@ func shutdownServer(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true})
+}
+
+// getServerConfig godoc
+//
+// @Summary Get Server Configuration
+// @Description Get Server Configuration
+// @Tags Server
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Router /api/server/config [get]
+func getServerConfig(c *gin.Context) {
+    config, err := tool.GetServerConfig()
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"config": config})
+}
+
+// saveServerConfig godoc
+//
+// @Summary Save Server Configuration
+// @Description Save Server Configuration
+// @Tags Server
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param config body ServerConfigRequest true "Server Configuration"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Router /api/server/config [post]
+func saveServerConfig(c *gin.Context) {
+    var req ServerConfigRequest
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    
+    if req.Config == "" {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "config cannot be empty"})
+        return
+    }
+    
+    if err := tool.SaveServerConfig(req.Config); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    
+    c.JSON(http.StatusOK, gin.H{"success": true})
 }
 
 func validateMessage(message string) error {
