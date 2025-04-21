@@ -180,6 +180,14 @@ const messages = {
       rcon: "自定义RCON命令",
       backup: "备份存档管理",
     },
+    status_point: {
+      "作業速度": "工作速度",
+      "所持重量": "负重",
+      "捕獲率": "捕获率",
+      "攻撃力": "攻击强度",
+      "最大HP": "最大HP",
+      "最大SP": "最大SP"
+    },
     status: {
       online: "在线",
       offline: "离线",
@@ -339,6 +347,14 @@ const messages = {
       addWhitelist: "ホワイトリストに追加",
       rcon: "カスタムRCONです",
       backup: "バックアップファイル",
+    },
+    status_point: {
+      "作業速度": "作業速度",
+      "所持重量": "所持重量",
+      "捕獲率": "捕獲率",
+      "攻撃力": "攻撃力",
+      "最大HP": "最大HP",
+      "最大SP": "最大SP"
     },
     status: {
       online: "オンライン",
