@@ -21,11 +21,11 @@ rest:
   password: ""
   timeout: 5
 save:
-  path: "/path/to/your/Pal/Saved"
+  path: "/home/steam/Steam/steamapps/common/PalServer/Pal/Saved"
   decode_path: ""
   sync_interval: 120
   backup_interval: 14400
   backup_keep_days: 7
 manage:
   kick_non_whitelist: false
-  config_path: "/path/to/your/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini"
+  config_path: "/home/steam/Steam/steamapps/common/PalServer/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini"
