@@ -47,54 +47,44 @@ const loadConfig = async () => {
 // Parse the INI configuration into structured settings
 const parseConfig = (iniString) => {
   try {
-    // First, parse the INI into sections
-    const sections = {};
-    let currentSection = null;
+    console.log("Raw config string:", iniString);
     
-    iniString.split('\n').forEach(line => {
-      line = line.trim();
-      
-      // Skip empty lines and comments
-      if (!line || line.startsWith(';') || line.startsWith('#')) return;
-      
-      // Check if line is a section header
-      const sectionMatch = line.match(/^\[([^\]]+)\]/);
-      if (sectionMatch) {
-        currentSection = sectionMatch[1];
-        sections[currentSection] = {};
-        return;
-      }
-      
-      // Process key-value pairs
-      if (currentSection) {
-        const keyValueMatch = line.match(/^([^=]+)=(.*)$/);
-        if (keyValueMatch) {
-          const key = keyValueMatch[1].trim();
-          const value = keyValueMatch[2].trim();
-          sections[currentSection][key] = value;
-        }
-      }
-    });
+    // The PalWorld config has a specific format
+    // First, look for the OptionSettings part
+    const optionsMatch = iniString.match(/OptionSettings=\((.*)\)/);
     
-    // Now organize settings into our categories
-    // This requires knowledge of which settings belong in which tab
-    
-    // For the OptionSettings section, parse the comma-separated values
-    if (sections["OptionSettings"]) {
-      const optionStr = sections["OptionSettings"]["OptionSettings"] || "";
+    if (optionsMatch && optionsMatch[1]) {
+      const optionsContent = optionsMatch[1];
+      console.log("Options content:", optionsContent);
+      
       const options = {};
       
-      optionStr.split(',').forEach(option => {
+      // Split by commas, but be careful with values that might contain commas
+      let currentKey = '';
+      let currentValue = '';
+      let inQuotes = false;
+      let keyValuePairs = [];
+      
+      // Simple split by comma for most cases
+      optionsContent.split(',').forEach(option => {
         const parts = option.split('=');
         if (parts.length === 2) {
-          options[parts[0].trim()] = parts[1].trim();
+          const key = parts[0].trim();
+          const value = parts[1].trim();
+          options[key] = value;
         }
       });
       
+      console.log("Parsed options:", options);
+      
       // Categorize settings
       categorizeSettings(options);
+    } else {
+      console.error("Could not extract options content from:", iniString);
+      message.error(t("config.invalidFormat"));
     }
   } catch (error) {
+    console.error("Error parsing config:", error);
     message.error(t("config.parseError") + ": " + error.message);
   }
 };
