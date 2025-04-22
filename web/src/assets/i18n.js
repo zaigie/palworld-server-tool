@@ -178,6 +178,9 @@ const messages = {
       confirmSave: "Save Configuration",
       saveWarning: "Are you sure you want to save these changes? This will restart the server for changes to take effect.",
       noChanges: "No changes to save",
+      invalidFormat: "Invalid configuration format",
+      parseError: "Error parsing configuration",
+      invalidResponse: "Invalid response from server",
     },
   },
   zh: {
@@ -356,6 +359,9 @@ const messages = {
       confirmSave: "保存配置",
       saveWarning: "您确定要保存这些更改吗？这将重新启动服务器以使更改生效。",
       noChanges: "没有要保存的更改",
+      invalidFormat: "配置格式无效",
+      parseError: "解析配置时出错",
+      invalidResponse: "服务器响应无效",
     },
   },
   ja: {
@@ -533,6 +539,9 @@ const messages = {
       confirmSave: "構成を保存",
       saveWarning: "これらの変更を保存してもよろしいですか？変更を有効にするにはサーバーが再起動します。",
       noChanges: "保存する変更はありません",
+      invalidFormat: "無効な構成形式",
+      parseError: "構成の解析中にエラーが発生しました",
+      invalidResponse: "サーバーからの応答が無効です",
     },
   },
 };
