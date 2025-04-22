@@ -197,6 +197,14 @@ func getServerConfig(c *gin.Context) {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
     }
+    
+    // Log the first few characters of the config for debugging
+    if len(config) > 100 {
+        logger.Infof("Config (first 100 chars): %s...\n", config[:100])
+    } else {
+        logger.Infof("Config: %s\n", config)
+    }
+    
     c.JSON(http.StatusOK, gin.H{"config": config})
 }
 
