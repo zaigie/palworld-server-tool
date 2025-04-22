@@ -748,6 +748,10 @@ onMounted(() => {
   <div class="config-editor">
     <n-spin :show="loading">
       <n-card :title="$t('config.title')" size="huge">
+        <!-- Debug info -->
+        <div v-if="serverSettings.length === 0 && gameSettings.length === 0 && advancedSettings.length === 0">
+          <p>No settings loaded. Check console for errors.</p>
+        </div>
         <template #header-extra>
           <n-space>
             <n-button @click="resetConfig" :disabled="!hasChanges">
