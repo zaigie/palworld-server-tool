@@ -57,32 +57,38 @@ const parseConfig = (iniString) => {
       
       const options = {};
       
-      // Parse the options content
+      // Parse the options content with better handling of nested parentheses
       let currentKey = '';
-      let currentValue = '';
-      let inQuotes = false;
       let buffer = '';
+      let inQuotes = false;
+      let parenLevel = 0;
       
       for (let i = 0; i < optionsContent.length; i++) {
         const char = optionsContent[i];
         
-        if (char === '"') {
+        if (char === '"' && optionsContent[i-1] !== '\\') {
           inQuotes = !inQuotes;
           buffer += char;
-        } else if (char === '=' && !inQuotes && currentKey === '') {
+        } else if (char === '(' && !inQuotes) {
+          parenLevel++;
+          buffer += char;
+        } else if (char === ')' && !inQuotes) {
+          parenLevel--;
+          buffer += char;
+        } else if (char === '=' && !inQuotes && currentKey === '' && parenLevel === 0) {
           currentKey = buffer.trim();
           buffer = '';
-        } else if (char === ',' && !inQuotes) {
-          currentValue = buffer.trim();
-          if (currentKey && currentValue) {
-            // Remove quotes if present
-            if (currentValue.startsWith('"') && currentValue.endsWith('"')) {
-              currentValue = currentValue.substring(1, currentValue.length - 1);
+        } else if (char === ',' && !inQuotes && parenLevel === 0) {
+          const value = buffer.trim();
+          if (currentKey) {
+            // Remove quotes if present and not inside parentheses
+            if (value.startsWith('"') && value.endsWith('"') && !value.includes('(')) {
+              options[currentKey] = value.substring(1, value.length - 1);
+            } else {
+              options[currentKey] = value;
             }
-            options[currentKey] = currentValue;
           }
           currentKey = '';
-          currentValue = '';
           buffer = '';
         } else {
           buffer += char;
@@ -91,11 +97,12 @@ const parseConfig = (iniString) => {
       
       // Handle the last key-value pair
       if (currentKey && buffer) {
-        currentValue = buffer.trim();
-        if (currentValue.startsWith('"') && currentValue.endsWith('"')) {
-          currentValue = currentValue.substring(1, currentValue.length - 1);
+        const value = buffer.trim();
+        if (value.startsWith('"') && value.endsWith('"') && !value.includes('(')) {
+          options[currentKey] = value.substring(1, value.length - 1);
+        } else {
+          options[currentKey] = value;
         }
-        options[currentKey] = currentValue;
       }
       
       console.log("All parsed options:", options);
