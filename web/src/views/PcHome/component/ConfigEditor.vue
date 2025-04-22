@@ -35,37 +35,47 @@ const parseIniConfig = (iniString) => {
   const sections = [];
   let currentSection = null;
   
-  iniString.split('\n').forEach(line => {
-    line = line.trim();
-    
-    // Skip empty lines and comments
-    if (!line || line.startsWith(';') || line.startsWith('#')) return;
-    
-    // Check if line is a section header
-    const sectionMatch = line.match(/^\[([^\]]+)\]/);
-    if (sectionMatch) {
-      currentSection = {
-        name: sectionMatch[1],
-        settings: []
-      };
-      sections.push(currentSection);
-      return;
-    }
-    
-    // Process key-value pairs
-    if (currentSection) {
-      const keyValueMatch = line.match(/^([^=]+)=(.*)$/);
-      if (keyValueMatch) {
-        const key = keyValueMatch[1].trim();
-        const value = keyValueMatch[2].trim();
-        currentSection.settings.push({
-          key,
-          value,
-          originalValue: value
-        });
+  // Check if iniString is a valid string
+  if (!iniString || typeof iniString !== 'string') {
+    message.error(t("config.invalidFormat"));
+    return sections;
+  }
+  
+  try {
+    iniString.split('\n').forEach(line => {
+      line = line.trim();
+      
+      // Skip empty lines and comments
+      if (!line || line.startsWith(';') || line.startsWith('#')) return;
+      
+      // Check if line is a section header
+      const sectionMatch = line.match(/^\[([^\]]+)\]/);
+      if (sectionMatch) {
+        currentSection = {
+          name: sectionMatch[1],
+          settings: []
+        };
+        sections.push(currentSection);
+        return;
       }
-    }
-  });
+      
+      // Process key-value pairs
+      if (currentSection) {
+        const keyValueMatch = line.match(/^([^=]+)=(.*)$/);
+        if (keyValueMatch) {
+          const key = keyValueMatch[1].trim();
+          const value = keyValueMatch[2].trim();
+          currentSection.settings.push({
+            key,
+            value,
+            originalValue: value
+          });
+        }
+      }
+    });
+  } catch (error) {
+    message.error(t("config.parseError") + ": " + error.message);
+  }
   
   return sections;
 };
