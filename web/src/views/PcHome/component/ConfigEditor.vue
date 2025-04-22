@@ -3,7 +3,6 @@ import { ref, onMounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useMessage } from "naive-ui";
 import ApiService from "@/service/api";
-import { Refresh, Close } from "@vicons/ionicons5";
 
 const { t } = useI18n();
 const message = useMessage();
@@ -22,23 +21,22 @@ const loadConfig = async () => {
   loading.value = true;
   try {
     const { data, statusCode } = await new ApiService().getServerConfig();
-    console.log("Config response:", data, statusCode);
-    
-    if (statusCode.value === 200) {
-      // Check if data.value exists and contains the config property
-      if (data.value && data.value.config) {
-        console.log("Config data:", data.value.config);
+    if (statusCode.value === 200 && data.value) {
+      if (data.value.config) {
         parseConfig(data.value.config);
-        // Rest of the function...
+        // Store original config for comparison
+        originalConfig.value = {
+          server: JSON.parse(JSON.stringify(serverSettings.value)),
+          game: JSON.parse(JSON.stringify(gameSettings.value)),
+          advanced: JSON.parse(JSON.stringify(advancedSettings.value))
+        };
       } else {
-        console.error("Invalid response format:", data);
         message.error(t("config.invalidResponse"));
       }
     } else {
       message.error(t("config.loadError"));
     }
   } catch (error) {
-    console.error("Error loading config:", error);
     message.error(t("config.loadError") + ": " + error.message);
   } finally {
     loading.value = false;
@@ -50,7 +48,7 @@ const parseConfig = (iniString) => {
   try {
     console.log("Raw config string:", iniString);
     
-    // The PalWorld config has a specific format
+    // Extract options from the configuration string
     const optionsMatch = iniString.match(/OptionSettings=\((.*)\)/);
     
     if (optionsMatch && optionsMatch[1]) {
@@ -59,20 +57,46 @@ const parseConfig = (iniString) => {
       
       const options = {};
       
-      optionsContent.split(',').forEach(option => {
-        const parts = option.split('=');
-        if (parts.length === 2) {
-          const key = parts[0].trim();
-          let value = parts[1].trim();
-          
-          // Remove quotes if present
-          if (value.startsWith('"') && value.endsWith('"')) {
-            value = value.substring(1, value.length - 1);
+      // Parse the options content
+      let currentKey = '';
+      let currentValue = '';
+      let inQuotes = false;
+      let buffer = '';
+      
+      for (let i = 0; i < optionsContent.length; i++) {
+        const char = optionsContent[i];
+        
+        if (char === '"') {
+          inQuotes = !inQuotes;
+          buffer += char;
+        } else if (char === '=' && !inQuotes && currentKey === '') {
+          currentKey = buffer.trim();
+          buffer = '';
+        } else if (char === ',' && !inQuotes) {
+          currentValue = buffer.trim();
+          if (currentKey && currentValue) {
+            // Remove quotes if present
+            if (currentValue.startsWith('"') && currentValue.endsWith('"')) {
+              currentValue = currentValue.substring(1, currentValue.length - 1);
+            }
+            options[currentKey] = currentValue;
           }
-          
-          options[key] = value;
+          currentKey = '';
+          currentValue = '';
+          buffer = '';
+        } else {
+          buffer += char;
         }
-      });
+      }
+      
+      // Handle the last key-value pair
+      if (currentKey && buffer) {
+        currentValue = buffer.trim();
+        if (currentValue.startsWith('"') && currentValue.endsWith('"')) {
+          currentValue = currentValue.substring(1, currentValue.length - 1);
+        }
+        options[currentKey] = currentValue;
+      }
       
       console.log("All parsed options:", options);
       
@@ -92,546 +116,105 @@ const parseConfig = (iniString) => {
 const categorizeSettings = (options) => {
   // Server settings
   serverSettings.value = [
-    { 
-      key: "ServerName", 
-      label: "Server Name", 
-      value: options.ServerName || "Default Palworld Server",
-      type: "text"
-    },
-    { 
-      key: "ServerDescription", 
-      label: "Server Description", 
-      value: options.ServerDescription || "",
-      type: "textarea"
-    },
-    { 
-      key: "AdminPassword", 
-      label: "Admin Password", 
-      value: options.AdminPassword || "",
-      type: "password"
-    },
-    { 
-      key: "ServerPassword", 
-      label: "Server Password", 
-      value: options.ServerPassword || "",
-      type: "password"
-    },
-    { 
-      key: "PublicIP", 
-      label: "Public IP", 
-      value: options.PublicIP || "",
-      type: "text"
-    },
-    { 
-      key: "PublicPort", 
-      label: "Public Port", 
-      value: options.PublicPort || "8211",
-      type: "number"
-    },
-    { 
-      key: "ServerPlayerMaxNum", 
-      label: "Server Player Max Num", 
-      value: options.ServerPlayerMaxNum || "32",
-      min: 1,
-      max: 32,
-      type: "slider"
-    },
-    { 
-      key: "bIsUseBackupSaveData", 
-      label: "Use Backup Save Data", 
-      value: options.bIsUseBackupSaveData === "True",
-      type: "switch"
-    },
-    { 
-      key: "Region", 
-      label: "Region", 
-      value: options.Region || "",
-      type: "text"
-    },
-    { 
-      key: "bUseAuth", 
-      label: "Use Authentication", 
-      value: options.bUseAuth === "True",
-      type: "switch"
-    },
-    { 
-      key: "AllowConnectPlatform", 
-      label: "Allow Connect Platform", 
-      value: options.AllowConnectPlatform || "Steam",
-      type: "select",
-      options: [
-        { label: "Steam Only", value: "Steam" },
-        { label: "All Platforms", value: "All" }
-      ]
-    },
-    { 
-      key: "bShowPlayerList", 
-      label: "Show Player List", 
-      value: options.bShowPlayerList === "True",
-      type: "switch"
-    },
-    { 
-      key: "RCONEnabled", 
-      label: "RCON Enabled", 
-      value: options.RCONEnabled === "True",
-      type: "switch"
-    },
-    { 
-      key: "RCONPort", 
-      label: "RCON Port", 
-      value: options.RCONPort || "25575",
-      type: "number"
-    },
-    { 
-      key: "RESTAPIEnabled", 
-      label: "REST API Enabled", 
-      value: options.RESTAPIEnabled === "True",
-      type: "switch"
-    },
-    { 
-      key: "RESTAPIPort", 
-      label: "REST API Port", 
-      value: options.RESTAPIPort || "8212",
-      type: "number"
-    },
-    { 
-      key: "BanListURL", 
-      label: "Ban List URL", 
-      value: options.BanListURL || "https://api.palworldgame.com/api/banlist.txt",
-      type: "text"
-    }
+    { key: "ServerName", label: "Server Name", value: options.ServerName || "", type: "text" },
+    { key: "ServerDescription", label: "Server Description", value: options.ServerDescription || "", type: "text" },
+    { key: "AdminPassword", label: "Admin Password", value: options.AdminPassword || "", type: "text" },
+    { key: "ServerPassword", label: "Server Password", value: options.ServerPassword || "", type: "text" },
+    { key: "PublicIP", label: "Public IP", value: options.PublicIP || "", type: "text" },
+    { key: "PublicPort", label: "Public Port", value: options.PublicPort || "8211", type: "text" },
+    { key: "RCONEnabled", label: "RCON Enabled", value: options.RCONEnabled || "False", type: "text" },
+    { key: "RCONPort", label: "RCON Port", value: options.RCONPort || "25575", type: "text" },
+    { key: "RESTAPIEnabled", label: "REST API Enabled", value: options.RESTAPIEnabled || "False", type: "text" },
+    { key: "RESTAPIPort", label: "REST API Port", value: options.RESTAPIPort || "8212", type: "text" },
+    { key: "Region", label: "Region", value: options.Region || "", type: "text" },
+    { key: "bUseAuth", label: "Use Authentication", value: options.bUseAuth || "True", type: "text" },
+    { key: "BanListURL", label: "Ban List URL", value: options.BanListURL || "", type: "text" },
+    { key: "ServerPlayerMaxNum", label: "Server Player Max Num", value: options.ServerPlayerMaxNum || "32", type: "text" },
+    { key: "bIsUseBackupSaveData", label: "Use Backup Save Data", value: options.bIsUseBackupSaveData || "True", type: "text" },
+    { key: "AutoSaveSpan", label: "Auto Save Span", value: options.AutoSaveSpan || "30.000000", type: "text" },
+    { key: "LogFormatType", label: "Log Format Type", value: options.LogFormatType || "Text", type: "text" },
+    { key: "bShowPlayerList", label: "Show Player List", value: options.bShowPlayerList || "False", type: "text" },
+    { key: "CrossplayPlatforms", label: "Crossplay Platforms", value: options.CrossplayPlatforms || "(Steam,Xbox,PS5,Mac)", type: "text" },
   ];
   
   // Game settings
   gameSettings.value = [
-    { 
-      key: "Difficulty", 
-      label: "Difficulty", 
-      value: options.Difficulty || "None",
-      type: "select",
-      options: [
-        { label: "None", value: "None" },
-        { label: "Easy", value: "Easy" },
-        { label: "Normal", value: "Normal" },
-        { label: "Hard", value: "Hard" }
-      ]
-    },
-    { 
-      key: "DayTimeSpeedRate", 
-      label: "Day Time Speed Rate", 
-      value: options.DayTimeSpeedRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "NightTimeSpeedRate", 
-      label: "Night Time Speed Rate", 
-      value: options.NightTimeSpeedRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "ExpRate", 
-      label: "Exp Rate", 
-      value: options.ExpRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "PalCaptureRate", 
-      label: "Pal Capture Rate", 
-      value: options.PalCaptureRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "PalSpawnNumRate", 
-      label: "Pal Spawn Number Rate", 
-      value: options.PalSpawnNumRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "PalDamageRateAttack", 
-      label: "Pal Damage Rate Attack", 
-      value: options.PalDamageRateAttack || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "PalDamageRateDefense", 
-      label: "Pal Damage Rate Defense", 
-      value: options.PalDamageRateDefense || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "PlayerDamageRateAttack", 
-      label: "Player Damage Rate Attack", 
-      value: options.PlayerDamageRateAttack || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "PlayerDamageRateDefense", 
-      label: "Player Damage Rate Defense", 
-      value: options.PlayerDamageRateDefense || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "PlayerStomachDecreaceRate", 
-      label: "Player Stomach Decrease Rate", 
-      value: options.PlayerStomachDecreaceRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      easier: true,
-      type: "slider"
-    },
-    { 
-      key: "PlayerStaminaDecreaceRate", 
-      label: "Player Stamina Decrease Rate", 
-      value: options.PlayerStaminaDecreaceRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      easier: true,
-      type: "slider"
-    },
-    { 
-      key: "PlayerAutoHPRegeneRate", 
-      label: "Player Auto HP Regeneration Rate", 
-      value: options.PlayerAutoHPRegeneRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "PlayerAutoHpRegeneRateInSleep", 
-      label: "Player Auto HP Regeneration Rate In Sleep", 
-      value: options.PlayerAutoHpRegeneRateInSleep || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "PalStomachDecreaceRate", 
-      label: "Pal Stomach Decrease Rate", 
-      value: options.PalStomachDecreaceRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      easier: true,
-      type: "slider"
-    },
-    { 
-      key: "PalStaminaDecreaceRate", 
-      label: "Pal Stamina Decrease Rate", 
-      value: options.PalStaminaDecreaceRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      easier: true,
-      type: "slider"
-    },
-    { 
-      key: "PalAutoHPRegeneRate", 
-      label: "Pal Auto HP Regeneration Rate", 
-      value: options.PalAutoHPRegeneRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "PalAutoHpRegeneRateInSleep", 
-      label: "Pal Auto HP Regeneration Rate In Sleep", 
-      value: options.PalAutoHpRegeneRateInSleep || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "BuildObjectDamageRate", 
-      label: "Build Object Damage Rate", 
-      value: options.BuildObjectDamageRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "BuildObjectDeteriorationDamageRate", 
-      label: "Build Object Deterioration Damage Rate", 
-      value: options.BuildObjectDeteriorationDamageRate || "1.000000",
-      min: 0,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "CollectionDropRate", 
-      label: "Collection Drop Rate", 
-      value: options.CollectionDropRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "CollectionObjectHpRate", 
-      label: "Collection Object HP Rate", 
-      value: options.CollectionObjectHpRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "CollectionObjectRespawnSpeedRate", 
-      label: "Collection Object Respawn Speed Rate", 
-      value: options.CollectionObjectRespawnSpeedRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "EnemyDropItemRate", 
-      label: "Enemy Drop Item Rate", 
-      value: options.EnemyDropItemRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    },
-    { 
-      key: "DeathPenalty", 
-      label: "Death Penalty", 
-      value: options.DeathPenalty || "All",
-      type: "select",
-      options: [
-        { label: "All", value: "All" },
-        { label: "Item", value: "Item" },
-        { label: "ItemAndEquipment", value: "ItemAndEquipment" },
-        { label: "None", value: "None" }
-      ]
-    },
-    { 
-      key: "PalEggDefaultHatchingTime", 
-      label: "Pal Egg Default Hatching Time", 
-      value: options.PalEggDefaultHatchingTime || "72.000000",
-      min: 0.1,
-      max: 72,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "WorkSpeedRate", 
-      label: "Work Speed Rate", 
-      value: options.WorkSpeedRate || "1.000000",
-      min: 0.1,
-      max: 5,
-      step: 0.1,
-      harder: true,
-      type: "slider"
-    }
+    { key: "Difficulty", label: "Difficulty", value: options.Difficulty || "None", type: "text" },
+    { key: "RandomizerType", label: "Randomizer Type", value: options.RandomizerType || "None", type: "text" },
+    { key: "RandomizerSeed", label: "Randomizer Seed", value: options.RandomizerSeed || "", type: "text" },
+    { key: "bIsRandomizerPalLevelRandom", label: "Randomizer Pal Level Random", value: options.bIsRandomizerPalLevelRandom || "False", type: "text" },
+    { key: "DayTimeSpeedRate", label: "Day Time Speed Rate", value: options.DayTimeSpeedRate || "1.000000", type: "text" },
+    { key: "NightTimeSpeedRate", label: "Night Time Speed Rate", value: options.NightTimeSpeedRate || "1.000000", type: "text" },
+    { key: "ExpRate", label: "Exp Rate", value: options.ExpRate || "1.000000", type: "text" },
+    { key: "PalCaptureRate", label: "Pal Capture Rate", value: options.PalCaptureRate || "1.000000", type: "text" },
+    { key: "PalSpawnNumRate", label: "Pal Spawn Number Rate", value: options.PalSpawnNumRate || "1.000000", type: "text" },
+    { key: "PalDamageRateAttack", label: "Pal Damage Rate Attack", value: options.PalDamageRateAttack || "1.000000", type: "text" },
+    { key: "PalDamageRateDefense", label: "Pal Damage Rate Defense", value: options.PalDamageRateDefense || "1.000000", type: "text" },
+    { key: "PlayerDamageRateAttack", label: "Player Damage Rate Attack", value: options.PlayerDamageRateAttack || "1.000000", type: "text" },
+    { key: "PlayerDamageRateDefense", label: "Player Damage Rate Defense", value: options.PlayerDamageRateDefense || "1.000000", type: "text" },
+    { key: "PlayerStomachDecreaceRate", label: "Player Stomach Decrease Rate", value: options.PlayerStomachDecreaceRate || "1.000000", type: "text" },
+    { key: "PlayerStaminaDecreaceRate", label: "Player Stamina Decrease Rate", value: options.PlayerStaminaDecreaceRate || "1.000000", type: "text" },
+    { key: "PlayerAutoHPRegeneRate", label: "Player Auto HP Regeneration Rate", value: options.PlayerAutoHPRegeneRate || "1.000000", type: "text" },
+    { key: "PlayerAutoHpRegeneRateInSleep", label: "Player Auto HP Regeneration Rate In Sleep", value: options.PlayerAutoHpRegeneRateInSleep || "1.000000", type: "text" },
+    { key: "PalStomachDecreaceRate", label: "Pal Stomach Decrease Rate", value: options.PalStomachDecreaceRate || "1.000000", type: "text" },
+    { key: "PalStaminaDecreaceRate", label: "Pal Stamina Decrease Rate", value: options.PalStaminaDecreaceRate || "1.000000", type: "text" },
+    { key: "PalAutoHPRegeneRate", label: "Pal Auto HP Regeneration Rate", value: options.PalAutoHPRegeneRate || "1.000000", type: "text" },
+    { key: "PalAutoHpRegeneRateInSleep", label: "Pal Auto HP Regeneration Rate In Sleep", value: options.PalAutoHpRegeneRateInSleep || "1.000000", type: "text" },
+    { key: "BuildObjectHpRate", label: "Build Object HP Rate", value: options.BuildObjectHpRate || "1.000000", type: "text" },
+    { key: "BuildObjectDamageRate", label: "Build Object Damage Rate", value: options.BuildObjectDamageRate || "1.000000", type: "text" },
+    { key: "BuildObjectDeteriorationDamageRate", label: "Build Object Deterioration Damage Rate", value: options.BuildObjectDeteriorationDamageRate || "1.000000", type: "text" },
+    { key: "CollectionDropRate", label: "Collection Drop Rate", value: options.CollectionDropRate || "1.000000", type: "text" },
+    { key: "CollectionObjectHpRate", label: "Collection Object HP Rate", value: options.CollectionObjectHpRate || "1.000000", type: "text" },
+    { key: "CollectionObjectRespawnSpeedRate", label: "Collection Object Respawn Speed Rate", value: options.CollectionObjectRespawnSpeedRate || "1.000000", type: "text" },
+    { key: "EnemyDropItemRate", label: "Enemy Drop Item Rate", value: options.EnemyDropItemRate || "1.000000", type: "text" },
+    { key: "DeathPenalty", label: "Death Penalty", value: options.DeathPenalty || "All", type: "text" },
+    { key: "PalEggDefaultHatchingTime", label: "Pal Egg Default Hatching Time", value: options.PalEggDefaultHatchingTime || "72.000000", type: "text" },
+    { key: "WorkSpeedRate", label: "Work Speed Rate", value: options.WorkSpeedRate || "1.000000", type: "text" },
+    { key: "ItemWeightRate", label: "Item Weight Rate", value: options.ItemWeightRate || "1.000000", type: "text" },
   ];
   
   // Advanced settings
   advancedSettings.value = [
-    { 
-      key: "bEnablePlayerToPlayerDamage", 
-      label: "Enable Player To Player Damage", 
-      value: options.bEnablePlayerToPlayerDamage === "True",
-      type: "switch"
-    },
-    { 
-      key: "bEn ableFriendlyFire", 
-      label: "Enable Friendly Fire", 
-      value: options.bEnableFriendlyFire === "True",
-      type: "switch"
-    },
-    { 
-      key: "bEnableInvaderEnemy", 
-      label: "Enable Invader Enemy", 
-      value: options.bEnableInvaderEnemy === "True",
-      type: "switch"
-    },
-    { 
-      key: "bActiveUNKO", 
-      label: "Active UNKO (Pal will poop)", 
-      value: options.bActiveUNKO === "True",
-      type: "switch"
-    },
-    { 
-      key: "bEnableAimAssistPad", 
-      label: "Enable Aim Assist Controller", 
-      value: options.bEnableAimAssistPad === "True",
-      type: "switch"
-    },
-    { 
-      key: "bEnableAimAssistKeyboard", 
-      label: "Enable Aim Assist Keyboard", 
-      value: options.bEnableAimAssistKeyboard === "True",
-      type: "switch"
-    },
-    { 
-      key: "DropItemMaxNum", 
-      label: "Drop Item Max Num", 
-      value: options.DropItemMaxNum || "3000",
-      min: 100,
-      max: 5000,
-      type: "slider"
-    },
-    { 
-      key: "DropItemMaxNum_UNKO", 
-      label: "Drop Item Max Num (UNKO)", 
-      value: options.DropItemMaxNum_UNKO || "100",
-      min: 10,
-      max: 1000,
-      type: "slider"
-    },
-    { 
-      key: "BaseCampMaxNum", 
-      label: "Base Camp Max Num", 
-      value: options.BaseCampMaxNum || "128",
-      min: 1,
-      max: 256,
-      type: "slider"
-    },
-    { 
-      key: "BaseCampWorkerMaxNum", 
-      label: "Base Camp Worker Max Num", 
-      value: options.BaseCampWorkerMaxNum || "15",
-      min: 1,
-      max: 50,
-      type: "slider"
-    },
-    { 
-      key: "DropItemAliveMaxHours", 
-      label: "Drop Item Alive Max Hours", 
-      value: options.DropItemAliveMaxHours || "1.000000",
-      min: 0.1,
-      max: 24,
-      step: 0.1,
-      type: "slider"
-    },
-    { 
-      key: "bAutoResetGuildNoOnlinePlayers", 
-      label: "Auto Reset Guild No Online Players", 
-      value: options.bAutoResetGuildNoOnlinePlayers === "True",
-      type: "switch"
-    },
-    { 
-      key: "AutoResetGuildTimeNoOnlinePlayers", 
-      label: "Auto Reset Guild Time No Online Players", 
-      value: options.AutoResetGuildTimeNoOnlinePlayers || "72.000000",
-      min: 1,
-      max: 168,
-      step: 1,
-      type: "slider"
-    },
-    { 
-      key: "GuildPlayerMaxNum", 
-      label: "Guild Player Max Num", 
-      value: options.GuildPlayerMaxNum || "20",
-      min: 1,
-      max: 32,
-      type: "slider"
-    },
-    { 
-      key: "bIsMultiplay", 
-      label: "Is Multiplay", 
-      value: options.bIsMultiplay === "True",
-      type: "switch"
-    },
-    { 
-      key: "bIsPvP", 
-      label: "Is PvP", 
-      value: options.bIsPvP === "True",
-      type: "switch"
-    },
-    { 
-      key: "bCanPickupOtherGuildDeathPenaltyDrop", 
-      label: "Can Pickup Other Guild Death Penalty Drop", 
-      value: options.bCanPickupOtherGuildDeathPenaltyDrop === "True",
-      type: "switch"
-    },
-    { 
-      key: "bEnableNonLoginPenalty", 
-      label: "Enable Non Login Penalty", 
-      value: options.bEnableNonLoginPenalty === "True",
-      type: "switch"
-    },
-    { 
-      key: "bEnableFastTravel", 
-      label: "Enable Fast Travel", 
-      value: options.bEnableFastTravel === "True",
-      type: "switch"
-    },
-    { 
-      key: "bIsStartLocationSelectByMap", 
-      label: "Is Start Location Select By Map", 
-      value: options.bIsStartLocationSelectByMap === "True",
-      type: "switch"
-    },
-    { 
-      key: "bExistPlayerAfterLogout", 
-      label: "Exist Player After Logout", 
-      value: options.bExistPlayerAfterLogout === "True",
-      type: "switch"
-    },
-    { 
-      key: "bEnableDefenseOtherGuildPlayer", 
-      label: "Enable Defense Other Guild Player", 
-      value: options.bEnableDefenseOtherGuildPlayer === "True",
-      type: "switch"
-    },
-    { 
-      key: "CoopPlayerMaxNum", 
-      label: "Coop Player Max Num", 
-      value: options.CoopPlayerMaxNum || "4",
-      min: 1,
-      max: 8,
-      type: "slider"
-    }
+    { key: "bEnablePlayerToPlayerDamage", label: "Enable Player To Player Damage", value: options.bEnablePlayerToPlayerDamage || "False", type: "text" },
+    { key: "bEnableFriendlyFire", label: "Enable Friendly Fire", value: options.bEnableFriendlyFire || "False", type: "text" },
+    { key: "bEnableInvaderEnemy", label: "Enable Invader Enemy", value: options.bEnableInvaderEnemy || "True", type: "text" },
+    { key: "bActiveUNKO", label: "Active UNKO (Pal will poop)", value: options.bActiveUNKO || "False", type: "text" },
+    { key: "bEnableAimAssistPad", label: "Enable Aim Assist Controller", value: options.bEnableAimAssistPad || "True", type: "text" },
+    { key: "bEnableAimAssistKeyboard", label: "Enable Aim Assist Keyboard", value: options.bEnableAimAssistKeyboard || "False", type: "text" },
+    { key: "DropItemMaxNum", label: "Drop Item Max Num", value: options.DropItemMaxNum || "3000", type: "text" },
+    { key: "DropItemMaxNum_UNKO", label: "Drop Item Max Num (UNKO)", value: options.DropItemMaxNum_UNKO || "100", type: "text" },
+    { key: "BaseCampMaxNum", label: "Base Camp Max Num", value: options.BaseCampMaxNum || "128", type: "text" },
+    { key: "BaseCampWorkerMaxNum", label: "Base Camp Worker Max Num", value: options.BaseCampWorkerMaxNum || "15", type: "text" },
+    { key: "DropItemAliveMaxHours", label: "Drop Item Alive Max Hours", value: options.DropItemAliveMaxHours || "1.000000", type: "text" },
+    { key: "bAutoResetGuildNoOnlinePlayers", label: "Auto Reset Guild No Online Players", value: options.bAutoResetGuildNoOnlinePlayers || "False", type: "text" },
+    { key: "AutoResetGuildTimeNoOnlinePlayers", label: "Auto Reset Guild Time No Online Players", value: options.AutoResetGuildTimeNoOnlinePlayers || "72.000000", type: "text" },
+    { key: "GuildPlayerMaxNum", label: "Guild Player Max Num", value: options.GuildPlayerMaxNum || "20", type: "text" },
+    { key: "BaseCampMaxNumInGuild", label: "Base Camp Max Num In Guild", value: options.BaseCampMaxNumInGuild || "4", type: "text" },
+    { key: "bIsMultiplay", label: "Is Multiplay", value: options.bIsMultiplay || "False", type: "text" },
+    { key: "bIsPvP", label: "Is Pv P", value: options.bIsPvP || "False", type: "text" },
+    { key: "bHardcore", label: "Hardcore Mode", value: options.bHardcore || "False", type: "text" },
+    { key: "bPalLost", label: "Pal Lost Mode", value: options.bPalLost || "False", type: "text" },
+    { key: "bCharacterRecreateInHardcore", label: "Character Recreate In Hardcore", value: options.bCharacterRecreateInHardcore || "False", type: "text" },
+    { key: "bCanPickupOtherGuildDeathPenaltyDrop", label: "Can Pickup Other Guild Death Penalty Drop", value: options.bCanPickupOtherGuildDeathPenaltyDrop || "False", type: "text" },
+    { key: "bEnableNonLoginPenalty", label: "Enable Non Login Penalty", value: options.bEnableNonLoginPenalty || "True", type: "text" },
+    { key: "bEnableFastTravel", label: "Enable Fast Travel", value: options.bEnableFastTravel || "True", type: "text" },
+    { key: "bIsStartLocationSelectByMap", label: "Is Start Location Select By Map", value: options.bIsStartLocationSelectByMap || "True", type: "text" },
+    { key: "bExistPlayerAfterLogout", label: "Exist Player After Logout", value: options.bExistPlayerAfterLogout || "False", type: "text" },
+    { key: "bEnableDefenseOtherGuildPlayer", label: "Enable Defense Other Guild Player", value: options.bEnableDefenseOtherGuildPlayer || "False", type: "text" },
+    { key: "bInvisibleOtherGuildBaseCampAreaFX", label: "Invisible Other Guild Base Camp Area FX", value: options.bInvisibleOtherGuildBaseCampAreaFX || "False", type: "text" },
+    { key: "bBuildAreaLimit", label: "Build Area Limit", value: options.bBuildAreaLimit || "False", type: "text" },
+    { key: "CoopPlayerMaxNum", label: "Coop Player Max Num", value: options.CoopPlayerMaxNum || "4", type: "text" },
+    { key: "ChatPostLimitPerMinute", label: "Chat Post Limit Per Minute", value: options.ChatPostLimitPerMinute || "10", type: "text" },
+    { key: "SupplyDropSpan", label: "Supply Drop Span", value: options.SupplyDropSpan || "180", type: "text" },
+    { key: "EnablePredatorBossPal", label: "Enable Predator Boss Pal", value: options.EnablePredatorBossPal || "True", type: "text" },
+    { key: "MaxBuildingLimitNum", label: "Max Building Limit Num", value: options.MaxBuildingLimitNum || "0", type: "text" },
+    { key: "ServerReplicatePawnCullDistance", label: "Server Replicate Pawn Cull Distance", value: options.ServerReplicatePawnCullDistance || "15000.000000", type: "text" },
+    { key: "bAllowGlobalPalboxExport", label: "Allow Global Palbox Export", value: options.bAllowGlobalPalboxExport || "True", type: "text" },
+    { key: "bAllowGlobalPalboxImport", label: "Allow Global Palbox Import", value: options.bAllowGlobalPalboxImport || "False", type: "text" },
   ];
 };
 
 // Convert settings back to INI format
-// In the generateIniConfig function:
 const generateIniConfig = () => {
   // Combine all settings
   const allSettings = {};
@@ -639,15 +222,17 @@ const generateIniConfig = () => {
   // Process all settings
   const processSettings = (settings) => {
     settings.forEach(setting => {
-      let value;
+      let value = setting.value.toString();
       
-      if (setting.type === "switch") {
-        value = setting.value ? "True" : "False";
-      } else if (setting.type === "text" || setting.type === "textarea" || setting.type === "password") {
-        // Add quotes for text fields
-        value = `"${setting.value}"`;
-      } else {
-        value = setting.value.toString();
+      // Add quotes for text fields that need them
+      if (!value.startsWith("True") && 
+          !value.startsWith("False") && 
+          !value.startsWith("(") && 
+          value !== "None" && 
+          value !== "All" && 
+          value !== "Text" &&
+          !value.match(/^[0-9.]+$/)) {
+        value = `"${value}"`;
       }
       
       allSettings[setting.key] = value;
@@ -744,10 +329,6 @@ onMounted(() => {
   <div class="config-editor">
     <n-spin :show="loading">
       <n-card :title="$t('config.title')" size="huge">
-       <!-- Debug info -->
-        <div v-if="serverSettings.length === 0 && gameSettings.length === 0 && advancedSettings.length === 0">
-          <p>No settings loaded. Check console for errors.</p>
-        </div>
         <template #header-extra>
           <n-space>
             <n-button @click="resetConfig" :disabled="!hasChanges">
@@ -761,175 +342,48 @@ onMounted(() => {
         
         <n-tabs v-model:value="activeTab" type="segment" animated>
           <n-tab-pane name="server" tab="Server Settings">
-            <n-scrollbar style="max-height: calc(100vh - 200px); padding-bottom: 40px;">
-              <n-space vertical size="large" style="margin-top: 20px">
-                <n-form-item 
-                  v-for="setting in serverSettings" 
-                  :key="setting.key" 
-                  :label="setting.label"
-                >
-                  <!-- Text input -->
-                  <n-input 
-                    v-if="setting.type === 'text'" 
-                    v-model:value="setting.value" 
-                    :placeholder="setting.label"
-                  />
-                  
-                  <!-- Password input -->
-                  <n-input 
-                    v-else-if="setting.type === 'password'" 
-                    v-model:value="setting.value" 
-                    type="password"
-                    :placeholder="setting.label"
-                    show-password-on="click"
-                  />
-                  
-                  <!-- Textarea input -->
-                  <n-input 
-                    v-else-if="setting.type === 'textarea'" 
-                    v-model:value="setting.value" 
-                    type="textarea"
-                    :placeholder="setting.label"
-                    :autosize="{ minRows: 3, maxRows: 5 }"
-                  />
-                  
-                  <!-- Number input -->
-                  <n-input-number 
-                    v-else-if="setting.type === 'number'" 
-                    v-model:value="setting.value" 
-                    :min="setting.min"
-                    :max="setting.max"
-                  />
-                  
-                  <!-- Select input -->
-                  <n-select 
-                    v-else-if="setting.type === 'select'" 
-                    v-model:value="setting.value" 
-                    :options="setting.options"
-                  />
-                  
-                  <!-- Slider -->
-                  <div v-else-if="setting.type === 'slider'" class="slider-container">
-                    <n-input-number 
-                      v-model:value="setting.value" 
-                      :min="setting.min"
-                      :max="setting.max"
-                      :step="setting.step || 1"
-                      style="width: 100px"
-                    />
-                    <n-slider 
-                      v-model:value="setting.value" 
-                      :min="setting.min"
-                      :max="setting.max"
-                      :step="setting.step || 1"
-                      style="margin: 0 10px; flex-grow: 1"
-                    />
-                    <n-button circle size="small">
-                      <template #icon>
-                        <n-icon><refresh /></n-icon>
-                      </template>
-                    </n-button>
-                  </div>
-                  
-                  <!-- Switch -->
-                  <n-switch v-else-if="setting.type === 'switch'" v-model:value="setting.value" />
-                </n-form-item>
-              </n-space>
-            </n-scrollbar>
+            <div class="tab-content">
+              <n-form-item 
+                v-for="setting in serverSettings" 
+                :key="setting.key" 
+                :label="setting.label"
+              >
+                <n-input 
+                  v-model:value="setting.value" 
+                  :placeholder="setting.label"
+                />
+              </n-form-item>
+            </div>
           </n-tab-pane>
           
           <n-tab-pane name="game" tab="In-Game Settings">
-            <n-scrollbar style="max-height: calc(100vh - 200px); padding-bottom: 40px;">
-              <n-space vertical size="large" style="margin-top: 20px">
-                <n-form-item 
-                  v-for="setting in gameSettings" 
-                  :key="setting.key" 
-                  :label="setting.label"
-                >
-                  <!-- Select input -->
-                  <n-select 
-                    v-if="setting.type === 'select'" 
-                    v-model:value="setting.value" 
-                    :options="setting.options"
-                  />
-                  
-                  <!-- Slider with harder/easier indicators -->
-                  <div v-else-if="setting.type === 'slider'" class="slider-container">
-                    <n-input-number 
-                      v-model:value="setting.value" 
-                      :min="setting.min"
-                      :max="setting.max"
-                      :step="setting.step || 1"
-                      style="width: 100px"
-                    />
-                    <div style="display: flex; flex-direction: column; flex-grow: 1; margin: 0 10px;">
-                      <div v-if="setting.harder || setting.easier" style="display: flex; justify-content: space-between; margin-bottom: 5px">
-                        <span v-if="setting.harder" style="color: #ff4d4f">? Harder</span>
-                        <span v-else>&nbsp;</span>
-                        <span v-if="setting.easier" style="color: #52c41a">Easier ?</span>
-                        <span v-else>&nbsp;</span>
-                      </div>
-                      <n-slider 
-                        v-model:value="setting.value" 
-                        :min="setting.min"
-                        :max="setting.max"
-                        :step="setting.step || 1"
-                      />
-                    </div>
-                    <n-button circle size="small">
-                      <template #icon>
-                        <n-icon><refresh /></n-icon>
-                      </template>
-                    </n-button>
-                  </div>
-                </n-form-item>
-              </n-space>
-            </n-scrollbar>
+            <div class="tab-content">
+              <n-form-item 
+                v-for="setting in gameSettings" 
+                :key="setting.key" 
+                :label="setting.label"
+              >
+                <n-input 
+                  v-model:value="setting.value" 
+                  :placeholder="setting.label"
+                />
+              </n-form-item>
+            </div>
           </n-tab-pane>
           
           <n-tab-pane name="advanced" tab="Advanced Settings">
-            <n-scrollbar style="max-height: calc(100vh - 200px); padding-bottom: 40px;">
-              <n-space vertical size="large" style="margin-top: 20px">
-                <n-form-item 
-                  v-for="setting in advancedSettings" 
-                  :key="setting.key" 
-                  :label="setting.label"
-                >
-                  <!-- Select input -->
-                  <n-select 
-                    v-if="setting.type === 'select'" 
-                    v-model:value="setting.value" 
-                    :options="setting.options"
-                  />
-                  
-                  <!-- Switch -->
-                  <n-switch v-else-if="setting.type === 'switch'" v-model:value="setting.value" />
-                  
-                  <!-- Slider -->
-                  <div v-else-if="setting.type === 'slider'" class="slider-container">
-                    <n-input-number 
-                      v-model:value="setting.value" 
-                      :min="setting.min"
-                      :max="setting.max"
-                      :step="setting.step || 1"
-                      style="width: 100px"
-                    />
-                    <n-slider 
-                      v-model:value="setting.value" 
-                      :min="setting.min"
-                      :max="setting.max"
-                      :step="setting.step || 1"
-                      style="margin: 0 10px; flex-grow: 1"
-                    />
-                    <n-button circle size="small">
-                      <template #icon>
-                        <n-icon><refresh /></n-icon>
-                      </template>
-                    </n-button>
-                  </div>
-                </n-form-item>
-              </n-space>
-            </n-scrollbar>
+            <div class="tab-content">
+              <n-form-item 
+                v-for="setting in advancedSettings" 
+                :key="setting.key" 
+                :label="setting.label"
+              >
+                <n-input 
+                  v-model:value="setting.value" 
+                  :placeholder="setting.label"
+                />
+              </n-form-item>
+            </div>
           </n-tab-pane>
         </n-tabs>
       </n-card>
@@ -945,14 +399,6 @@ onMounted(() => {
         role="dialog"
         aria-modal="true"
       >
-        <template #header-extra>
-          <n-button circle size="small" @click="showSaveConfirm = false">
-            <template #icon>
-              <n-icon><close /></n-icon>
-            </template>
-          </n-button>
-        </template>
-        
         <n-space vertical>
           <span>{{ $t('config.saveWarning') }}</span>
           <n-space justify="end">
@@ -973,47 +419,20 @@ onMounted(() => {
 .config-editor {
   padding: 16px;
   height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
-.slider-container {
-  display: flex;
-  align-items: center;
+.tab-content {
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding: 20px;
+  padding-bottom: 60px;
+}
+
+:deep(.n-form-item) {
+  margin-bottom: 16px;
+}
+
+:deep(.n-input) {
   width: 100%;
-}
-
-/* Make sure the card takes up available space */
-:deep(.n-card) {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 100px);
-}
-
-:deep(.n-card-content) {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-:deep(.n-tabs) {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-:deep(.n-tabs-content) {
-  flex: 1;
-  overflow: hidden;
-}
-
-:deep(.n-tab-pane) {
-  height: 100%;
-}
-
-/* Add bottom margin to the last form item */
-:deep(.n-form-item:last-child) {
-  margin-bottom: 40px;
 }
 </style>
