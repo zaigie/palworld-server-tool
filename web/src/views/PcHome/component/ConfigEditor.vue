@@ -976,10 +976,34 @@ onMounted(() => {
 <style scoped>
 .config-editor {
   padding: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
 .slider-container {
   display: flex;
   align-items: center;
   width: 100%;
+}
+
+/* Make sure the card takes up available space */
+:deep(.n-card) {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 100px);
+}
+
+:deep(.n-card-content) {
+  flex: 1;
+  overflow: hidden;
+}
+
+:deep(.n-tabs-content) {
+  height: 100%;
+}
+
+:deep(.n-tab-pane) {
+  height: 100%;
 }
 </style>
