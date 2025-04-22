@@ -765,169 +765,175 @@ onMounted(() => {
         
         <n-tabs v-model:value="activeTab" type="segment" animated>
           <n-tab-pane name="server" tab="Server Settings">
-            <n-space vertical size="large" style="margin-top: 20px">
-              <n-form-item 
-                v-for="setting in serverSettings" 
-                :key="setting.key" 
-                :label="setting.label"
-              >
-                <!-- Text input -->
-                <n-input 
-                  v-if="setting.type === 'text'" 
-                  v-model:value="setting.value" 
-                  :placeholder="setting.label"
-                />
-                
-                <!-- Password input -->
-                <n-input 
-                  v-else-if="setting.type === 'password'" 
-                  v-model:value="setting.value" 
-                  type="password"
-                  :placeholder="setting.label"
-                  show-password-on="click"
-                />
-                
-                <!-- Textarea input -->
-                <n-input 
-                  v-else-if="setting.type === 'textarea'" 
-                  v-model:value="setting.value" 
-                  type="textarea"
-                  :placeholder="setting.label"
-                  :autosize="{ minRows: 3, maxRows: 5 }"
-                />
-                
-                <!-- Number input -->
-                <n-input-number 
-                  v-else-if="setting.type === 'number'" 
-                  v-model:value="setting.value" 
-                  :min="setting.min"
-                  :max="setting.max"
-                />
-                
-                <!-- Select input -->
-                <n-select 
-                  v-else-if="setting.type === 'select'" 
-                  v-model:value="setting.value" 
-                  :options="setting.options"
-                />
-                
-                <!-- Slider -->
-                <div v-else-if="setting.type === 'slider'" class="slider-container">
+            <n-scrollbar style="max-height: calc(100vh - 200px);">
+              <n-space vertical size="large" style="margin-top: 20px">
+                <n-form-item 
+                  v-for="setting in serverSettings" 
+                  :key="setting.key" 
+                  :label="setting.label"
+                >
+                  <!-- Text input -->
+                  <n-input 
+                    v-if="setting.type === 'text'" 
+                    v-model:value="setting.value" 
+                    :placeholder="setting.label"
+                  />
+                  
+                  <!-- Password input -->
+                  <n-input 
+                    v-else-if="setting.type === 'password'" 
+                    v-model:value="setting.value" 
+                    type="password"
+                    :placeholder="setting.label"
+                    show-password-on="click"
+                  />
+                  
+                  <!-- Textarea input -->
+                  <n-input 
+                    v-else-if="setting.type === 'textarea'" 
+                    v-model:value="setting.value" 
+                    type="textarea"
+                    :placeholder="setting.label"
+                    :autosize="{ minRows: 3, maxRows: 5 }"
+                  />
+                  
+                  <!-- Number input -->
                   <n-input-number 
+                    v-else-if="setting.type === 'number'" 
                     v-model:value="setting.value" 
                     :min="setting.min"
                     :max="setting.max"
-                    :step="setting.step || 1"
-                    style="width: 100px"
                   />
-                  <n-slider 
+                  
+                  <!-- Select input -->
+                  <n-select 
+                    v-else-if="setting.type === 'select'" 
                     v-model:value="setting.value" 
-                    :min="setting.min"
-                    :max="setting.max"
-                    :step="setting.step || 1"
-                    style="margin: 0 10px; flex-grow: 1"
+                    :options="setting.options"
                   />
-                  <n-button circle size="small">
-                    <template #icon>
-                      <n-icon><refresh /></n-icon>
-                    </template>
-                  </n-button>
-                </div>
-                
-                <!-- Switch -->
-                <n-switch v-else-if="setting.type === 'switch'" v-model:value="setting.value" />
-              </n-form-item>
-            </n-space>
-          </n-tab-pane>
-          
-          <n-tab-pane name="game" tab="In-Game Settings">
-            <n-space vertical size="large" style="margin-top: 20px">
-              <n-form-item 
-                v-for="setting in gameSettings" 
-                :key="setting.key" 
-                :label="setting.label"
-              >
-                <!-- Select input -->
-                <n-select 
-                  v-if="setting.type === 'select'" 
-                  v-model:value="setting.value" 
-                  :options="setting.options"
-                />
-                
-                <!-- Slider with harder/easier indicators -->
-                <div v-else-if="setting.type === 'slider'" class="slider-container">
-                  <n-input-number 
-                    v-model:value="setting.value" 
-                    :min="setting.min"
-                    :max="setting.max"
-                    :step="setting.step || 1"
-                    style="width: 100px"
-                  />
-                  <div style="display: flex; flex-direction: column; flex-grow: 1; margin: 0 10px;">
-                    <div v-if="setting.harder || setting.easier" style="display: flex; justify-content: space-between; margin-bottom: 5px">
-                      <span v-if="setting.harder" style="color: #ff4d4f">⬤ Harder</span>
-                      <span v-else>&nbsp;</span>
-                      <span v-if="setting.easier" style="color: #52c41a">Easier ⬤</span>
-                      <span v-else>&nbsp;</span>
-                    </div>
+                  
+                  <!-- Slider -->
+                  <div v-else-if="setting.type === 'slider'" class="slider-container">
+                    <n-input-number 
+                      v-model:value="setting.value" 
+                      :min="setting.min"
+                      :max="setting.max"
+                      :step="setting.step || 1"
+                      style="width: 100px"
+                    />
                     <n-slider 
                       v-model:value="setting.value" 
                       :min="setting.min"
                       :max="setting.max"
                       :step="setting.step || 1"
+                      style="margin: 0 10px; flex-grow: 1"
                     />
+                    <n-button circle size="small">
+                      <template #icon>
+                        <n-icon><refresh /></n-icon>
+                      </template>
+                    </n-button>
                   </div>
-                  <n-button circle size="small">
-                    <template #icon>
-                      <n-icon><refresh /></n-icon>
-                    </template>
-                  </n-button>
-                </div>
-              </n-form-item>
-            </n-space>
+                  
+                  <!-- Switch -->
+                  <n-switch v-else-if="setting.type === 'switch'" v-model:value="setting.value" />
+                </n-form-item>
+              </n-space>
+            </n-scrollbar>
+          </n-tab-pane>
+          
+          <n-tab-pane name="game" tab="In-Game Settings">
+            <n-scrollbar style="max-height: calc(100vh - 200px);">
+              <n-space vertical size="large" style="margin-top: 20px">
+                <n-form-item 
+                  v-for="setting in gameSettings" 
+                  :key="setting.key" 
+                  :label="setting.label"
+                >
+                  <!-- Select input -->
+                  <n-select 
+                    v-if="setting.type === 'select'" 
+                    v-model:value="setting.value" 
+                    :options="setting.options"
+                  />
+                  
+                  <!-- Slider with harder/easier indicators -->
+                  <div v-else-if="setting.type === 'slider'" class="slider-container">
+                    <n-input-number 
+                      v-model:value="setting.value" 
+                      :min="setting.min"
+                      :max="setting.max"
+                      :step="setting.step || 1"
+                      style="width: 100px"
+                    />
+                    <div style="display: flex; flex-direction: column; flex-grow: 1; margin: 0 10px;">
+                      <div v-if="setting.harder || setting.easier" style="display: flex; justify-content: space-between; margin-bottom: 5px">
+                        <span v-if="setting.harder" style="color: #ff4d4f">⬤ Harder</span>
+                        <span v-else>&nbsp;</span>
+                        <span v-if="setting.easier" style="color: #52c41a">Easier ⬤</span>
+                        <span v-else>&nbsp;</span>
+                      </div>
+                      <n-slider 
+                        v-model:value="setting.value" 
+                        :min="setting.min"
+                        :max="setting.max"
+                        :step="setting.step || 1"
+                      />
+                    </div>
+                    <n-button circle size="small">
+                      <template #icon>
+                        <n-icon><refresh /></n-icon>
+                      </template>
+                    </n-button>
+                  </div>
+                </n-form-item>
+              </n-space>
+            </n-scrollbar>
           </n-tab-pane>
           
           <n-tab-pane name="advanced" tab="Advanced Settings">
-            <n-space vertical size="large" style="margin-top: 20px">
-              <n-form-item 
-                v-for="setting in advancedSettings" 
-                :key="setting.key" 
-                :label="setting.label"
-              >
-                <!-- Select input -->
-                <n-select 
-                  v-if="setting.type === 'select'" 
-                  v-model:value="setting.value" 
-                  :options="setting.options"
-                />
-                
-                <!-- Switch -->
-                <n-switch v-else-if="setting.type === 'switch'" v-model:value="setting.value" />
-                
-                <!-- Slider -->
-                <div v-else-if="setting.type === 'slider'" class="slider-container">
-                  <n-input-number 
+            <n-scrollbar style="max-height: calc(100vh - 200px);">
+              <n-space vertical size="large" style="margin-top: 20px">
+                <n-form-item 
+                  v-for="setting in advancedSettings" 
+                  :key="setting.key" 
+                  :label="setting.label"
+                >
+                  <!-- Select input -->
+                  <n-select 
+                    v-if="setting.type === 'select'" 
                     v-model:value="setting.value" 
-                    :min="setting.min"
-                    :max="setting.max"
-                    :step="setting.step || 1"
-                    style="width: 100px"
+                    :options="setting.options"
                   />
-                  <n-slider 
-                    v-model:value="setting.value" 
-                    :min="setting.min"
-                    :max="setting.max"
-                    :step="setting.step || 1"
-                    style="margin: 0 10px; flex-grow: 1"
-                  />
-                  <n-button circle size="small">
-                    <template #icon>
-                      <n-icon><refresh /></n-icon>
-                    </template>
-                  </n-button>
-                </div>
-              </n-form-item>
-            </n-space>
+                  
+                  <!-- Switch -->
+                  <n-switch v-else-if="setting.type === 'switch'" v-model:value="setting.value" />
+                  
+                  <!-- Slider -->
+                  <div v-else-if="setting.type === 'slider'" class="slider-container">
+                    <n-input-number 
+                      v-model:value="setting.value" 
+                      :min="setting.min"
+                      :max="setting.max"
+                      :step="setting.step || 1"
+                      style="width: 100px"
+                    />
+                    <n-slider 
+                      v-model:value="setting.value" 
+                      :min="setting.min"
+                      :max="setting.max"
+                      :step="setting.step || 1"
+                      style="margin: 0 10px; flex-grow: 1"
+                    />
+                    <n-button circle size="small">
+                      <template #icon>
+                        <n-icon><refresh /></n-icon>
+                      </template>
+                    </n-button>
+                  </div>
+                </n-form-item>
+              </n-space>
+            </n-scrollbar>
           </n-tab-pane>
         </n-tabs>
       </n-card>
