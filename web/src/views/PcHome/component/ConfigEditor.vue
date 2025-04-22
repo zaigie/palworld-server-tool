@@ -16,10 +16,15 @@ const loadConfig = async () => {
   loading.value = true;
   try {
     const { data, statusCode } = await new ApiService().getServerConfig();
-    if (statusCode.value === 200 && data.value) {
-      const parsed = parseIniConfig(data.value);
-      configSections.value = parsed;
-      originalConfig.value = JSON.parse(JSON.stringify(parsed));
+    if (statusCode.value === 200) {
+      // Check if data.value exists and contains the config property
+      if (data.value && data.value.config) {
+        const parsed = parseIniConfig(data.value.config);
+        configSections.value = parsed;
+        originalConfig.value = JSON.parse(JSON.stringify(parsed));
+      } else {
+        message.error(t("config.invalidResponse"));
+      }
     } else {
       message.error(t("config.loadError"));
     }
