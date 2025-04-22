@@ -22,22 +22,23 @@ const loadConfig = async () => {
   loading.value = true;
   try {
     const { data, statusCode } = await new ApiService().getServerConfig();
-    if (statusCode.value === 200 && data.value) {
-      if (data.value.config) {
+    console.log("Config response:", data, statusCode);
+    
+    if (statusCode.value === 200) {
+      // Check if data.value exists and contains the config property
+      if (data.value && data.value.config) {
+        console.log("Config data:", data.value.config);
         parseConfig(data.value.config);
-        // Store original config for comparison
-        originalConfig.value = {
-          server: JSON.parse(JSON.stringify(serverSettings.value)),
-          game: JSON.parse(JSON.stringify(gameSettings.value)),
-          advanced: JSON.parse(JSON.stringify(advancedSettings.value))
-        };
+        // Rest of the function...
       } else {
+        console.error("Invalid response format:", data);
         message.error(t("config.invalidResponse"));
       }
     } else {
       message.error(t("config.loadError"));
     }
   } catch (error) {
+    console.error("Error loading config:", error);
     message.error(t("config.loadError") + ": " + error.message);
   } finally {
     loading.value = false;
@@ -50,7 +51,6 @@ const parseConfig = (iniString) => {
     console.log("Raw config string:", iniString);
     
     // The PalWorld config has a specific format
-    // First, look for the OptionSettings part
     const optionsMatch = iniString.match(/OptionSettings=\((.*)\)/);
     
     if (optionsMatch && optionsMatch[1]) {
@@ -59,23 +59,22 @@ const parseConfig = (iniString) => {
       
       const options = {};
       
-      // Split by commas, but be careful with values that might contain commas
-      let currentKey = '';
-      let currentValue = '';
-      let inQuotes = false;
-      let keyValuePairs = [];
-      
-      // Simple split by comma for most cases
       optionsContent.split(',').forEach(option => {
         const parts = option.split('=');
         if (parts.length === 2) {
           const key = parts[0].trim();
-          const value = parts[1].trim();
+          let value = parts[1].trim();
+          
+          // Remove quotes if present
+          if (value.startsWith('"') && value.endsWith('"')) {
+            value = value.substring(1, value.length - 1);
+          }
+          
           options[key] = value;
         }
       });
       
-      console.log("Parsed options:", options);
+      console.log("All parsed options:", options);
       
       // Categorize settings
       categorizeSettings(options);
@@ -632,36 +631,33 @@ const categorizeSettings = (options) => {
 };
 
 // Convert settings back to INI format
+// In the generateIniConfig function:
 const generateIniConfig = () => {
   // Combine all settings
   const allSettings = {};
   
-  // Process server settings
-  serverSettings.value.forEach(setting => {
-    if (setting.type === "switch") {
-      allSettings[setting.key] = setting.value ? "True" : "False";
-    } else {
-      allSettings[setting.key] = setting.value.toString();
-    }
-  });
+  // Process all settings
+  const processSettings = (settings) => {
+    settings.forEach(setting => {
+      let value;
+      
+      if (setting.type === "switch") {
+        value = setting.value ? "True" : "False";
+      } else if (setting.type === "text" || setting.type === "textarea" || setting.type === "password") {
+        // Add quotes for text fields
+        value = `"${setting.value}"`;
+      } else {
+        value = setting.value.toString();
+      }
+      
+      allSettings[setting.key] = value;
+    });
+  };
   
-  // Process game settings
-  gameSettings.value.forEach(setting => {
-    if (setting.type === "switch") {
-      allSettings[setting.key] = setting.value ? "True" : "False";
-    } else {
-      allSettings[setting.key] = setting.value.toString();
-    }
-  });
-  
-  // Process advanced settings
-  advancedSettings.value.forEach(setting => {
-    if (setting.type === "switch") {
-      allSettings[setting.key] = setting.value ? "True" : "False";
-    } else {
-      allSettings[setting.key] = setting.value.toString();
-    }
-  });
+  // Process all setting categories
+  processSettings(serverSettings.value);
+  processSettings(gameSettings.value);
+  processSettings(advancedSettings.value);
   
   // Build the OptionSettings string
   const optionParts = [];
@@ -748,7 +744,7 @@ onMounted(() => {
   <div class="config-editor">
     <n-spin :show="loading">
       <n-card :title="$t('config.title')" size="huge">
-        <!-- Debug info -->
+       <!-- Debug info -->
         <div v-if="serverSettings.length === 0 && gameSettings.length === 0 && advancedSettings.length === 0">
           <p>No settings loaded. Check console for errors.</p>
         </div>
@@ -765,7 +761,7 @@ onMounted(() => {
         
         <n-tabs v-model:value="activeTab" type="segment" animated>
           <n-tab-pane name="server" tab="Server Settings">
-            <n-scrollbar style="max-height: calc(100vh - 200px);">
+            <n-scrollbar style="max-height: calc(100vh - 200px); padding-bottom: 40px;">
               <n-space vertical size="large" style="margin-top: 20px">
                 <n-form-item 
                   v-for="setting in serverSettings" 
@@ -843,7 +839,7 @@ onMounted(() => {
           </n-tab-pane>
           
           <n-tab-pane name="game" tab="In-Game Settings">
-            <n-scrollbar style="max-height: calc(100vh - 200px);">
+            <n-scrollbar style="max-height: calc(100vh - 200px); padding-bottom: 40px;">
               <n-space vertical size="large" style="margin-top: 20px">
                 <n-form-item 
                   v-for="setting in gameSettings" 
@@ -868,9 +864,9 @@ onMounted(() => {
                     />
                     <div style="display: flex; flex-direction: column; flex-grow: 1; margin: 0 10px;">
                       <div v-if="setting.harder || setting.easier" style="display: flex; justify-content: space-between; margin-bottom: 5px">
-                        <span v-if="setting.harder" style="color: #ff4d4f">⬤ Harder</span>
+                        <span v-if="setting.harder" style="color: #ff4d4f">? Harder</span>
                         <span v-else>&nbsp;</span>
-                        <span v-if="setting.easier" style="color: #52c41a">Easier ⬤</span>
+                        <span v-if="setting.easier" style="color: #52c41a">Easier ?</span>
                         <span v-else>&nbsp;</span>
                       </div>
                       <n-slider 
@@ -892,7 +888,7 @@ onMounted(() => {
           </n-tab-pane>
           
           <n-tab-pane name="advanced" tab="Advanced Settings">
-            <n-scrollbar style="max-height: calc(100vh - 200px);">
+            <n-scrollbar style="max-height: calc(100vh - 200px); padding-bottom: 40px;">
               <n-space vertical size="large" style="margin-top: 20px">
                 <n-form-item 
                   v-for="setting in advancedSettings" 
@@ -997,13 +993,27 @@ onMounted(() => {
 :deep(.n-card-content) {
   flex: 1;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.n-tabs) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 :deep(.n-tabs-content) {
-  height: 100%;
+  flex: 1;
+  overflow: hidden;
 }
 
 :deep(.n-tab-pane) {
   height: 100%;
+}
+
+/* Add bottom margin to the last form item */
+:deep(.n-form-item:last-child) {
+  margin-bottom: 40px;
 }
 </style>
