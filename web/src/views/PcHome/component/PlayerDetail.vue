@@ -507,7 +507,7 @@ const createPlayerItemsColumns = () => {
             v-for="status in Object.entries(playerInfo?.status_point || {})"
             :key="status[0]"
           >
-            <n-statistic :label="status[0]" :value="status[1]" />
+            <n-statistic :label="$t(`status_point.${status[0]}`)" :value="status[1]" />
           </n-gi>
         </n-grid>
         <template #title>
