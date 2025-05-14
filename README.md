@@ -613,6 +613,10 @@ SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 
 > 由于游戏服务器创建 Level.sav 文件的时间、位置（包含 HASH）在初次都不确定，您只需要指向 Saved 目录级别即可，程序会自动扫描
 
+## 项目状态
+
+![Stats](https://repobeats.axiom.co/api/embed/8724e69c284e0645f764a4a1cd525477be13cbe8.svg "Repobeats analytics image")
+
 ## 接口文档
 
 [APIFox 在线接口文档](https://q4ly3bfcop.apifox.cn/)

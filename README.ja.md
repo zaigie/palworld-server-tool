@@ -601,6 +601,10 @@ SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 
 > ゲームサーバーが Level.sav ファイルを作成する時間と位置（HASH を含む）は初回には不確定なため、Saved ディレクトリレベルを指定してください。プログラムが自動的にスキャンします
 
+## プロジェクトの統計
+
+![Stats](https://repobeats.axiom.co/api/embed/8724e69c284e0645f764a4a1cd525477be13cbe8.svg "Repobeats analytics image")
+
 ## API ドキュメント
 
 [APIFox オンライン API ドキュメント](https://q4ly3bfcop.apifox.cn/)

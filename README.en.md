@@ -591,6 +591,10 @@ SAVE__PATH="docker://04b0a9af4288:/palworld/Pal/Saved"
 
 > Since the time and location (including HASH) of the Level.sav file created by the game server are uncertain at the first instance, you only need to point to the Saved directory level, and the program will automatically scan.
 
+## Projects Stats
+
+![Stats](https://repobeats.axiom.co/api/embed/8724e69c284e0645f764a4a1cd525477be13cbe8.svg "Repobeats analytics image")
+
 ## REST API Document
 
 [APIFox Online document](https://q4ly3bfcop.apifox.cn/)
