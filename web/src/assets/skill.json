@@ -10,35 +10,35 @@
         },
         "Rare": {
             "name": "Lucky",
-            "desc": "Work Speed +15% (ToSelf)，Attack +15% (ToSelf)"
+            "desc": "Work Speed +15% (ToSelf), Attack +15% (ToSelf)"
         },
         "Legend": {
             "name": "Legend",
-            "desc": "Attack +20%，Defense +20%，Movement Speed increases 15%"
+            "desc": "Attack +20%, Defense +20%, Movement Speed increases 15%"
         },
         "Witch": {
             "name": "Siren of the Void",
-            "desc": "30% increase in Dark attack damage.，30% increase in Ice attack damage."
+            "desc": "30% increase in Dark attack damage. 30% increase in Ice attack damage."
         },
         "EternalFlame": {
             "name": "Eternal Flame",
-            "desc": "30% increase to Fire attack damage.，30% increase to Lightning attack damage."
+            "desc": "30% increase to Fire attack damage. 30% increase to Lightning attack damage."
         },
         "Invader": {
             "name": "Invader",
-            "desc": "30% increase in Dark attack damage.，30% increase in Dragon attack damage."
+            "desc": "30% increase in Dark attack damage. 30% increase in Dragon attack damage."
         },
         "PAL_ALLAttack_up3": {
             "name": "Demon God",
-            "desc": "Attack +30% (ToSelf)，Defense +5% (ToSelf)"
+            "desc": "Attack +30% (ToSelf), Defense +5% (ToSelf)"
         },
         "PAL_FullStomach_Down_3": {
             "name": "Mastery of Fasting",
-            "desc": "Hunger decreases，+20.0% slower."
+            "desc": "Hunger decreases +20.0% slower."
         },
         "PAL_Sanity_Down_3": {
             "name": "Heart of the Immovable King",
-            "desc": "SAN drops，+20.0% slower."
+            "desc": "SAN drops +20.0% slower."
         },
         "MoveSpeed_up_3": {
             "name": "Swift",
@@ -46,11 +46,19 @@
         },
         "Stamina_Up_3": {
             "name": "Eternal Engine",
-            "desc": "Max stamina +75%，*This effect is only valid for rideable pals."
+            "desc": "Max stamina +75% *This effect is only valid for rideable pals."
         },
         "Vampire": {
             "name": "Vampiric",
-            "desc": "Absorbs a portion of the damage dealt to restore，. ，Does not sleep at night and continues to work."
+            "desc": "Absorbs a portion of the damage dealt to restore Health. Does not sleep at night and continues to work."
+        },
+        "Nushi": {
+            "name": "Lunker",
+            "desc": "20% increase to Water attack damage, 20% increase to Ice attack damage, 20% increase to defense."
+        },
+        "SwimSpeed_up_3": {
+            "name": "King of the Waves",
+            "desc": "50% increase movement speed on water."
         },
         "CraftSpeed_up2": {
             "name": "Artisan",
@@ -86,11 +94,11 @@
         },
         "PAL_FullStomach_Down_2": {
             "name": "Diet Lover",
-            "desc": "Hunger decreases，+15.0% slower."
+            "desc": "Hunger decreases +15.0% slower."
         },
         "PAL_Sanity_Down_2": {
             "name": "Workaholic",
-            "desc": "SAN drops，+15.0% slower."
+            "desc": "SAN drops +15.0% slower."
         },
         "ElementBoost_Normal_2_PAL": {
             "name": "Celestial Emperor",
@@ -138,19 +146,23 @@
         },
         "CoolTimeReduction_Up_1": {
             "name": "Serenity",
-            "desc": "Active skill cooldown reduction 30%，Attack +10%"
+            "desc": "Active skill cooldown reduction 30%, Attack +10%"
         },
         "Stamina_Up_1": {
             "name": "Infinite Stamina",
-            "desc": "Max stamina +50%，*This effect is only valid for rideable pals."
+            "desc": "Max stamina +50% *This effect is only valid for rideable pals."
         },
         "SalePrice_Up_1": {
             "name": "Noble",
             "desc": "Increases the value of items when sold by +5%"
         },
+        "SwimSpeed_up_2": {
+            "name": "Ace Swimmer",
+            "desc": "40% increase movement speed on water."
+        },
         "Noukin": {
             "name": "Musclehead",
-            "desc": "Attack +30% (ToSelf)，Work Speed -50% (ToSelf)"
+            "desc": "Attack +30% (ToSelf), Work Speed -50% (ToSelf)"
         },
         "CraftSpeed_up1": {
             "name": "Serious",
@@ -166,27 +178,27 @@
         },
         "PAL_rude": {
             "name": "Hooligan",
-            "desc": "Attack +15% (ToSelf)，Work Speed -10% (ToSelf)"
+            "desc": "Attack +15% (ToSelf), Work Speed -10% (ToSelf)"
         },
         "PAL_conceited": {
             "name": "Conceited",
-            "desc": "Work Speed +10% (ToSelf)，Defense -10% (ToSelf)"
+            "desc": "Work Speed +10% (ToSelf), Defense -10% (ToSelf)"
         },
         "PAL_sadist": {
             "name": "Sadist",
-            "desc": "Attack +15% (ToSelf)，Defense -15% (ToSelf)"
+            "desc": "Attack +15% (ToSelf), Defense -15% (ToSelf)"
         },
         "PAL_masochist": {
             "name": "Masochist",
-            "desc": "Defense +15% (ToSelf)，Attack -15% (ToSelf)"
+            "desc": "Defense +15% (ToSelf), Attack -15% (ToSelf)"
         },
         "PAL_CorporateSlave": {
             "name": "Work Slave",
-            "desc": "Work Speed +30% (ToSelf)，Attack -30% (ToSelf)"
+            "desc": "Work Speed +30% (ToSelf), Attack -30% (ToSelf)"
         },
         "PAL_oraora": {
             "name": "Aggressive",
-            "desc": "Attack +10% (ToSelf)，Defense -10% (ToSelf)"
+            "desc": "Attack +10% (ToSelf), Defense -10% (ToSelf)"
         },
         "ElementResist_Normal_1_PAL": {
             "name": "Abnormal",
@@ -262,11 +274,11 @@
         },
         "PAL_FullStomach_Down_1": {
             "name": "Dainty Eater",
-            "desc": "Hunger decreases，+10.0% slower."
+            "desc": "Hunger decreases +10.0% slower."
         },
         "PAL_Sanity_Down_1": {
             "name": "Positive Thinker",
-            "desc": "SAN drops，+10.0% slower."
+            "desc": "SAN drops +10.0% slower."
         },
         "MoveSpeed_up_1": {
             "name": "Nimble",
@@ -282,7 +294,7 @@
         },
         "Stamina_Up_2": {
             "name": "Fit as a Fiddle",
-            "desc": "Max stamina +25%，*This effect is only valid for rideable pals."
+            "desc": "Max stamina +25% *This effect is only valid for rideable pals."
         },
         "SalePrice_Up_2": {
             "name": "Fine Furs",
@@ -290,7 +302,11 @@
         },
         "Alien": {
             "name": "Otherworldly Cells",
-            "desc": "Attack +10%，Fire damage reduction 15%，Lightning damage reduction 15%"
+            "desc": "Attack +10%, Fire damage reduction 15%, Lightning damage reduction 15%"
+        },
+        "SwimSpeed_up_1": {
+            "name": "Sleek Stroke",
+            "desc": "30% increase movement speed on water."
         },
         "CraftSpeed_down1": {
             "name": "Clumsy",
@@ -306,15 +322,15 @@
         },
         "PAL_FullStomach_Up_1": {
             "name": "Glutton",
-            "desc": "Hunger decreases，+10.0% faster."
+            "desc": "Hunger decreases +10.0% faster."
         },
         "PAL_Sanity_Up_1": {
             "name": "Unstable",
-            "desc": "SAN drops，+10.0% faster."
+            "desc": "SAN drops +10.0% faster."
         },
         "NonKilling": {
             "name": "Mercy Hit",
-            "desc": "Pacifist.，Will not reduce the target's Health below 1."
+            "desc": "Pacifist. Will not reduce the target's Health below 1."
         },
         "CoolTimeReduction_Down_1": {
             "name": "Easygoing",
@@ -322,7 +338,7 @@
         },
         "Stamina_Down_1": {
             "name": "Sickly",
-            "desc": "Max Stamina -25%，*This effect is only valid for rideable pals."
+            "desc": "Max Stamina -25% *This effect is only valid for rideable pals."
         },
         "SalePrice_Down_1": {
             "name": "Shabby",
@@ -330,11 +346,11 @@
         },
         "PAL_FullStomach_Up_2": {
             "name": "Bottomless Stomach",
-            "desc": "Hunger decreases，+15.0% faster."
+            "desc": "Hunger decreases +15.0% faster."
         },
         "PAL_Sanity_Up_2": {
             "name": "Destructive",
-            "desc": "SAN drops，+15.0% faster."
+            "desc": "SAN drops +15.0% faster."
         },
         "CraftSpeed_down2": {
             "name": "Slacker",
@@ -396,7 +412,7 @@
         },
         "Stamina_Up_3": {
             "name": "永动机",
-            "desc": "最大耐力+75%，此效果仅对可骑乘的帕鲁有效。"
+            "desc": "最大耐力+75% ※此效果仅对可骑乘的帕鲁有效。"
         },
         "Vampire": {
             "name": "吸血鬼",
@@ -644,19 +660,19 @@
         },
         "Stamina_Up_2": {
             "name": "健康宝宝",
-            "desc": "最大耐力+25%，此效果仅对可骑乘的帕鲁有效。"
+            "desc": "最大耐力+25% ※此效果仅对可骑乘的帕鲁有效。"
         },
         "SalePrice_Up_2": {
             "name": "贵族",
             "desc": "改善交易价格+3%"
         },
-        "SwimSpeed_up_1": {
-            "name": "悠然泳姿",
-            "desc": "水上移动速度提升30%"
-        },
         "Alien": {
             "name": "未知生物细胞",
             "desc": "攻击力+10%，火属性伤害减免15%，雷属性伤害减免15%"
+        },
+        "SwimSpeed_up_1": {
+            "name": "悠然泳姿",
+            "desc": "水上移动速度提升30%"
         },
         "CraftSpeed_down1": {
             "name": "笨手笨脚",
@@ -688,7 +704,7 @@
         },
         "Stamina_Down_1": {
             "name": "家里蹲",
-            "desc": "最大耐力-25%，此效果仅对可骑乘的帕鲁有效。"
+            "desc": "最大耐力-25% ※此效果仅对可骑乘的帕鲁有效。"
         },
         "SalePrice_Down_1": {
             "name": "寒酸",
@@ -717,76 +733,84 @@
     },
     "ja": {
         "CraftSpeed_up3": {
-            "name": "超绝技巧",
+            "name": "超絶技巧",
             "desc": "作業速度 +75% (ToSelf)"
         },
         "Deffence_up3": {
             "name": "ダイヤモンドボディ",
-            "desc": "防衛 +30% (ToSelf)"
+            "desc": "防御 +30% (ToSelf)"
         },
         "Rare": {
             "name": "希少",
-            "desc": "作業速度 +15% (ToSelf)，攻撃 +15% (ToSelf)"
+            "desc": "作業速度 +15% (ToSelf)、攻撃 +15% (ToSelf)"
         },
         "Legend": {
             "name": "伝说",
-            "desc": "攻撃+20%，防衛+20%，移動速度上升15%"
+            "desc": "攻撃+20%、防御+20%、移動速度上昇15%"
         },
         "Witch": {
             "name": "魔女",
-            "desc": "暗属性攻撃ダメージ増加30%，氷属性攻撃ダメージ増加30%"
+            "desc": "闇属性攻撃ダメージ増加30%、氷属性攻撃ダメージ増加30%"
         },
         "EternalFlame": {
             "name": "永炎",
-            "desc": "炎属性攻撃ダメージ増加30%，雷属性攻撃ダメージ増加30%"
+            "desc": "炎属性攻撃ダメージ増加30%、雷属性攻撃ダメージ増加30%"
         },
         "Invader": {
             "name": "侵略者",
-            "desc": "暗属性攻撃ダメージ増加30%，竜属性攻撃ダメージ増加30%"
+            "desc": "闇属性攻撃ダメージ増加30%、竜属性攻撃ダメージ増加30%"
         },
         "PAL_ALLAttack_up3": {
             "name": "鬼神",
-            "desc": "攻撃 +30% (ToSelf)，防衛 +5% (ToSelf)"
+            "desc": "攻撃 +30% (ToSelf)、防御 +5% (ToSelf)"
         },
         "PAL_FullStomach_Down_3": {
-            "name": "绝食の极み",
-            "desc": "満腹度が减りにくい，+20.0%"
+            "name": "絶食の極み",
+            "desc": "満腹度が減りにくい +20.0%"
         },
         "PAL_Sanity_Down_3": {
-            "name": "不动明王の心",
-            "desc": "SAN値が减りにくい，+20.0%"
+            "name": "不動明王の心",
+            "desc": "SAN値が減りにくい +20.0%"
         },
         "MoveSpeed_up_3": {
             "name": "神速",
-            "desc": "移動速度上升30%"
+            "desc": "移動速度上昇30%"
         },
         "Stamina_Up_3": {
-            "name": "永久机関",
-            "desc": "最大スタミナ+75%，※ライド可能なパルのみ有効"
+            "name": "永久機関",
+            "desc": "最大スタミナ+75% ※ライド可能なパルのみ有効"
         },
         "Vampire": {
             "name": "吸血鬼",
-            "desc": "ダメージを与えるとその一部を，吸収し，を回复する。，夜になっても眠らず、働き続ける。"
+            "desc": "ダメージを与えるとその一部を、吸収しHPを回復する。夜になっても眠らず、働き続ける。"
+        },
+        "Nushi": {
+            "name": "ヌシ",
+            "desc": "水属性攻撃ダメージ増加20%、氷属性攻撃ダメージ増加20%、防御+20%"
+        },
+        "SwimSpeed_up_3": {
+            "name": "波乗り王",
+            "desc": "水上の移動速度上昇50%"
         },
         "CraftSpeed_up2": {
-            "name": "职人気质",
+            "name": "職人気質",
             "desc": "作業速度 +50% (ToSelf)"
         },
         "Deffence_up2": {
             "name": "屈强な肉体",
-            "desc": "防衛 +20% (ToSelf)"
+            "desc": "防御 +20% (ToSelf)"
         },
         "PAL_ALLAttack_up2": {
-            "name": "狞猛",
+            "name": "獰猛",
             "desc": "攻撃 +20% (ToSelf)"
         },
         "TrainerATK_UP_1": {
-            "name": "突撃指挥者",
+            "name": "突撃指揮者",
             "desc": "プレイヤーの攻撃増加10%"
         },
         "TrainerDEF_UP_1": {
-            "name": "坚城の军师",
-            "desc": "プレイヤーの防衛増加10%"
+            "name": "堅城の軍師",
+            "desc": "プレイヤーの防御増加10%"
         },
         "TrainerWorkSpeed_UP_1": {
             "name": "モチベーター",
@@ -794,23 +818,23 @@
         },
         "TrainerMining_up1": {
             "name": "鉱山のチーフ",
-            "desc": "プレイヤーの采掘効率増加25%"
+            "desc": "プレイヤーの採掘効率増加25%"
         },
         "TrainerLogging_up1": {
-            "name": "伐采リーダー",
-            "desc": "プレイヤーの伐采効率増加25%"
+            "name": "伐採リーダー",
+            "desc": "プレイヤーの伐採効率増加25%"
         },
         "PAL_FullStomach_Down_2": {
             "name": "ダイエットマスター",
-            "desc": "満腹度が减りにくい，+15.0%"
+            "desc": "満腹度が減りにくい +15.0%"
         },
         "PAL_Sanity_Down_2": {
             "name": "ワーカーホリック",
-            "desc": "SAN値が减りにくい，+15.0%"
+            "desc": "SAN値が減りにくい +15.0%"
         },
         "ElementBoost_Normal_2_PAL": {
-            "name": "圣天",
-            "desc": "无属性攻撃ダメージ増加20%"
+            "name": "聖天",
+            "desc": "無属性攻撃ダメージ増加20%"
         },
         "ElementBoost_Fire_2_PAL": {
             "name": "炎帝",
@@ -838,43 +862,47 @@
         },
         "ElementBoost_Dark_2_PAL": {
             "name": "冥王",
-            "desc": "暗属性攻撃ダメージ増加20%"
+            "desc": "闇属性攻撃ダメージ増加20%"
         },
         "ElementBoost_Dragon_2_PAL": {
-            "name": "神龙",
+            "name": "神龍",
             "desc": "竜属性攻撃ダメージ増加20%"
         },
         "MoveSpeed_up_2": {
             "name": "走るのが得意",
-            "desc": "移動速度上升20%"
+            "desc": "移動速度上昇20%"
         },
         "Test_PalEgg_HatchingSpeed_Up": {
-            "name": "博爱主义者",
-            "desc": "配合牧场にアサインされてる间、タマゴ生成速度が100%増加する"
+            "name": "博愛主義者",
+            "desc": "配合牧場にアサインされてる間、タマゴ生成速度が100%増加する"
         },
         "CoolTimeReduction_Up_1": {
             "name": "冷静沈着",
-            "desc": "アクティブスキルのクールタイム短缩30%，攻撃+10%"
+            "desc": "アクティブスキルのクールタイム短縮30%、攻撃+10%"
         },
         "Stamina_Up_1": {
-            "name": "无限のスタミナ",
-            "desc": "最大スタミナ+50%，※ライド可能なパルのみ有効"
+            "name": "無限のスタミナ",
+            "desc": "最大スタミナ+50% ※ライド可能なパルのみ有効"
         },
         "SalePrice_Up_1": {
-            "name": "高贵",
+            "name": "高貴",
             "desc": "取引価格が改善+5%"
+        },
+        "SwimSpeed_up_2": {
+            "name": "泳ぐのが得意",
+            "desc": "水上の移動速度上昇40%"
         },
         "Noukin": {
             "name": "脳筋",
-            "desc": "攻撃 +30% (ToSelf)，作業速度 -50% (ToSelf)"
+            "desc": "攻撃 +30% (ToSelf)、作業速度 -50% (ToSelf)"
         },
         "CraftSpeed_up1": {
             "name": "まじめ",
             "desc": "作業速度 +20% (ToSelf)"
         },
         "Deffence_up1": {
-            "name": "硬い皮肤",
-            "desc": "防衛 +10% (ToSelf)"
+            "name": "硬い皮膚",
+            "desc": "防御 +10% (ToSelf)"
         },
         "PAL_ALLAttack_up1": {
             "name": "勇敢",
@@ -882,31 +910,31 @@
         },
         "PAL_rude": {
             "name": "粗暴",
-            "desc": "攻撃 +15% (ToSelf)，作業速度 -10% (ToSelf)"
+            "desc": "攻撃 +15% (ToSelf)、作業速度 -10% (ToSelf)"
         },
         "PAL_conceited": {
             "name": "うぬぼれ屋",
-            "desc": "作業速度 +10% (ToSelf)，防衛 -10% (ToSelf)"
+            "desc": "作業速度 +10% (ToSelf)、防御 -10% (ToSelf)"
         },
         "PAL_sadist": {
             "name": "サディスト",
-            "desc": "攻撃 +15% (ToSelf)，防衛 -15% (ToSelf)"
+            "desc": "攻撃 +15% (ToSelf)、防御 -15% (ToSelf)"
         },
         "PAL_masochist": {
             "name": "マゾヒスト",
-            "desc": "防衛 +15% (ToSelf)，攻撃 -15% (ToSelf)"
+            "desc": "防御 +15% (ToSelf)、攻撃 -15% (ToSelf)"
         },
         "PAL_CorporateSlave": {
             "name": "社畜",
-            "desc": "作業速度 +30% (ToSelf)，攻撃 -30% (ToSelf)"
+            "desc": "作業速度 +30% (ToSelf)、攻撃 -30% (ToSelf)"
         },
         "PAL_oraora": {
             "name": "オラオラ系",
-            "desc": "攻撃 +10% (ToSelf)，防衛 -10% (ToSelf)"
+            "desc": "攻撃 +10% (ToSelf)、防御 -10% (ToSelf)"
         },
         "ElementResist_Normal_1_PAL": {
             "name": "アブノーマル",
-            "desc": "无属性ダメージ軽减10%"
+            "desc": "無属性ダメージ軽減10%"
         },
         "ElementResist_Fire_1_PAL": {
             "name": "日焼け好き",
@@ -917,7 +945,7 @@
             "desc": "水属性ダメージ軽减10%"
         },
         "ElementResist_Thunder_1_PAL": {
-            "name": "绝縁体",
+            "name": "絶縁体",
             "desc": "雷属性ダメージ軽减10%"
         },
         "ElementResist_Leaf_1_PAL": {
@@ -925,31 +953,31 @@
             "desc": "草属性ダメージ軽减10%"
         },
         "ElementResist_Ice_1_PAL": {
-            "name": "高温体质",
+            "name": "高温体質",
             "desc": "氷属性ダメージ軽减10%"
         },
         "ElementResist_Earth_1_PAL": {
-            "name": "耐震构造",
+            "name": "耐震構造",
             "desc": "地属性ダメージ軽减10%"
         },
         "ElementResist_Dark_1_PAL": {
-            "name": "阳キャラ",
-            "desc": "暗属性ダメージ軽减10%"
+            "name": "陽キャラ",
+            "desc": "闇属性ダメージ軽減10%"
         },
         "ElementResist_Dragon_1_PAL": {
             "name": "ドラゴンキラー",
             "desc": "竜属性ダメージ軽减10%"
         },
         "ElementBoost_Normal_1_PAL": {
-            "name": "无の境地",
-            "desc": "无属性攻撃ダメージ増加10%"
+            "name": "無の境地",
+            "desc": "無属性攻撃ダメージ増加10%"
         },
         "ElementBoost_Fire_1_PAL": {
-            "name": "火游び好き",
+            "name": "火遊び好き",
             "desc": "炎属性攻撃ダメージ増加10%"
         },
         "ElementBoost_Aqua_1_PAL": {
-            "name": "水游び好き",
+            "name": "水遊び好き",
             "desc": "水属性攻撃ダメージ増加10%"
         },
         "ElementBoost_Thunder_1_PAL": {
@@ -969,8 +997,8 @@
             "desc": "地属性攻撃ダメージ増加10%"
         },
         "ElementBoost_Dark_1_PAL": {
-            "name": "夜の帐",
-            "desc": "暗属性攻撃ダメージ増加10%"
+            "name": "夜の帳",
+            "desc": "闇属性攻撃ダメージ増加10%"
         },
         "ElementBoost_Dragon_1_PAL": {
             "name": "竜の血族",
@@ -978,15 +1006,15 @@
         },
         "PAL_FullStomach_Down_1": {
             "name": "小食",
-            "desc": "満腹度が减りにくい，+10.0%"
+            "desc": "満腹度が減りにくい +10.0%   "
         },
         "PAL_Sanity_Down_1": {
             "name": "ポジティブ思考",
-            "desc": "SAN値が减りにくい，+10.0%"
+            "desc": "SAN値が減りにくい +10.0%"
         },
         "MoveSpeed_up_1": {
             "name": "すばしこい",
-            "desc": "移動速度上升10%"
+            "desc": "移動速度上昇10%"
         },
         "Nocturnal": {
             "name": "夜行性",
@@ -997,16 +1025,20 @@
             "desc": "アクティブスキルのクールタイム短缩15%"
         },
         "Stamina_Up_2": {
-            "name": "健康优良児",
-            "desc": "最大スタミナ+25%，※ライド可能なパルのみ有効"
+            "name": "健康優良児",
+            "desc": "最大スタミナ+25% ※ライド可能なパルのみ有効"
         },
         "SalePrice_Up_2": {
-            "name": "良い毛并み",
+            "name": "良い毛並み",
             "desc": "取引価格が改善+3%"
         },
         "Alien": {
-            "name": "未知の生体细胞",
-            "desc": "攻撃+10%，炎属性ダメージ軽减15%，雷属性ダメージ軽减15%"
+            "name": "未知の生体細胞",
+            "desc": "攻撃+10%、炎属性ダメージ軽减15%、雷属性ダメージ軽减15%"
+        },
+        "SwimSpeed_up_1": {
+            "name": "しなやかスイム",
+            "desc": "水上の移動速度上昇30%"
         },
         "CraftSpeed_down1": {
             "name": "不器用",
@@ -1014,7 +1046,7 @@
         },
         "Deffence_down1": {
             "name": "うたれ弱い",
-            "desc": "防衛 -10% (ToSelf)"
+            "desc": "防御 -10% (ToSelf)"
         },
         "PAL_ALLAttack_down1": {
             "name": "ビビり",
@@ -1022,35 +1054,35 @@
         },
         "PAL_FullStomach_Up_1": {
             "name": "食いしんぼ",
-            "desc": "満腹度が减りやすい，+10.0%"
+            "desc": "満腹度が减りやすい +10.0%"
         },
         "PAL_Sanity_Up_1": {
             "name": "精神が不安定",
-            "desc": "SAN値が减りやすい，+10.0%"
+            "desc": "SAN値が减りやすい +10.0%"
         },
         "NonKilling": {
-            "name": "手加减",
-            "desc": "平和主义者。，攻撃対象のHPを1未満にできない。"
+            "name": "手加減",
+            "desc": "平和主義者。攻撃対象のHPを1未満にできない。"
         },
         "CoolTimeReduction_Down_1": {
             "name": "のんびり屋さん",
-            "desc": "アクティブスキルのクールタイム延长-15%"
+            "desc": "アクティブスキルのクールタイム延長-15%"
         },
         "Stamina_Down_1": {
             "name": "引きこもり",
-            "desc": "最大スタミナ-25%，※ライド可能なパルのみ有効"
+            "desc": "最大スタミナ-25% ※ライド可能なパルのみ有効"
         },
         "SalePrice_Down_1": {
             "name": "みすぼらしい",
             "desc": "取引価格が悪化-10%"
         },
         "PAL_FullStomach_Up_2": {
-            "name": "无限の胃袋",
-            "desc": "満腹度が减りやすい，+15.0%"
+            "name": "無限の胃袋",
+            "desc": "満腹度が減りやすい +15.0%"
         },
         "PAL_Sanity_Up_2": {
-            "name": "破灭愿望",
-            "desc": "SAN値が减りやすい，+15.0%"
+            "name": "破滅願望",
+            "desc": "SAN値が减りやすい +15.0%"
         },
         "CraftSpeed_down2": {
             "name": "サボり癖",
@@ -1058,10 +1090,10 @@
         },
         "Deffence_down2": {
             "name": "すぐ骨折する",
-            "desc": "防衛 -20% (ToSelf)"
+            "desc": "防御 -20% (ToSelf)"
         },
         "PAL_ALLAttack_down2": {
-            "name": "ことなかれ主义者",
+            "name": "ことなかれ主義者",
             "desc": "攻撃 -20% (ToSelf)"
         }
     }
