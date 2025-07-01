@@ -89,7 +89,7 @@ RUN if [ ! -z "$proxy" ]; then \
     fi
 
 # --------- runtime -----------
-FROM alpine as runtime
+FROM frolvlad/alpine-glibc as runtime
 
 WORKDIR /app
 
