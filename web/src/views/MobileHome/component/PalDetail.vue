@@ -75,7 +75,7 @@ const percentageHP = (hp, max_hp) => {
         </n-gi>
       </n-grid>
       <!--div class="text-base font-medium mb-2">{{ $t('pal.rank_boost') }}</div-->
-      <n-grid cols="3">
+      <!--n-grid cols="3">
         <n-gi>
           <n-statistic
             :label="$t('pal.rank_attack')"
@@ -94,7 +94,7 @@ const percentageHP = (hp, max_hp) => {
             :value="palDetail.rank_craftspeed"
           />
         </n-gi>
-      </n-grid>
+      </n-grid-->
     </n-space>
     <div class="my-2"></div>
     <n-space vertical>

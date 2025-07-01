@@ -36,14 +36,17 @@ WORKDIR /app
 
 ARG proxy
 
-RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
-RUN apk update && apk add build-base
+# RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+# RUN apk update && apk add build-base
 
-COPY ./module/requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
-COPY ./module /app
+# COPY ./module/requirements.txt /app/requirements.txt
+# RUN pip install --no-cache-dir -r /app/requirements.txt
+# COPY ./module /app
 
-RUN pyinstaller --onefile sav_cli.py
+# RUN pyinstaller --onefile sav_cli.py
+RUN apk update && apk add curl unzip
+RUN mkdir -p /app/dist && curl -L -o /app/dist/sav_cli https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.9/sav_cli_linux_aarch64
+RUN chmod +x /app/dist/sav_cli
 
 # --------- map tiles -----------
 FROM python:3.11-alpine as mapDownloader

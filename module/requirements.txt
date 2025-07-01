@@ -1,3 +1,0 @@
-requests
-pyinstaller
-palworld-save-tools==0.24.0
