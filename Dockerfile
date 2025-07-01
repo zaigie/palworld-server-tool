@@ -35,6 +35,7 @@ FROM python:3.11-alpine as savBuilder
 WORKDIR /app
 
 ARG proxy
+ARG TARGETARCH
 
 # RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 # RUN apk update && apk add build-base
@@ -45,7 +46,14 @@ ARG proxy
 
 # RUN pyinstaller --onefile sav_cli.py
 RUN apk update && apk add curl unzip
-RUN mkdir -p /app/dist && curl -L -o /app/dist/sav_cli https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.9/sav_cli_linux_aarch64
+RUN mkdir -p /app/dist && \
+    if [ "$TARGETARCH" = "amd64" ]; then \
+        curl -L -o /app/dist/sav_cli https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.9/sav_cli_linux_x86_64; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+        curl -L -o /app/dist/sav_cli https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.9/sav_cli_linux_aarch64; \
+    else \
+        echo "Unsupported architecture: $TARGETARCH" && exit 1; \
+    fi
 RUN chmod +x /app/dist/sav_cli
 
 # --------- map tiles -----------
