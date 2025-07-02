@@ -658,6 +658,7 @@ const createPlayerItemsColumns = () => {
                   clearable
                   :placeholder="$t('input.searchPlaceholder')"
                   :on-clear="clearSearch"
+                  @keydown.enter="clickSearch"
                 />
                 <n-button type="primary" class="w-20" @click="clickSearch">
                   {{ $t("button.search") }}
