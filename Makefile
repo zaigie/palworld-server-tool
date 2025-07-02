@@ -11,9 +11,6 @@ else
     ifeq ($(UNAME_S),Linux)
         EXT :=
     endif
-    ifeq ($(UNAME_S),Darwin)
-        EXT :=
-    endif
 endif
 
 .PHONY: init
@@ -68,30 +65,26 @@ build-pub:
 	mv pal-conf/dist/assets/* assets/
 	mv pal-conf/dist/index.html ./pal-conf.html
 
-	mkdir -p dist/windows_x86_64 && mkdir -p dist/linux_x86_64 && mkdir -p dist/linux_aarch64 && mkdir -p dist/darwin_arm64
+	mkdir -p dist/windows_x86_64 && mkdir -p dist/linux_x86_64 && mkdir -p dist/linux_aarch64
 	GOOS=windows GOARCH=386 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/windows_x86_64/pst.exe main.go
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/linux_x86_64/pst main.go
 	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/linux_aarch64/pst main.go
-	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/darwin_arm64/pst main.go
 
 	GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_windows_x86_64.exe ./cmd/pst-agent/main.go
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_linux_x86_64 ./cmd/pst-agent/main.go
 	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_linux_aarch64 ./cmd/pst-agent/main.go
-	GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_darwin_arm64 ./cmd/pst-agent/main.go
 
 	cp module/dist/sav_cli_windows_x86_64.exe dist/windows_x86_64/sav_cli.exe
 	cp module/dist/sav_cli_linux_x86_64 dist/linux_x86_64/sav_cli
 	cp module/dist/sav_cli_linux_aarch64 dist/linux_aarch64/sav_cli
-	cp module/dist/sav_cli_darwin_arm64 dist/darwin_arm64/sav_cli
 
 	cp example/config.yaml dist/windows_x86_64/config.yaml
 	cp example/config.yaml dist/linux_x86_64/config.yaml
 	cp example/config.yaml dist/linux_aarch64/config.yaml
-	cp example/config.yaml dist/darwin_arm64/config.yaml
 
 	cp script/start.bat dist/windows_x86_64/start.bat
 
-	cd dist && zip -p -r ${PREFIX}_windows_x86_64.zip windows_x86_64/* && tar -czf ${PREFIX}_linux_x86_64.tar.gz linux_x86_64/* && tar -czf ${PREFIX}_linux_aarch64.tar.gz linux_aarch64/* && tar -czf ${PREFIX}_darwin_arm64.tar.gz darwin_arm64/* && cd ..
+	cd dist && zip -p -r ${PREFIX}_windows_x86_64.zip windows_x86_64/* && tar -czf ${PREFIX}_linux_x86_64.tar.gz linux_x86_64/* && tar -czf ${PREFIX}_linux_aarch64.tar.gz linux_aarch64/* && cd ..
 # show help
 help:
 	@echo ''
