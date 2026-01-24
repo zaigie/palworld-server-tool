@@ -1,0 +1,18 @@
+reloadcfg,重新加载Config.json whitelist.json banlist.txt
+pgbroadcast,服务器广播
+kick,将玩家踢出服务器,{steamUserId}
+ban,将玩家踢出服务器并封禁,{steamUserId}
+ipban,封禁玩家IP地址,{steamUserId}
+getip,获取玩家IP地址,{steamUserId}
+banip,封禁IP地址,{ip}
+unbanip,删除已封禁IP,{ip}
+addadminip,将ip添加到管理员白名单,{ip}
+setadmin,临时授予/撤销玩家的管理员权限,{steamUserId}
+setguildleader,使目标玩家成为其当前公会的会长,{steamUserId}
+give,给予玩家物品,{steamUserId} {itemId} {数量}
+give_exp,给予玩家经验,{steamUserId} {数量}
+give_relic,给予玩家翠叶鼠雕像,{steamUserId} {数量}
+givepal,给予玩家帕鲁,{steamUserId} {palId} {等级}
+giveegg,给予玩家一个有指定帕鲁的指定蛋,{steamUserId} {帕鲁蛋ID} {palId} {等级}
+givetechpoints,给予玩家科技点数,{steamUserId} {数量}
+givebosstechpoints,给予玩家古代科技点数,{steamUserId} {数量}

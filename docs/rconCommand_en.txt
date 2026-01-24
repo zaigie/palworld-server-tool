@@ -1,0 +1,18 @@
+reloadcfg,Reloads Config.json whitelist.json and banlist.txt
+pgbroadcast,Send a message to all players in the server
+kick,Kicks a player from the server,{steamUserId}
+ban,Bans and kicks a player from the server,{steamUserId}
+ipban,Bans a player's IP address and then kicks them from the server,{steamUserId}
+getip, Shows the IP address of a player,{steamUserId}
+banip,Bans an IP address from the server,{ip}
+unbanip,Removes an IP address from the banlist,{ip}
+addadminip,Adds an IP address to admin whitelist,{ip}
+setadmin,Temporarily grants/revokes admin from a player,{steamUserId}
+setguildleader,Makes target player the leader of his current guild,{steamUserId}
+give,Gives a player an item,{steamUserId} {itemId} {amount}
+give_exp,Gives experience points to a player,{steamUserId} {amount}
+give_relic,Gives the player one or more Lifmunk Effigies,{steamUserId} {amount}
+givepal,Gives a Pal to a player at the specified level,{steamUserId} {palId} {level}
+giveegg,Gives target user a pal egg with the specific pal,{steamUserId} {EggId} {palId} {level}
+givetechpoints, Gives the target user X technology points,{steamUserId} {amount}
+givebosstechpoints,Gives the target user X ancient technology points,{steamUserId} {amount}
