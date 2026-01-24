@@ -314,6 +314,38 @@ const removeRconCommand = async (uuid) => {
     }
   }
 };
+const fillRconCommand = (rconCommand) => {
+  let cmd = rconCommand.placeholder;
+  // {steamUserId}
+  if (cmd.includes("{steamUserId}")) {
+    if (!rconSelectedPlayer.value) {
+      message.warning(t("message.selectPlayerFirst"));
+      return;
+    }
+    cmd = cmd.replaceAll(
+        "{steamUserId}",
+        "steam_"+rconSelectedPlayer.value.split("-")[1]
+    );
+  }
+  // {itemId}
+  if (cmd.includes("{itemId}")) {
+    if (!rconSelectedItem.value) {
+      message.warning(t("message.selectItemFirst"));
+      return;
+    }
+    cmd = cmd.replaceAll("{itemId}", rconSelectedItem.value);
+  }
+  // {palId}
+  if (cmd.includes("{palId}")) {
+    if (!rconSelectedPal.value) {
+      message.warning(t("message.selectPalFirst"));
+      return;
+    }
+    cmd = cmd.replaceAll("{palId}", rconSelectedPal.value);
+  }
+  // ⭐ 最终写回原来的输入框
+  rconCommandsExtra.value[rconCommand.uuid] = cmd;
+};
 
 // 控制中心（下拉菜单）
 // 包含：白名单管理、RCON 命令、游戏内广播、关闭服务器
@@ -1328,6 +1360,14 @@ onMounted(async () => {
                 }}</n-text>
               </template>
             </n-input>
+            <n-button
+                type="info"
+                ghost
+                round
+                @click="fillRconCommand(rconCommand)"
+            >
+              {{ $t("button.fill") }}
+            </n-button>
             <n-button
               type="primary"
               ghost
