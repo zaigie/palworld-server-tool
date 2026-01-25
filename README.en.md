@@ -69,7 +69,7 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/49abcd34-0752-487
 
 ## Enable REST API and RCON
 
-In this project, the REST API function of the server must be enabled for normal use, and the custom RCON function depends on the RCON function.
+In this project, the REST API function of the server must be enabled for normal use, and the custom RCON function depends on the RCON function.[RCON Command Reference](./docs/rconCommand_en.txt)
 
 If your private service tutorial is better written, if not, please close the server first, then modify the `PalWorldSettings.ini` file or `WorldOption.sav` file at [Pal-Conf](https://pal-conf.bluefissure.com/) and place it in the appropriate location to enable the server.
 

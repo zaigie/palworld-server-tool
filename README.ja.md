@@ -69,7 +69,7 @@ https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491
 
 ## REST API と RCON を有効にします
 
-このプロジェクトでは、サーバーの REST API 機能を通常の使用のために有効にする必要があり、カスタム RCON 機能は RCON 関数に依存します。
+このプロジェクトでは、サーバーの REST API 機能を通常の使用のために有効にする必要があり、カスタム RCON 機能は RCON 関数に依存します。[RCON コマンド一覧](./docs/rconCommand_ja.txt)
 
 マニュアルがある方が良いですが、ない場合は、最初にサービス側を閉じて、 [Pal-Conf](https://pal-conf.bluefissure.com/) `PalWorldSettings.ini` ファイルや`WorldOption.sav` ファイルをパルコンフで修正して、サービス側を有効にします。
 

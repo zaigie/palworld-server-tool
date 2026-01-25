@@ -1,0 +1,18 @@
+reloadcfg,Config.json whitelist.json banlist.txt を再読み込みします
+pgbroadcast,サーバー内の全プレイヤーにメッセージを送信します
+kick,プレイヤーをサーバーからキックします,{steamUserId}
+ban,プレイヤーをBANしてサーバーから追放します,{steamUserId}
+ipban,プレイヤーのIPアドレスをBANし、サーバーから追放します,{steamUserId}
+getip,プレイヤーのIPアドレスを表示します,{steamUserId}
+banip,指定したIPアドレスをサーバーからBANします,{ip}
+unbanip,BANリストからIPアドレスを削除します,{ip}
+addadminip,管理者ホワイトリストにIPアドレスを追加します,{ip}
+setadmin,プレイヤーに一時的に管理者権限を付与／解除します,{steamUserId}
+setguildleader,対象プレイヤーを現在のギルドのリーダーに設定します,{steamUserId}
+give,プレイヤーにアイテムを付与します,{steamUserId} {itemId} {amount}
+give_exp,プレイヤーに経験値を付与します,{steamUserId} {amount}
+give_relic,プレイヤーにリーフマンクの像を付与します,{steamUserId} {amount}
+givepal,指定したレベルのパルをプレイヤーに付与します,{steamUserId} {palId} {level}
+giveegg,指定したパルのタマゴをプレイヤーに付与します,{steamUserId} {EggId} {palId} {level}
+givetechpoints,プレイヤーにテクノロジーポイントを付与します,{steamUserId} {amount}
+givebosstechpoints,プレイヤーに古代テクノロジーポイントを付与します,{steamUserId} {amount}
