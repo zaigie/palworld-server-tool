@@ -60,6 +60,10 @@
             "name": "King of the Waves",
             "desc": "50% increase movement speed on water."
         },
+        "Salvation": {
+            "name": "Savior",
+            "desc": "30% increase in Neutral attack damage. 30% increase in Grass attack damage."
+        },
         "CraftSpeed_up2": {
             "name": "Artisan",
             "desc": "Work Speed +50% (ToSelf)"
@@ -426,6 +430,10 @@
             "name": "破浪王者",
             "desc": "水上移动速度提升50%"
         },
+        "Salvation": {
+            "name": "救世主",
+            "desc": "无属性攻击伤害增加30%，草属性攻击伤害增加30%"
+        },
         "CraftSpeed_up2": {
             "name": "工匠精神",
             "desc": "工作速度+50% (对帕鲁生效)"
@@ -791,6 +799,10 @@
         "SwimSpeed_up_3": {
             "name": "波乗り王",
             "desc": "水上の移動速度上昇50%"
+        },
+        "Salvation": {
+            "name": "救世主",
+            "desc": "無属性攻撃ダメージ増加30%、草属性攻撃ダメージ増加30%"
         },
         "CraftSpeed_up2": {
             "name": "職人気質",
