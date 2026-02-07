@@ -28,6 +28,14 @@ const playerList = ref([]);
 const playerInfo = ref(null);
 const playerPalsList = ref([]);
 const skillTypeList = ref([]);
+// 平台标记颜色
+const platformColors = {
+  steam: { color: '#223D58', textColor: '#fff' },   // 青底白字
+  xbox:  { color: '#2B8B2B', textColor: '#fff' },   // 绿底白字
+  ps5:   { color: '#00439C', textColor: '#fff' },   // 蓝底白字
+  mac:   { color: '#999999', textColor: '#fff' },   // 灰底白字
+  default: { color: '#d9c36c', textColor: '#fff' }  // 其他平台
+}
 
 // 获取玩家列表
 const getPlayerList = async () => {
@@ -118,6 +126,11 @@ const getSkillTypeList = () => {
 const isPlayerOnline = (last_online) => {
   return dayjs() - dayjs(last_online) < 80000;
 };
+const getPlatformColor = (userId) => {
+  if (!userId) return platformColors.default;
+  const platform = userId.split('_')[0];
+  return platformColors[platform] || platformColors.default;
+}
 const displayLastOnline = (last_online) => {
   if (dayjs(last_online).year() < 1970) {
     return "Unknown";
@@ -177,9 +190,20 @@ const displayLastOnline = (last_online) => {
                 >
                   {{ $t("status.whitelist") }}
                 </n-tag>
-                <span class="flex-1 pl-2 font-bold line-clamp-1">{{
-                  player.nickname
-                }}</span>
+                <span class="flex-1 pl-2 font-bold line-clamp-1">
+                  {{ player.nickname }}
+                  <n-tag
+                      v-if="player.user_id"
+                      class=""
+                      style="line-height: 22px;"
+                      :bordered="false"
+                      round
+                      size="small"
+                      :color="getPlatformColor(player.user_id)"
+                  >
+                  {{ player.user_id.split("_")[0] }}
+                </n-tag>
+                </span>
               </div>
               <n-tag :bordered="false" round size="small" class="mt-2">
                 {{ $t("status.last_online") }}:

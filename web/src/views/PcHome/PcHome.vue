@@ -162,7 +162,7 @@ const getPlayerList = async () => {
   rconPlayerOptions.value = data.value.map((item) => {
     return {
       label: `${item.nickname}(${item.player_uid})`,
-      value: `${item.player_uid}-${item.steam_id}`,
+      value: `${item.player_uid}-${item.user_id}-${item.steam_id}`,
     };
   });
 };
@@ -316,34 +316,39 @@ const removeRconCommand = async (uuid) => {
 };
 const fillRconCommand = (rconCommand) => {
   let cmd = rconCommand.placeholder;
-  // {steamUserId}
-  if (cmd.includes("{steamUserId}")) {
+  // {steamUserID}，大小写不敏感
+  if (/{steamUserID}/i.test(cmd)) {
     if (!rconSelectedPlayer.value) {
       message.warning(t("message.selectPlayerFirst"));
       return;
     }
-    cmd = cmd.replaceAll(
-        "{steamUserId}",
-        "steam_"+rconSelectedPlayer.value.split("-")[1]
-    );
+    cmd = cmd.replace(/{steamUserID}/gi, "steam_" + rconSelectedPlayer.value.split("-")[2]);
   }
-  // {itemId}
-  if (cmd.includes("{itemId}")) {
+  // {userID}，大小写不敏感
+  if (/{userID}/i.test(cmd)) {
+    if (!rconSelectedPlayer.value) {
+      message.warning(t("message.selectPlayerFirst"));
+      return;
+    }
+    cmd = cmd.replace(/{userID}/gi, rconSelectedPlayer.value.split("-")[1]);
+  }
+  // {itemID}，大小写不敏感
+  if (/{itemID}/i.test(cmd)) {
     if (!rconSelectedItem.value) {
       message.warning(t("message.selectItemFirst"));
       return;
     }
-    cmd = cmd.replaceAll("{itemId}", rconSelectedItem.value);
+    cmd = cmd.replace(/{itemID}/gi, rconSelectedItem.value);
   }
-  // {palId}
-  if (cmd.includes("{palId}")) {
+  // {palID}，大小写不敏感
+  if (/{palID}/i.test(cmd)) {
     if (!rconSelectedPal.value) {
       message.warning(t("message.selectPalFirst"));
       return;
     }
-    cmd = cmd.replaceAll("{palId}", rconSelectedPal.value);
+    cmd = cmd.replace(/{palID}/gi, rconSelectedPal.value);
   }
-  // ⭐ 最终写回原来的输入框
+  // 最终写回原来的输入框
   rconCommandsExtra.value[rconCommand.uuid] = cmd;
 };
 
@@ -1292,10 +1297,10 @@ onMounted(async () => {
         </n-button> -->
       </div>
       <div class="flex w-full items-center mt-3 justify-between">
-        <n-text
-          >PlayerID: {{ rconSelectedPlayer?.split("-")[0] || "-" }}</n-text
-        >
-        <n-text>Steam64: {{ rconSelectedPlayer?.split("-")[1] || "-" }}</n-text>
+        <n-text>
+          PlayerID: {{ rconSelectedPlayer?.split("-")[0] || "-" }}
+        </n-text>
+        <n-text>UserID: {{ rconSelectedPlayer?.split("-")[1] || "-" }}</n-text>
       </div>
 
       <div class="flex w-full items-center mt-3">
@@ -1316,7 +1321,7 @@ onMounted(async () => {
         </n-button> -->
       </div>
       <div class="flex w-full items-center mt-3 justify-between">
-        <n-text>ID: {{ rconSelectedItem || "-" }}</n-text>
+        <n-text>ItemID: {{ rconSelectedItem || "-" }}</n-text>
       </div>
 
       <div class="flex w-full items-center mt-3">
@@ -1337,7 +1342,7 @@ onMounted(async () => {
         </n-button> -->
       </div>
       <div class="flex w-full items-center mt-3 justify-between">
-        <n-text>ID: {{ rconSelectedPal || "-" }}</n-text>
+        <n-text>PalID: {{ rconSelectedPal || "-" }}</n-text>
       </div>
       <n-empty class="mt-3" v-if="rconCommands.length == 0"> </n-empty>
       <n-collapse class="mt-3">

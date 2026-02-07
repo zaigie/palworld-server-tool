@@ -12,12 +12,12 @@ import (
 )
 
 var SecretKey = []byte(viper.GetString("web.password"))
+var prefixBearer = "Bearer "
+var prefixJWT = "JWT "
 
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
-		prefixBearer := "Bearer "
-		prefixJWT := "JWT "
 
 		var tokenString string
 		if strings.HasPrefix(authHeader, prefixBearer) {
@@ -48,6 +48,37 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		c.Next()
+	}
+}
+
+func OptionalJWTMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 默认未登录
+		c.Set("loggedIn", false)
+		// 捕获可能的 panic，防止中间件崩掉
+		defer func() {
+			if r := recover(); r != nil {
+				// panic 也当未登录
+				c.Set("loggedIn", false)
+			}
+		}()
+		authHeader := c.GetHeader("Authorization")
+		if authHeader != "" {
+			var tokenString string
+			if strings.HasPrefix(authHeader, prefixBearer) {
+				tokenString = strings.TrimPrefix(authHeader, prefixBearer)
+			} else if strings.HasPrefix(authHeader, prefixJWT) {
+				tokenString = strings.TrimPrefix(authHeader, prefixJWT)
+			}
+			token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+				return SecretKey, nil
+			})
+			if claims, ok := token.Claims.(jwt.MapClaims); ok && err == nil && token.Valid {
+				c.Set("claims", claims)
+				c.Set("loggedIn", true)
+			}
+		}
 		c.Next()
 	}
 }

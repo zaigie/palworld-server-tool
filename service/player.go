@@ -85,8 +85,10 @@ func PutPlayersOnline(db *bbolt.DB, players []database.OnlinePlayer) error {
 			if existingPlayerData == nil {
 				// player online but not in database
 				player.PlayerUid = p.PlayerUid
+				player.UserId = p.UserId
 				player.SteamId = p.SteamId
 				player.Nickname = p.Nickname
+				player.AccountName = p.AccountName
 			} else {
 				if err := json.Unmarshal(existingPlayerData, &player); err != nil {
 					return err
@@ -94,12 +96,21 @@ func PutPlayersOnline(db *bbolt.DB, players []database.OnlinePlayer) error {
 				if player.SteamId == "" || strings.Contains(player.SteamId, "000000") {
 					player.SteamId = p.SteamId
 				}
+				// UserId 补充
+				if player.UserId == "" {
+					player.UserId = p.UserId
+				}
+				// AccountName 补充
+				if player.AccountName == "" {
+					player.AccountName = p.AccountName
+				}
 			}
 			player.Ip = p.Ip
 			player.Ping = p.Ping
 			player.LocationX = p.LocationX
 			player.LocationY = p.LocationY
 			player.Level = p.Level
+			player.BuildingCount = p.BuildingCount
 			player.LastOnline = time.Now()
 
 			v, err := json.Marshal(player)
