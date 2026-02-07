@@ -105,14 +105,16 @@ func Metrics() (map[string]interface{}, error) {
 }
 
 type ResponsePlayer struct {
-	Name      string  `json:"name"`
-	PlayerId  string  `json:"playerId"`
-	UserId    string  `json:"userId"`
-	Ip        string  `json:"ip"`
-	Ping      float64 `json:"ping"`
-	LocationX float64 `json:"location_x"`
-	LocationY float64 `json:"location_y"`
-	Level     int     `json:"level"`
+	Name          string  `json:"name"`
+	AccountName   string  `json:"accountName"`
+	PlayerId      string  `json:"playerId"`
+	UserId        string  `json:"userId"`
+	Ip            string  `json:"ip"`
+	Ping          float64 `json:"ping"`
+	LocationX     float64 `json:"location_x"`
+	LocationY     float64 `json:"location_y"`
+	Level         int     `json:"level"`
+	BuildingCount int     `json:"building_count"`
 }
 
 type ResponsePlayers struct {
@@ -132,15 +134,18 @@ func ShowPlayers() ([]database.OnlinePlayer, error) {
 	onlinePlayers := make([]database.OnlinePlayer, 0)
 	for _, player := range data.Players {
 		onlinePlayer := database.OnlinePlayer{
-			PlayerUid:  getPlayerUid(player.PlayerId),
-			SteamId:    getSteamId(player.UserId),
-			Nickname:   player.Name,
-			Ip:         player.Ip,
-			Ping:       player.Ping,
-			LocationX:  player.LocationX,
-			LocationY:  player.LocationY,
-			Level:      int32(player.Level),
-			LastOnline: time.Now(),
+			PlayerUid:     getPlayerUid(player.PlayerId),
+			UserId:        player.UserId,
+			AccountName:   player.AccountName,
+			SteamId:       getSteamId(player.UserId),
+			Nickname:      player.Name,
+			Ip:            player.Ip,
+			Ping:          player.Ping,
+			LocationX:     player.LocationX,
+			LocationY:     player.LocationY,
+			Level:         int32(player.Level),
+			BuildingCount: int32(player.BuildingCount),
+			LastOnline:    time.Now(),
 		}
 		onlinePlayers = append(onlinePlayers, onlinePlayer)
 	}
