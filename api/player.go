@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"sort"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zaigie/palworld-server-tool/internal/database"
@@ -90,6 +91,17 @@ func listPlayers(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	//未登录隐藏字段
+	if !c.GetBool("loggedIn") {
+		for i := range players {
+			players[i].Ip = ""
+			if players[i].UserId != "" {
+				players[i].UserId = strings.Split(players[i].UserId, "_")[0] + "_"
+			}
+			players[i].SteamId = ""
+		}
+	}
+	//排序
 	if orderBy == "level" {
 		sort.Slice(players, func(i, j int) bool {
 			if desc == "true" {
@@ -132,6 +144,12 @@ func getPlayer(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+	//未登录隐藏字段
+	if !c.GetBool("loggedIn") {
+		player.Ip = ""
+		player.UserId = ""
+		player.SteamId = ""
 	}
 	c.JSON(http.StatusOK, player)
 }
