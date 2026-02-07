@@ -67,11 +67,16 @@ func RegisterRouter(r *gin.Engine) {
 		anonymousGroup.GET("/server", getServer)
 		anonymousGroup.GET("/server/tool", getServerTool)
 		anonymousGroup.GET("/server/metrics", getServerMetrics)
-		anonymousGroup.GET("/player", listPlayers)
-		anonymousGroup.GET("/player/:player_uid", getPlayer)
 		anonymousGroup.GET("/online_player", listOnlinePlayers)
 		anonymousGroup.GET("/guild", listGuilds)
 		anonymousGroup.GET("/guild/:admin_player_uid", getGuild)
+	}
+	// 根据登录状态返回不同结果
+	OptionalGroup := apiGroup.Group("")
+	OptionalGroup.Use(auth.OptionalJWTMiddleware())
+	{
+		OptionalGroup.GET("/player", listPlayers)
+		OptionalGroup.GET("/player/:player_uid", getPlayer)
 	}
 
 	authGroup := apiGroup.Group("")
