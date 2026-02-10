@@ -11,6 +11,14 @@ const messages = {
       rcon: "Customize RCON",
       backup: "Backup File",
     },
+    status_point: {
+      "作業速度": "Work Speed",
+      "所持重量": "Carrying Weight",
+      "捕獲率": "Capture Rate",
+      "攻撃力": "Attack Power",
+      "最大HP": "Max HP",
+      "最大SP": "Max SP"
+    },
     status: {
       online: "Online",
       offline: "Offline",
@@ -112,6 +120,7 @@ const messages = {
       copyitem: "Copy Item ID",
       copypal: "Copy Pal ID",
       map: "Map",
+      config: "Configuration",
     },
     pal: {
       type: "Type",
@@ -165,6 +174,18 @@ const messages = {
       showPlayer: "Show online player",
       showBaseCamp: "Show basecamp",
     },
+    config: {
+      title: "Server Configuration",
+      loadError: "Failed to load configuration",
+      saveError: "Failed to save configuration",
+      saveSuccess: "Configuration saved successfully",
+      confirmSave: "Save Configuration",
+      saveWarning: "Are you sure you want to save these changes? This will restart the server for changes to take effect.",
+      noChanges: "No changes to save",
+      invalidFormat: "Invalid configuration format",
+      parseError: "Error parsing configuration",
+      invalidResponse: "Invalid response from server",
+    },
   },
   zh: {
     title: "幻兽帕鲁服务器工具",
@@ -175,6 +196,14 @@ const messages = {
       addWhitelist: "添加白名单",
       rcon: "自定义RCON命令",
       backup: "备份存档管理",
+    },
+    status_point: {
+      "作業速度": "工作速度",
+      "所持重量": "负重",
+      "捕獲率": "捕获率",
+      "攻撃力": "攻击强度",
+      "最大HP": "最大HP",
+      "最大SP": "最大SP"
     },
     status: {
       online: "在线",
@@ -276,6 +305,7 @@ const messages = {
       copyitem: "复制物品ID",
       copypal: "复制帕鲁ID",
       map: "地图",
+      config: "配置",
     },
     pal: {
       type: "类型",
@@ -329,6 +359,18 @@ const messages = {
       showPlayer: "显示在线玩家",
       showBaseCamp: "显示据点",
     },
+    config: {
+      title: "服务器配置",
+      loadError: "加载配置失败",
+      saveError: "保存配置失败",
+      saveSuccess: "配置保存成功",
+      confirmSave: "保存配置",
+      saveWarning: "您确定要保存这些更改吗？这将重新启动服务器以使更改生效。",
+      noChanges: "没有要保存的更改",
+      invalidFormat: "配置格式无效",
+      parseError: "解析配置时出错",
+      invalidResponse: "服务器响应无效",
+    },
   },
   ja: {
     title: "パルワールドサーバーツール",
@@ -339,6 +381,14 @@ const messages = {
       addWhitelist: "ホワイトリストに追加",
       rcon: "カスタムRCONです",
       backup: "バックアップファイル",
+    },
+    status_point: {
+      "作業速度": "作業速度",
+      "所持重量": "所持重量",
+      "捕獲率": "捕獲率",
+      "攻撃力": "攻撃力",
+      "最大HP": "最大HP",
+      "最大SP": "最大SP"
     },
     status: {
       online: "オンライン",
@@ -439,6 +489,7 @@ const messages = {
       copyitem: "アイテムIDをコピー",
       copypal: "パルIDをコピー",
       map: "地図",
+      config: "構成",
     },
     item: {
       palList: "幻獣リスト",
@@ -491,6 +542,18 @@ const messages = {
       showBossTower: "Show boss tower",
       showPlayer: "Show online player",
       showBaseCamp: "Show basecamp",
+    },
+    config: {
+      title: "サーバー構成",
+      loadError: "構成の読み込みに失敗しました",
+      saveError: "構成の保存に失敗しました",
+      saveSuccess: "構成が正常に保存されました",
+      confirmSave: "構成を保存",
+      saveWarning: "これらの変更を保存してもよろしいですか？変更を有効にするにはサーバーが再起動します。",
+      noChanges: "保存する変更はありません",
+      invalidFormat: "無効な構成形式",
+      parseError: "構成の解析中にエラーが発生しました",
+      invalidResponse: "サーバーからの応答が無効です",
     },
   },
 };

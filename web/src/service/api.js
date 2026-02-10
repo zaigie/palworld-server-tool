@@ -110,6 +110,14 @@ class ApiService extends Service {
   async downloadBackup(uuid) {
     return this.fetch(`/api/backup/${uuid}`).get().blob();
   }
+  async getServerConfig() {
+    return this.fetch(`/api/server/config`).get().json();
+  }
+  
+  async saveServerConfig(param) {
+    let data = param;
+    return this.fetch(`/api/server/config`).post(data).json();
+  }
 }
 
 export default ApiService;
