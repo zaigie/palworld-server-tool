@@ -3,7 +3,7 @@ module github.com/zaigie/palworld-server-tool
 go 1.21.4
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/docker/docker v25.0.2+incompatible
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-co-op/gocron/v2 v2.2.1

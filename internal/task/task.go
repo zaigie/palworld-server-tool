@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/zaigie/palworld-server-tool/internal/auth"
 	"github.com/zaigie/palworld-server-tool/internal/database"
 	"github.com/zaigie/palworld-server-tool/internal/system"
 
@@ -158,6 +159,13 @@ func SavSync() {
 	logger.Info("Sav sync done\n")
 }
 
+func LoginGuardCleanup() {
+	logger.Info("Cleaning expired login guard IPs...\n")
+	// 保留 30 天内有活动的 IP
+	auth.DefaultLoginGuard.Cleanup(30 * 24 * time.Hour)
+	logger.Info("Login guard cleanup done\n")
+}
+
 func Schedule(db *bbolt.DB) {
 	s := getScheduler()
 
@@ -201,6 +209,15 @@ func Schedule(db *bbolt.DB) {
 	_, err := s.NewJob(
 		gocron.DurationJob(300*time.Second),
 		gocron.NewTask(system.LimitCacheDir, filepath.Join(os.TempDir(), "palworldsav-"), 5),
+	)
+	if err != nil {
+		logger.Errorf("%v\n", err)
+	}
+
+	// 每天清理一次登录防爆破 IP 记录
+	_, err = s.NewJob(
+		gocron.DurationJob(24*time.Hour),
+		gocron.NewTask(LoginGuardCleanup),
 	)
 	if err != nil {
 		logger.Errorf("%v\n", err)
