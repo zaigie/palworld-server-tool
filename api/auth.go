@@ -30,7 +30,7 @@ func loginHandler(c *gin.Context) {
 	// 获取客户端IP, 检查是否被封锁
 	clientIP := c.ClientIP()
 	if blocked, retry := auth.DefaultLoginGuard.IsBlocked(clientIP); blocked {
-		c.JSON(http.StatusTooManyRequests, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": fmt.Sprintf("Too many failed login attempts, try again in %d seconds.", int(retry.Seconds())),
 		})
 		return
