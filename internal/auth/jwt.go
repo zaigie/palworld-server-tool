@@ -56,13 +56,6 @@ func OptionalJWTMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 默认未登录
 		c.Set("loggedIn", false)
-		// 捕获可能的 panic，防止中间件崩掉
-		defer func() {
-			if r := recover(); r != nil {
-				// panic 也当未登录
-				c.Set("loggedIn", false)
-			}
-		}()
 		authHeader := c.GetHeader("Authorization")
 		if authHeader != "" {
 			var tokenString string
@@ -71,12 +64,16 @@ func OptionalJWTMiddleware() gin.HandlerFunc {
 			} else if strings.HasPrefix(authHeader, prefixJWT) {
 				tokenString = strings.TrimPrefix(authHeader, prefixJWT)
 			}
-			token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-				return SecretKey, nil
-			})
-			if claims, ok := token.Claims.(jwt.MapClaims); ok && err == nil && token.Valid {
-				c.Set("claims", claims)
-				c.Set("loggedIn", true)
+			if tokenString != "" {
+				token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+					return SecretKey, nil
+				})
+				if err == nil && token != nil {
+					if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+						c.Set("claims", claims)
+						c.Set("loggedIn", true)
+					}
+				}
 			}
 		}
 		c.Next()

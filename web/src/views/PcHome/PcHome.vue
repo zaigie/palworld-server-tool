@@ -162,7 +162,7 @@ const getPlayerList = async () => {
   rconPlayerOptions.value = data.value.map((item) => {
     return {
       label: `${item.nickname}(${item.player_uid})`,
-      value: `${item.player_uid}-${item.user_id}-${item.steam_id}`,
+      value: `${item.player_uid}|${item.user_id}|${item.steam_id}`,
     };
   });
 };
@@ -316,13 +316,14 @@ const removeRconCommand = async (uuid) => {
 };
 const fillRconCommand = (rconCommand) => {
   let cmd = rconCommand.placeholder;
+  const playerParts = rconSelectedPlayer.value ? rconSelectedPlayer.value.split("|") : [];
   // {steamUserID}，大小写不敏感
   if (/{steamUserID}/i.test(cmd)) {
     if (!rconSelectedPlayer.value) {
       message.warning(t("message.selectPlayerFirst"));
       return;
     }
-    cmd = cmd.replace(/{steamUserID}/gi, "steam_" + rconSelectedPlayer.value.split("-")[2]);
+    cmd = cmd.replace(/{steamUserID}/gi, "steam_" + playerParts[2]);
   }
   // {userID}，大小写不敏感
   if (/{userID}/i.test(cmd)) {
@@ -330,7 +331,7 @@ const fillRconCommand = (rconCommand) => {
       message.warning(t("message.selectPlayerFirst"));
       return;
     }
-    cmd = cmd.replace(/{userID}/gi, rconSelectedPlayer.value.split("-")[1]);
+    cmd = cmd.replace(/{userID}/gi, playerParts[1]);
   }
   // {itemID}，大小写不敏感
   if (/{itemID}/i.test(cmd)) {
@@ -1298,9 +1299,9 @@ onMounted(async () => {
       </div>
       <div class="flex w-full items-center mt-3 justify-between">
         <n-text>
-          PlayerID: {{ rconSelectedPlayer?.split("-")[0] || "-" }}
+          PlayerID: {{ rconSelectedPlayer?.split("|")[0] || "-" }}
         </n-text>
-        <n-text>UserID: {{ rconSelectedPlayer?.split("-")[1] || "-" }}</n-text>
+        <n-text>UserID: {{ rconSelectedPlayer?.split("|")[1] || "-" }}</n-text>
       </div>
 
       <div class="flex w-full items-center mt-3">

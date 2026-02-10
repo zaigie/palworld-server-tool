@@ -67,7 +67,6 @@ func RegisterRouter(r *gin.Engine) {
 		anonymousGroup.GET("/server", getServer)
 		anonymousGroup.GET("/server/tool", getServerTool)
 		anonymousGroup.GET("/server/metrics", getServerMetrics)
-		anonymousGroup.GET("/online_player", listOnlinePlayers)
 		anonymousGroup.GET("/guild", listGuilds)
 		anonymousGroup.GET("/guild/:admin_player_uid", getGuild)
 	}
@@ -75,6 +74,7 @@ func RegisterRouter(r *gin.Engine) {
 	OptionalGroup := apiGroup.Group("")
 	OptionalGroup.Use(auth.OptionalJWTMiddleware())
 	{
+		OptionalGroup.GET("/online_player", listOnlinePlayers)
 		OptionalGroup.GET("/player", listPlayers)
 		OptionalGroup.GET("/player/:player_uid", getPlayer)
 	}

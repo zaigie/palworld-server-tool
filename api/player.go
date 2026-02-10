@@ -19,6 +19,18 @@ const (
 	OrderByLevel      PlayerOrderBy = "level"
 )
 
+// getPlayerActionUserId 获取用于 kick/ban/unban 操作的 userId
+// 优先使用完整的 UserId（支持跨平台），兜底使用 steam_ + SteamId
+func getPlayerActionUserId(player database.Player) string {
+	if player.UserId != "" {
+		return player.UserId
+	}
+	if player.SteamId != "" {
+		return fmt.Sprintf("steam_%s", player.SteamId)
+	}
+	return ""
+}
+
 // listOnlinePlayers godoc
 //
 //	@Summary		List Online Players
@@ -37,6 +49,16 @@ func listOnlinePlayers(c *gin.Context) {
 		return
 	}
 	service.PutPlayersOnline(database.GetDB(), onlinePLayers)
+	// 未登录隐藏敏感字段
+	if !c.GetBool("loggedIn") {
+		for i := range onlinePLayers {
+			onlinePLayers[i].Ip = ""
+			if onlinePLayers[i].UserId != "" {
+				onlinePLayers[i].UserId = strings.Split(onlinePLayers[i].UserId, "_")[0] + "_"
+			}
+			onlinePLayers[i].SteamId = ""
+		}
+	}
 	c.JSON(http.StatusOK, onlinePLayers)
 }
 
@@ -148,7 +170,9 @@ func getPlayer(c *gin.Context) {
 	//未登录隐藏字段
 	if !c.GetBool("loggedIn") {
 		player.Ip = ""
-		player.UserId = ""
+		if player.UserId != "" {
+			player.UserId = strings.Split(player.UserId, "_")[0] + "_"
+		}
 		player.SteamId = ""
 	}
 	c.JSON(http.StatusOK, player)
@@ -180,7 +204,7 @@ func kickPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.KickPlayer(fmt.Sprintf("steam_%s", player.SteamId))
+	err = tool.KickPlayer(getPlayerActionUserId(player))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -214,7 +238,7 @@ func banPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.BanPlayer(fmt.Sprintf("steam_%s", player.SteamId))
+	err = tool.BanPlayer(getPlayerActionUserId(player))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -248,7 +272,7 @@ func unbanPlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = tool.UnBanPlayer(fmt.Sprintf("steam_%s", player.SteamId))
+	err = tool.UnBanPlayer(getPlayerActionUserId(player))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
