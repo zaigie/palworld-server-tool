@@ -8,7 +8,7 @@
 #
 # Build context is the repo root:
 #   docker build -t pst-oss:1.0 -f docker/Dockerfile.oss .
-ARG BASE_IMAGE=jokerwho/palworld-server-tool:latest
+ARG BASE_IMAGE=jokerwho/palworld-server-tool:latest@sha256:c7e2af7ea12cfe26879d7b586ad0fc1a7da0e4c65fc7ae01e743eb55408f476d
 FROM ${BASE_IMAGE} AS sav_cli_builder
 
 # Build the parser and its native Oodle module in an isolated stage so the
@@ -16,6 +16,7 @@ FROM ${BASE_IMAGE} AS sav_cli_builder
 RUN apk add --no-cache python3 py3-pip build-base python3-dev git
 RUN python3 -m venv /opt/sav-cli-venv
 ENV PATH="/opt/sav-cli-venv/bin:${PATH}"
+COPY docker/sav-cli-requirements.lock /tmp/sav-cli-requirements.lock
 
 # PalworldSaveTools commit validated end-to-end by Phase 1 (parses the real
 # v1.0.0.100427 save). Pinned for reproducible parsing; do not float to main.
@@ -25,10 +26,11 @@ RUN git clone https://github.com/deafdudecomputers/PalworldSaveTools.git /tmp/ps
 
 # Parser stack: palooz (native Oodle) first so it satisfies palsav-flex's
 # runtime dep, then orjson + requests, then palsav-flex itself.
-RUN pip install --no-cache-dir "setuptools>=68" \
-    && pip install --no-cache-dir /tmp/pst-tools/src/palsav/palooz \
-    && pip install --no-cache-dir orjson requests \
-    && pip install --no-cache-dir --no-build-isolation /tmp/pst-tools/src/palsav \
+RUN python -m pip install --no-cache-dir -r /tmp/sav-cli-requirements.lock \
+    && python -m pip install --no-cache-dir --no-build-isolation --no-deps \
+      /tmp/pst-tools/src/palsav/palooz \
+    && python -m pip install --no-cache-dir --no-build-isolation --no-deps \
+      /tmp/pst-tools/src/palsav \
     && rm -rf /tmp/pst-tools
 
 FROM ${BASE_IMAGE}
@@ -40,6 +42,7 @@ COPY --from=sav_cli_builder /opt/sav-cli-venv /opt/sav-cli-venv
 
 # The OSS parser (sav_cli.py + structurer/world_types/logger).
 COPY sav_cli_oss/ /app/sav_cli_oss/
+COPY docker/sav-cli-requirements.lock /app/sav_cli_oss/requirements.lock
 
 # Wrapper matching PST's exact invocation:
 #   sav_cli -f <levelFilePath> --request http://127.0.0.1:<port>/api/ --token <jwt>

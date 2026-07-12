@@ -1,0 +1,12 @@
+# Python packages installed into the sav_cli_oss runtime environment.
+# Update these versions deliberately, then run script/test_sav_cli_oss.py.
+pip==25.0.1
+setuptools==83.0.0
+wheel==0.47.0
+packaging==26.2
+certifi==2026.6.17
+charset-normalizer==3.4.9
+idna==3.18
+orjson==3.11.9
+requests==2.34.2
+urllib3==2.7.0

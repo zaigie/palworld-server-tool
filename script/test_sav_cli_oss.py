@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build and validate sav_cli_oss against the local Palworld 1.0 fixtures."""
 
+import argparse
 import json
 import subprocess
 from pathlib import Path
@@ -9,15 +10,33 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SAVS_DIR = ROOT / "savs"
 OUTPUT_DIR = SAVS_DIR / ".test-output"
-IMAGE = "pst-sav-cli-oss-test"
+IMAGE_PREFIX = "pst-sav-cli-oss-test"
+LOCK_FILE = ROOT / "docker" / "sav-cli-requirements.lock"
+PLATFORMS = ("linux/arm64", "linux/amd64")
 FIXTURES = (
     "2026.07.12-13.59.00",
     "2026.07.12-18.35.48",
 )
 BUILD_ONLY_PACKAGES = ("build-base", "git", "python3-dev")
+SOURCE_PACKAGES = {"palooz": "0.2.0", "palsav-flex": "0.2.0"}
 
 
-def validate_image() -> dict[str, object]:
+def locked_python_packages() -> dict[str, str]:
+    packages = dict(SOURCE_PACKAGES)
+    for line in LOCK_FILE.read_text(encoding="utf-8").splitlines():
+        requirement = line.strip()
+        if not requirement or requirement.startswith("#"):
+            continue
+        name, version = requirement.split("==", maxsplit=1)
+        packages[name] = version
+    return packages
+
+
+def image_name(platform: str) -> str:
+    return f"{IMAGE_PREFIX}-{platform.rsplit('/', maxsplit=1)[-1]}"
+
+
+def validate_image(image: str, platform: str) -> dict[str, object]:
     installed_build_packages = [
         package
         for package in BUILD_ONLY_PACKAGES
@@ -25,10 +44,12 @@ def validate_image() -> dict[str, object]:
             [
                 "docker",
                 "run",
+                "--platform",
+                platform,
                 "--rm",
                 "--entrypoint",
                 "apk",
-                IMAGE,
+                image,
                 "info",
                 "-e",
                 package,
@@ -44,11 +65,76 @@ def validate_image() -> dict[str, object]:
 
     image_size = int(
         subprocess.check_output(
-            ["docker", "image", "inspect", IMAGE, "--format", "{{.Size}}"],
+            ["docker", "image", "inspect", image, "--format", "{{.Size}}"],
             text=True,
         ).strip()
     )
-    return {"size_bytes": image_size, "build_only_packages": []}
+    architecture = subprocess.check_output(
+        ["docker", "image", "inspect", image, "--format", "{{.Architecture}}"],
+        text=True,
+    ).strip()
+    expected_architecture = platform.rsplit("/", maxsplit=1)[-1]
+    assert architecture == expected_architecture, (
+        f"expected {expected_architecture} image, got {architecture}"
+    )
+
+    expected_packages = locked_python_packages()
+    probe = (
+        "import importlib.metadata as metadata, json, platform; "
+        "normalize=lambda name: name.lower().replace('_', '-'); "
+        "print(json.dumps({'python': platform.python_version(), "
+        "'packages': {normalize(dist.metadata['Name']): dist.version "
+        "for dist in metadata.distributions()}}, "
+        "sort_keys=True))"
+    )
+    runtime = json.loads(
+        subprocess.check_output(
+            [
+                "docker",
+                "run",
+                "--platform",
+                platform,
+                "--rm",
+                "--entrypoint",
+                "/opt/sav-cli-venv/bin/python",
+                image,
+                "-c",
+                probe,
+            ],
+            text=True,
+        )
+    )
+    assert runtime["python"].startswith("3.12."), (
+        f"unexpected Python version: {runtime['python']}"
+    )
+    assert runtime["packages"] == expected_packages, (
+        f"runtime packages differ from lock: {runtime['packages']}"
+    )
+    subprocess.run(
+        [
+            "docker",
+            "run",
+            "--platform",
+            platform,
+            "--rm",
+            "--entrypoint",
+            "/opt/sav-cli-venv/bin/python",
+            image,
+            "-m",
+            "pip",
+            "check",
+        ],
+        check=True,
+        stdout=subprocess.DEVNULL,
+    )
+
+    return {
+        "architecture": architecture,
+        "size_bytes": image_size,
+        "python": runtime["python"],
+        "python_packages": len(runtime["packages"]),
+        "build_only_packages": [],
+    }
 
 
 def validate_output(path: Path) -> dict[str, object]:
@@ -92,6 +178,14 @@ def validate_output(path: Path) -> dict[str, object]:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Pull pinned inputs and rebuild every Docker layer",
+    )
+    args = parser.parse_args()
+
     for fixture in FIXTURES:
         level_sav = SAVS_DIR / fixture / "Level.sav"
         players_dir = SAVS_DIR / fixture / "Players"
@@ -99,47 +193,52 @@ def main() -> None:
             raise SystemExit(f"Missing fixture: {fixture}")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    subprocess.run(
-        [
+    for platform in PLATFORMS:
+        image = image_name(platform)
+        architecture = platform.rsplit("/", maxsplit=1)[-1]
+        build_command = [
             "docker",
             "build",
             "--progress=plain",
-            "-f",
-            "docker/Dockerfile.oss",
-            "-t",
-            IMAGE,
-            ".",
-        ],
-        cwd=ROOT,
-        check=True,
-    )
-    print(f"image: {validate_image()}")
+            "--platform",
+            platform,
+        ]
+        if args.no_cache:
+            build_command.extend(("--no-cache", "--pull"))
+        build_command.extend(
+            ("-f", "docker/Dockerfile.oss", "-t", image, ".")
+        )
+        subprocess.run(build_command, cwd=ROOT, check=True)
+        print(f"{platform} image: {validate_image(image, platform)}")
 
-    for fixture in FIXTURES:
-        output_path = OUTPUT_DIR / f"{fixture}.json"
-        log_path = OUTPUT_DIR / f"{fixture}.log"
-        with log_path.open("w", encoding="utf-8") as log_file:
-            subprocess.run(
-                [
-                    "docker",
-                    "run",
-                    "--rm",
-                    "-v",
-                    f"{SAVS_DIR / fixture}:/save:ro",
-                    "-v",
-                    f"{OUTPUT_DIR}:/out",
-                    IMAGE,
-                    "/app/sav_cli_oss/sav_cli",
-                    "-f",
-                    "/save/Level.sav",
-                    "-o",
-                    f"/out/{fixture}.json",
-                ],
-                check=True,
-                stdout=log_file,
-                stderr=subprocess.STDOUT,
-            )
-        print(f"{fixture}: {validate_output(output_path)}")
+        for fixture in FIXTURES:
+            output_name = f"{architecture}-{fixture}.json"
+            output_path = OUTPUT_DIR / output_name
+            log_path = OUTPUT_DIR / f"{architecture}-{fixture}.log"
+            with log_path.open("w", encoding="utf-8") as log_file:
+                subprocess.run(
+                    [
+                        "docker",
+                        "run",
+                        "--platform",
+                        platform,
+                        "--rm",
+                        "-v",
+                        f"{SAVS_DIR / fixture}:/save:ro",
+                        "-v",
+                        f"{OUTPUT_DIR}:/out",
+                        image,
+                        "/app/sav_cli_oss/sav_cli",
+                        "-f",
+                        "/save/Level.sav",
+                        "-o",
+                        f"/out/{output_name}",
+                    ],
+                    check=True,
+                    stdout=log_file,
+                    stderr=subprocess.STDOUT,
+                )
+            print(f"{platform} {fixture}: {validate_output(output_path)}")
 
 
 if __name__ == "__main__":

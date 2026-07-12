@@ -74,6 +74,26 @@ else:
 Then `pip install <path>/palooz`. setuptools auto-detects the installed Visual
 Studio Build Tools (verified with MSVC 14.44 / VS 2022+).
 
+## Reproducible Docker build
+
+`docker/Dockerfile.oss` pins the multi-architecture base image by digest and
+installs Python packages from `docker/sav-cli-requirements.lock`. The palsav
+and palooz sources are pinned separately by `PST_TOOLS_REF`; both local source
+packages are installed without build isolation or dependency resolution so
+their build cannot silently pull newer packages.
+
+Maintainers can rebuild both supported architectures from scratch and parse
+the two local fixtures under `savs/` with:
+
+```bash
+python3 script/test_sav_cli_oss.py --no-cache
+```
+
+The test uses disposable containers, verifies the image architecture, Python
+minor version, exact installed package set, dependency consistency, and output
+contract. Update the lock file deliberately and rerun this command whenever a
+dependency or base image is changed.
+
 ## Run
 
 ```bash
