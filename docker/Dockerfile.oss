@@ -8,17 +8,14 @@
 #
 # Build context is the repo root:
 #   docker build -t pst-oss:1.0 -f docker/Dockerfile.oss .
-FROM jokerwho/palworld-server-tool:latest
+ARG BASE_IMAGE=jokerwho/palworld-server-tool:latest
+FROM ${BASE_IMAGE} AS sav_cli_builder
 
-# Toolchain: python + a C/C++ compiler to build the native Oodle module
-# (palooz), plus git to fetch the parser source. The base is Alpine
-# (frolvlad/alpine-glibc), so use apk + build-base. libstdc++ from build-base
-# is required at runtime to load the compiled palooz .so, so it stays installed.
+# Build the parser and its native Oodle module in an isolated stage so the
+# compiler toolchain and cloned source do not remain in the runtime image.
 RUN apk add --no-cache python3 py3-pip build-base python3-dev git
-
-# Alpine's system Python is PEP 668 "externally managed"; honor break-system
-# so pip can install into it (harmlessly ignored by older pip).
-ENV PIP_BREAK_SYSTEM_PACKAGES=1
+RUN python3 -m venv /opt/sav-cli-venv
+ENV PATH="/opt/sav-cli-venv/bin:${PATH}"
 
 # PalworldSaveTools commit validated end-to-end by Phase 1 (parses the real
 # v1.0.0.100427 save). Pinned for reproducible parsing; do not float to main.
@@ -27,12 +24,19 @@ RUN git clone https://github.com/deafdudecomputers/PalworldSaveTools.git /tmp/ps
     && git -C /tmp/pst-tools checkout ${PST_TOOLS_REF}
 
 # Parser stack: palooz (native Oodle) first so it satisfies palsav-flex's
-# runtime dep, then orjson + requests, then palsav-flex itself. palooz's
-# setup.py auto-selects GCC flags on non-Windows.
-RUN pip install --no-cache-dir /tmp/pst-tools/src/palsav/palooz \
+# runtime dep, then orjson + requests, then palsav-flex itself.
+RUN pip install --no-cache-dir "setuptools>=68" \
+    && pip install --no-cache-dir /tmp/pst-tools/src/palsav/palooz \
     && pip install --no-cache-dir orjson requests \
     && pip install --no-cache-dir --no-build-isolation /tmp/pst-tools/src/palsav \
     && rm -rf /tmp/pst-tools
+
+FROM ${BASE_IMAGE}
+
+# Only Python and the C++ runtime needed by palooz are installed here. The
+# compiler, headers, and git stay in sav_cli_builder.
+RUN apk add --no-cache python3 libstdc++
+COPY --from=sav_cli_builder /opt/sav-cli-venv /opt/sav-cli-venv
 
 # The OSS parser (sav_cli.py + structurer/world_types/logger).
 COPY sav_cli_oss/ /app/sav_cli_oss/
@@ -42,7 +46,7 @@ COPY sav_cli_oss/ /app/sav_cli_oss/
 # structurer/world_types are imported as siblings of sav_cli.py, so running the
 # script by its absolute path puts its dir on sys.path[0]; cd keeps any relative
 # writes inside the parser dir.
-RUN printf '#!/bin/sh\ncd /app/sav_cli_oss\nexec python3 /app/sav_cli_oss/sav_cli.py "$@"\n' \
+RUN printf '#!/bin/sh\ncd /app/sav_cli_oss\nexec /opt/sav-cli-venv/bin/python /app/sav_cli_oss/sav_cli.py "$@"\n' \
       > /app/sav_cli_oss/sav_cli \
     && chmod +x /app/sav_cli_oss/sav_cli
 

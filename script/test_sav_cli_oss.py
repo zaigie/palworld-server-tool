@@ -14,6 +14,41 @@ FIXTURES = (
     "2026.07.12-13.59.00",
     "2026.07.12-18.35.48",
 )
+BUILD_ONLY_PACKAGES = ("build-base", "git", "python3-dev")
+
+
+def validate_image() -> dict[str, object]:
+    installed_build_packages = [
+        package
+        for package in BUILD_ONLY_PACKAGES
+        if subprocess.run(
+            [
+                "docker",
+                "run",
+                "--rm",
+                "--entrypoint",
+                "apk",
+                IMAGE,
+                "info",
+                "-e",
+                package,
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).returncode
+        == 0
+    ]
+    assert not installed_build_packages, (
+        f"build-only packages remain in runtime image: {installed_build_packages}"
+    )
+
+    image_size = int(
+        subprocess.check_output(
+            ["docker", "image", "inspect", IMAGE, "--format", "{{.Size}}"],
+            text=True,
+        ).strip()
+    )
+    return {"size_bytes": image_size, "build_only_packages": []}
 
 
 def validate_output(path: Path) -> dict[str, object]:
@@ -78,6 +113,7 @@ def main() -> None:
         cwd=ROOT,
         check=True,
     )
+    print(f"image: {validate_image()}")
 
     for fixture in FIXTURES:
         output_path = OUTPUT_DIR / f"{fixture}.json"
