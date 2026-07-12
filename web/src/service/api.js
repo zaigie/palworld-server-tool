@@ -6,6 +6,35 @@ class ApiService extends Service {
     return this.fetch(`/api/login`).post(data).json();
   }
 
+  async getConfigStatus() {
+    return this.fetch(`/api/config/status`).get().json();
+  }
+
+  async initializeConfig(param) {
+    return this.fetch(`/api/config/initialize`).post(param).json();
+  }
+
+  async getConfig() {
+    return this.fetch(`/api/config`).get().json();
+  }
+
+  async updateConfig(param) {
+    return this.fetch(`/api/config`).put(param).json();
+  }
+
+  async listDirectories(path = "") {
+    const query = new URLSearchParams({ path }).toString();
+    return this.fetch(`/api/config/directories?${query}`).get().json();
+  }
+
+  async testSaveConfig(save) {
+    return this.fetch(`/api/config/test/save`).post({ save }).json();
+  }
+
+  async testRconConfig(rcon) {
+    return this.fetch(`/api/config/test/rcon`).post({ rcon }).json();
+  }
+
   async getServerToolInfo() {
     return this.fetch(`/api/server/tool`).get().json();
   }

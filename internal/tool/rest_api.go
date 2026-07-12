@@ -13,7 +13,7 @@ import (
 
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 
-	"github.com/spf13/viper"
+	"github.com/zaigie/palworld-server-tool/internal/config"
 	"github.com/zaigie/palworld-server-tool/internal/database"
 )
 
@@ -21,10 +21,11 @@ var client = &http.Client{}
 
 func callApi(method string, api string, param []byte) ([]byte, error) {
 
-	addr := viper.GetString("rest.address")
-	user := viper.GetString("rest.username")
-	pass := viper.GetString("rest.password")
-	timeout := viper.GetInt("rest.timeout")
+	settings := config.Current().Rest
+	addr := settings.Address
+	user := settings.Username
+	pass := settings.Password
+	timeout := settings.Timeout
 
 	api, err := url.JoinPath(addr, api)
 	if err != nil {

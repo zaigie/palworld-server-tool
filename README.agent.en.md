@@ -6,7 +6,7 @@
 
 ### Linux
 
-This refers to the scenario where your game server is a Linux version, and you want to deploy the pst main body elsewhere. For the deployment of the pst main body, refer to the previous [Installation and Deployment](./README.md#installation-and-deployment). The impact of pst-agent is only on the modification of the configuration file.
+This section covers a Linux game server with the PST main application deployed elsewhere. Deploy PST normally, then select pst-agent as the save source in the Web settings.
 
 #### Download
 
@@ -41,19 +41,7 @@ If pst-agent and pst main body are not in the same network group, you need to op
 
 #### Configuration
 
-Find the `config.yaml` file of **the pst main body (note, not the pst-agent!!!)** and modify it.
-
-**You only need to modify `save: path`**
-
-```yaml
-...
-save: # Configuration related to save file parsing
-  path: "http://{Public IP of the game server}:{port}/sync" # pst-agent service interface
-  ...
-...
-```
-
-Restart the pst main body to apply changes
+Enter administrator mode in the **PST main application (not pst-agent)** and open “PST Settings”. Select “pst-agent” as the save source and enter `http://game-server-address:port/sync`. The new source is used for subsequent syncs immediately after saving.
 
 #### Close Background Operation
 
@@ -63,7 +51,7 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 ### Windows
 
-This refers to the scenario where your game server is a Windows version, and you want to deploy the pst main body elsewhere. For the deployment of the pst main body, refer to the previous [Installation and Deployment](./README.md#installation-and-deployment). The impact of pst-agent is only on the modification of the configuration file.
+This section covers a Windows game server with the PST main application deployed elsewhere. Deploy PST normally, then select pst-agent as the save source in the Web settings.
 
 #### Download
 
@@ -82,16 +70,4 @@ After successful operation, please keep the window open
 
 #### Configuration
 
-Find the `config.yaml` file of **the pst main body (note, not the pst-agent!!!)** and modify it.
-
-**You only need to modify `save: path`**
-
-```yaml
-...
-save: # Configuration related to save file parsing
-  path: "{http://Public IP of the game server}:{port}/sync" # pst-agent service interface
-  ...
-...
-```
-
-Restart the pst main body to apply changes
+Enter administrator mode in the **PST main application (not pst-agent)** and open “PST Settings”. Select “pst-agent” as the save source and enter `http://game-server-address:port/sync`. The new source is used for subsequent syncs immediately after saving.

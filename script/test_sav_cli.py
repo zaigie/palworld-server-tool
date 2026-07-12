@@ -38,7 +38,7 @@ def image_name(platform: str) -> str:
 
 
 def validate_image(image: str, platform: str) -> dict[str, object]:
-    decode_path = subprocess.check_output(
+    subprocess.run(
         [
             "docker",
             "run",
@@ -49,12 +49,9 @@ def validate_image(image: str, platform: str) -> dict[str, object]:
             "/bin/sh",
             image,
             "-c",
-            'printf "%s" "$SAVE__DECODE_PATH"',
+            f'test -x "{SAV_CLI_PATH}" && test -z "$SAVE__DECODE_PATH"',
         ],
-        text=True,
-    )
-    assert decode_path == SAV_CLI_PATH, (
-        f"expected SAVE__DECODE_PATH={SAV_CLI_PATH}, got {decode_path}"
+        check=True,
     )
 
     installed_build_packages = [
