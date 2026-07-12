@@ -6,6 +6,10 @@ import pageStore from "@/stores/model/page.js";
 import { ref, onMounted } from "vue";
 import playerToGuildStore from "@/stores/model/playerToGuild";
 import whitelistStore from "@/stores/model/whitelist";
+import { useI18n } from "vue-i18n";
+
+const props = defineProps({ guilds: { type: Array, default: () => [] } });
+const { t } = useI18n();
 
 const pageWidth = computed(() => pageStore().getScreenWidth());
 const smallScreen = computed(() => pageWidth.value < 1024);
@@ -14,11 +18,18 @@ const loadingGuild = ref(false);
 const loadingGuildDetail = ref(false);
 const guildList = ref([]);
 const guildInfo = ref({});
+const searchValue = ref("");
+const namedFilter = ref("all");
+const sortBy = ref("level");
 
 // 获取公会列表
 const getGuildList = async () => {
+  if (props.guilds.length > 0) {
+    guildList.value = [...props.guilds];
+    return;
+  }
   const { data } = await new ApiService().getGuildList();
-  guildList.value = data.value;
+  guildList.value = Array.isArray(data.value) ? data.value : [];
 };
 
 // 获取公会详情信息
@@ -26,7 +37,7 @@ const getGuildInfo = async (admin_player_uid) => {
   const { data } = await new ApiService().getGuild({
     adminPlayerUid: admin_player_uid,
   });
-  guildInfo.value = data.value;
+  guildInfo.value = data.value || {};
 };
 
 const clickGetGuildInfo = async (id) => {
@@ -76,6 +87,55 @@ onMounted(async () => {
 const getUserAvatar = () => {
   return new URL("@/assets/avatar.webp", import.meta.url).href;
 };
+const namedOptions = computed(() => [
+  { label: t("filter.allGuilds"), value: "all" },
+  { label: t("filter.namedGuilds"), value: "named" },
+  { label: t("filter.unnamedGuilds"), value: "unnamed" },
+]);
+const sortOptions = computed(() => [
+  { label: t("filter.levelHighToLow"), value: "level" },
+  { label: t("filter.memberCount"), value: "members" },
+  { label: t("filter.baseCount"), value: "bases" },
+  { label: t("filter.guildName"), value: "name" },
+]);
+const isUnnamedGuild = (guild) => !guild.name || guild.name === "无名公会";
+const guildDisplayName = (guild) => {
+  if (!isUnnamedGuild(guild)) return guild.name;
+  const master = guild.players?.find((player) => player.player_uid === guild.admin_player_uid);
+  const suffix = master?.nickname || guild.admin_player_uid?.slice(-6) || "—";
+  return `${t("filter.unnamedGuild")} · ${suffix}`;
+};
+const filteredGuilds = computed(() => {
+  const keyword = searchValue.value.trim().toLowerCase();
+  const filtered = guildList.value.filter((guild) => {
+    const searchable = [
+      guild.name,
+      guild.admin_player_uid,
+      ...(guild.players || []).map((player) => player.nickname),
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    if (keyword && !searchable.includes(keyword)) return false;
+    if (namedFilter.value === "named" && isUnnamedGuild(guild)) return false;
+    if (namedFilter.value === "unnamed" && !isUnnamedGuild(guild)) return false;
+    return true;
+  });
+  return filtered.sort((a, b) => {
+    if (sortBy.value === "members") return (b.players?.length || 0) - (a.players?.length || 0);
+    if (sortBy.value === "bases") return (b.base_camp?.length || 0) - (a.base_camp?.length || 0);
+    if (sortBy.value === "name") return guildDisplayName(a).localeCompare(guildDisplayName(b));
+    return Number(b.base_camp_level || 0) - Number(a.base_camp_level || 0);
+  });
+});
+
+watch(
+  () => props.guilds,
+  (guilds) => {
+    if (guilds?.length > 0) guildList.value = [...guilds];
+  },
+  { deep: true },
+);
 </script>
 
 <template>
@@ -88,11 +148,31 @@ const getUserAvatar = () => {
         bordered
         class="relative"
       >
+        <div class="mb-3">
+          <n-input
+            v-model:value="searchValue"
+            clearable
+            :placeholder="$t('filter.searchGuilds')"
+            aria-label="Search guilds"
+          />
+          <n-grid cols="2" :x-gap="8" class="mt-2">
+            <n-gi><n-select v-model:value="namedFilter" :options="namedOptions" aria-label="Guild type" /></n-gi>
+            <n-gi><n-select v-model:value="sortBy" :options="sortOptions" aria-label="Guild sorting" /></n-gi>
+          </n-grid>
+          <n-text depth="3" class="block mt-2">
+            {{ $t("filter.resultCount", { count: filteredGuilds.length }) }}
+          </n-text>
+        </div>
         <n-list hoverable clickable>
           <n-list-item
-            v-for="guild in guildList"
+            v-for="guild in filteredGuilds"
             :key="guild.admin_player_uid"
             @click="clickGetGuildInfo(guild.admin_player_uid)"
+            @keydown.enter="clickGetGuildInfo(guild.admin_player_uid)"
+            @keydown.space.prevent="clickGetGuildInfo(guild.admin_player_uid)"
+            role="button"
+            tabindex="0"
+            :aria-label="guildDisplayName(guild)"
           >
             <template #prefix>
               <n-avatar
@@ -107,7 +187,10 @@ const getUserAvatar = () => {
             <n-tag type="primary" size="small" round>
               Lv.{{ guild.base_camp_level }}
             </n-tag>
-            <span class="pl-2 font-bold">{{ guild.name }}</span>
+            <span class="pl-2 font-bold">{{ guildDisplayName(guild) }}</span>
+            <n-text depth="3" class="block pl-2 mt-1">
+              {{ $t("filter.guildSummary", { members: guild.players?.length || 0, bases: guild.base_camp?.length || 0 }) }}
+            </n-text>
           </n-list-item>
         </n-list>
         <n-spin
@@ -171,8 +254,8 @@ const getUserAvatar = () => {
                     round
                     size="small"
                     :color="{
-                      color: isDarkMode ? '#fff' : '#d9c36c',
-                      textColor: isDarkMode ? '#d9c36c' : '#fff',
+                      color: '#d9c36c',
+                      textColor: '#fff',
                     }"
                   >
                     {{ $t("status.whitelist") }}

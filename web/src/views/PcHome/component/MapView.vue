@@ -21,7 +21,7 @@ import points from "@/assets/map/points.json";
 
 const { t } = useI18n();
 
-const LAND_SCAPE = [447900, 708920, -999940, -738920];
+const LAND_SCAPE = [349400, 724400, -1099400, -724400];
 
 const api = new ApiService();
 
@@ -34,6 +34,8 @@ const showPlayer = ref(true);
 const showBaseCamp = ref(true);
 const showBossTower = ref(false);
 const showFastTravel = ref(false);
+const mapRef = ref(null);
+const searchTarget = ref(null);
 
 let timer = null;
 
@@ -67,6 +69,82 @@ const toMapDistance = (distance) => {
   return 256 * (distance / (LAND_SCAPE[0] - LAND_SCAPE[2]));
 };
 
+const rawBaseMarkers = computed(() =>
+  guildList.value.flatMap((guild, guildIndex) =>
+    (guild.base_camp || []).map((camp, campIndex) => ({
+      key: `${guildIndex}-${campIndex}`,
+      guild,
+      camp,
+      position: toMapPosition([camp.location_x, camp.location_y]),
+    }))
+  )
+);
+
+const clusteredBaseMarkers = computed(() => {
+  if (zoom.value >= 5) {
+    return rawBaseMarkers.value.map((marker) => ({
+      key: marker.key,
+      position: marker.position,
+      markers: [marker],
+    }));
+  }
+
+  const cellSize = 48 / 2 ** zoom.value;
+  const clusters = new Map();
+  rawBaseMarkers.value.forEach((marker) => {
+    const clusterKey = `${Math.floor(marker.position[0] / cellSize)}:${Math.floor(
+      marker.position[1] / cellSize
+    )}`;
+    if (!clusters.has(clusterKey)) clusters.set(clusterKey, []);
+    clusters.get(clusterKey).push(marker);
+  });
+
+  return Array.from(clusters.entries()).map(([key, markers]) => ({
+    key,
+    markers,
+    position: [
+      markers.reduce((sum, marker) => sum + marker.position[0], 0) /
+        markers.length,
+      markers.reduce((sum, marker) => sum + marker.position[1], 0) /
+        markers.length,
+    ],
+  }));
+});
+
+const searchOptions = computed(() => [
+  ...playerList.value.map((player, index) => ({
+    label: `${t("status.online")} · ${player.nickname || player.player_uid}`,
+    value: `player:${index}`,
+  })),
+  ...rawBaseMarkers.value.map((marker) => ({
+    label: `${t("map.baseCamp")} · ${marker.guild.name || t("filter.unnamedGuild")}`,
+    value: `base:${marker.key}`,
+  })),
+]);
+
+const focusSearchTarget = (value) => {
+  if (!value) return;
+  const [type, id] = value.split(":");
+  let position;
+  if (type === "player") {
+    const player = playerList.value[Number(id)];
+    if (player) position = toMapPosition([player.location_x, player.location_y]);
+  } else {
+    position = rawBaseMarkers.value.find((marker) => marker.key === id)?.position;
+  }
+  if (position) {
+    zoom.value = 5;
+    mapRef.value?.leafletObject?.setView(position, 5);
+  }
+};
+
+const setMarkerAccessibility = (marker, label) => {
+  const element = marker?.getElement?.();
+  if (!element) return;
+  element.setAttribute("aria-label", label);
+  element.setAttribute("alt", label);
+};
+
 const ToPlayers = async (uid) => {
   playerToGuildStore().setCurrentUid(uid);
   playerToGuildStore().setUpdateStatus("players");
@@ -74,7 +152,8 @@ const ToPlayers = async (uid) => {
 
 const refreshPlayer = async () => {
   const { data } = await api.getOnlinePlayerList();
-  for (const i of data.value) {
+  const onlinePlayers = Array.isArray(data.value) ? data.value : [];
+  for (const i of onlinePlayers) {
     for (const j of playerList.value) {
       if (i.player_uid === j.player_uid) {
         j.location_x = i.location_x;
@@ -107,13 +186,13 @@ const onSubtractZoom = () => {
 
 onMounted(async () => {
   let res = await api.getPlayerList({});
-  playerList.value = res.data.value;
+  playerList.value = Array.isArray(res.data.value) ? res.data.value : [];
   // 接口中玩家location_x和location_y同时为0时，表示玩家不在线，不显示
   playerList.value = playerList.value.filter(
     (i) => i.location_x !== 0 && i.location_y !== 0
   );
   res = await api.getGuildList();
-  guildList.value = res.data.value;
+  guildList.value = Array.isArray(res.data.value) ? res.data.value : [];
 
   refreshPlayer();
 });
@@ -126,7 +205,7 @@ onUnmounted(async () => {
 <template>
   <div class="map-view h-full">
     <l-map
-      ref="map"
+      ref="mapRef"
       style="width: 100%; height: 100%"
       crs="Simple"
       v-model:zoom="zoom"
@@ -151,21 +230,36 @@ onUnmounted(async () => {
       <l-marker
         v-if="showFastTravel"
         v-for="i in points.fast_travel"
+        :key="`fast-${i[0]}-${i[1]}`"
         :lat-lng="toMapPosition([i[0], i[1]])"
+        :options="{ title: $t('map.fastTravel'), alt: $t('map.fastTravel') }"
+        @ready="(marker) => setMarkerAccessibility(marker, $t('map.fastTravel'))"
       >
         <l-icon :icon-url="IconFastTravel" :icon-size="[48, 48]" />
       </l-marker>
       <l-marker
         v-if="showBossTower"
         v-for="i in points.boss_tower"
+        :key="`tower-${i[0]}-${i[1]}`"
         :lat-lng="toMapPosition([i[0], i[1]])"
+        :options="{ title: $t('map.bossTower'), alt: $t('map.bossTower') }"
+        @ready="(marker) => setMarkerAccessibility(marker, $t('map.bossTower'))"
       >
         <l-icon :icon-url="IconBossTower" :icon-size="[48, 48]" />
       </l-marker>
       <l-marker
         v-if="showPlayer"
         v-for="i in playerList"
+        :key="i.player_uid"
         :lat-lng="toMapPosition([i.location_x, i.location_y])"
+        :options="{
+          title: `${$t('map.player')}: ${i.nickname}`,
+          alt: `${$t('map.player')}: ${i.nickname}`,
+        }"
+        @ready="
+          (marker) =>
+            setMarkerAccessibility(marker, `${$t('map.player')}: ${i.nickname}`)
+        "
       >
         <l-icon :icon-url="IconPlayer" :icon-size="[45, 45]" />
         <l-tooltip
@@ -173,29 +267,88 @@ onUnmounted(async () => {
           >{{ i.nickname }}</l-tooltip
         >
       </l-marker>
-      <template v-if="showBaseCamp" v-for="i in guildList">
-        <template v-for="j in i.base_camp">
-          <l-marker :lat-lng="toMapPosition([j.location_x, j.location_y])">
-            <l-icon :icon-url="IconBase" :icon-size="[55, 55]" />
+      <template v-if="showBaseCamp">
+        <l-marker
+          v-for="cluster in clusteredBaseMarkers"
+          :key="cluster.key"
+          :lat-lng="cluster.position"
+          :options="{
+            title:
+              cluster.markers.length > 1
+                ? $t('map.clusterTitle', { count: cluster.markers.length })
+                : $t('map.baseCampTitle', {
+                    name:
+                      cluster.markers[0].guild.name || $t('filter.unnamedGuild'),
+                  }),
+            alt:
+              cluster.markers.length > 1
+                ? $t('map.clusterTitle', { count: cluster.markers.length })
+                : $t('map.baseCampTitle', {
+                    name:
+                      cluster.markers[0].guild.name || $t('filter.unnamedGuild'),
+                  }),
+          }"
+          @ready="
+            (marker) =>
+              setMarkerAccessibility(
+                marker,
+                cluster.markers.length > 1
+                  ? $t('map.clusterTitle', { count: cluster.markers.length })
+                  : $t('map.baseCampTitle', {
+                      name:
+                        cluster.markers[0].guild.name ||
+                        $t('filter.unnamedGuild'),
+                    })
+              )
+          "
+        >
+            <l-icon
+              :icon-url="IconBase"
+              :icon-size="cluster.markers.length > 1 ? [62, 62] : [55, 55]"
+            />
+            <l-tooltip
+              v-if="cluster.markers.length > 1"
+              :options="{ direction: 'top', permanent: true, offset: [0, -18] }"
+            >
+              {{ cluster.markers.length }}
+            </l-tooltip>
             <l-popup :options="{ interactive: true }">
-              <div style="padding-bottom: 3px; font-size: 16px">
-                {{ $t("map.baseCampTitle", { name: i.name }) }}
+              <div v-if="cluster.markers.length > 1" class="popup-title">
+                {{ $t("map.clusterTitle", { count: cluster.markers.length }) }}
               </div>
-              <div style="line-height: 25px">
-                {{ $t("map.guildMember") }}
-                <span
-                  v-for="k in i.players"
-                  class="player_name"
-                  @click="ToPlayers(k.player_uid)"
-                >
-                  {{ k.nickname }}
-                </span>
+              <div
+                v-for="marker in cluster.markers"
+                :key="marker.key"
+                class="base-popup"
+              >
+                <div class="popup-title">
+                  {{
+                    $t("map.baseCampTitle", {
+                      name: marker.guild.name || $t("filter.unnamedGuild"),
+                    })
+                  }}
+                </div>
+                <div class="member-list">
+                  {{ $t("map.guildMember") }}
+                  <button
+                    v-for="member in marker.guild.players"
+                    :key="member.player_uid"
+                    type="button"
+                    class="player_name"
+                    @click="ToPlayers(member.player_uid)"
+                  >
+                    {{ member.nickname }}
+                  </button>
+                </div>
               </div>
             </l-popup>
-          </l-marker>
+        </l-marker>
+        <template v-if="zoom >= 5">
           <l-circle
-            :lat-lng="toMapPosition([j.location_x, j.location_y])"
-            :radius="toMapDistance(j.area)"
+            v-for="marker in rawBaseMarkers"
+            :key="`area-${marker.key}`"
+            :lat-lng="marker.position"
+            :radius="toMapDistance(marker.camp.area)"
           />
         </template>
       </template>
@@ -204,14 +357,15 @@ onUnmounted(async () => {
       class="min-h-50 p-2 fixed bottom-2 left-2 z-999 flex flex-col justify-end"
     >
       <div class="h-40 flex flex-col justify-between items-center">
-        <n-icon
-          class="cursor-pointer"
+        <n-button
+          text
+          :aria-label="$t('map.zoomIn')"
           size="24"
           color="#fff"
           @click="onAddZoom"
         >
-          <AddCircle20Filled />
-        </n-icon>
+          <template #icon><n-icon><AddCircle20Filled /></n-icon></template>
+        </n-button>
         <n-slider
           style="height: 100px"
           class="border border-solid border-#fff rounded-full"
@@ -223,32 +377,62 @@ onUnmounted(async () => {
           :max="6"
           vertical
         />
-        <n-icon
-          class="cursor-pointer"
+        <n-button
+          text
+          :aria-label="$t('map.zoomOut')"
           size="24"
           color="#fff"
           @click="onSubtractZoom"
         >
-          <SubtractCircle20Filled />
-        </n-icon>
+          <template #icon><n-icon><SubtractCircle20Filled /></n-icon></template>
+        </n-button>
       </div>
     </div>
     <div class="control">
+      <n-select
+        v-model:value="searchTarget"
+        :options="searchOptions"
+        :placeholder="$t('map.searchTarget')"
+        filterable
+        clearable
+        :aria-label="$t('map.searchTarget')"
+        @update:value="focusSearchTarget"
+      />
+      <div class="visible-summary">
+        {{
+          $t("map.visibleSummary", {
+            players: showPlayer ? playerList.length : 0,
+            bases: showBaseCamp ? clusteredBaseMarkers.length : 0,
+          })
+        }}
+      </div>
       <div>
         <span>{{ $t("map.showFastTravel") }}</span>
-        <n-switch v-model:value="showFastTravel" />
+        <n-switch
+          v-model:value="showFastTravel"
+          :aria-label="$t('map.showFastTravel')"
+        />
       </div>
       <div>
         <span>{{ $t("map.showBossTower") }}</span>
-        <n-switch v-model:value="showBossTower" />
+        <n-switch
+          v-model:value="showBossTower"
+          :aria-label="$t('map.showBossTower')"
+        />
       </div>
       <div>
         <span>{{ $t("map.showPlayer") }}</span>
-        <n-switch v-model:value="showPlayer" />
+        <n-switch
+          v-model:value="showPlayer"
+          :aria-label="$t('map.showPlayer')"
+        />
       </div>
       <div>
         <span>{{ $t("map.showBaseCamp") }}</span>
-        <n-switch v-model:value="showBaseCamp" />
+        <n-switch
+          v-model:value="showBaseCamp"
+          :aria-label="$t('map.showBaseCamp')"
+        />
       </div>
       <div>
         <span>{{ mousePosition[0] }}, {{ mousePosition[1] }}</span>
@@ -264,6 +448,9 @@ onUnmounted(async () => {
 }
 
 .player_name {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
   margin: 0 3px;
   padding: 3px;
   color: #fff;
@@ -272,8 +459,8 @@ onUnmounted(async () => {
 }
 
 .control {
-  width: 200px;
-  height: 180px;
+  width: 260px;
+  min-height: 230px;
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -290,5 +477,26 @@ onUnmounted(async () => {
   display: flex;
   justify-content: space-between;
   margin: 10px;
+}
+
+.visible-summary {
+  color: #b8c2cc;
+  font-size: 12px;
+}
+
+.popup-title {
+  padding-bottom: 3px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.base-popup + .base-popup {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #ddd;
+}
+
+.member-list {
+  line-height: 28px;
 }
 </style>

@@ -1,0 +1,204 @@
+name: Native Build and Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*"
+
+concurrency:
+  group: native-release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify-ref:
+    name: Verify release ref
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      - name: Require release tags to point into main
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: bash
+        run: |
+          git fetch --no-tags origin main
+          tag_commit="$(git rev-list -n 1 "$GITHUB_REF_NAME")"
+          git merge-base --is-ancestor "$tag_commit" origin/main
+
+  prepare-assets:
+    name: Build shared frontend and map assets
+    needs: verify-ref
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source and map LFS objects
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          lfs: true
+
+      - name: Verify map tiles
+        run: python3 script/verify_map.py
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build web frontend
+        shell: bash
+        run: |
+          npm install --global pnpm@8.14.0
+          pushd web
+          pnpm install --frozen-lockfile
+          pnpm build
+          popd
+
+      - name: Build pal-conf frontend
+        shell: bash
+        run: |
+          npm install --global pnpm@10.12.3
+          pushd pal-conf
+          pnpm install --frozen-lockfile
+          pnpm build
+          popd
+          mv pal-conf/dist/assets/* assets/
+          mv pal-conf/dist/index.html ./pal-conf.html
+
+      - name: Upload shared assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-assets
+          path: |
+            assets
+            index.html
+            pal-conf.html
+            map
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+  build-native:
+    name: Build ${{ matrix.platform }}
+    needs: prepare-assets
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux-x86_64
+            runner: ubuntu-24.04
+            goos: linux
+            goarch: amd64
+            sav_cli: build/sav-cli/sav_cli
+          - platform: linux-aarch64
+            runner: ubuntu-24.04-arm
+            goos: linux
+            goarch: arm64
+            sav_cli: build/sav-cli/sav_cli
+          - platform: windows-x86_64
+            runner: windows-2022
+            goos: windows
+            goarch: amd64
+            sav_cli: build/sav-cli/sav_cli.exe
+          - platform: darwin-aarch64
+            runner: macos-15
+            goos: darwin
+            goarch: arm64
+            sav_cli: build/sav-cli/sav_cli
+
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Checkout source without LFS payloads
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            docker/sav-cli-requirements.lock
+            docker/sav-cli-build-requirements.lock
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Remove Git LFS pointer placeholders
+        shell: bash
+        run: rm -rf map assets index.html pal-conf.html
+
+      - name: Download shared assets
+        uses: actions/download-artifact@v4
+        with:
+          name: shared-assets
+          path: .
+
+      - name: Resolve application version
+        id: version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "value=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=dev-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build native sav_cli
+        run: python script/build_sav_cli.py --output build/sav-cli
+
+      - name: Assemble release files
+        run: >-
+          python script/package_release.py
+          --version "${{ steps.version.outputs.value }}"
+          --goos "${{ matrix.goos }}"
+          --goarch "${{ matrix.goarch }}"
+          --sav-cli "${{ matrix.sav_cli }}"
+          --output dist/release
+
+      - name: Upload release files
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.platform }}
+          path: dist/release/*
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    name: Create GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-native
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all release files
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          path: release
+          merge-multiple: true
+
+      - name: Generate SHA-256 checksums
+        working-directory: release
+        run: sha256sum * > SHA256SUMS.txt
+
+      - name: Create or update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          generate_release_notes: true
+          fail_on_unmatched_files: true

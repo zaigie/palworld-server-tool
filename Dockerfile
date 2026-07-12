@@ -1,74 +1,61 @@
-# --------- frontend -----------
-FROM node:20.10-alpine as frontendBuilder
+ARG ALPINE_IMAGE=alpine:3.22@sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce
+ARG NODE_IMAGE=node:20.10-alpine@sha256:9e38d3d4117da74a643f67041c83914480b335c3bd44d37ccf5b5ad86cd715d1
+ARG GO_IMAGE=golang:1.21-alpine@sha256:2414035b086e3c42b99654c8b26e6f5b1b1598080d65fd03c7f499552ff4dc94
+
+# --------- web frontend -----------
+FROM ${NODE_IMAGE} AS web-builder
 
 WORKDIR /app
 
-ARG proxy
-
-# RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 RUN npm install -g pnpm@8.14.0
-# RUN [ -z "$proxy" ] || pnpm config set registry https://registry.npm.taobao.org
 
-COPY ./web/pnpm-lock.yaml /app/web/pnpm-lock.yaml
-COPY ./web/package.json /app/web/package.json
+COPY web/pnpm-lock.yaml web/package.json /app/web/
+RUN cd /app/web && pnpm install --frozen-lockfile
+COPY web /app/web
+RUN cd /app/web && pnpm build
 
-RUN cd /app/web/ && pnpm i
 
-COPY ./web /app/web
-RUN cd /app/web/ && pnpm build
+# --------- pal-conf frontend -----------
+FROM ${NODE_IMAGE} AS pal-conf-builder
 
-COPY ./pal-conf/pnpm-lock.yaml /app/pal-conf/pnpm-lock.yaml
-COPY ./pal-conf/package.json /app/pal-conf/package.json
+WORKDIR /app
 
-RUN cd /app/pal-conf/ && pnpm i
+RUN npm install -g pnpm@10.12.3
 
-COPY ./pal-conf /app/pal-conf
-RUN cd /app/pal-conf/ && pnpm build
+COPY pal-conf/pnpm-lock.yaml pal-conf/package.json /app/pal-conf/
+RUN cd /app/pal-conf && pnpm install --frozen-lockfile
+COPY pal-conf /app/pal-conf
+RUN cd /app/pal-conf && pnpm build
 
-RUN mv /app/pal-conf/dist/assets/* /app/assets
-RUN mv /app/pal-conf/dist/index.html /app/pal-conf.html
+RUN mkdir /app/pal-conf-assets \
+    && mv /app/pal-conf/dist/assets/* /app/pal-conf-assets/ \
+    && mv /app/pal-conf/dist/index.html /app/pal-conf.html
 
 
 # --------- sav_cli -----------
-FROM python:3.11-alpine as savBuilder
+FROM ${ALPINE_IMAGE} AS sav-cli-builder
 
-WORKDIR /app
+RUN apk add --no-cache python3 py3-pip build-base python3-dev git
+RUN python3 -m venv /opt/sav-cli-venv
+ENV PATH="/opt/sav-cli-venv/bin:${PATH}"
 
-ARG proxy
-ARG TARGETARCH
+COPY docker/sav-cli-requirements.lock /tmp/sav-cli-requirements.lock
 
-# RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
-# RUN apk update && apk add build-base
+# PalworldSaveTools commit validated against the real saves under savs/.
+ARG PST_TOOLS_REF=8cb429ae3b1460a6a6a0c31c9964ca8cedb65cc5
+RUN git clone https://github.com/deafdudecomputers/PalworldSaveTools.git /tmp/pst-tools \
+    && git -C /tmp/pst-tools checkout ${PST_TOOLS_REF}
 
-# COPY ./module/requirements.txt /app/requirements.txt
-# RUN pip install --no-cache-dir -r /app/requirements.txt
-# COPY ./module /app
+RUN python -m pip install --no-cache-dir -r /tmp/sav-cli-requirements.lock \
+    && python -m pip install --no-cache-dir --no-build-isolation --no-deps \
+      /tmp/pst-tools/src/palsav/palooz \
+    && python -m pip install --no-cache-dir --no-build-isolation --no-deps \
+      /tmp/pst-tools/src/palsav \
+    && rm -rf /tmp/pst-tools
 
-# RUN pyinstaller --onefile sav_cli.py
-RUN apk update && apk add curl unzip
-RUN mkdir -p /app/dist && \
-    if [ "$TARGETARCH" = "amd64" ]; then \
-        curl -L -o /app/dist/sav_cli https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.9/sav_cli_linux_x86_64; \
-    elif [ "$TARGETARCH" = "arm64" ]; then \
-        curl -L -o /app/dist/sav_cli https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.9/sav_cli_linux_aarch64; \
-    else \
-        echo "Unsupported architecture: $TARGETARCH" && exit 1; \
-    fi
-RUN chmod +x /app/dist/sav_cli
-
-# --------- map tiles -----------
-FROM python:3.11-alpine as mapDownloader
-
-WORKDIR /app
-
-RUN apk update && apk add curl unzip
-
-# https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.9/map.zip
-RUN curl -L -o map.zip https://github.com/zaigie/palworld-server-tool/releases/download/v0.9.9/map.zip
-RUN unzip map.zip -d /app
 
 # --------- backend -----------
-FROM golang:1.21-alpine as backendBuilder
+FROM ${GO_IMAGE} AS backend-builder
 
 ARG proxy
 ARG version
@@ -76,27 +63,37 @@ ARG version
 WORKDIR /app
 ADD . .
 
-COPY --from=frontendBuilder /app/assets /app/assets
-COPY --from=frontendBuilder /app/index.html /app/index.html
-COPY --from=frontendBuilder /app/pal-conf.html /app/pal-conf.html
-COPY --from=mapDownloader /app/map /app/map
+# Map tiles are versioned as Git LFS objects. Fail early when a checkout left
+# pointer files in place or when the tile pyramid is incomplete.
+RUN test "$(find /app/map -type f -name '*.png' | wc -l | tr -d ' ')" -eq 5461 \
+    && ! grep -RIl '^version https://git-lfs.github.com/spec/v1$' /app/map
 
-RUN if [ ! -z "$proxy" ]; then \
-    export GOPROXY=https://goproxy.io,direct && \
-    go build -ldflags="-s -w -X 'main.version=${version}'" -o /app/dist/pst main.go; \
-    else \
-    go build -ldflags="-s -w -X 'main.version=${version}'" -o /app/dist/pst main.go; \
-    fi
+COPY --from=web-builder /app/assets /app/assets
+COPY --from=web-builder /app/index.html /app/index.html
+COPY --from=pal-conf-builder /app/pal-conf-assets/ /app/assets/
+COPY --from=pal-conf-builder /app/pal-conf.html /app/pal-conf.html
+
+RUN if [ -n "$proxy" ]; then export GOPROXY=https://goproxy.io,direct; fi \
+    && go build -ldflags="-s -w -X 'main.version=${version}'" -o /app/dist/pst main.go
+
 
 # --------- runtime -----------
-FROM frolvlad/alpine-glibc as runtime
+FROM ${ALPINE_IMAGE} AS runtime
 
 WORKDIR /app
 
-ENV SAVE__DECODE_PATH /app/sav_cli
+RUN apk add --no-cache python3 libstdc++
+COPY --from=sav-cli-builder /opt/sav-cli-venv /opt/sav-cli-venv
+COPY sav_cli/*.py /app/sav_cli_src/
+COPY docker/sav-cli-requirements.lock /app/sav_cli_src/requirements.lock
+RUN printf '#!/bin/sh\ncd /app/sav_cli_src\nexec /opt/sav-cli-venv/bin/python /app/sav_cli_src/sav_cli.py "$@"\n' \
+      > /app/sav_cli \
+    && chmod +x /app/sav_cli
 
-COPY --from=savBuilder /app/dist/sav_cli /app/sav_cli
-COPY --from=backendBuilder /app/dist/pst /app/pst
+ENV SAVE__DECODE_PATH=/app/sav_cli
+
+COPY --from=backend-builder /app/dist/pst /app/pst
+COPY LICENSE NOTICE /app/
 
 EXPOSE 8080
 

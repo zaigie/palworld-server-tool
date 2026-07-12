@@ -27,6 +27,7 @@ go.work
 /cmd/test
 
 .DS_Store
+__pycache__/
 
 dist
 
@@ -46,5 +47,5 @@ structure.json
 .idea
 
 backups/
-/map/
+/savs/
 map_data_cn.js

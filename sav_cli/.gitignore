@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Test/build output — contains real players' personal data (nicknames, item
+# inventories, base coordinates). Never commit; regenerate locally from a save.
+structure.json
+*.sav
+*.sav.json

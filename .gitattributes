@@ -1,2 +1,2 @@
 *.vue linguist-vendored
-# module/* linguist-vendored
+map/**/*.png filter=lfs diff=lfs merge=lfs -text

@@ -48,6 +48,14 @@ func InitDB() *bbolt.DB {
 	if err != nil {
 		logger.Panic(err)
 	}
+	// scheduled rcon tasks
+	err = db_.Update(func(tx *bbolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte("rcon_tasks"))
+		return err
+	})
+	if err != nil {
+		logger.Panic(err)
+	}
 	return db_
 }
 

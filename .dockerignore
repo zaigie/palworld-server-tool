@@ -1,1 +1,17 @@
-node_modules
+.git
+.DS_Store
+**/node_modules
+**/dist
+/assets/
+/backups/
+*.db
+*.txt
+map_data_cn.js
+
+# Never bake real player saves or parsed PII into an image.
+/savs/
+**/structure.json
+*.sav
+*.sav.json
+sav_cli/.venv
+**/__pycache__

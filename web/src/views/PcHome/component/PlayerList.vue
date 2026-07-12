@@ -12,7 +12,10 @@ import whitelistStore from "@/stores/model/whitelist";
 
 const { t, locale } = useI18n();
 
-const props = defineProps(["showWhitelistPlayer"]);
+const props = defineProps({
+  showWhitelistPlayer: String,
+  players: { type: Array, default: () => [] },
+});
 const showWhitelistPlayer = computed(() => props.showWhitelistPlayer);
 
 const isDarkMode = ref(
@@ -28,6 +31,11 @@ const playerList = ref([]);
 const playerInfo = ref(null);
 const playerPalsList = ref([]);
 const skillTypeList = ref([]);
+const searchValue = ref("");
+const statusFilter = ref("all");
+const platformFilter = ref("all");
+const whitelistFilter = ref("all");
+const sortBy = ref("last_online");
 // 平台标记颜色
 const platformColors = {
   steam: { color: '#223D58', textColor: '#fff' },   // 青底白字
@@ -39,11 +47,15 @@ const platformColors = {
 
 // 获取玩家列表
 const getPlayerList = async () => {
+  if (props.players.length > 0) {
+    playerList.value = [...props.players];
+    return;
+  }
   const { data } = await new ApiService().getPlayerList({
     order_by: "last_online",
     desc: true,
   });
-  playerList.value = data.value;
+  playerList.value = Array.isArray(data.value) ? data.value : [];
 };
 
 // 获取玩家详情信息
@@ -62,7 +74,7 @@ const getPlayerInfo = async (player_uid) => {
 };
 
 const clickGetPlayerInfo = async (id) => {
-  if (playerInfo.value.player_uid !== id) {
+  if (playerInfo.value?.player_uid !== id) {
     loadingPlayerDetail.value = true;
     await getPlayerInfo(id);
     loadingPlayerDetail.value = false;
@@ -72,12 +84,20 @@ const clickGetPlayerInfo = async (id) => {
 watch(
   () => showWhitelistPlayer.value,
   async (newVal) => {
-    if (playerInfo.value.player_uid !== newVal) {
+    if (newVal && playerInfo.value?.player_uid !== newVal) {
       loadingPlayerDetail.value = true;
       await getPlayerInfo(newVal);
       loadingPlayerDetail.value = false;
     }
   }
+);
+
+watch(
+  () => props.players,
+  (players) => {
+    if (players?.length > 0) playerList.value = [...players];
+  },
+  { deep: true },
 );
 
 // 白名单
@@ -137,6 +157,62 @@ const displayLastOnline = (last_online) => {
   }
   return dayjs(last_online).format("YYYY-MM-DD HH:mm:ss");
 };
+
+const platformOptions = computed(() => {
+  const platforms = new Set(
+    playerList.value
+      .map((player) => player.user_id?.split("_")[0])
+      .filter(Boolean),
+  );
+  return [
+    { label: t("filter.allPlatforms"), value: "all" },
+    ...[...platforms].sort().map((platform) => ({ label: platform, value: platform })),
+  ];
+});
+const statusOptions = computed(() => [
+  { label: t("filter.allStatuses"), value: "all" },
+  { label: t("status.online"), value: "online" },
+  { label: t("status.offline"), value: "offline" },
+]);
+const whitelistOptions = computed(() => [
+  { label: t("filter.allPlayers"), value: "all" },
+  { label: t("filter.whitelistOnly"), value: "whitelist" },
+  { label: t("filter.nonWhitelistOnly"), value: "non-whitelist" },
+]);
+const sortOptions = computed(() => [
+  { label: t("filter.lastOnline"), value: "last_online" },
+  { label: t("filter.levelHighToLow"), value: "level" },
+  { label: t("filter.nickname"), value: "nickname" },
+]);
+const filteredPlayers = computed(() => {
+  const keyword = searchValue.value.trim().toLowerCase();
+  const filtered = playerList.value.filter((player) => {
+    const searchable = [
+      player.nickname,
+      player.player_uid,
+      player.user_id,
+      player.steam_id,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    if (keyword && !searchable.includes(keyword)) return false;
+    const online = isPlayerOnline(player.last_online);
+    if (statusFilter.value === "online" && !online) return false;
+    if (statusFilter.value === "offline" && online) return false;
+    const platform = player.user_id?.split("_")[0];
+    if (platformFilter.value !== "all" && platform !== platformFilter.value) return false;
+    const whitelisted = isWhite.value(player);
+    if (whitelistFilter.value === "whitelist" && !whitelisted) return false;
+    if (whitelistFilter.value === "non-whitelist" && whitelisted) return false;
+    return true;
+  });
+  return filtered.sort((a, b) => {
+    if (sortBy.value === "level") return Number(b.level || 0) - Number(a.level || 0);
+    if (sortBy.value === "nickname") return (a.nickname || "").localeCompare(b.nickname || "");
+    return dayjs(b.last_online).valueOf() - dayjs(a.last_online).valueOf();
+  });
+});
 </script>
 <template>
   <div class="paler-list h-full">
@@ -148,12 +224,34 @@ const displayLastOnline = (last_online) => {
         bordered
         class="relative"
       >
+        <div class="mb-3">
+          <n-input
+            v-model:value="searchValue"
+            clearable
+            :placeholder="$t('filter.searchPlayers')"
+            aria-label="Search players"
+          />
+          <n-grid cols="2" :x-gap="8" :y-gap="8" class="mt-2">
+            <n-gi><n-select v-model:value="statusFilter" :options="statusOptions" aria-label="Player status" /></n-gi>
+            <n-gi><n-select v-model:value="platformFilter" :options="platformOptions" aria-label="Player platform" /></n-gi>
+            <n-gi><n-select v-model:value="whitelistFilter" :options="whitelistOptions" aria-label="Whitelist status" /></n-gi>
+            <n-gi><n-select v-model:value="sortBy" :options="sortOptions" aria-label="Player sorting" /></n-gi>
+          </n-grid>
+          <n-text depth="3" class="block mt-2">
+            {{ $t("filter.resultCount", { count: filteredPlayers.length }) }}
+          </n-text>
+        </div>
         <n-list hoverable clickable>
           <n-list-item
-            v-for="player in playerList"
+            v-for="player in filteredPlayers"
             :key="player.player_uid"
             style="padding: 12px 8px"
             @click="clickGetPlayerInfo(player.player_uid)"
+            @keydown.enter="clickGetPlayerInfo(player.player_uid)"
+            @keydown.space.prevent="clickGetPlayerInfo(player.player_uid)"
+            role="button"
+            tabindex="0"
+            :aria-label="`${player.nickname}, Lv.${player.level}`"
           >
             <template #prefix>
               <n-avatar :src="getUserAvatar()" round></n-avatar>
@@ -224,7 +322,6 @@ const displayLastOnline = (last_online) => {
         <player-detail
           :playerInfo="playerInfo"
           :playerPalsList="playerPalsList"
-          :whiteList="whiteList"
         ></player-detail>
         <n-spin
           size="small"

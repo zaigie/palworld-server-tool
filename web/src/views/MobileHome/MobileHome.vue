@@ -2,32 +2,36 @@
 import {
   AdminPanelSettingsOutlined,
   SupervisedUserCircleRound,
-  SettingsPowerRound,
 } from "@vicons/material";
 import { ChevronsLeft } from "@vicons/tabler";
 import { GameController, LanguageSharp } from "@vicons/ionicons5";
-import { BroadcastTower } from "@vicons/fa";
-import { onMounted, ref } from "vue";
-import { NTag, NButton, useMessage, useDialog } from "naive-ui";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { useMessage } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
 import palMap from "@/assets/pal.json";
-import skillMap from "@/assets/skill.json";
 import PlayerList from "./component/PlayerList.vue";
 import GuildList from "./component/GuildList.vue";
 import PlayerDetail from "./component/PlayerDetail.vue";
 import GuildDetail from "./component/GuildDetail.vue";
 import userStore from "@/stores/model/user";
+import AdminOverview from "@/components/AdminOverview.vue";
+import BackupManager from "@/components/BackupManager.vue";
+import BroadcastComposer from "@/components/BroadcastComposer.vue";
+import RconManager from "@/components/RconManager.vue";
+import ShutdownDialog from "@/components/ShutdownDialog.vue";
+import WhitelistManager from "@/components/WhitelistManager.vue";
+import MapView from "@/views/PcHome/component/MapView.vue";
 
 const { t, locale } = useI18n();
 
 const message = useMessage();
-const dialog = useDialog();
 
 const PALWORLD_TOKEN = "palworld_token";
 
 const loading = ref(false);
 const serverInfo = ref({});
+const serverMetrics = ref({});
 const localeLowerPalMap = ref({});
 const currentDisplay = ref("players");
 const isShowDetail = ref(false);
@@ -38,13 +42,15 @@ const playerInfo = ref({});
 const playerPalsList = ref([]);
 const currentPlayerPalsList = ref([]);
 const guildInfo = ref({});
-const skillTypeList = ref([]);
 const languageOptions = ref([]);
 
 const contentRef = ref(null);
 
 const isLogin = ref(false);
 const authToken = ref("");
+let refreshTimer = null;
+let mediaQuery = null;
+const asArray = (value) => (Array.isArray(value) ? value : []);
 
 const isDarkMode = ref(
   window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -71,18 +77,14 @@ const handleSelectLanguage = (key) => {
   }, 1000);
 };
 
-const getSkillTypeList = () => {
-  if (skillMap[locale.value]) {
-    return Object.values(skillMap[locale.value]).map((item) => item.name);
-  } else {
-    return [];
-  }
-};
-
 // get data
 const getServerInfo = async () => {
   const { data } = await new ApiService().getServerInfo();
-  serverInfo.value = data.value;
+  serverInfo.value = data.value || {};
+};
+const getServerMetrics = async () => {
+  const { data } = await new ApiService().getServerMetrics();
+  serverMetrics.value = data.value || {};
 };
 const getPlayerList = async (is_update_info = true) => {
   getOnlineList();
@@ -90,11 +92,11 @@ const getPlayerList = async (is_update_info = true) => {
     order_by: "last_online",
     desc: true,
   });
-  playerList.value = data.value;
+  playerList.value = asArray(data.value);
 };
 const getGuildList = async () => {
   const { data } = await new ApiService().getGuildList();
-  guildList.value = data.value;
+  guildList.value = asArray(data.value);
 };
 
 const getPlayerInfo = async (player_uid) => {
@@ -184,7 +186,7 @@ const onContentScroll = () => {
 
 const getOnlineList = async () => {
   const { data } = await new ApiService().getOnlinePlayerList();
-  onlinePlayerList.value = data.value;
+  onlinePlayerList.value = asArray(data.value);
 };
 
 // login
@@ -206,11 +208,11 @@ const handleLogin = async () => {
   message.success(t("message.authsuccess"));
   showLoginModal.value = false;
   isLogin.value = true;
+  currentDisplay.value = "overview";
 };
 
 // broadcast
 const showBroadcastModal = ref(false);
-const broadcastText = ref("");
 const handleStartBrodcast = () => {
   // broadcast start
   if (checkAuthToken()) {
@@ -220,48 +222,54 @@ const handleStartBrodcast = () => {
     showLoginModal.value = true;
   }
 };
-const handleBroadcast = async () => {
-  const { data, statusCode } = await new ApiService().sendBroadcast({
-    message: broadcastText.value,
-  });
-  if (statusCode.value === 200) {
-    message.success(t("message.broadcastsuccess"));
-    showBroadcastModal.value = false;
-    broadcastText.value = "";
-  } else {
-    message.error(t("message.broadcastfail", { err: data.value?.error }));
-  }
-};
-
-//shutdown
-const doShutdown = async () => {
-  return await new ApiService().shutdownServer({
-    seconds: 60,
-    message: "Server Will Shutdown After 60 Seconds",
-  });
-};
-
+const showShutdownDialog = ref(false);
+const showRconDrawer = ref(false);
+const showBackupManager = ref(false);
+const showWhitelistManager = ref(false);
 const handleShutdown = () => {
   if (checkAuthToken()) {
-    dialog.warning({
-      title: t("message.warn"),
-      content: t("message.shutdowntip"),
-      positiveText: t("button.confirm"),
-      negativeText: t("button.cancel"),
-      onPositiveClick: async () => {
-        const { data, statusCode } = await doShutdown();
-        if (statusCode.value === 200) {
-          message.success(t("message.shutdownsuccess"));
-          return;
-        } else {
-          message.error(t("message.shutdownfail", { err: data.value?.error }));
-        }
-      },
-      onNegativeClick: () => {},
-    });
+    showShutdownDialog.value = true;
   } else {
     message.error(t("message.requireauth"));
     showLoginModal.value = true;
+  }
+};
+
+const openAuthenticated = (target) => {
+  if (checkAuthToken()) {
+    target.value = true;
+  } else {
+    message.error(t("message.requireauth"));
+    showLoginModal.value = true;
+  }
+};
+
+const adminOptions = computed(() => [
+  { label: t("button.rcon"), key: "rcon" },
+  { label: t("button.backup"), key: "backup" },
+  { label: t("button.whitelist"), key: "whitelist" },
+  { label: t("button.broadcast"), key: "broadcast" },
+  { label: t("button.palconf"), key: "config" },
+  { type: "divider", key: "divider" },
+  {
+    label: t("button.shutdown"),
+    key: "shutdown",
+    props: { style: "color: #d03050" },
+  },
+]);
+
+const handleAdminAction = (key) => {
+  if (key === "rcon") openAuthenticated(showRconDrawer);
+  if (key === "backup") openAuthenticated(showBackupManager);
+  if (key === "whitelist") openAuthenticated(showWhitelistManager);
+  if (key === "broadcast") handleStartBrodcast();
+  if (key === "shutdown") handleShutdown();
+  if (key === "config") {
+    window.open(
+      "https://pal-conf.bluefissure.com/",
+      "_blank",
+      "noopener,noreferrer"
+    );
   }
 };
 
@@ -292,6 +300,14 @@ const toGuilds = async () => {
   currentPage.value = 1;
 
   contentRef.value.scrollTo(0, 0);
+};
+const toOverview = () => {
+  currentDisplay.value = "overview";
+  isShowDetail.value = false;
+};
+const toMap = () => {
+  currentDisplay.value = "map";
+  isShowDetail.value = false;
 };
 const returnList = () => {
   isShowDetail.value = false;
@@ -350,19 +366,24 @@ onMounted(async () => {
     },
     {}
   );
-  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   mediaQuery.addEventListener("change", updateDarkMode);
   isDarkMode.value = mediaQuery.matches;
 
-  skillTypeList.value = getSkillTypeList();
   loading.value = true;
   checkAuthToken();
-  getServerInfo();
-  await getPlayerList();
+  await Promise.all([getServerInfo(), getServerMetrics(), getPlayerList()]);
+  if (isLogin.value) currentDisplay.value = "overview";
   loading.value = false;
-  setInterval(() => {
+  refreshTimer = setInterval(() => {
     getPlayerList(false);
+    getServerMetrics();
   }, 60000);
+});
+
+onBeforeUnmount(() => {
+  clearInterval(refreshTimer);
+  mediaQuery?.removeEventListener("change", updateDarkMode);
 });
 </script>
 
@@ -377,7 +398,9 @@ onMounted(async () => {
         <n-tag type="default" size="small">{{
           serverInfo?.name
             ? `${serverInfo.name + " " + serverInfo.version}`
-            : $t("message.loading")
+            : loading
+              ? $t("message.loading")
+              : $t("status.serverUnavailable")
         }}</n-tag>
       </div>
       <n-space vertical>
@@ -386,7 +409,7 @@ onMounted(async () => {
             $t("status.player_number", { number: playerList?.length })
           }}</n-tag>
           <n-tag type="success" round size="small">{{
-            $t("status.online_number", { number: onlinePlayerList?.length })
+            $t("status.online_number", { number: onlinePlayerList?.length ?? 0 })
           }}</n-tag>
         </n-space>
         <n-space justify="end" class="flex items-center">
@@ -395,7 +418,14 @@ onMounted(async () => {
             :options="languageOptions"
             @select="handleSelectLanguage"
           >
-            <n-button type="default" secondary strong circle size="small">
+            <n-button
+              type="default"
+              secondary
+              strong
+              circle
+              size="small"
+              :aria-label="$t('button.language')"
+            >
               <template #icon>
                 <n-icon><LanguageSharp /></n-icon>
               </template>
@@ -429,7 +459,7 @@ onMounted(async () => {
       </n-space>
     </div>
     <div class="w-full">
-      <div class="rounded-lg" v-if="!loading && playerList.length > 0">
+      <div class="rounded-lg" v-if="!loading">
         <n-layout style="height: calc(100vh - 86px)" has-sider>
           <n-layout-header
             class="flex flex-col justify-between"
@@ -437,44 +467,22 @@ onMounted(async () => {
             bordered
           >
             <div v-if="isLogin" class="flex justify-center items-center px-3">
-              <n-button
-                size="small"
-                type="success"
-                class="mr-2"
-                secondary
-                strong
-                round
-                @click="handleStartBrodcast"
+              <n-dropdown
+                trigger="click"
+                :options="adminOptions"
+                @select="handleAdminAction"
               >
-                <template #icon>
-                  <n-icon>
-                    <BroadcastTower />
-                  </n-icon>
-                </template>
-                {{ $t("button.broadcast") }}
-              </n-button>
-              <n-button
-                size="small"
-                type="error"
-                secondary
-                strong
-                round
-                @click="handleShutdown"
-              >
-                <template #icon>
-                  <n-icon>
-                    <SettingsPowerRound />
-                  </n-icon>
-                </template>
-                {{ $t("button.shutdown") }}
-              </n-button>
+                <n-button size="small" type="primary" secondary strong round>
+                  {{ $t("button.management") }}
+                </n-button>
+              </n-dropdown>
             </div>
             <div v-else></div>
             <div class="flex justify-end">
               <n-button-group size="small" class="w-full">
                 <n-button
                   v-if="isShowDetail"
-                  class="w-20%"
+                  class="flex-1"
                   @click="returnList"
                   type="tertiary"
                   strong
@@ -485,7 +493,17 @@ onMounted(async () => {
                   </n-icon>
                 </n-button>
                 <n-button
-                  :class="isShowDetail ? 'w-40%' : 'w-50%'"
+                  v-if="isLogin && !isShowDetail"
+                  class="flex-1"
+                  @click="toOverview"
+                  :type="currentDisplay === 'overview' ? 'primary' : 'tertiary'"
+                  secondary
+                  strong
+                >
+                  {{ $t("button.overview") }}
+                </n-button>
+                <n-button
+                  class="flex-1"
                   @click="toPlayers"
                   :type="currentDisplay === 'players' ? 'primary' : 'tertiary'"
                   secondary
@@ -499,7 +517,7 @@ onMounted(async () => {
                   {{ $t("button.players") }}
                 </n-button>
                 <n-button
-                  :class="isShowDetail ? 'w-40%' : 'w-50%'"
+                  class="flex-1"
                   @click="toGuilds"
                   :type="currentDisplay === 'guilds' ? 'primary' : 'tertiary'"
                   secondary
@@ -512,6 +530,16 @@ onMounted(async () => {
                   </template>
                   {{ $t("button.guilds") }}
                 </n-button>
+                <n-button
+                  v-if="!isShowDetail"
+                  class="flex-1"
+                  @click="toMap"
+                  :type="currentDisplay === 'map' ? 'primary' : 'tertiary'"
+                  secondary
+                  strong
+                >
+                  {{ $t("button.map") }}
+                </n-button>
               </n-button-group>
             </div>
           </n-layout-header>
@@ -521,6 +549,17 @@ onMounted(async () => {
             ref="contentRef"
             @scroll="onContentScroll"
           >
+            <admin-overview
+              v-if="currentDisplay === 'overview'"
+              :server-info="serverInfo"
+              :server-metrics="serverMetrics"
+              :players="playerList"
+              @open-rcon="openAuthenticated(showRconDrawer)"
+              @open-backup="openAuthenticated(showBackupManager)"
+              @open-broadcast="handleStartBrodcast"
+              @open-config="handleAdminAction('config')"
+            />
+            <map-view v-if="currentDisplay === 'map'" />
             <div v-if="!isShowDetail">
               <!-- list -->
               <player-list
@@ -566,7 +605,6 @@ onMounted(async () => {
     :title="$t('modal.auth')"
     size="huge"
     :bordered="false"
-    :segmented="segmented"
   >
     <div>
       <span class="block pb-2">{{ $t("message.authdesc") }}</span>
@@ -575,6 +613,9 @@ onMounted(async () => {
         show-password-on="click"
         size="large"
         v-model:value="password"
+        :aria-label="$t('modal.auth')"
+        autocomplete="current-password"
+        @keyup.enter="handleLogin"
       ></n-input>
     </div>
     <template #footer>
@@ -595,45 +636,14 @@ onMounted(async () => {
       </div>
     </template>
   </n-modal>
-  <!--  广播 modal -->
-  <n-modal
-    v-model:show="showBroadcastModal"
-    class="custom-card"
-    preset="card"
-    style="width: 90%; max-width: 600px"
-    footer-style="padding: 12px;"
-    content-style="padding: 12px;"
-    header-style="padding: 12px;"
-    :title="$t('modal.broadcast')"
-    size="huge"
-    :bordered="false"
-    :segmented="segmented"
-  >
-    <div>
-      <n-input
-        type="text"
-        show-password-on="click"
-        v-model:value="broadcastText"
-      ></n-input>
-    </div>
-    <template #footer>
-      <div class="flex justify-end">
-        <n-button
-          type="tertiary"
-          @click="
-            () => {
-              showBroadcastModal = false;
-              broadcastText = '';
-            }
-          "
-          >{{ $t("button.cancel") }}</n-button
-        >
-        <n-button class="ml-3 w-40" type="primary" @click="handleBroadcast">{{
-          $t("button.confirm")
-        }}</n-button>
-      </div>
-    </template>
-  </n-modal>
+  <rcon-manager v-model:show="showRconDrawer" />
+  <broadcast-composer v-model:show="showBroadcastModal" />
+  <shutdown-dialog v-model:show="showShutdownDialog" />
+  <backup-manager v-model:show="showBackupManager" />
+  <whitelist-manager
+    v-model:show="showWhitelistManager"
+    :players="playerList"
+  />
 </template>
 <style scoped lang="less">
 :deep .n-layout-scroll-container {
