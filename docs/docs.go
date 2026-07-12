@@ -857,6 +857,225 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/rcon/tasks": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List persisted RCON tasks with their command remark and next run time",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rcon"
+                ],
+                "summary": "List scheduled RCON tasks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/api.RconTaskResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Bind a saved RCON command to a five-field cron expression",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rcon"
+                ],
+                "summary": "Add a scheduled RCON task",
+                "parameters": [
+                    {
+                        "description": "Scheduled RCON task",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/database.RconTask"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.RconTaskResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rcon/tasks/{uuid}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the bound command, arguments, schedule, or enabled state",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rcon"
+                ],
+                "summary": "Update a scheduled RCON task",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Task UUID",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Scheduled RCON task",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/database.RconTask"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.RconTaskResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Unschedule and permanently delete a RCON task",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rcon"
+                ],
+                "summary": "Delete a scheduled RCON task",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Task UUID",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rcon/tasks/{uuid}/run": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Execute the task immediately and persist its result without changing its schedule",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rcon"
+                ],
+                "summary": "Run a scheduled RCON task now",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Task UUID",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.RconTaskResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/rcon/{uuid}": {
             "put": {
                 "security": [
@@ -1395,6 +1614,56 @@ const docTemplate = `{
                 }
             }
         },
+        "api.RconTaskResponse": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "cron": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "last_error": {
+                    "type": "string"
+                },
+                "last_result": {
+                    "type": "string"
+                },
+                "last_run_at": {
+                    "type": "string"
+                },
+                "last_status": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "next_run_at": {
+                    "type": "string"
+                },
+                "rcon_remark": {
+                    "type": "string"
+                },
+                "rcon_uuid": {
+                    "type": "string"
+                },
+                "run_count": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
         "api.SendRconCommandRequest": {
             "type": "object",
             "properties": {
@@ -1596,6 +1865,12 @@ const docTemplate = `{
         "database.OnlinePlayer": {
             "type": "object",
             "properties": {
+                "account_name": {
+                    "type": "string"
+                },
+                "building_count": {
+                    "type": "integer"
+                },
                 "ip": {
                     "type": "string"
                 },
@@ -1621,6 +1896,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "steam_id": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -1693,6 +1971,12 @@ const docTemplate = `{
         "database.Player": {
             "type": "object",
             "properties": {
+                "account_name": {
+                    "type": "string"
+                },
+                "building_count": {
+                    "type": "integer"
+                },
                 "exp": {
                     "type": "integer"
                 },
@@ -1758,6 +2042,9 @@ const docTemplate = `{
                 },
                 "steam_id": {
                     "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             }
         },
@@ -1806,9 +2093,59 @@ const docTemplate = `{
                 }
             }
         },
+        "database.RconTask": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "cron": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "last_error": {
+                    "type": "string"
+                },
+                "last_result": {
+                    "type": "string"
+                },
+                "last_run_at": {
+                    "type": "string"
+                },
+                "last_status": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rcon_uuid": {
+                    "type": "string"
+                },
+                "run_count": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
         "database.TersePlayer": {
             "type": "object",
             "properties": {
+                "account_name": {
+                    "type": "string"
+                },
+                "building_count": {
+                    "type": "integer"
+                },
                 "exp": {
                     "type": "integer"
                 },
@@ -1864,6 +2201,9 @@ const docTemplate = `{
                     }
                 },
                 "steam_id": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }

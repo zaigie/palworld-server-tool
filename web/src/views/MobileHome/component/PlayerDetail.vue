@@ -11,6 +11,10 @@ import skillMap from "@/assets/skill.json";
 import PalDetail from "./PalDetail.vue";
 import userStore from "@/stores/model/user";
 import ApiService from "@/service/api.js";
+import {
+  localizedSkillName,
+  statusPointTranslationKey,
+} from "@/utils/gameLabels";
 
 const { t, locale } = useI18n();
 
@@ -18,6 +22,10 @@ const message = useMessage();
 const dialog = useDialog();
 
 const localeLowerPalMap = ref({});
+const getStatusPointLabel = (rawKey) => {
+  const translationKey = statusPointTranslationKey(rawKey);
+  return translationKey ? t(`statusPoint.${translationKey}`) : rawKey;
+};
 const isDarkMode = ref(
   window.matchMedia("(prefers-color-scheme: dark)").matches
 );
@@ -33,8 +41,7 @@ const emits = defineEmits(["onSearch"]);
 
 const handelPlayerAction = async (type) => {
   if (!isLogin.value) {
-    message.error($t("message.requireauth"));
-    showLoginModal.value = true;
+    message.error(t("message.requireauth"));
     return;
   } else {
     const param = {
@@ -237,7 +244,7 @@ onMounted(async () => {
               v-for="status in Object.entries(playerInfo.status_point)"
               :key="status[0]"
             >
-              <n-statistic :label="status[0]" :value="status[1]" />
+              <n-statistic :label="getStatusPointLabel(status[0])" :value="status[1]" />
             </n-gi>
           </n-grid>
           <template #title>
@@ -381,9 +388,7 @@ onMounted(async () => {
                 :key="skill"
                 color="#fcf0e0"
                 text-color="#ee9b2f"
-                >{{
-                  skillMap[locale][skill] ? skillMap[locale][skill].name : skill
-                }}</n-tag
+                >{{ localizedSkillName(skill, locale, skillMap) }}</n-tag
               >
             </div>
           </n-list-item>

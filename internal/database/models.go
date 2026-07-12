@@ -98,6 +98,22 @@ type RconCommandList struct {
 	RconCommand
 }
 
+type RconTask struct {
+	UUID       string     `json:"uuid"`
+	Name       string     `json:"name"`
+	RconUUID   string     `json:"rcon_uuid"`
+	Content    string     `json:"content"`
+	Cron       string     `json:"cron"`
+	Enabled    bool       `json:"enabled"`
+	CreatedAt  time.Time  `json:"created_at"`
+	UpdatedAt  time.Time  `json:"updated_at"`
+	LastRunAt  *time.Time `json:"last_run_at,omitempty"`
+	LastStatus string     `json:"last_status"`
+	LastResult string     `json:"last_result"`
+	LastError  string     `json:"last_error"`
+	RunCount   int64      `json:"run_count"`
+}
+
 type Items struct {
 	CommonContainerId           []*Item `json:"CommonContainerId"`
 	DropSlotContainerId         []*Item `json:"DropSlotContainerId"`
