@@ -1,12 +1,12 @@
-<h1 align='center'>pst-agent 配備します</h1>
+<h1 align='center'>pst-agent のデプロイ</h1>
 
 <p align="center">
-   <a href="/README.agent.md">简体中文</a> | <a href="/README.agent.en.md">English</a> | <strong>日本語</strong>
+   <a href="/docs/README.agent.md">简体中文</a> | <a href="/docs/README.agent.en.md">English</a> | <strong>日本語</strong>
 </p>
 
 ### Linux
 
-Linux ゲームサーバーと PST 本体を別の場所にデプロイする場合の手順です。PST 本体は通常どおりデプロイし、Web 設定でセーブ元を pst-agent に切り替えます。
+Linux ゲームサーバーと PST 本体を別の場所にデプロイする場合の手順です。通常の[インストール手順](./README.ja.md#インストール)に従って PST 本体をデプロイし、Web 設定でセーブ元を pst-agent に切り替えます。
 
 #### ダウンロード
 
@@ -30,7 +30,7 @@ chmod +x pst-agent
 
 ```bash
 # バックグラウンドで実行し、ログを agent.log に保存
-nohup ./pst-agent --port 8081 -f ...{省略}.../Saved > agent.log 2>&1 &
+nohup ./pst-agent --port 8081 -d ...{省略}.../Saved > agent.log 2>&1 &
 # ログを確認
 tail -f agent.log
 ```
@@ -51,7 +51,7 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 ### Windows
 
-Windows ゲームサーバーと PST 本体を別の場所にデプロイする場合の手順です。PST 本体は通常どおりデプロイし、Web 設定でセーブ元を pst-agent に切り替えます。
+Windows ゲームサーバーと PST 本体を別の場所にデプロイする場合の手順です。通常の[インストール手順](./README.ja.md#インストール)に従って PST 本体をデプロイし、Web 設定でセーブ元を pst-agent に切り替えます。
 
 #### ダウンロード
 

@@ -1,12 +1,12 @@
 <h1 align='center'>pst-agent 部署</h1>
 
 <p align="center">
-   <strong>简体中文</strong> | <a href="/README.agent.en.md">English</a> | <a href="/README.agent.ja.md">日本語</a>
+   <strong>简体中文</strong> | <a href="/docs/README.agent.en.md">English</a> | <a href="/docs/README.agent.ja.md">日本語</a>
 </p>
 
 ### Linux
 
-这里指的是游戏服务器为 Linux，而 pst 本体部署在其它位置。pst 本体仍参考 [安装部署](./README.md#安装部署)，只需在 Web 配置中把存档来源切换为 pst-agent。
+这里指的是游戏服务器为 Linux，而 pst 本体部署在其它位置。pst 本体仍参考 [安装部署](../README.md#安装部署)，只需在 Web 配置中把存档来源切换为 pst-agent。
 
 #### 下载
 
@@ -51,7 +51,7 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 ### Windows
 
-这里指的是游戏服务器为 Windows，而 pst 本体部署在其它位置。pst 本体仍参考 [安装部署](./README.md#安装部署)，只需在 Web 配置中把存档来源切换为 pst-agent。
+这里指的是游戏服务器为 Windows，而 pst 本体部署在其它位置。pst 本体仍参考 [安装部署](../README.md#安装部署)，只需在 Web 配置中把存档来源切换为 pst-agent。
 
 #### 下载
 

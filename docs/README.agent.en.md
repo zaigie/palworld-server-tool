@@ -1,12 +1,12 @@
 <h1 align='center'>pst-agent deployment</h1>
 
 <p align="center">
-   <a href="/README.agent.md">简体中文</a> | <strong>English</strong> | <a href="/README.agent.ja.md">日本語</a>
+   <a href="/docs/README.agent.md">简体中文</a> | <strong>English</strong> | <a href="/docs/README.agent.ja.md">日本語</a>
 </p>
 
 ### Linux
 
-This section covers a Linux game server with the PST main application deployed elsewhere. Deploy PST normally, then select pst-agent as the save source in the Web settings.
+This section covers a Linux game server with the PST main application deployed elsewhere. Follow the regular [installation guide](./README.en.md#installation), then select pst-agent as the save source in the Web settings.
 
 #### Download
 
@@ -51,7 +51,7 @@ kill $(ps aux | grep 'pst-agent' | awk '{print $2}') | head -n 1
 
 ### Windows
 
-This section covers a Windows game server with the PST main application deployed elsewhere. Deploy PST normally, then select pst-agent as the save source in the Web settings.
+This section covers a Windows game server with the PST main application deployed elsewhere. Follow the regular [installation guide](./README.en.md#installation), then select pst-agent as the save source in the Web settings.
 
 #### Download
 

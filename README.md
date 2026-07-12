@@ -1,7 +1,7 @@
 <h1 align='center'>幻兽帕鲁服务器管理工具</h1>
 
 <p align="center">
-   <strong>简体中文</strong> | <a href="/README.en.md">English</a> | <a href="/README.ja.md">日本語</a>
+   <strong>简体中文</strong> | <a href="/docs/README.en.md">English</a> | <a href="/docs/README.ja.md">日本語</a>
 </p>
 
 <p align='center'>
@@ -32,6 +32,8 @@
 
 > [!NOTE]
 > 如果您需要幻兽帕鲁服务器或工具搭建交流，或者需要闭源付费定制功能开发，请加入幻兽帕鲁服务器管理交流群。
+
+![加QQ群](./docs/img/add_group.jpg)
 
 ## 功能截图
 
@@ -114,7 +116,7 @@ docker run -d --name pst-agent \
 
 再按上面的方式启动 PST，不需要为 PST 容器传入配置环境变量。进入 Web 配置，选择“pst-agent”，填写 `http://游戏服务器IP:8081/sync`，并配置 RCON 与 REST API 地址。
 
-`pst-agent` 自身仍使用命令行参数或 `SAVED_DIR` 指定存档目录，详细操作见 [pst-agent 部署教程](./README.agent.md)。
+`pst-agent` 自身仍使用命令行参数或 `SAVED_DIR` 指定存档目录，详细操作见 [pst-agent 部署教程](./docs/README.agent.md)。
 
 ## 首次进入与配置
 
