@@ -1,1 +1,8 @@
 node_modules
+
+# Never bake real player saves or parsed PII into an image.
+**/structure.json
+*.sav
+*.sav.json
+sav_cli_oss/.venv
+sav_cli_oss/__pycache__
