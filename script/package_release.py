@@ -77,7 +77,6 @@ def package(version: str, goos: str, goarch: str, sav_cli: Path, output: Path) -
         if not windows:
             (stage / sav_name).chmod((stage / sav_name).stat().st_mode | 0o111)
             pst.chmod(pst.stat().st_mode | 0o111)
-        shutil.copy2(ROOT / "example" / "config.yaml", stage / "config.yaml")
         shutil.copy2(ROOT / "LICENSE", stage / "LICENSE")
         shutil.copy2(ROOT / "NOTICE", stage / "NOTICE")
         if windows:

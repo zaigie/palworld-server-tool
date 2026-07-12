@@ -3,9 +3,9 @@ package service
 import (
 	"encoding/json"
 
+	"github.com/google/uuid"
 	"github.com/zaigie/palworld-server-tool/internal/database"
 	"go.etcd.io/bbolt"
-	"k8s.io/apimachinery/pkg/util/uuid"
 )
 
 func AddRconCommand(db *bbolt.DB, rcon database.RconCommand) error {
@@ -15,8 +15,8 @@ func AddRconCommand(db *bbolt.DB, rcon database.RconCommand) error {
 		if err != nil {
 			return err
 		}
-		uuid := uuid.NewUUID()
-		return b.Put([]byte(uuid), v)
+		id := uuid.NewString()
+		return b.Put([]byte(id), v)
 	})
 }
 

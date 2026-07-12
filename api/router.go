@@ -54,10 +54,14 @@ func Logger() gin.HandlerFunc {
 	})
 }
 
-func RegisterRouter(r *gin.Engine) {
+func RegisterRouter(r *gin.Engine, onConfigInitialized func()) {
 	r.Use(Logger(), gin.Recovery())
 
 	r.POST("/api/login", loginHandler)
+	r.GET("/api/config/status", getConfigStatus)
+	r.POST("/api/config/initialize", func(c *gin.Context) {
+		initializeConfig(c, onConfigInitialized)
+	})
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	apiGroup := r.Group("/api")
@@ -108,5 +112,10 @@ func RegisterRouter(r *gin.Engine) {
 		authGroup.GET("/backup", listBackups)
 		authGroup.GET("/backup/:backup_id", downloadBackup)
 		authGroup.DELETE("/backup/:backup_id", deleteBackup)
+		authGroup.GET("/config", getConfig)
+		authGroup.PUT("/config", putConfig)
+		authGroup.GET("/config/directories", listDirectories)
+		authGroup.POST("/config/test/save", testSaveConfig)
+		authGroup.POST("/config/test/rcon", testRconConfig)
 	}
 }

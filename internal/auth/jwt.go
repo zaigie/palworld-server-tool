@@ -8,12 +8,19 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
+	"github.com/zaigie/palworld-server-tool/internal/config"
 )
 
-var SecretKey = []byte(viper.GetString("web.password"))
 var prefixBearer = "Bearer "
 var prefixJWT = "JWT "
+
+func signingKey() ([]byte, error) {
+	key := config.CurrentStore().TokenKey()
+	if len(key) == 0 {
+		return nil, fmt.Errorf("administrator password is not initialized")
+	}
+	return key, nil
+}
 
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -33,7 +40,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
-			return SecretKey, nil
+			return signingKey()
 		})
 
 		if err != nil {
@@ -66,7 +73,10 @@ func OptionalJWTMiddleware() gin.HandlerFunc {
 			}
 			if tokenString != "" {
 				token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-					return SecretKey, nil
+					if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+						return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+					}
+					return signingKey()
 				})
 				if err == nil && token != nil {
 					if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -81,10 +91,14 @@ func OptionalJWTMiddleware() gin.HandlerFunc {
 }
 
 func GenerateToken() (string, error) {
+	key, err := signingKey()
+	if err != nil {
+		return "", err
+	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
-	tokenString, err := token.SignedString(SecretKey)
+	tokenString, err := token.SignedString(key)
 	if err != nil {
 		return "", err
 	}

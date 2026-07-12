@@ -3,18 +3,22 @@ package tool
 import (
 	"encoding/base64"
 
-	"github.com/spf13/viper"
+	"github.com/zaigie/palworld-server-tool/internal/config"
 	"github.com/zaigie/palworld-server-tool/internal/executor"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 )
 
 func executeCommand(command string) (*executor.Executor, string, error) {
-	useBase64 := viper.GetBool("rcon.use_base64")
+	return executeCommandWithSettings(command, config.Current().Rcon)
+}
+
+func executeCommandWithSettings(command string, settings config.RconConfig) (*executor.Executor, string, error) {
+	useBase64 := settings.UseBase64
 
 	exec, err := executor.NewExecutor(
-		viper.GetString("rcon.address"),
-		viper.GetString("rcon.password"),
-		viper.GetInt("rcon.timeout"), true)
+		settings.Address,
+		settings.Password,
+		settings.Timeout, true)
 	if err != nil {
 		return nil, "", err
 	}
@@ -38,6 +42,17 @@ func executeCommand(command string) (*executor.Executor, string, error) {
 	}
 
 	return exec, response, nil
+}
+
+// TestRcon runs Palworld's official read-only Info command with the supplied
+// settings. It does not broadcast, mutate players, or change server state.
+func TestRcon(settings config.RconConfig) (string, error) {
+	exec, response, err := executeCommandWithSettings("Info", settings)
+	if err != nil {
+		return "", err
+	}
+	defer exec.Close()
+	return response, nil
 }
 
 func CustomCommand(command string) (string, error) {
