@@ -1,0 +1,50 @@
+# Overlay image: adds the open-source Python sav_cli (Palworld 1.0 capable)
+# on top of the official palworld-server-tool image, replacing the closed
+# sav_cli that can no longer parse 1.0 saves.
+#
+# License: sav_cli_oss is Apache-2.0, but this image links GPL-3.0-or-later
+# runtime deps (palsav-flex/palooz/ooz), so the built image is a
+# GPL-3.0-or-later combined work. See NOTICE at the repo root.
+#
+# Build context is the repo root:
+#   docker build -t pst-oss:1.0 -f docker/Dockerfile.oss .
+FROM jokerwho/palworld-server-tool:latest
+
+# Toolchain: python + a C/C++ compiler to build the native Oodle module
+# (palooz), plus git to fetch the parser source. The base is Alpine
+# (frolvlad/alpine-glibc), so use apk + build-base. libstdc++ from build-base
+# is required at runtime to load the compiled palooz .so, so it stays installed.
+RUN apk add --no-cache python3 py3-pip build-base python3-dev git
+
+# Alpine's system Python is PEP 668 "externally managed"; honor break-system
+# so pip can install into it (harmlessly ignored by older pip).
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+
+# PalworldSaveTools commit validated end-to-end by Phase 1 (parses the real
+# v1.0.0.100427 save). Pinned for reproducible parsing; do not float to main.
+ARG PST_TOOLS_REF=8cb429ae3b1460a6a6a0c31c9964ca8cedb65cc5
+RUN git clone https://github.com/deafdudecomputers/PalworldSaveTools.git /tmp/pst-tools \
+    && git -C /tmp/pst-tools checkout ${PST_TOOLS_REF}
+
+# Parser stack: palooz (native Oodle) first so it satisfies palsav-flex's
+# runtime dep, then orjson + requests, then palsav-flex itself. palooz's
+# setup.py auto-selects GCC flags on non-Windows.
+RUN pip install --no-cache-dir /tmp/pst-tools/src/palsav/palooz \
+    && pip install --no-cache-dir orjson requests \
+    && pip install --no-cache-dir --no-build-isolation /tmp/pst-tools/src/palsav \
+    && rm -rf /tmp/pst-tools
+
+# The OSS parser (sav_cli.py + structurer/world_types/logger).
+COPY sav_cli_oss/ /app/sav_cli_oss/
+
+# Wrapper matching PST's exact invocation:
+#   sav_cli -f <levelFilePath> --request http://127.0.0.1:<port>/api/ --token <jwt>
+# structurer/world_types are imported as siblings of sav_cli.py, so running the
+# script by its absolute path puts its dir on sys.path[0]; cd keeps any relative
+# writes inside the parser dir.
+RUN printf '#!/bin/sh\ncd /app/sav_cli_oss\nexec python3 /app/sav_cli_oss/sav_cli.py "$@"\n' \
+      > /app/sav_cli_oss/sav_cli \
+    && chmod +x /app/sav_cli_oss/sav_cli
+
+# Point PST at the OSS wrapper (overrides the base image's /app/sav_cli).
+ENV SAVE__DECODE_PATH=/app/sav_cli_oss/sav_cli
