@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -21,6 +22,7 @@ import (
 )
 
 var s gocron.Scheduler
+var schedulerMu sync.Mutex
 
 func BackupTask(db *bbolt.DB) {
 	logger.Info("Scheduling backup...\n")
@@ -159,7 +161,7 @@ func SavSync() {
 }
 
 func Schedule(db *bbolt.DB) {
-	s := getScheduler()
+	scheduler := getScheduler()
 
 	playerSyncInterval := time.Duration(viper.GetInt("task.sync_interval"))
 	savSyncInterval := time.Duration(viper.GetInt("save.sync_interval"))
@@ -167,7 +169,7 @@ func Schedule(db *bbolt.DB) {
 
 	if playerSyncInterval > 0 {
 		go PlayerSync(db)
-		_, err := s.NewJob(
+		_, err := scheduler.NewJob(
 			gocron.DurationJob(playerSyncInterval*time.Second),
 			gocron.NewTask(PlayerSync, db),
 		)
@@ -178,7 +180,7 @@ func Schedule(db *bbolt.DB) {
 
 	if savSyncInterval > 0 {
 		go SavSync()
-		_, err := s.NewJob(
+		_, err := scheduler.NewJob(
 			gocron.DurationJob(savSyncInterval*time.Second),
 			gocron.NewTask(SavSync),
 		)
@@ -189,7 +191,7 @@ func Schedule(db *bbolt.DB) {
 
 	if backupInterval > 0 {
 		go BackupTask(db)
-		_, err := s.NewJob(
+		_, err := scheduler.NewJob(
 			gocron.DurationJob(backupInterval*time.Second),
 			gocron.NewTask(BackupTask, db),
 		)
@@ -198,7 +200,7 @@ func Schedule(db *bbolt.DB) {
 		}
 	}
 
-	_, err := s.NewJob(
+	_, err := scheduler.NewJob(
 		gocron.DurationJob(300*time.Second),
 		gocron.NewTask(system.LimitCacheDir, filepath.Join(os.TempDir(), "palworldsav-"), 5),
 	)
@@ -206,7 +208,11 @@ func Schedule(db *bbolt.DB) {
 		logger.Errorf("%v\n", err)
 	}
 
-	s.Start()
+	if err := LoadRconTasks(db); err != nil {
+		logger.Errorf("Failed to load scheduled RCON tasks: %v\n", err)
+	}
+
+	scheduler.Start()
 }
 
 func Shutdown() {
@@ -226,8 +232,10 @@ func initScheduler() gocron.Scheduler {
 }
 
 func getScheduler() gocron.Scheduler {
+	schedulerMu.Lock()
+	defer schedulerMu.Unlock()
 	if s == nil {
-		return initScheduler()
+		s = initScheduler()
 	}
 	return s
 }

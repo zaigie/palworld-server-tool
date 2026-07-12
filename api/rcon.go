@@ -193,7 +193,16 @@ func putRconCommand(c *gin.Context) {
 //	@Router			/api/rcon/{uuid} [delete]
 func removeRconCommand(c *gin.Context) {
 	uuid := c.Param("uuid")
-	err := service.RemoveRconCommand(database.GetDB(), uuid)
+	tasks, err := service.ListRconTasksByCommand(database.GetDB(), uuid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if len(tasks) > 0 {
+		c.JSON(http.StatusConflict, gin.H{"error": "Rcon command is used by scheduled tasks"})
+		return
+	}
+	err = service.RemoveRconCommand(database.GetDB(), uuid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

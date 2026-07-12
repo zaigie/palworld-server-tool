@@ -21,6 +21,39 @@ definitions:
       message:
         type: string
     type: object
+  api.RconTaskResponse:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      cron:
+        type: string
+      enabled:
+        type: boolean
+      last_error:
+        type: string
+      last_result:
+        type: string
+      last_run_at:
+        type: string
+      last_status:
+        type: string
+      name:
+        type: string
+      next_run_at:
+        type: string
+      rcon_remark:
+        type: string
+      rcon_uuid:
+        type: string
+      run_count:
+        type: integer
+      updated_at:
+        type: string
+      uuid:
+        type: string
+    type: object
   api.SendRconCommandRequest:
     properties:
       content:
@@ -151,6 +184,10 @@ definitions:
     type: object
   database.OnlinePlayer:
     properties:
+      account_name:
+        type: string
+      building_count:
+        type: integer
       ip:
         type: string
       last_online:
@@ -168,6 +205,8 @@ definitions:
       player_uid:
         type: string
       steam_id:
+        type: string
+      user_id:
         type: string
     type: object
   database.Pal:
@@ -215,6 +254,10 @@ definitions:
     type: object
   database.Player:
     properties:
+      account_name:
+        type: string
+      building_count:
+        type: integer
       exp:
         type: integer
       full_stomach:
@@ -259,6 +302,8 @@ definitions:
         type: object
       steam_id:
         type: string
+      user_id:
+        type: string
     type: object
   database.PlayerW:
     properties:
@@ -289,8 +334,41 @@ definitions:
       uuid:
         type: string
     type: object
+  database.RconTask:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      cron:
+        type: string
+      enabled:
+        type: boolean
+      last_error:
+        type: string
+      last_result:
+        type: string
+      last_run_at:
+        type: string
+      last_status:
+        type: string
+      name:
+        type: string
+      rcon_uuid:
+        type: string
+      run_count:
+        type: integer
+      updated_at:
+        type: string
+      uuid:
+        type: string
+    type: object
   database.TersePlayer:
     properties:
+      account_name:
+        type: string
+      building_count:
+        type: integer
       exp:
         type: integer
       full_stomach:
@@ -328,6 +406,8 @@ definitions:
           type: integer
         type: object
       steam_id:
+        type: string
+      user_id:
         type: string
     type: object
 info:
@@ -929,6 +1009,146 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Send Rcon Command
+      tags:
+      - Rcon
+  /api/rcon/tasks:
+    get:
+      description: List persisted RCON tasks with their command remark and next run
+        time
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/api.RconTaskResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: List scheduled RCON tasks
+      tags:
+      - Rcon
+    post:
+      consumes:
+      - application/json
+      description: Bind a saved RCON command to a five-field cron expression
+      parameters:
+      - description: Scheduled RCON task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/database.RconTask'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.RconTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add a scheduled RCON task
+      tags:
+      - Rcon
+  /api/rcon/tasks/{uuid}:
+    delete:
+      description: Unschedule and permanently delete a RCON task
+      parameters:
+      - description: Task UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a scheduled RCON task
+      tags:
+      - Rcon
+    put:
+      consumes:
+      - application/json
+      description: Update the bound command, arguments, schedule, or enabled state
+      parameters:
+      - description: Task UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: Scheduled RCON task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/database.RconTask'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.RconTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a scheduled RCON task
+      tags:
+      - Rcon
+  /api/rcon/tasks/{uuid}/run:
+    post:
+      description: Execute the task immediately and persist its result without changing
+        its schedule
+      parameters:
+      - description: Task UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.RconTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Run a scheduled RCON task now
       tags:
       - Rcon
   /api/server:

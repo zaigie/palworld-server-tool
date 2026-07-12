@@ -14,6 +14,10 @@ import whitelistStore from "@/stores/model/whitelist.js";
 import playerToGuildStore from "@/stores/model/playerToGuild.js";
 import userStore from "@/stores/model/user";
 import palItems from "@/assets/items.json";
+import {
+  localizedSkillName,
+  statusPointTranslationKey,
+} from "@/utils/gameLabels";
 
 const { t, locale } = useI18n();
 const PALWORLD_TOKEN = "palworld_token";
@@ -109,10 +113,7 @@ const createPlayerPalsColumns = () => {
               bordered: false,
             },
             {
-              default: () =>
-                skillMap[locale.value][skill]
-                  ? skillMap[locale.value][skill].name
-                  : skill,
+              default: () => localizedSkillName(skill, locale.value, skillMap),
             }
           );
         });
@@ -124,11 +125,7 @@ const createPlayerPalsColumns = () => {
       })),
       filter(value, row) {
         return row.skills.some((skill) => {
-          return (
-            skillMap[locale.value][skill]
-              ? skillMap[locale.value][skill].name
-              : skill
-          ).includes(value);
+          return localizedSkillName(skill, locale.value, skillMap).includes(value);
         });
       },
     },
@@ -182,11 +179,7 @@ const clickSearch = () => {
     currentPalsList.value = playerInfo?.value.pals.filter((item) => {
       return (
         item.skills.some((skill) => {
-          return (
-            skillMap[locale.value][skill]
-              ? skillMap[locale.value][skill].name
-              : skill
-          ).includes(searchValue.value);
+          return localizedSkillName(skill, locale.value, skillMap).includes(searchValue.value);
         }) || getPalName(item.type).includes(searchValue.value)
       );
     });
@@ -396,6 +389,10 @@ const getSkillTypeList = () => {
     return [];
   }
 };
+const getStatusPointLabel = (rawKey) => {
+  const translationKey = statusPointTranslationKey(rawKey);
+  return translationKey ? t(`statusPoint.${translationKey}`) : rawKey;
+};
 const getPalAvatar = (name) => {
   const lowerName = name.toLowerCase();
   return new URL(`../../../assets/pals/${lowerName}.png`, import.meta.url).href;
@@ -507,7 +504,7 @@ const createPlayerItemsColumns = () => {
             v-for="status in Object.entries(playerInfo?.status_point || {})"
             :key="status[0]"
           >
-            <n-statistic :label="status[0]" :value="status[1]" />
+            <n-statistic :label="getStatusPointLabel(status[0])" :value="status[1]" />
           </n-gi>
         </n-grid>
         <template #title>
@@ -669,7 +666,6 @@ const createPlayerItemsColumns = () => {
               class="mt-2"
               size="small"
               :columns="createPlayerPalsColumns()"
-              :row-props="dataRowProps"
               :data="currentPalsList"
               :bordered="false"
               striped
@@ -726,7 +722,7 @@ const createPlayerItemsColumns = () => {
     <n-flex
       justify="end"
       class="absolute bottom-3 right-4"
-      v-if="playerInfo != null && !loadingPlayerDetail && isLogin"
+      v-if="playerInfo != null && isLogin"
     >
       <n-button
         @click="

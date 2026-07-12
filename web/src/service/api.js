@@ -98,6 +98,26 @@ class ApiService extends Service {
     return this.fetch(`/api/rcon/${uuid}`).delete().json();
   }
 
+  async getRconTasks() {
+    return this.fetch(`/api/rcon/tasks`).get().json();
+  }
+
+  async addRconTask(param) {
+    return this.fetch(`/api/rcon/tasks`).post(param).json();
+  }
+
+  async putRconTask(uuid, param) {
+    return this.fetch(`/api/rcon/tasks/${uuid}`).put(param).json();
+  }
+
+  async removeRconTask(uuid) {
+    return this.fetch(`/api/rcon/tasks/${uuid}`).delete().json();
+  }
+
+  async runRconTask(uuid) {
+    return this.fetch(`/api/rcon/tasks/${uuid}/run`).post().json();
+  }
+
   async getBackupList(param) {
     const query = this.generateQuery(param);
     return this.fetch(`/api/backup?${query}`).get().json();
