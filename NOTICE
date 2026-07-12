@@ -1,0 +1,32 @@
+palworld-server-tool
+Copyright 2024 zaigie
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+------------------------------------------------------------------------------
+sav_cli_oss (open-source Palworld 1.0 save parser)
+------------------------------------------------------------------------------
+
+The `sav_cli_oss/` addition is licensed under the Apache License, Version 2.0.
+It is derived from this project's own last open-source `sav_cli`
+(zaigie/palworld-server-tool @ commit fb45624, Apache-2.0).
+
+RUNTIME DEPENDENCIES / COMBINED-WORK LICENSING
+----------------------------------------------
+
+`sav_cli_oss` does not vendor any GPL code, but at runtime it depends on the
+following components, which are licensed under the GNU General Public License,
+version 3.0 or later:
+
+  - palsav-flex   (GPL-3.0-or-later)
+  - palooz        (GPL-3.0-or-later)
+  - ooz           (GPL-3.0, © 2016 Powzix) — an independent, reverse-engineered
+                  reimplementation of the Oodle/Kraken decompression format.
+                  It is NOT RAD Game Tools' / Epic Games' proprietary Oodle SDK.
+
+Because a Docker image built from `docker/Dockerfile.oss` links these
+GPL-3.0-or-later components together with `sav_cli_oss`, that image is a
+combined work licensed under the **GNU General Public License, version 3.0 or
+later**. The corresponding source for the GPL components is available at the
+refs pinned in `docker/Dockerfile.oss` (PalworldSaveTools, which packages
+palsav-flex / palooz / ooz).
