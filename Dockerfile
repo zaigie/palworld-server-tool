@@ -57,11 +57,17 @@ RUN python -m pip install --no-cache-dir -r /tmp/sav-cli-requirements.lock \
 # --------- backend -----------
 FROM ${GO_IMAGE} AS backend-builder
 
-ARG proxy
 ARG version
 
 WORKDIR /app
-ADD . .
+
+# Keep Go module downloads independent from source and map changes so the
+# BuildKit/GitHub Actions cache can reuse this layer across releases. Use Go's
+# default GOPROXY instead of routing release builds through a custom proxy.
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
 
 # Map tiles are versioned as Git LFS objects. Fail early when a checkout left
 # pointer files in place or when the tile pyramid is incomplete.
@@ -73,8 +79,7 @@ COPY --from=web-builder /app/index.html /app/index.html
 COPY --from=pal-conf-builder /app/pal-conf-assets/ /app/assets/
 COPY --from=pal-conf-builder /app/pal-conf.html /app/pal-conf.html
 
-RUN if [ -n "$proxy" ]; then export GOPROXY=https://goproxy.io,direct; fi \
-    && go build -ldflags="-s -w -X 'main.version=${version}'" -o /app/dist/pst main.go
+RUN go build -ldflags="-s -w -X 'main.version=${version}'" -o /app/dist/pst main.go
 
 
 # --------- runtime -----------
