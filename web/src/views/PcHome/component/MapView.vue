@@ -21,7 +21,7 @@ import points from "@/assets/map/points.json";
 
 const { t } = useI18n();
 
-const LAND_SCAPE = [447900, 708920, -999940, -738920];
+const LAND_SCAPE = [349400, 724400, -1099400, -724400];
 
 const api = new ApiService();
 
