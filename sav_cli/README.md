@@ -84,6 +84,24 @@ minor version, exact installed package set, dependency consistency, and output
 contract. Update the lock file deliberately and rerun this command whenever a
 dependency or base image is changed.
 
+The map tile pyramid is stored under `map/` as Git LFS objects. Normal image
+and release builds pull those objects from GitHub and validate all 5,461 PNGs;
+they never download tiles from the original map website. Run `make map` after a
+source checkout before invoking Docker directly. `map_down.py` remains a manual
+maintainer-only refresh utility and is not part of any build.
+
+## Standalone release builds
+
+`.github/workflows/release.yml` builds native `sav_cli` executables on the
+matching GitHub-hosted OS, then packages them with the Go backend and shared web
+assets. Pushes to `main` build all packages as validation artifacts. A
+`v*.*.*` tag whose commit is contained in `main` additionally creates or
+updates the GitHub Release and uploads SHA-256 checksums.
+
+The current matrix covers Linux x86-64, Linux ARM64, Windows x86-64, and macOS
+ARM64. Windows uses MSVC-specific compiler flags for the pinned `palooz`
+source; PyInstaller is always run natively and is not used as a cross-compiler.
+
 ## Run
 
 ```bash

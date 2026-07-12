@@ -4,7 +4,6 @@
 **/dist
 /assets/
 /backups/
-/map/
 *.db
 *.txt
 map_data_cn.js

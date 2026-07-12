@@ -54,20 +54,6 @@ RUN python -m pip install --no-cache-dir -r /tmp/sav-cli-requirements.lock \
     && rm -rf /tmp/pst-tools
 
 
-# --------- map tiles -----------
-FROM ${ALPINE_IMAGE} AS map-downloader
-
-WORKDIR /app
-
-RUN apk add --no-cache python3 py3-pip
-RUN python3 -m venv /opt/map-venv
-COPY docker/map-requirements.lock /tmp/map-requirements.lock
-RUN /opt/map-venv/bin/python -m pip install --no-cache-dir -r /tmp/map-requirements.lock
-COPY map_down.py /app/map_down.py
-RUN /opt/map-venv/bin/python /app/map_down.py \
-    && test "$(find /app/map -type f | wc -l | tr -d ' ')" -eq 5461
-
-
 # --------- backend -----------
 FROM ${GO_IMAGE} AS backend-builder
 
@@ -77,11 +63,15 @@ ARG version
 WORKDIR /app
 ADD . .
 
+# Map tiles are versioned as Git LFS objects. Fail early when a checkout left
+# pointer files in place or when the tile pyramid is incomplete.
+RUN test "$(find /app/map -type f -name '*.png' | wc -l | tr -d ' ')" -eq 5461 \
+    && ! grep -RIl '^version https://git-lfs.github.com/spec/v1$' /app/map
+
 COPY --from=web-builder /app/assets /app/assets
 COPY --from=web-builder /app/index.html /app/index.html
 COPY --from=pal-conf-builder /app/pal-conf-assets/ /app/assets/
 COPY --from=pal-conf-builder /app/pal-conf.html /app/pal-conf.html
-COPY --from=map-downloader /app/map /app/map
 
 RUN if [ -n "$proxy" ]; then export GOPROXY=https://goproxy.io,direct; fi \
     && go build -ldflags="-s -w -X 'main.version=${version}'" -o /app/dist/pst main.go

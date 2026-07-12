@@ -1,0 +1,3 @@
+# Build-only dependency for standalone sav_cli executables.
+# Runtime dependencies remain pinned in sav-cli-requirements.lock.
+pyinstaller==6.21.0
