@@ -370,6 +370,34 @@
         }
     },
     "zh": {
+        "WorldTree_ATK": {
+            "name": "双刃圣剑",
+            "desc": "攻击+50% (对帕鲁生效)，防御-30% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
+        },
+        "WorldTree_DEF": {
+            "name": "守护圣盾",
+            "desc": "防御+50% (对帕鲁生效)，攻击-30% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
+        },
+        "WorldTree_CraftSpeed": {
+            "name": "恶魔之手",
+            "desc": "工作速度+90% (对帕鲁生效)，SAN值下降速度加快+15.0% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
+        },
+        "WorldTree_FullStomach": {
+            "name": "神树苗床",
+            "desc": "减少饱腹度下降速度+50.0% (对帕鲁生效)，生命值-20% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
+        },
+        "WorldTree_Sanity": {
+            "name": "仙人",
+            "desc": "减少SAN值下降速度+50.0% (对帕鲁生效)，工作速度-20% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
+        },
+        "WorldTree_MoveSpeed": {
+            "name": "次元跳跃",
+            "desc": "移动速度提升+50% (对帕鲁生效)，饱腹度下降速度加快+15.0% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
+        },
+        "WorldTree_ATK_DEF": {
+            "name": "破坏神",
+            "desc": "攻击+40% (对帕鲁生效)，防御+20% (对帕鲁生效)，最大HP-50% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
+        },
         "CraftSpeed_up3": {
             "name": "卓绝技艺",
             "desc": "工作速度+75% (对帕鲁生效)"
@@ -433,6 +461,38 @@
         "Salvation": {
             "name": "救世主",
             "desc": "无属性攻击伤害增加30%，草属性攻击伤害增加30%"
+        },
+        "MutationPal_Babysitter": {
+            "name": "育婴师",
+            "desc": "在据点内时，分派到配种牧场的帕鲁的产蛋速度+30%，孵化速度+30%"
+        },
+        "MutationPal_Mutant": {
+            "name": "特殊体质",
+            "desc": "帕鲁和玩家的生命值自然恢复量+50%，防御力+{EffectValue4}%，免疫中毒伤害，免疫灼烧伤害"
+        },
+        "SelfDeathAddItemDrop_up_3": {
+            "name": "慷慨就义",
+            "desc": "自身道具掉落量+100%"
+        },
+        "WorkSuitabilityAddRank_MonsterFarm_2": {
+            "name": "牧场之主",
+            "desc": "牧场的工作适应性+2"
+        },
+        "MutationPal_Immortal": {
+            "name": "不死之身",
+            "desc": "窃取生命+5%，帕鲁生命值自然恢复量+100%，攻击力+15%"
+        },
+        "MutationPal_ExplosionResist": {
+            "name": "重装甲",
+            "desc": "免疫爆破伤害"
+        },
+        "RideJumpCount_Increase1": {
+            "name": "身轻如燕",
+            "desc": "骑乘期间连续跳跃次数+1"
+        },
+        "RideJumpCount_Increase2": {
+            "name": "凌空微步",
+            "desc": "骑乘期间连续跳跃次数+2"
         },
         "CraftSpeed_up2": {
             "name": "工匠精神",
@@ -534,9 +594,33 @@
             "name": "游泳健将",
             "desc": "水上移动速度提升40%"
         },
+        "SelfDeathAddItemDrop_up_2": {
+            "name": "奉献精神",
+            "desc": "自身道具掉落量+50%"
+        },
+        "WorkSuitabilityAddRank_MonsterFarm_1": {
+            "name": "牧场之子",
+            "desc": "牧场的工作适应性+1"
+        },
+        "PlayerSP_DecreaseRate_Passive": {
+            "name": "防过劳帮手",
+            "desc": "玩家的耐力消耗量减缓+5.0%"
+        },
+        "AutoHPRegeneRate_Passive": {
+            "name": "疗愈教练",
+            "desc": "玩家的生命值自然恢复量+5%"
+        },
+        "ReloadSpeedUp_Passive": {
+            "name": "装填大师",
+            "desc": "玩家的装填速度提升+4%"
+        },
         "Noukin": {
             "name": "脑筋",
             "desc": "攻击+30% (对帕鲁生效)，工作速度-50% (对帕鲁生效)"
+        },
+        "Deffence_up2_2": {
+            "name": "重量级",
+            "desc": "防御力+20% (对帕鲁生效)，免疫击退"
         },
         "CraftSpeed_up1": {
             "name": "认真",
@@ -659,7 +743,7 @@
             "desc": "移动速度提升10%"
         },
         "Nocturnal": {
-            "name": "夜行性",
+            "name": "不眠",
             "desc": "即使到夜晚也不会睡觉，会一直工作。"
         },
         "CoolTimeReduction_Up_2": {
@@ -717,6 +801,10 @@
         "SalePrice_Down_1": {
             "name": "寒酸",
             "desc": "交易价格恶化-10%"
+        },
+        "NightOwl": {
+            "name": "夜猫子",
+            "desc": "因为总是熬夜，白天常常睡午觉。"
         },
         "PAL_FullStomach_Up_2": {
             "name": "无底之胃",
