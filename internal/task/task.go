@@ -10,11 +10,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/zaigie/palworld-server-tool/internal/config"
 	"github.com/zaigie/palworld-server-tool/internal/database"
 	"github.com/zaigie/palworld-server-tool/internal/system"
 
 	"github.com/go-co-op/gocron/v2"
-	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/tool"
 	"github.com/zaigie/palworld-server-tool/service"
@@ -42,7 +42,7 @@ func BackupTask(db *bbolt.DB) {
 	}
 	logger.Infof("Auto backup to %s\n", path)
 
-	keepDays := viper.GetInt("save.backup_keep_days")
+	keepDays := config.Current().Save.BackupKeepDays
 	if keepDays == 0 {
 		keepDays = 7
 	}
@@ -64,12 +64,12 @@ func PlayerSync(db *bbolt.DB) {
 	}
 	logger.Info("Player sync done\n")
 
-	playerLogging := viper.GetBool("task.player_logging")
+	playerLogging := config.Current().Task.PlayerLogging
 	if playerLogging {
 		go PlayerLogging(onlinePlayers)
 	}
 
-	kickInterval := viper.GetBool("manage.kick_non_whitelist")
+	kickInterval := config.Current().Manage.KickNonWhitelist
 	if kickInterval {
 		go CheckAndKickPlayers(db, onlinePlayers)
 	}
@@ -89,8 +89,9 @@ var playerCache map[string]string
 var firstPoll = true
 
 func PlayerLogging(players []database.OnlinePlayer) {
-	loginMsg := viper.GetString("task.player_login_message")
-	logoutMsg := viper.GetString("task.player_logout_message")
+	settings := config.Current().Task
+	loginMsg := settings.PlayerLoginMessage
+	logoutMsg := settings.PlayerLogoutMessage
 
 	tmp := make(map[string]string, len(players))
 	for _, player := range players {
@@ -153,7 +154,7 @@ func CheckAndKickPlayers(db *bbolt.DB, players []database.OnlinePlayer) {
 
 func SavSync() {
 	logger.Info("Scheduling Sav sync...\n")
-	err := tool.Decode(viper.GetString("save.path"))
+	err := tool.Decode(config.Current().Save.Path)
 	if err != nil {
 		logger.Errorf("%v\n", err)
 	}
@@ -163,9 +164,10 @@ func SavSync() {
 func Schedule(db *bbolt.DB) {
 	scheduler := getScheduler()
 
-	playerSyncInterval := time.Duration(viper.GetInt("task.sync_interval"))
-	savSyncInterval := time.Duration(viper.GetInt("save.sync_interval"))
-	backupInterval := time.Duration(viper.GetInt("save.backup_interval"))
+	settings := config.Current()
+	playerSyncInterval := time.Duration(settings.Task.SyncInterval)
+	savSyncInterval := time.Duration(settings.Save.SyncInterval)
+	backupInterval := time.Duration(settings.Save.BackupInterval)
 
 	if playerSyncInterval > 0 {
 		go PlayerSync(db)

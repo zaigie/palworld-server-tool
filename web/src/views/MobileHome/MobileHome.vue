@@ -23,6 +23,8 @@ import ShutdownDialog from "@/components/ShutdownDialog.vue";
 import WhitelistManager from "@/components/WhitelistManager.vue";
 import MapView from "@/views/PcHome/component/MapView.vue";
 
+const emit = defineEmits(["open-config"]);
+
 const { t, locale } = useI18n();
 
 const message = useMessage();
@@ -53,7 +55,7 @@ let mediaQuery = null;
 const asArray = (value) => (Array.isArray(value) ? value : []);
 
 const isDarkMode = ref(
-  window.matchMedia("(prefers-color-scheme: dark)").matches
+  window.matchMedia("(prefers-color-scheme: dark)").matches,
 );
 
 const updateDarkMode = (e) => {
@@ -171,7 +173,7 @@ const onLoadPals = () => {
     currentPage.value += 1;
     currentPlayerPalsList.value = playerPalsList.value.slice(
       0,
-      pageSize.value * currentPage.value
+      pageSize.value * currentPage.value,
     );
   }
 };
@@ -245,11 +247,12 @@ const openAuthenticated = (target) => {
 };
 
 const adminOptions = computed(() => [
+  { label: t("configuration.title"), key: "settings" },
   { label: t("button.rcon"), key: "rcon" },
   { label: t("button.backup"), key: "backup" },
   { label: t("button.whitelist"), key: "whitelist" },
   { label: t("button.broadcast"), key: "broadcast" },
-  { label: t("button.palconf"), key: "config" },
+  { label: t("button.palconf"), key: "palconf" },
   { type: "divider", key: "divider" },
   {
     label: t("button.shutdown"),
@@ -259,16 +262,30 @@ const adminOptions = computed(() => [
 ]);
 
 const handleAdminAction = (key) => {
+  if (key === "settings") {
+    if (checkAuthToken()) emit("open-config");
+    else {
+      message.error(t("message.requireauth"));
+      showLoginModal.value = true;
+    }
+  }
   if (key === "rcon") openAuthenticated(showRconDrawer);
   if (key === "backup") openAuthenticated(showBackupManager);
   if (key === "whitelist") openAuthenticated(showWhitelistManager);
   if (key === "broadcast") handleStartBrodcast();
   if (key === "shutdown") handleShutdown();
   if (key === "config") {
+    if (checkAuthToken()) emit("open-config");
+    else {
+      message.error(t("message.requireauth"));
+      showLoginModal.value = true;
+    }
+  }
+  if (key === "palconf") {
     window.open(
       "https://pal-conf.bluefissure.com/",
       "_blank",
-      "noopener,noreferrer"
+      "noopener,noreferrer",
     );
   }
 };
@@ -364,7 +381,7 @@ onMounted(async () => {
       acc[key.toLowerCase()] = palMap[locale.value][key];
       return acc;
     },
-    {}
+    {},
   );
   mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   mediaQuery.addEventListener("change", updateDarkMode);
@@ -409,7 +426,9 @@ onBeforeUnmount(() => {
             $t("status.player_number", { number: playerList?.length })
           }}</n-tag>
           <n-tag type="success" round size="small">{{
-            $t("status.online_number", { number: onlinePlayerList?.length ?? 0 })
+            $t("status.online_number", {
+              number: onlinePlayerList?.length ?? 0,
+            })
           }}</n-tag>
         </n-space>
         <n-space justify="end" class="flex items-center">

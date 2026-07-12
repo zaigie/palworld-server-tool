@@ -36,6 +36,8 @@ import { watch } from "vue";
 import userStore from "@/stores/model/user";
 import { h } from "vue";
 
+const emit = defineEmits(["open-config"]);
+
 const { t, locale } = useI18n();
 
 const message = useMessage();
@@ -57,7 +59,7 @@ const asArray = (value) => (Array.isArray(value) ? value : []);
 const isLogin = ref(false);
 
 const isDarkMode = ref(
-  window.matchMedia("(prefers-color-scheme: dark)").matches
+  window.matchMedia("(prefers-color-scheme: dark)").matches,
 );
 
 const updateDarkMode = (e) => {
@@ -82,7 +84,11 @@ const handleSelectLanguage = (key) => {
 };
 
 const toPalConf = () => {
-  window.open("https://pal-conf.bluefissure.com/", "_blank", "noopener,noreferrer");
+  window.open(
+    "https://pal-conf.bluefissure.com/",
+    "_blank",
+    "noopener,noreferrer",
+  );
 };
 
 const toGithub = () => {
@@ -109,7 +115,8 @@ const isNewVersion = (version, latest) => {
   }
   const currentParts = version.replace(/^v/i, "").split(".").map(Number);
   const latestParts = latest.replace(/^v/i, "").split(".").map(Number);
-  if (currentParts.some(Number.isNaN) || latestParts.some(Number.isNaN)) return false;
+  if (currentParts.some(Number.isNaN) || latestParts.some(Number.isNaN))
+    return false;
   const partCount = Math.max(currentParts.length, latestParts.length);
   for (let i = 0; i < partCount; i++) {
     const currentPart = currentParts[i] || 0;
@@ -189,11 +196,16 @@ const renderIcon = (icon, color = "#666") => {
       },
       {
         default: () => h(icon),
-      }
+      },
     );
   };
 };
 const controlCenterOption = [
+  {
+    label: () => t("configuration.title"),
+    key: "settings",
+    icon: renderIcon(Settings),
+  },
   // {
   //   label: () => {
   //     return h("div", null, {
@@ -248,7 +260,7 @@ const controlCenterOption = [
         },
         {
           default: () => t("button.shutdown"),
-        }
+        },
       );
     },
     key: "shutdown",
@@ -256,7 +268,13 @@ const controlCenterOption = [
   },
 ];
 const handleSelectControlCenter = (key) => {
-  if (key === "palconf") {
+  if (key === "settings") {
+    if (checkAuthToken()) emit("open-config");
+    else {
+      message.error(t("message.requireauth"));
+      showLoginModal.value = true;
+    }
+  } else if (key === "palconf") {
     toPalConf();
   } else if (key === "whitelist") {
     handleWhiteList();
@@ -344,7 +362,7 @@ const toMap = async () => {
 };
 
 const playerToGuildStatus = computed(() =>
-  playerToGuildStore().getUpdateStatus()
+  playerToGuildStore().getUpdateStatus(),
 );
 
 watch(
@@ -354,7 +372,7 @@ watch(
     if (newVal === "players") {
     } else if (newVal === "guilds") {
     }
-  }
+  },
 );
 
 /**
@@ -590,7 +608,9 @@ onMounted(async () => {
               <n-tag type="success" round size="large">{{
                 $t("status.online_number", {
                   number:
-                    serverMetrics?.current_player_num ?? onlinePlayerList?.length ?? 0,
+                    serverMetrics?.current_player_num ??
+                    onlinePlayerList?.length ??
+                    0,
                 })
               }}</n-tag>
             </n-space>
@@ -717,14 +737,17 @@ onMounted(async () => {
               @open-rcon="handleRconDrawer"
               @open-backup="handleBackupList"
               @open-broadcast="handleStartBrodcast"
-              @open-config="toPalConf"
+              @open-config="handleSelectControlCenter('settings')"
             />
             <player-list
               v-if="currentDisplay === 'players'"
               :players="playerList"
               @onWhitelistStatus="getSonWhitelistStatus"
             ></player-list>
-            <guild-list v-if="currentDisplay === 'guilds'" :guilds="guildList"></guild-list>
+            <guild-list
+              v-if="currentDisplay === 'guilds'"
+              :guilds="guildList"
+            ></guild-list>
             <map-view v-if="currentDisplay === 'map'"></map-view>
           </div>
         </n-layout>

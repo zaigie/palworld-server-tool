@@ -3,8 +3,6 @@ name: PST Docker Image CI
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
     tags:
       - "v*.*.*"
 
@@ -66,7 +64,6 @@ jobs:
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=edge,enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
             type=semver,pattern={{version}},enable=${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
             type=raw,value=latest,enable=${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
             type=sha,prefix=manual-,enable=${{ github.event_name == 'workflow_dispatch' }}

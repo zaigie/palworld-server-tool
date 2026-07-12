@@ -2,12 +2,10 @@ package api
 
 import (
 	"net/http"
-	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/auth"
+	"github.com/zaigie/palworld-server-tool/internal/config"
 )
 
 type LoginInfo struct {
@@ -31,15 +29,16 @@ func loginHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	correctPassword := viper.GetString("web.password")
-	if loginInfo.Password != correctPassword {
+	store := config.CurrentStore()
+	if !store.IsInitialized() {
+		c.JSON(http.StatusConflict, gin.H{"error": "administrator password is not initialized"})
+		return
+	}
+	if !store.Authenticate(loginInfo.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "incorrect password"})
 		return
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp": time.Now().Add(time.Hour * 24).Unix(),
-	})
-	tokenString, err := token.SignedString(auth.SecretKey)
+	tokenString, err := auth.GenerateToken()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "could not generate token"})
 		return

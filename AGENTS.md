@@ -28,7 +28,7 @@
    ```
 
 4. 创建 `dev -> main` 的正式 PR。PR 描述应覆盖相较于 `main` 的全部变更、影响范围和验证结果。
-5. Review 没有阻塞问题后合并 PR。正常发版合并不要使用 `[skip ci]`，让 `main` 分支检查正常执行。
+5. Review 没有阻塞问题后合并 PR。合并到 `main` 不应触发发布构建；正式构建只由版本 tag 触发。
 
 ### 2. 创建正式版本 tag
 
@@ -62,7 +62,9 @@ git push origin "$VERSION"
 - `PST-Agent Docker Image CI`
   - 发布 `jokerwho/palworld-server-tool-agent:<version>` 和 `latest`。
 
-不要在 tag 推送后立即手工执行 `gh release create`。Release 由工作流自动创建，避免草稿、重复 Release 或资产缺失。
+仅合并到 `main` 不会运行以上三条发布工作流。
+
+`Native Build and Release` 会先将各平台文件保存为临时 Actions artifacts；最后的 `release` job 会自动下载这些文件、生成校验和，并将全部文件上传为 GitHub Release assets。不要在 tag 推送后手工执行 `gh release create`，也不需要在网页中选择构建文件，以免产生草稿、重复 Release 或资产缺失。
 
 ### 4. Release 资产检查
 

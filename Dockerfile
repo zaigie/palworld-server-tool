@@ -95,8 +95,6 @@ RUN printf '#!/bin/sh\ncd /app/sav_cli_src\nexec /opt/sav-cli-venv/bin/python /a
       > /app/sav_cli \
     && chmod +x /app/sav_cli
 
-ENV SAVE__DECODE_PATH=/app/sav_cli
-
 COPY --from=backend-builder /app/dist/pst /app/pst
 COPY LICENSE NOTICE /app/
 

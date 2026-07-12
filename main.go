@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"flag"
 	"fmt"
 	"io/fs"
 	"net/http"
@@ -11,7 +10,6 @@ import (
 	"syscall"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/api"
 	"github.com/zaigie/palworld-server-tool/docs"
 	"github.com/zaigie/palworld-server-tool/internal/config"
@@ -23,8 +21,6 @@ import (
 
 var (
 	version string = "Develop"
-	cfgFile string
-	conf    config.Config
 )
 
 //go:embed assets/*
@@ -39,11 +35,6 @@ var palConfHTML embed.FS
 //go:embed map/*
 var mapTiles embed.FS
 
-func setupFlags() {
-	flag.StringVar(&cfgFile, "config", "", "config file")
-	flag.Parse()
-}
-
 //	@SecurityDefinitions.apikey	ApiKeyAuth
 //	@in							header
 //	@name						Authorization
@@ -51,15 +42,21 @@ func setupFlags() {
 // @license.name	Apache 2.0
 // @license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
+	configStore, err := config.Open(config.DefaultDatabasePath)
+	if err != nil {
+		logger.Panic(err)
+	}
+	defer configStore.Close()
+	config.SetCurrent(configStore)
+	settings := config.Current()
+	config.SetRuntimeWeb(settings.Web)
+
 	db := database.GetDB()
 	defer db.Close()
 
-	setupFlags()
-	config.Init(cfgFile, &conf)
-
 	docs.SwaggerInfo.Title = "Palworld Manage API"
 	docs.SwaggerInfo.Version = version
-	docs.SwaggerInfo.Host = fmt.Sprintf("127.0.0.1:%d", viper.GetInt("web.port"))
+	docs.SwaggerInfo.Host = fmt.Sprintf("127.0.0.1:%d", settings.Web.Port)
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
@@ -69,7 +66,10 @@ func main() {
 		c.Set("version", version)
 		c.Next()
 	})
-	api.RegisterRouter(router)
+	startScheduler := func() {
+		go task.Schedule(db)
+	}
+	api.RegisterRouter(router, startScheduler)
 
 	assetsFS, _ := fs.Sub(assets, "assets")
 	router.StaticFS("/assets", http.FS(assetsFS))
@@ -94,22 +94,26 @@ func main() {
 	}
 	logger.Info("Starting PalWorld Server Tool...\n")
 	logger.Infof("Version: %s\n", version)
-	logger.Infof("Listening on http://127.0.0.1:%d or http://%s:%d\n", viper.GetInt("web.port"), localIp, viper.GetInt("web.port"))
-	logger.Infof("Swagger on http://127.0.0.1:%d/swagger/index.html\n", viper.GetInt("web.port"))
+	logger.Infof("Listening on http://127.0.0.1:%d or http://%s:%d\n", settings.Web.Port, localIp, settings.Web.Port)
+	logger.Infof("Swagger on http://127.0.0.1:%d/swagger/index.html\n", settings.Web.Port)
 
-	go task.Schedule(db)
 	defer task.Shutdown()
+	if configStore.IsInitialized() {
+		startScheduler()
+	} else {
+		logger.Warn("Administrator password is not initialized; scheduled tasks will start after configuration\n")
+	}
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	go func() {
-		if viper.GetBool("web.tls") {
-			if err := router.RunTLS(fmt.Sprintf(":%d", viper.GetInt("web.port")), viper.GetString("web.cert_path"), viper.GetString("web.key_path")); err != nil {
+		if settings.Web.TLS {
+			if err := router.RunTLS(fmt.Sprintf(":%d", settings.Web.Port), settings.Web.CertPath, settings.Web.KeyPath); err != nil {
 				logger.Errorf("Server exited with TLS error: %v\n", err)
 			}
 		} else {
-			if err := router.Run(fmt.Sprintf(":%d", viper.GetInt("web.port"))); err != nil {
+			if err := router.Run(fmt.Sprintf(":%d", settings.Web.Port)); err != nil {
 				logger.Errorf("Server exited with error: %v\n", err)
 			}
 		}

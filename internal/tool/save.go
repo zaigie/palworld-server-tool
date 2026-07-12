@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/viper"
 	"github.com/zaigie/palworld-server-tool/internal/auth"
+	"github.com/zaigie/palworld-server-tool/internal/config"
 	"github.com/zaigie/palworld-server-tool/internal/database"
 	"github.com/zaigie/palworld-server-tool/internal/logger"
 	"github.com/zaigie/palworld-server-tool/internal/source"
@@ -26,7 +26,7 @@ type Sturcture struct {
 }
 
 func getSavCli() (string, error) {
-	savCliPath := viper.GetString("save.decode_path")
+	savCliPath := config.Current().Save.DecodePath
 	if savCliPath == "" || savCliPath == "/path/to/your/sav_cli" {
 		ed, err := system.GetExecDir()
 		if err != nil {
@@ -56,9 +56,10 @@ func Decode(file string) error {
 	}
 	defer os.RemoveAll(filepath.Dir(levelFilePath))
 
-	baseUrl := fmt.Sprintf("http://127.0.0.1:%d", viper.GetInt("web.port"))
-	if viper.GetBool("web.tls") && !strings.HasSuffix(baseUrl, "/") {
-		baseUrl = viper.GetString("web.public_url")
+	settings := config.RuntimeWeb()
+	baseUrl := fmt.Sprintf("http://127.0.0.1:%d", settings.Port)
+	if settings.TLS && settings.PublicURL != "" && !strings.HasSuffix(baseUrl, "/") {
+		baseUrl = settings.PublicURL
 	}
 
 	requestUrl := fmt.Sprintf("%s/api/", baseUrl)
@@ -83,7 +84,7 @@ func Decode(file string) error {
 }
 
 func Backup() (string, error) {
-	sourcePath := viper.GetString("save.path")
+	sourcePath := config.Current().Save.Path
 
 	levelFilePath, err := getFromSource(sourcePath, "backup")
 	if err != nil {
@@ -150,41 +151,26 @@ func CleanOldBackups(db *bbolt.DB, keepDays int) error {
 }
 
 func getFromSource(file, way string) (string, error) {
-	var levelFilePath string
-	var err error
-
-	if strings.HasPrefix(file, "http://") || strings.HasPrefix(file, "https://") {
-		// http(s)://url
-		levelFilePath, err = source.DownloadFromHttp(file, way)
+	mode := config.Current().Save.SourceMode
+	if mode == "agent" {
+		if !strings.HasPrefix(file, "http://") && !strings.HasPrefix(file, "https://") {
+			return "", errors.New("agent source must be an http:// or https:// pst-agent URL")
+		}
+		levelFilePath, err := source.DownloadFromHttp(file, way)
 		if err != nil {
 			return "", errors.New("error downloading file: " + err.Error())
 		}
-	} else if strings.HasPrefix(file, "k8s://") {
-		// k8s://namespace/pod/container:remotePath
-		namespace, podName, container, remotePath, err := source.ParseK8sAddress(file)
-		if err != nil {
-			return "", errors.New("error parsing k8s address: " + err.Error())
-		}
-		levelFilePath, err = source.CopyFromPod(namespace, podName, container, remotePath, way)
-		if err != nil {
-			return "", errors.New("error copying file from pod: " + err.Error())
-		}
-	} else if strings.HasPrefix(file, "docker://") {
-		// docker://containerID(Name):remotePath
-		containerId, remotePath, err := source.ParseDockerAddress(file)
-		if err != nil {
-			return "", errors.New("error parsing docker address: " + err.Error())
-		}
-		levelFilePath, err = source.CopyFromContainer(containerId, remotePath, way)
-		if err != nil {
-			return "", errors.New("error copying file from container: " + err.Error())
-		}
-	} else {
-		// local file
-		levelFilePath, err = source.CopyFromLocal(file, way)
-		if err != nil {
-			return "", errors.New("error copying file to temporary directory: " + err.Error())
-		}
+		return levelFilePath, nil
+	}
+	if mode != "directory" {
+		return "", errors.New("unsupported save source mode")
+	}
+	if strings.HasPrefix(file, "http://") || strings.HasPrefix(file, "https://") {
+		return "", errors.New("directory source must be a local file system path")
+	}
+	levelFilePath, err := source.CopyFromLocal(file, way)
+	if err != nil {
+		return "", errors.New("error copying file from directory source: " + err.Error())
 	}
 	return levelFilePath, nil
 }
