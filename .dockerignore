@@ -1,6 +1,7 @@
 node_modules
 
 # Never bake real player saves or parsed PII into an image.
+/savs/
 **/structure.json
 *.sav
 *.sav.json

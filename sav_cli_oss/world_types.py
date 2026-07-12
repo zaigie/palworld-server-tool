@@ -145,7 +145,9 @@ class Pal:
             self.type = "Unknow"
 
         self.workspeed = _byte_value(data.get("CraftSpeed"), 0)
-        self.melee = _byte_value(data.get("Talent_Melee"), 0)
+        self.melee = _byte_value(
+            data.get("Talent_HP") or data.get("Talent_Melee"), 0
+        )
         self.ranged = _byte_value(data.get("Talent_Shot"), 0)
         self.defense = _byte_value(data.get("Talent_Defense"), 0)
         self.rank = _byte_value(data.get("Rank"), 1)
