@@ -1,36 +1,28 @@
-# sav_cli_oss — open-source Palworld 1.0 save parser
+# sav_cli — Palworld 1.0 save parser
 
-An open-source replacement for palworld-server-tool's closed
-`sav_cli`, capable of parsing **Palworld 1.0** saves (tested against
+The current `sav_cli` implementation parses **Palworld 1.0** saves (tested against
 `v1.0.0.100427`). It reads a `Level.sav` plus the per-player saves under
 `Players/` and emits the same `{"players": [...], "guilds": [...]}` JSON that
 the palworld-server-tool backend consumes — or PUTs it straight to the backend.
 
-## Why this exists
+## Parser stack
 
-The original `sav_cli` was closed after commit `fb45624`. It was built on the
-`palworld_save_tools` library, whose bundled decoders and the tool's own
-`skip_decode` optimizations no longer parse a 1.0 `Level.sav` (they crash with
-`EOF not reached`).
+The parser uses `palsav-flex` from PalworldSaveTools for Palworld 1.0 mappings
+and `palooz` for Oodle (`PlM1`) decompression. It always performs a full decode.
 
-This version keeps the original structuring logic but rewires it onto
-[`palsav`](../../PalworldSaveTools) (the `palsav-flex` package from
-PalworldSaveTools), which ships full 1.0 mappings and Oodle (`PlM1`)
-decompression, and it does a **full decode** instead of the old skip machinery.
-
-## What changed for 1.0
+## Palworld 1.0 fields
 
 Verified against a real `v1.0.0.100427` save:
 
-| Field | Old (pre-1.0) | 1.0 |
-|-------|---------------|-----|
-| Player/Pal HP | `HP` | **`Hp`** (FixedPoint64 at `.value.Value.value`) |
-| Item slots | `RawData.value.permission.{type_a,item_static_id,type_b}` | **`RawData.value.{slot_index, count, item.static_id}`** |
-| `Level`, talents, ranks | ByteProperty | ByteProperty (number nested at `.value.value`) |
-| `MaxHP`, `ShieldMaxHP`, `MaxSP` | present | **not persisted** in 1.0 player saves (default 0) |
+| Field | Current representation |
+|-------|------------------------|
+| Player/Pal HP | `Hp` (FixedPoint64 at `.value.Value.value`) |
+| Item slots | `RawData.value.{slot_index, count, item.static_id}` |
+| `Level`, talents, ranks | ByteProperty with the number at `.value.value` |
+| `MaxHP`, `ShieldMaxHP`, `MaxSP` | Not persisted; output defaults to 0 |
 
-Guild (`GroupSaveDataMap`) and base-camp (`BaseCampSaveData`) shapes from
-palsav are compatible with the original accessors.
+Guild (`GroupSaveDataMap`) and base-camp (`BaseCampSaveData`) shapes are decoded
+through the current palsav accessors.
 
 ## Setup
 
@@ -74,19 +66,17 @@ else:
 Then `pip install <path>/palooz`. setuptools auto-detects the installed Visual
 Studio Build Tools (verified with MSVC 14.44 / VS 2022+).
 
-## Reproducible Docker build
+## Docker build
 
-`docker/Dockerfile.oss` pins the multi-architecture base image by digest and
-installs Python packages from `docker/sav-cli-requirements.lock`. The palsav
-and palooz sources are pinned separately by `PST_TOOLS_REF`; both local source
-packages are installed without build isolation or dependency resolution so
-their build cannot silently pull newer packages.
+The repository has one root `Dockerfile`. It builds the web UI, `pal-conf`,
+backend, map assets, and this parser into the current application image. The
+runtime base image, Python packages, and PalworldSaveTools source ref are pinned.
 
 Maintainers can rebuild both supported architectures from scratch and parse
 the two local fixtures under `savs/` with:
 
 ```bash
-python3 script/test_sav_cli_oss.py --no-cache
+python3 script/test_sav_cli.py --no-cache
 ```
 
 The test uses disposable containers, verifies the image architecture, Python
@@ -149,8 +139,22 @@ Fields the backend fills itself (`user_id`, `steam_id`, `ip`, `ping`,
 ## License
 
 This code is **Apache-2.0** (derived from zaigie/palworld-server-tool `sav_cli`
-@ `fb45624`). At runtime it depends on `palsav-flex`, `palooz`, and `ooz`, which
-are **GPL-3.0-or-later**; therefore a Docker image built from
-`docker/Dockerfile.oss` is a **GPL-3.0-or-later** combined work. The `ooz`
-decompressor is an independent reimplementation (© 2016 Powzix), not RAD/Epic's
-proprietary Oodle SDK.
+@ `fb45624`). At runtime it depends on `palsav-flex` and its native `palooz`
+dependency. `palooz` wraps a bundled `ooz` implementation so palsav can decode
+Palworld's `PlM1`/Oodle-compressed saves. It is an independent implementation,
+not RAD/Epic's proprietary Oodle SDK.
+
+The `palsav-flex` and `palooz` package metadata declare
+**GPL-3.0-or-later**, and the Powzix Kraken decompressor carries a GPLv3-or-later
+header. However, the bundled palooz source also compiles compressor files whose
+headers explicitly say they are **not GPL** and are for educational use only.
+That conflicts with the package-level license declaration, so downstream users
+must not assume the entire palooz/ooz source tree is uniformly GPL-licensed.
+Confirm the applicable terms with upstream before distributing or publishing an
+image built from the root `Dockerfile`.
+
+`sav_cli` only calls the decompression path. A future distribution-oriented
+build should preferably remove the unused compression API and its restricted
+compressor sources after confirming that the remaining decompressor sources are
+redistributable. The upstream ooz README also warns that the decoder is not
+fuzz-safe; only process trusted server save files, not arbitrary public uploads.

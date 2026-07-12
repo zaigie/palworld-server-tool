@@ -1,5 +1,5 @@
-# Python packages installed into the sav_cli_oss runtime environment.
-# Update these versions deliberately, then run script/test_sav_cli_oss.py.
+# Python packages installed into the sav_cli runtime environment.
+# Update these versions deliberately, then run script/test_sav_cli.py.
 pip==25.0.1
 setuptools==83.0.0
 wheel==0.47.0

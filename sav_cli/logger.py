@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Derived from zaigie/palworld-server-tool sav_cli @ fb45624 (Apache-2.0).
 # Runtime deps (palsav-flex/palooz/ooz) are GPL-3.0-or-later, so a Docker image
-# built from docker/Dockerfile.oss is a GPL-3.0-or-later combined work.
-"""Minimal logger compatible with the original sav_cli's ``log(text, level)``."""
+# built from the root Dockerfile includes these runtime components.
+"""Minimal ``log(text, level)`` implementation used by sav_cli."""
 
 import logging
 

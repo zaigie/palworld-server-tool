@@ -1,11 +1,8 @@
 import argparse
 import asyncio
-import json
 import os
 
 import aiohttp
-import js2py
-import requests
 from tqdm import tqdm
 
 # 重试次数常量
@@ -113,45 +110,6 @@ async def download_images_async(redown=False):
 
     progress_bar.close()
 
-
-def parse_js_file():
-    # 下载JavaScript文件
-    url = "https://paldb.cc/js/map_data_cn.js"
-    response = requests.get(url, timeout=10)
-    with open("map_data_cn.js", "wb") as file:
-        file.write(response.content)
-
-    # 读取JavaScript文件内容
-    with open("map_data_cn.js", "r", encoding="utf-8") as file:
-        js_content = file.read()
-
-    # 使用js2py执行JavaScript代码
-    context = js2py.EvalJs()
-    context.execute(js_content)
-
-    # 提取变量并转换为Python字典
-    fixed_dungeon_obj = context.fixedDungeon.to_dict()
-    fixed_dungeon = list(fixed_dungeon_obj.values())
-
-    # 初始化结果字典
-    result = {"boss_tower": [], "fast_travel": []}
-
-    # 过滤数据并格式化
-    for item in fixed_dungeon:
-        if item["type"] == "Tower":
-            result["boss_tower"].append(
-                [float(item["pos"]["X"]), float(item["pos"]["Y"])]
-            )
-        elif item["type"] == "Fast Travel":
-            result["fast_travel"].append(
-                [float(item["pos"]["X"]), float(item["pos"]["Y"])]
-            )
-
-    # 将结果转换为JSON格式并保存
-    with open("web/src/assets/map/points.json", "w", encoding="utf-8") as json_file:
-        json.dump(result, json_file, ensure_ascii=False, indent=4)
-
-
 if __name__ == "__main__":
     # 添加命令行参数解析
     parser = argparse.ArgumentParser(description="Download tiles from palworld.gg")
@@ -162,6 +120,3 @@ if __name__ == "__main__":
 
     # 运行异步下载
     asyncio.run(download_images_async(args.redown))
-
-    # # 解析JavaScript文件
-    # parse_js_file()

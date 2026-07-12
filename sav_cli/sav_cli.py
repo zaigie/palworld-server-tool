@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Derived from zaigie/palworld-server-tool sav_cli @ fb45624 (Apache-2.0).
 # Runtime deps (palsav-flex/palooz/ooz) are GPL-3.0-or-later, so a Docker image
-# built from docker/Dockerfile.oss is a GPL-3.0-or-later combined work.
-"""Open-source ``sav_cli`` for Palworld 1.0.
+# built from the root Dockerfile includes these runtime components.
+"""``sav_cli`` for Palworld 1.0.
 
 Parses a Level.sav (and per-player saves under ``Players/``) and either writes a
 ``{"players": [...], "guilds": [...]}`` JSON document (default), or PUTs the

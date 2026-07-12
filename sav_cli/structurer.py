@@ -1,19 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # Derived from zaigie/palworld-server-tool sav_cli @ fb45624 (Apache-2.0).
 # Runtime deps (palsav-flex/palooz/ooz) are GPL-3.0-or-later, so a Docker image
-# built from docker/Dockerfile.oss is a GPL-3.0-or-later combined work.
+# built from the root Dockerfile includes these runtime components.
 """Decode a Palworld 1.0 save and structure it into player / guild JSON.
 
-This is the open-source replacement for palworld-server-tool's closed
-``sav_cli``. It rewires the original structurer onto the actively-maintained
-``palsav`` parser (from PalworldSaveTools), which ships full Palworld 1.0
+It uses the ``palsav`` parser from PalworldSaveTools, which ships Palworld 1.0
 mappings (GroupSaveDataMap / character / item-container decoders) plus Oodle
 (``PlM1``) decompression via the native ``palooz`` module.
 
-Unlike the original, this does a *full* decode (no ``skip_decode`` overrides):
-palsav's ``GvasFile.read`` parses a 1.0 Level.sav to a clean trailer without the
-"EOF not reached" crash, and a full decode of a ~260KB compressed / ~4MB
-decompressed Level.sav completes in a couple of seconds.
+The parser performs a full decode. A ~260KB compressed / ~4MB decompressed
+Level.sav completes in a couple of seconds on the validated fixtures.
 """
 
 import os
@@ -26,7 +22,7 @@ from palsav.paltypes import PALWORLD_TYPE_HINTS, PALWORLD_CUSTOM_PROPERTIES
 from world_types import Player, Pal, Guild, BaseCamp
 from logger import log
 
-# Global decode state (mirrors the original sav_cli's module-level globals).
+# Global state shared by the current decode helpers.
 wsd = None
 gvas_file = None
 

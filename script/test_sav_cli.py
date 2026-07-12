@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and validate sav_cli_oss against the local Palworld 1.0 fixtures."""
+"""Build and validate the current image against local Palworld 1.0 saves."""
 
 import argparse
 import json
@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SAVS_DIR = ROOT / "savs"
 OUTPUT_DIR = SAVS_DIR / ".test-output"
-IMAGE_PREFIX = "pst-sav-cli-oss-test"
+IMAGE_PREFIX = "pst-sav-cli-test"
 LOCK_FILE = ROOT / "docker" / "sav-cli-requirements.lock"
 PLATFORMS = ("linux/arm64", "linux/amd64")
 FIXTURES = (
@@ -19,6 +19,7 @@ FIXTURES = (
 )
 BUILD_ONLY_PACKAGES = ("build-base", "git", "python3-dev")
 SOURCE_PACKAGES = {"palooz": "0.2.0", "palsav-flex": "0.2.0"}
+SAV_CLI_PATH = "/app/sav_cli"
 
 
 def locked_python_packages() -> dict[str, str]:
@@ -37,6 +38,25 @@ def image_name(platform: str) -> str:
 
 
 def validate_image(image: str, platform: str) -> dict[str, object]:
+    decode_path = subprocess.check_output(
+        [
+            "docker",
+            "run",
+            "--platform",
+            platform,
+            "--rm",
+            "--entrypoint",
+            "/bin/sh",
+            image,
+            "-c",
+            'printf "%s" "$SAVE__DECODE_PATH"',
+        ],
+        text=True,
+    )
+    assert decode_path == SAV_CLI_PATH, (
+        f"expected SAVE__DECODE_PATH={SAV_CLI_PATH}, got {decode_path}"
+    )
+
     installed_build_packages = [
         package
         for package in BUILD_ONLY_PACKAGES
@@ -205,9 +225,7 @@ def main() -> None:
         ]
         if args.no_cache:
             build_command.extend(("--no-cache", "--pull"))
-        build_command.extend(
-            ("-f", "docker/Dockerfile.oss", "-t", image, ".")
-        )
+        build_command.extend(("-t", image, "."))
         subprocess.run(build_command, cwd=ROOT, check=True)
         print(f"{platform} image: {validate_image(image, platform)}")
 
@@ -228,7 +246,7 @@ def main() -> None:
                         "-v",
                         f"{OUTPUT_DIR}:/out",
                         image,
-                        "/app/sav_cli_oss/sav_cli",
+                        SAV_CLI_PATH,
                         "-f",
                         "/save/Level.sav",
                         "-o",

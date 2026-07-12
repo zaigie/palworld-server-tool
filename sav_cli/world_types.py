@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Derived from zaigie/palworld-server-tool sav_cli @ fb45624 (Apache-2.0).
 # Runtime deps (palsav-flex/palooz/ooz) are GPL-3.0-or-later, so a Docker image
-# built from docker/Dockerfile.oss is a GPL-3.0-or-later combined work.
+# built from the root Dockerfile includes these runtime components.
 """Structured player / pal / guild / base-camp views over a decoded Palworld
 1.0 save.
 
@@ -9,11 +9,10 @@ These classes take the *fully decoded* palsav property trees (see
 ``structurer.py``) and flatten them into the JSON shape that
 palworld-server-tool's backend consumes (``/player`` and ``/guild`` PUTs).
 
-Field access paths were verified against a real v1.0.0.100427 save. Notable
-1.0 changes from the old (closed-source) sav_cli:
+Field access paths were verified against real v1.0.0.100427 saves:
 
-* HP is stored under ``Hp`` (was ``HP``), as a ``FixedPoint64`` struct whose
-  integer lives at ``Hp.value.Value.value``.
+* HP is stored under ``Hp`` as a ``FixedPoint64`` struct whose integer lives at
+  ``Hp.value.Value.value``.
 * ``Level`` / talent / rank values are ``ByteProperty`` with the number nested
   at ``.value.value``.
 * ``MaxHP`` / ``ShieldMaxHP`` / ``MaxSP`` are not persisted in 1.0 player saves
@@ -68,8 +67,7 @@ class Player:
         self.nickname = data["NickName"]["value"] if data.get("NickName") else ""
         self.level = _byte_value(data.get("Level"), 1)
         self.exp = int(data["Exp"]["value"]) if data.get("Exp") else 0
-        # HP was renamed HP -> Hp in 1.0; accept either.
-        self.hp = _fixed_point(data.get("Hp") or data.get("HP"))
+        self.hp = _fixed_point(data.get("Hp"))
         self.max_hp = _fixed_point(data.get("MaxHP"))
         self.shield_hp = _fixed_point(data.get("ShieldHP"))
         self.shield_max_hp = _fixed_point(data.get("ShieldMaxHP"))
@@ -122,7 +120,7 @@ class Pal:
         self.nickname = data["NickName"]["value"] if data.get("NickName") else ""
         self.level = _byte_value(data.get("Level"), 1)
         self.exp = int(data["Exp"]["value"]) if data.get("Exp") else 0
-        self.hp = _fixed_point(data.get("Hp") or data.get("HP"))
+        self.hp = _fixed_point(data.get("Hp"))
         self.max_hp = _fixed_point(data.get("MaxHP"))
         self.gender = (
             data["Gender"]["value"]["value"].split("::")[-1]
@@ -145,9 +143,7 @@ class Pal:
             self.type = "Unknow"
 
         self.workspeed = _byte_value(data.get("CraftSpeed"), 0)
-        self.melee = _byte_value(
-            data.get("Talent_HP") or data.get("Talent_Melee"), 0
-        )
+        self.melee = _byte_value(data.get("Talent_HP"), 0)
         self.ranged = _byte_value(data.get("Talent_Shot"), 0)
         self.defense = _byte_value(data.get("Talent_Defense"), 0)
         self.rank = _byte_value(data.get("Rank"), 1)

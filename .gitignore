@@ -27,6 +27,7 @@ go.work
 /cmd/test
 
 .DS_Store
+__pycache__/
 
 dist
 

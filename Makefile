@@ -1,91 +1,41 @@
-GOHOSTOS:=$(shell go env GOHOSTOS)
-GOPATH:=$(shell go env GOPATH)
 GIT_TAG:=$(shell git describe --tags --abbrev=0)
-PREFIX:=pst_${GIT_TAG}
-OS=$(uname)
-EXT=""
-ifeq ($(OS),Windows_NT)
-    EXT := .exe
-else
-    UNAME_S := $(shell uname -s)
-    ifeq ($(UNAME_S),Linux)
-        EXT :=
-    endif
-endif
+IMAGE?=palworld-server-tool
 
 .PHONY: init
-# 初始化
+# 初始化子模块
 init:
-	go mod download
+	git submodule update --init --recursive
 
 .PHONY: build
-# 构建
-build:
-	rm -rf dist/ && mkdir -p dist/
-
-	pip install requests tdqm
-	python3 map_down.py
-
-	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
-	cd web && pnpm i && pnpm build && cd ..
-	git submodule update --init --recursive
-	cd pal-conf && pnpm i && pnpm build && cd ..
-	mv pal-conf/dist/assets/* assets/
-	mv pal-conf/dist/index.html ./pal-conf.html
-
-	cd module && pip install -r requirements.txt
-	cd module && pyinstaller --onefile sav_cli.py
-	mv module/dist/sav_cli${EXT} ./dist/
-
-	cp example/config.yaml dist/config.yaml
-	go build -o ./dist/pst${EXT} main.go
-
-.PHONY: frontend
-# 仅构建前端
-frontend:
-	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
-	cd web && pnpm i && pnpm build && cd ..
-	git submodule update --init --recursive
-	cd pal-conf && pnpm i && pnpm build && cd ..
-	mv pal-conf/dist/assets/* assets/
-	mv pal-conf/dist/index.html ./pal-conf.html
+# 使用当前 Dockerfile 构建本机架构镜像
+build: init
+	docker build --build-arg version=$(GIT_TAG) -t $(IMAGE):$(GIT_TAG) .
 
 .PHONY: build-pub
-# 为所有平台构建，确保 module/dist 中有所有平台的 sav_cli
-build-pub:
+# 使用当前 Dockerfile 构建 ARM64/AMD64 OCI 镜像包
+build-pub: init
 	rm -rf dist/ && mkdir -p dist/
+	docker buildx build \
+		--platform linux/amd64,linux/arm64 \
+		--build-arg version=$(GIT_TAG) \
+		--output type=oci,dest=dist/$(IMAGE)_$(GIT_TAG).tar \
+		.
 
-	pip install requests tdqm
-	python3 map_down.py
-
-	rm -rf assets && rm -rf index.html && rm -rf pal-conf.html
-	cd web && pnpm i && pnpm build && cd ..
-	git submodule update --init --recursive
-	cd pal-conf && pnpm i && pnpm build && cd ..
+.PHONY: frontend
+# 仅构建前端开发产物
+frontend: init
+	rm -rf assets index.html pal-conf.html
+	cd web && pnpm install --frozen-lockfile && pnpm build
+	cd pal-conf && pnpm install --frozen-lockfile && pnpm build
 	mv pal-conf/dist/assets/* assets/
 	mv pal-conf/dist/index.html ./pal-conf.html
 
-	mkdir -p dist/windows_x86_64 && mkdir -p dist/linux_x86_64 && mkdir -p dist/linux_aarch64
-	GOOS=windows GOARCH=386 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/windows_x86_64/pst.exe main.go
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/linux_x86_64/pst main.go
-	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X 'main.version=${GIT_TAG}'" -o ./dist/linux_aarch64/pst main.go
+.PHONY: test-sav
+# 构建双架构镜像并验证真实存档
+test-sav:
+	python3 script/test_sav_cli.py --no-cache
 
-	GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_windows_x86_64.exe ./cmd/pst-agent/main.go
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_linux_x86_64 ./cmd/pst-agent/main.go
-	GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o ./dist/pst-agent_${GIT_TAG}_linux_aarch64 ./cmd/pst-agent/main.go
-
-	cp module/dist/sav_cli_windows_x86_64.exe dist/windows_x86_64/sav_cli.exe
-	cp module/dist/sav_cli_linux_x86_64 dist/linux_x86_64/sav_cli
-	cp module/dist/sav_cli_linux_aarch64 dist/linux_aarch64/sav_cli
-
-	cp example/config.yaml dist/windows_x86_64/config.yaml
-	cp example/config.yaml dist/linux_x86_64/config.yaml
-	cp example/config.yaml dist/linux_aarch64/config.yaml
-
-	cp script/start.bat dist/windows_x86_64/start.bat
-
-	cd dist && zip -p -r ${PREFIX}_windows_x86_64.zip windows_x86_64/* && tar -czf ${PREFIX}_linux_x86_64.tar.gz linux_x86_64/* && tar -czf ${PREFIX}_linux_aarch64.tar.gz linux_aarch64/* && cd ..
-# show help
+# 显示帮助
 help:
 	@echo ''
 	@echo 'Usage:'
