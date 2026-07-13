@@ -27,8 +27,16 @@ const getStatusPointLabel = (rawKey) => {
   return translationKey ? t(`statusPoint.${translationKey}`) : rawKey;
 };
 const isDarkMode = ref(
-  window.matchMedia("(prefers-color-scheme: dark)").matches
+  window.matchMedia("(prefers-color-scheme: dark)").matches,
 );
+
+const platformColors = {
+  steam: { color: "#223D58", textColor: "#fff" },
+  xbox: { color: "#2B8B2B", textColor: "#fff" },
+  ps5: { color: "#00439C", textColor: "#fff" },
+  mac: { color: "#777", textColor: "#fff" },
+  default: { color: "#d9c36c", textColor: "#fff" },
+};
 
 const isLogin = computed(() => userStore().getLoginInfo().isLogin);
 
@@ -137,10 +145,6 @@ const copyText = async (text) => {
   }
 };
 
-const getUserAvatar = () => {
-  return new URL("@/assets/avatar.webp", import.meta.url).href;
-};
-
 const displayHP = (hp, max_hp) => {
   return (hp / 1000).toFixed(0) + "/" + (max_hp / 1000).toFixed(0);
 };
@@ -167,6 +171,14 @@ const getUnknowPalAvatar = (is_boss = false) => {
   }
   return new URL("@/assets/pals/unknown.png", import.meta.url).href;
 };
+const getPlatformColor = (userId) => {
+  if (!userId) return platformColors.default;
+  return platformColors[userId.split("_")[0]] || platformColors.default;
+};
+const displayLastOnline = (lastOnline) => {
+  if (dayjs(lastOnline).year() < 1970) return "Unknown";
+  return dayjs(lastOnline).format("YYYY-MM-DD HH:mm:ss");
+};
 
 onMounted(async () => {
   locale.value = localStorage.getItem("locale");
@@ -175,145 +187,140 @@ onMounted(async () => {
       acc[key.toLowerCase()] = palMap[locale.value][key];
       return acc;
     },
-    {}
+    {},
   );
 });
 </script>
 
 <template>
-  <div class="player-detail">
+  <div class="player-detail" :class="{ 'is-dark': isDarkMode }">
     <n-layout :native-scrollbar="false">
-      <!-- ban / kick -->
-      <div v-if="isLogin" class="pt-2 px-3" position="absolute">
-        <n-flex justify="space-between">
+      <n-card
+        :bordered="false"
+        v-if="playerInfo.nickname"
+        content-style="padding: 12px 12px 24px"
+      >
+        <section
+          class="mobile-player-overview"
+          aria-labelledby="mobile-player-title"
+        >
+          <div class="mobile-title-row">
+            <h1 id="mobile-player-title" class="mobile-player-title">
+              {{ playerInfo.nickname }}
+            </h1>
+            <n-tag type="primary" round strong>
+              Lv.{{ playerInfo.level }}
+              <template #icon>
+                <n-icon :component="CrownFilled" />
+              </template>
+            </n-tag>
+          </div>
+          <div class="mobile-identity-tags">
+            <n-tag
+              :bordered="false"
+              :type="
+                isPlayerOnline(playerInfo.last_online) ? 'success' : 'error'
+              "
+              round
+              size="small"
+            >
+              {{
+                isPlayerOnline(playerInfo.last_online)
+                  ? $t("status.online")
+                  : $t("status.offline")
+              }}
+            </n-tag>
+            <n-tag
+              v-if="playerInfo.user_id"
+              :bordered="false"
+              round
+              size="small"
+              :color="getPlatformColor(playerInfo.user_id)"
+            >
+              {{ playerInfo.user_id.split("_")[0] }}
+            </n-tag>
+            <span class="mobile-last-online">
+              {{ $t("status.last_online") }}
+              {{ displayLastOnline(playerInfo.last_online) }}
+            </span>
+          </div>
+
+          <div v-if="isLogin" class="mobile-copy-list">
+            <n-button
+              block
+              secondary
+              class="mobile-copy-button"
+              @click="copyText(playerInfo.player_uid)"
+            >
+              <span class="copy-label">UID</span>
+              <span class="copy-value">{{ playerInfo.player_uid }}</span>
+              <template #icon>
+                <n-icon><ContentCopyFilled /></n-icon>
+              </template>
+            </n-button>
+            <n-button
+              block
+              secondary
+              class="mobile-copy-button"
+              @click="copyText(playerInfo.steam_id)"
+            >
+              <span class="copy-label">Steam64</span>
+              <span class="copy-value">
+                {{ playerInfo.steam_id ? playerInfo.steam_id : "--" }}
+              </span>
+              <template #icon>
+                <n-icon><ContentCopyFilled /></n-icon>
+              </template>
+            </n-button>
+          </div>
+
+          <div class="mobile-status-grid">
+            <div
+              v-for="status in Object.entries(playerInfo.status_point || {})"
+              :key="status[0]"
+              class="mobile-status-card"
+            >
+              <span>{{ getStatusPointLabel(status[0]) }}</span>
+              <strong>{{ status[1] }}</strong>
+            </div>
+          </div>
+        </section>
+
+        <n-button-group v-if="isLogin" class="mobile-admin-actions">
           <n-button
             @click="handelPlayerAction('unban')"
             type="success"
-            size="small"
             secondary
             strong
-            round
           >
             <template #icon>
-              <n-icon>
-                <Ban />
-              </n-icon>
+              <n-icon><Ban /></n-icon>
             </template>
             {{ $t("button.unban") }}
           </n-button>
           <n-button
             @click="handelPlayerAction('ban')"
             type="error"
-            size="small"
             secondary
             strong
-            round
           >
             <template #icon>
-              <n-icon>
-                <Ban />
-              </n-icon>
+              <n-icon><Ban /></n-icon>
             </template>
             {{ $t("button.ban") }}
           </n-button>
           <n-button
             @click="handelPlayerAction('kick')"
             type="warning"
-            size="small"
             secondary
             strong
-            round
           >
             <template #icon>
-              <n-icon>
-                <LogOut />
-              </n-icon>
+              <n-icon><LogOut /></n-icon>
             </template>
             {{ $t("button.kick") }}
           </n-button>
-        </n-flex>
-      </div>
-      <n-card
-        :bordered="false"
-        v-if="playerInfo.nickname"
-        content-style="padding: 12px"
-      >
-        <n-page-header>
-          <n-grid :cols="6">
-            <n-gi
-              v-for="status in Object.entries(playerInfo.status_point)"
-              :key="status[0]"
-            >
-              <n-statistic :label="getStatusPointLabel(status[0])" :value="status[1]" />
-            </n-gi>
-          </n-grid>
-          <template #title>
-            <div class="flex items-center w-full">
-              <span class="flex-1 text-sm line-clamp-1 pr-1">
-                {{ playerInfo.nickname }}
-              </span>
-              <n-tag
-                :bordered="false"
-                :type="
-                  isPlayerOnline(playerInfo.last_online) ? 'success' : 'error'
-                "
-                round
-                size="small"
-              >
-                {{
-                  isPlayerOnline(playerInfo.last_online)
-                    ? $t("status.online")
-                    : $t("status.offline")
-                }}
-              </n-tag>
-            </div>
-            <n-tag
-              @click="copyText(playerInfo.player_uid)"
-              class="mt-1 mr-2"
-              type="info"
-              size="small"
-              icon-placement="right"
-              v-if="isLogin"
-              ghost
-            >
-              UID: {{ playerInfo.player_uid }}
-              <template #icon>
-                <n-icon><ContentCopyFilled /></n-icon>
-              </template>
-            </n-tag>
-            <n-tag
-              @click="copyText(playerInfo.steam_id)"
-              class="mt-1"
-              type="info"
-              size="small"
-              icon-placement="right"
-              v-if="isLogin"
-              ghost
-            >
-              Steam64:
-              {{ playerInfo.steam_id ? playerInfo.steam_id : "--" }}
-              <template #icon>
-                <n-icon><ContentCopyFilled /></n-icon>
-              </template>
-            </n-tag>
-          </template>
-          <template #avatar>
-            <n-avatar :src="getUserAvatar()" round></n-avatar>
-          </template>
-          <template #extra>
-            <n-space>
-              <n-tag type="primary" size="small" round strong>
-                Lv.{{ playerInfo.level }}
-                <template #icon>
-                  <n-icon :component="CrownFilled" />
-                </template>
-              </n-tag>
-            </n-space>
-          </template>
-          <template #footer>
-            <!-- <n-flex justify="end">Updated at 2022-01-01</n-flex> -->
-          </template>
-        </n-page-header>
+        </n-button-group>
         <!-- <n-space vertical>
           <n-progress
             type="line"
@@ -340,12 +347,11 @@ onMounted(async () => {
             }}</n-progress
           >
         </n-space> -->
-        <div class="flex w-full mt-5">
+        <div class="pal-search">
           <n-input
-            v-model="searchValue"
+            v-model:value="searchValue"
             :placeholder="$t('input.searchPlaceholder')"
             @update:value="clickSearch"
-            style="border: none"
           >
             <template #suffix>
               <n-icon>
@@ -386,8 +392,11 @@ onMounted(async () => {
                 class="rounded-sm mr-2"
                 size="small"
                 :key="skill"
-                color="#fcf0e0"
-                text-color="#ee9b2f"
+                :color="{
+                  color: isDarkMode ? 'rgba(238, 155, 47, 0.15)' : '#fcf0e0',
+                  textColor: '#ee9b2f',
+                  borderColor: 'transparent',
+                }"
                 >{{ localizedSkillName(skill, locale, skillMap) }}</n-tag
               >
             </div>
@@ -433,3 +442,149 @@ onMounted(async () => {
     <pal-detail :palDetail="palDetail"></pal-detail>
   </n-modal>
 </template>
+
+<style scoped lang="less">
+.mobile-player-overview {
+  padding: 16px;
+  border: 1px solid rgba(64, 152, 252, 0.22);
+  border-radius: 14px;
+  background: linear-gradient(
+    145deg,
+    rgba(64, 152, 252, 0.11),
+    rgba(64, 152, 252, 0.025) 62%,
+    transparent
+  );
+}
+
+.is-dark .mobile-player-overview {
+  border-color: rgba(64, 152, 252, 0.28);
+  background: linear-gradient(
+    145deg,
+    rgba(64, 152, 252, 0.17),
+    rgba(64, 152, 252, 0.045) 62%,
+    transparent
+  );
+}
+
+.mobile-title-row,
+.mobile-identity-tags {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-title-row {
+  gap: 10px;
+}
+
+.mobile-player-title {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.mobile-identity-tags {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.mobile-last-online {
+  color: rgba(24, 24, 28, 0.5);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.is-dark .mobile-last-online {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.mobile-copy-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.mobile-copy-button {
+  min-width: 0;
+}
+
+.copy-label {
+  flex: none;
+  font-weight: 650;
+}
+
+.copy-value {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(24, 24, 28, 0.58);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-dark .copy-value {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.mobile-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.mobile-status-card {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(24, 24, 28, 0.06);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.is-dark .mobile-status-card {
+  border-color: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.mobile-status-card span {
+  display: block;
+  overflow: hidden;
+  color: rgba(24, 24, 28, 0.5);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-dark .mobile-status-card span {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.mobile-status-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 19px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.mobile-admin-actions {
+  width: 100%;
+  display: flex;
+  margin-top: 10px;
+}
+
+.mobile-admin-actions > .n-button {
+  flex: 1;
+}
+
+.pal-search {
+  width: 100%;
+  margin-top: 18px;
+}
+</style>
