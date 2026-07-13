@@ -638,9 +638,11 @@ const createPlayerItemsColumns = () => {
             :key="status[0]"
             class="status-card"
           >
-            <span class="status-label">{{
-              getStatusPointLabel(status[0])
-            }}</span>
+            <span
+              class="status-label"
+              :title="getStatusPointLabel(status[0])"
+              >{{ getStatusPointLabel(status[0]) }}</span
+            >
             <strong class="status-value">{{ status[1] }}</strong>
           </div>
         </div>
@@ -1057,13 +1059,15 @@ const createPlayerItemsColumns = () => {
 }
 
 .status-label {
-  display: block;
+  display: -webkit-box;
+  min-height: 32px;
   overflow: hidden;
   color: rgba(24, 24, 28, 0.52);
   font-size: 12px;
   line-height: 1.35;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .is-dark .status-label {

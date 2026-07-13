@@ -280,7 +280,9 @@ onMounted(async () => {
               :key="status[0]"
               class="mobile-status-card"
             >
-              <span>{{ getStatusPointLabel(status[0]) }}</span>
+              <span :title="getStatusPointLabel(status[0])">
+                {{ getStatusPointLabel(status[0]) }}
+              </span>
               <strong>{{ status[1] }}</strong>
             </div>
           </div>
@@ -552,12 +554,15 @@ onMounted(async () => {
 }
 
 .mobile-status-card span {
-  display: block;
+  display: -webkit-box;
+  min-height: 30px;
   overflow: hidden;
   color: rgba(24, 24, 28, 0.5);
   font-size: 11px;
+  line-height: 1.35;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .is-dark .mobile-status-card span {
