@@ -4,13 +4,12 @@ import pageStore from "@/stores/model/page.js";
 import { ref, onMounted, computed } from "vue";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n";
-import skillMap from "@/assets/skill.json";
-import { NAvatar, NTag } from "naive-ui";
+import { ChevronForward } from "@vicons/ionicons5";
 import PlayerDetail from "./PlayerDetail.vue";
 import playerToGuildStore from "@/stores/model/playerToGuild";
 import whitelistStore from "@/stores/model/whitelist";
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const props = defineProps({
   showWhitelistPlayer: String,
@@ -19,7 +18,7 @@ const props = defineProps({
 const showWhitelistPlayer = computed(() => props.showWhitelistPlayer);
 
 const isDarkMode = ref(
-  window.matchMedia("(prefers-color-scheme: dark)").matches
+  window.matchMedia("(prefers-color-scheme: dark)").matches,
 );
 
 const pageWidth = computed(() => pageStore().getScreenWidth());
@@ -30,7 +29,6 @@ const loadingPlayerDetail = ref(false);
 const playerList = ref([]);
 const playerInfo = ref(null);
 const playerPalsList = ref([]);
-const skillTypeList = ref([]);
 const searchValue = ref("");
 const statusFilter = ref("all");
 const platformFilter = ref("all");
@@ -38,12 +36,12 @@ const whitelistFilter = ref("all");
 const sortBy = ref("last_online");
 // 平台标记颜色
 const platformColors = {
-  steam: { color: '#223D58', textColor: '#fff' },   // 青底白字
-  xbox:  { color: '#2B8B2B', textColor: '#fff' },   // 绿底白字
-  ps5:   { color: '#00439C', textColor: '#fff' },   // 蓝底白字
-  mac:   { color: '#999999', textColor: '#fff' },   // 灰底白字
-  default: { color: '#d9c36c', textColor: '#fff' }  // 其他平台
-}
+  steam: { color: "#223D58", textColor: "#fff" }, // 青底白字
+  xbox: { color: "#2B8B2B", textColor: "#fff" }, // 绿底白字
+  ps5: { color: "#00439C", textColor: "#fff" }, // 蓝底白字
+  mac: { color: "#999999", textColor: "#fff" }, // 灰底白字
+  default: { color: "#d9c36c", textColor: "#fff" }, // 其他平台
+};
 
 // 获取玩家列表
 const getPlayerList = async () => {
@@ -89,7 +87,7 @@ watch(
       await getPlayerInfo(newVal);
       loadingPlayerDetail.value = false;
     }
-  }
+  },
 );
 
 watch(
@@ -120,12 +118,11 @@ onMounted(async () => {
   loadingPlayerDetail.value = true;
   loadingPlayer.value = true;
   await getPlayerList();
-  skillTypeList.value = getSkillTypeList();
   loadingPlayer.value = false;
   if (playerList.value.length > 0) {
     const currentUid = playerToGuildStore().getCurrentUid();
     await getPlayerInfo(
-      currentUid ? currentUid : playerList.value[0].player_uid
+      currentUid ? currentUid : playerList.value[0].player_uid,
     );
     playerToGuildStore().setCurrentUid(null);
   }
@@ -133,24 +130,14 @@ onMounted(async () => {
 });
 
 // 其他操作
-const getUserAvatar = () => {
-  return new URL("@/assets/avatar.webp", import.meta.url).href;
-};
-const getSkillTypeList = () => {
-  if (skillMap[locale.value]) {
-    return Object.values(skillMap[locale.value]).map((item) => item.name);
-  } else {
-    return [];
-  }
-};
 const isPlayerOnline = (last_online) => {
   return dayjs() - dayjs(last_online) < 80000;
 };
 const getPlatformColor = (userId) => {
   if (!userId) return platformColors.default;
-  const platform = userId.split('_')[0];
+  const platform = userId.split("_")[0];
   return platformColors[platform] || platformColors.default;
-}
+};
 const displayLastOnline = (last_online) => {
   if (dayjs(last_online).year() < 1970) {
     return "Unknown";
@@ -166,7 +153,9 @@ const platformOptions = computed(() => {
   );
   return [
     { label: t("filter.allPlatforms"), value: "all" },
-    ...[...platforms].sort().map((platform) => ({ label: platform, value: platform })),
+    ...[...platforms]
+      .sort()
+      .map((platform) => ({ label: platform, value: platform })),
   ];
 });
 const statusOptions = computed(() => [
@@ -201,115 +190,145 @@ const filteredPlayers = computed(() => {
     if (statusFilter.value === "online" && !online) return false;
     if (statusFilter.value === "offline" && online) return false;
     const platform = player.user_id?.split("_")[0];
-    if (platformFilter.value !== "all" && platform !== platformFilter.value) return false;
+    if (platformFilter.value !== "all" && platform !== platformFilter.value)
+      return false;
     const whitelisted = isWhite.value(player);
     if (whitelistFilter.value === "whitelist" && !whitelisted) return false;
     if (whitelistFilter.value === "non-whitelist" && whitelisted) return false;
     return true;
   });
   return filtered.sort((a, b) => {
-    if (sortBy.value === "level") return Number(b.level || 0) - Number(a.level || 0);
-    if (sortBy.value === "nickname") return (a.nickname || "").localeCompare(b.nickname || "");
+    if (sortBy.value === "level")
+      return Number(b.level || 0) - Number(a.level || 0);
+    if (sortBy.value === "nickname")
+      return (a.nickname || "").localeCompare(b.nickname || "");
     return dayjs(b.last_online).valueOf() - dayjs(a.last_online).valueOf();
   });
 });
 </script>
 <template>
-  <div class="paler-list h-full">
+  <div class="paler-list h-full" :class="{ 'is-dark': isDarkMode }">
     <n-layout has-sider class="h-full">
       <n-layout-sider
         :width="smallScreen ? 360 : 400"
-        content-style="padding: 24px;"
+        content-style="padding: 0 16px 16px;"
         :native-scrollbar="false"
         bordered
-        class="relative"
+        class="player-list-sidebar relative"
       >
-        <div class="mb-3">
+        <div class="filter-panel">
           <n-input
             v-model:value="searchValue"
             clearable
+            size="large"
             :placeholder="$t('filter.searchPlayers')"
-            aria-label="Search players"
+            :aria-label="$t('filter.searchPlayers')"
           />
           <n-grid cols="2" :x-gap="8" :y-gap="8" class="mt-2">
-            <n-gi><n-select v-model:value="statusFilter" :options="statusOptions" aria-label="Player status" /></n-gi>
-            <n-gi><n-select v-model:value="platformFilter" :options="platformOptions" aria-label="Player platform" /></n-gi>
-            <n-gi><n-select v-model:value="whitelistFilter" :options="whitelistOptions" aria-label="Whitelist status" /></n-gi>
-            <n-gi><n-select v-model:value="sortBy" :options="sortOptions" aria-label="Player sorting" /></n-gi>
+            <n-gi
+              ><n-select v-model:value="statusFilter" :options="statusOptions"
+            /></n-gi>
+            <n-gi
+              ><n-select
+                v-model:value="platformFilter"
+                :options="platformOptions"
+            /></n-gi>
+            <n-gi
+              ><n-select
+                v-model:value="whitelistFilter"
+                :options="whitelistOptions"
+            /></n-gi>
+            <n-gi
+              ><n-select v-model:value="sortBy" :options="sortOptions"
+            /></n-gi>
           </n-grid>
-          <n-text depth="3" class="block mt-2">
+          <n-text depth="3" class="result-count">
             {{ $t("filter.resultCount", { count: filteredPlayers.length }) }}
           </n-text>
         </div>
-        <n-list hoverable clickable>
+        <n-list class="player-list" :show-divider="false">
           <n-list-item
             v-for="player in filteredPlayers"
             :key="player.player_uid"
-            style="padding: 12px 8px"
+            class="player-row-item"
             @click="clickGetPlayerInfo(player.player_uid)"
             @keydown.enter="clickGetPlayerInfo(player.player_uid)"
             @keydown.space.prevent="clickGetPlayerInfo(player.player_uid)"
             role="button"
             tabindex="0"
             :aria-label="`${player.nickname}, Lv.${player.level}`"
+            :aria-current="
+              playerInfo?.player_uid === player.player_uid ? 'true' : undefined
+            "
           >
-            <template #prefix>
-              <n-avatar :src="getUserAvatar()" round></n-avatar>
-            </template>
-            <div>
-              <div class="flex">
-                <n-tag
-                  :bordered="false"
-                  size="small"
-                  :type="
-                    isPlayerOnline(player.last_online) ? 'success' : 'error'
-                  "
-                  round
-                >
-                  {{
-                    isPlayerOnline(player.last_online)
-                      ? $t("status.online")
-                      : $t("status.offline")
-                  }}
-                </n-tag>
-                <n-tag class="ml-2" type="primary" size="small" round>
-                  Lv.{{ player.level }}
-                </n-tag>
-                <n-tag
-                  v-if="isWhite(player)"
-                  class="ml-2"
-                  :bordered="false"
-                  round
-                  size="small"
-                  :color="{
-                    color: isDarkMode ? '#fff' : '#d9c36c',
-                    textColor: isDarkMode ? '#d9c36c' : '#fff',
-                  }"
-                >
-                  {{ $t("status.whitelist") }}
-                </n-tag>
-                <span class="flex-1 pl-2 font-bold line-clamp-1">
-                  {{ player.nickname }}
+            <div
+              class="player-row"
+              :class="{
+                'is-selected': playerInfo?.player_uid === player.player_uid,
+              }"
+            >
+              <div class="player-row-main">
+                <div class="player-name-line">
+                  <span class="player-name" :title="player.nickname">
+                    {{ player.nickname || "--" }}
+                  </span>
                   <n-tag
-                      v-if="player.user_id"
-                      class=""
-                      style="line-height: 22px;"
-                      :bordered="false"
-                      round
-                      size="small"
-                      :color="getPlatformColor(player.user_id)"
+                    v-if="player.user_id"
+                    :bordered="false"
+                    round
+                    size="small"
+                    :color="getPlatformColor(player.user_id)"
                   >
-                  {{ player.user_id.split("_")[0] }}
-                </n-tag>
-                </span>
+                    {{ player.user_id.split("_")[0] }}
+                  </n-tag>
+                </div>
+                <div class="player-meta-line">
+                  <span class="player-status">
+                    <span
+                      class="status-dot"
+                      :class="
+                        isPlayerOnline(player.last_online)
+                          ? 'is-online'
+                          : 'is-offline'
+                      "
+                    ></span>
+                    {{
+                      isPlayerOnline(player.last_online)
+                        ? $t("status.online")
+                        : $t("status.offline")
+                    }}
+                  </span>
+                  <n-tag :bordered="false" type="primary" size="small" round>
+                    Lv.{{ player.level }}
+                  </n-tag>
+                  <n-tag
+                    v-if="isWhite(player)"
+                    :bordered="false"
+                    round
+                    size="small"
+                    :color="{
+                      color: isDarkMode ? '#fff' : '#d9c36c',
+                      textColor: isDarkMode ? '#d9c36c' : '#fff',
+                    }"
+                  >
+                    {{ $t("status.whitelist") }}
+                  </n-tag>
+                </div>
+                <div class="last-online">
+                  {{ $t("status.last_online") }}
+                  <span>{{ displayLastOnline(player.last_online) }}</span>
+                </div>
               </div>
-              <n-tag :bordered="false" round size="small" class="mt-2">
-                {{ $t("status.last_online") }}:
-                {{ displayLastOnline(player.last_online) }}
-              </n-tag>
+              <n-icon class="row-chevron" size="18">
+                <ChevronForward />
+              </n-icon>
             </div>
           </n-list-item>
         </n-list>
+        <n-empty
+          v-if="!loadingPlayer && filteredPlayers.length === 0"
+          class="empty-state"
+        />
         <n-spin
           size="small"
           v-if="loadingPlayer"
@@ -334,3 +353,172 @@ const filteredPlayers = computed(() => {
     </n-layout>
   </div>
 </template>
+
+<style scoped lang="less">
+.filter-panel {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding: 20px 0 14px;
+  background: #fff;
+}
+
+.is-dark .filter-panel {
+  background: #18181c;
+}
+
+.result-count {
+  display: block;
+  margin-top: 10px;
+  padding: 0 2px;
+  font-size: 13px;
+}
+
+.player-list {
+  background: transparent;
+}
+
+.player-row-item {
+  padding: 0 0 4px !important;
+  outline: none;
+}
+
+.player-row-item:focus-visible .player-row {
+  box-shadow: 0 0 0 2px rgba(64, 152, 252, 0.45);
+}
+
+.player-row {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+
+  &:hover {
+    background: rgba(64, 152, 252, 0.08);
+  }
+
+  &.is-selected {
+    border-color: rgba(64, 152, 252, 0.55);
+    background: rgba(64, 152, 252, 0.12);
+    box-shadow: inset 3px 0 0 #4098fc;
+  }
+}
+
+.is-dark .player-row:hover {
+  background: rgba(64, 152, 252, 0.12);
+}
+
+.is-dark .player-row.is-selected {
+  background: rgba(64, 152, 252, 0.17);
+}
+
+.player-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.player-name-line {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-meta-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 5px;
+}
+
+.player-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(24, 24, 28, 0.65);
+  font-size: 12px;
+}
+
+.is-dark .player-status {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+
+  &.is-online {
+    background: #18a058;
+    box-shadow: 0 0 0 3px rgba(24, 160, 88, 0.14);
+  }
+
+  &.is-offline {
+    background: #d03050;
+  }
+}
+
+.last-online {
+  margin-top: 5px;
+  color: rgba(24, 24, 28, 0.45);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.last-online span {
+  margin-left: 5px;
+  color: rgba(24, 24, 28, 0.68);
+  font-variant-numeric: tabular-nums;
+}
+
+.is-dark .last-online {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.is-dark .last-online span {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.row-chevron {
+  flex: none;
+  color: rgba(24, 24, 28, 0.28);
+  transition: transform 0.18s ease;
+}
+
+.player-row:hover .row-chevron,
+.player-row.is-selected .row-chevron {
+  color: #4098fc;
+  transform: translateX(2px);
+}
+
+.is-dark .row-chevron {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.empty-state {
+  padding: 48px 12px;
+}
+</style>

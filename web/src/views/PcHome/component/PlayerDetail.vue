@@ -31,8 +31,16 @@ const message = useMessage();
 const dialog = useDialog();
 
 const isDarkMode = ref(
-  window.matchMedia("(prefers-color-scheme: dark)").matches
+  window.matchMedia("(prefers-color-scheme: dark)").matches,
 );
+
+const platformColors = {
+  steam: { color: "#223D58", textColor: "#fff" },
+  xbox: { color: "#2B8B2B", textColor: "#fff" },
+  ps5: { color: "#00439C", textColor: "#fff" },
+  mac: { color: "#777", textColor: "#fff" },
+  default: { color: "#d9c36c", textColor: "#fff" },
+};
 
 const localeLowerPalMap = ref({});
 const skillTypeList = ref([]);
@@ -70,7 +78,7 @@ const createPlayerPalsColumns = () => {
             },
             {
               default: () => (row.gender == "Male" ? "♂" : "♀"),
-            }
+            },
           ),
           h(
             "div",
@@ -83,7 +91,7 @@ const createPlayerPalsColumns = () => {
             },
             {
               default: () => getPalName(row.type),
-            }
+            },
           ),
         ];
       },
@@ -114,7 +122,7 @@ const createPlayerPalsColumns = () => {
             },
             {
               default: () => localizedSkillName(skill, locale.value, skillMap),
-            }
+            },
           );
         });
         return skills;
@@ -125,7 +133,9 @@ const createPlayerPalsColumns = () => {
       })),
       filter(value, row) {
         return row.skills.some((skill) => {
-          return localizedSkillName(skill, locale.value, skillMap).includes(value);
+          return localizedSkillName(skill, locale.value, skillMap).includes(
+            value,
+          );
         });
       },
     },
@@ -139,7 +149,7 @@ const createPlayerPalsColumns = () => {
             size: "small",
             onClick: () => showPalDetail(row),
           },
-          { default: () => t("button.detail") }
+          { default: () => t("button.detail") },
         );
       },
     },
@@ -154,7 +164,7 @@ watch(
     paginationReactive.pageSize = 10;
     searchValue.value = "";
     mergeItems();
-  }
+  },
 );
 
 // 游戏用户的帕鲁列表分页，搜索
@@ -179,7 +189,9 @@ const clickSearch = () => {
     currentPalsList.value = playerInfo?.value.pals.filter((item) => {
       return (
         item.skills.some((skill) => {
-          return localizedSkillName(skill, locale.value, skillMap).includes(searchValue.value);
+          return localizedSkillName(skill, locale.value, skillMap).includes(
+            searchValue.value,
+          );
         }) || getPalName(item.type).includes(searchValue.value)
       );
     });
@@ -241,7 +253,7 @@ const addWhiteData = ref({
 });
 const addWhiteList = async () => {
   const { data, statusCode } = await new ApiService().addWhitelist(
-    addWhiteData
+    addWhiteData,
   );
   if (statusCode.value === 200) {
     message.success(t("message.addwhitesuccess"));
@@ -370,7 +382,7 @@ onMounted(async () => {
       acc[key.toLowerCase()] = palMap[locale.value][key];
       return acc;
     },
-    {}
+    {},
   );
 });
 
@@ -379,9 +391,6 @@ const getDarkModeColor = () => {
   return isDarkMode.value ? "#fff" : "#000";
 };
 
-const getUserAvatar = () => {
-  return new URL("@/assets/avatar.webp", import.meta.url).href;
-};
 const getSkillTypeList = () => {
   if (skillMap[locale.value]) {
     return Object.values(skillMap[locale.value]).map((item) => item.name);
@@ -415,6 +424,14 @@ const getUnknowPalAvatar = (is_boss = false) => {
 const isPlayerOnline = (last_online) => {
   return dayjs() - dayjs(last_online) < 80000;
 };
+const getPlatformColor = (userId) => {
+  if (!userId) return platformColors.default;
+  return platformColors[userId.split("_")[0]] || platformColors.default;
+};
+const displayLastOnline = (lastOnline) => {
+  if (dayjs(lastOnline).year() < 1970) return "Unknown";
+  return dayjs(lastOnline).format("YYYY-MM-DD HH:mm:ss");
+};
 
 const displayHP = (hp, max_hp) => {
   return (hp / 1000).toFixed(0) + "/" + (max_hp / 1000).toFixed(0);
@@ -435,7 +452,7 @@ const mergeItems = () => {
   for (const [containerId, items] of Object.entries(playerInfo.value.items)) {
     mergedItems.value[containerId] = items.map((item) => {
       const frontendItem = palItems[locale.value].find(
-        (frontItem) => frontItem.id === item.ItemId
+        (frontItem) => frontItem.id === item.ItemId,
       );
       if (!frontendItem) {
         return {
@@ -491,134 +508,145 @@ const createPlayerItemsColumns = () => {
 </script>
 
 <template>
-  <div class="player-detail">
+  <div class="player-detail" :class="{ 'is-dark': isDarkMode }">
     <n-card
-      content-style="padding-bottom:64px;"
+      content-style="padding: 24px 28px 36px;"
       id="player-info"
       :bordered="false"
       v-if="playerInfo?.nickname"
     >
-      <n-page-header>
-        <n-grid :cols="6">
-          <n-gi
+      <section class="player-overview" aria-labelledby="player-detail-title">
+        <div class="overview-heading">
+          <div class="player-identity">
+            <div class="player-title-row">
+              <h1 id="player-detail-title" class="player-title">
+                {{ playerInfo?.nickname }}
+              </h1>
+              <n-tag type="primary" size="large" round strong>
+                Lv.{{ playerInfo?.level }}
+                <template #icon>
+                  <n-icon :component="CrownFilled" />
+                </template>
+              </n-tag>
+            </div>
+            <div class="identity-tags">
+              <n-tag
+                :bordered="false"
+                :type="
+                  isPlayerOnline(playerInfo?.last_online) ? 'success' : 'error'
+                "
+                size="small"
+                round
+              >
+                {{
+                  isPlayerOnline(playerInfo?.last_online)
+                    ? $t("status.online")
+                    : $t("status.offline")
+                }}
+              </n-tag>
+              <n-tag
+                v-if="playerInfo?.user_id"
+                :bordered="false"
+                round
+                size="small"
+                :color="getPlatformColor(playerInfo.user_id)"
+              >
+                {{ playerInfo.user_id.split("_")[0] }}
+              </n-tag>
+              <n-tag
+                v-if="isWhite(playerInfo)"
+                :bordered="false"
+                round
+                size="small"
+                :color="{
+                  color: isDarkMode ? '#fff' : '#d9c36c',
+                  textColor: isDarkMode ? '#d9c36c' : '#fff',
+                }"
+              >
+                {{ $t("status.whitelist") }}
+              </n-tag>
+              <span class="last-online-text">
+                {{ $t("status.last_online") }}
+                {{ displayLastOnline(playerInfo?.last_online) }}
+              </span>
+            </div>
+          </div>
+          <n-button
+            @click="toGuilds(playerInfo?.player_uid)"
+            type="warning"
+            secondary
+            strong
+          >
+            {{ $t("button.viewGuild") }}
+            <template #icon>
+              <n-icon><PersonSearchSharp /></n-icon>
+            </template>
+          </n-button>
+        </div>
+
+        <div v-if="isLogin" class="identity-copy-list">
+          <n-button
+            class="identity-copy"
+            secondary
+            @click="copyText(playerInfo?.player_uid)"
+          >
+            <span class="copy-label">UID</span>
+            <span class="copy-value">{{ playerInfo?.player_uid }}</span>
+            <template #icon>
+              <n-icon><ContentCopyFilled /></n-icon>
+            </template>
+          </n-button>
+          <n-button
+            class="identity-copy"
+            secondary
+            @click="copyText(playerInfo?.steam_id)"
+          >
+            <span class="copy-label">Steam64</span>
+            <span class="copy-value">
+              {{ playerInfo.steam_id ? playerInfo.steam_id : "--" }}
+            </span>
+            <template #icon>
+              <n-icon><ContentCopyFilled /></n-icon>
+            </template>
+          </n-button>
+        </div>
+
+        <div
+          v-if="
+            playerInfo.ip ||
+            playerInfo.ping ||
+            playerInfo.location_x ||
+            playerInfo.location_y
+          "
+          class="runtime-meta"
+        >
+          <span v-if="playerInfo.ip">IP {{ playerInfo.ip }}</span>
+          <span v-if="playerInfo.ping">
+            Ping {{ playerInfo.ping.toFixed(2) }}
+          </span>
+          <span v-if="playerInfo.location_x"
+            >X {{ playerInfo.location_x }}</span
+          >
+          <span v-if="playerInfo.location_y"
+            >Y {{ playerInfo.location_y }}</span
+          >
+        </div>
+
+        <div class="status-grid">
+          <div
             v-for="status in Object.entries(playerInfo?.status_point || {})"
             :key="status[0]"
+            class="status-card"
           >
-            <n-statistic :label="getStatusPointLabel(status[0])" :value="status[1]" />
-          </n-gi>
-        </n-grid>
-        <template #title>
-          <div class="flex items-center flex-wrap space-x-2">
-            <span>
-              {{ playerInfo?.nickname }}
-            </span>
-            <n-tag
-              :bordered="false"
-              :type="
-                isPlayerOnline(playerInfo?.last_online) ? 'success' : 'error'
-              "
-              size="small"
-              round
-              >{{
-                isPlayerOnline(playerInfo?.last_online)
-                  ? $t("status.online")
-                  : $t("status.offline")
-              }}</n-tag
+            <span
+              class="status-label"
+              :title="getStatusPointLabel(status[0])"
+              >{{ getStatusPointLabel(status[0]) }}</span
             >
-            <n-tag
-              v-if="isWhite(playerInfo)"
-              :bordered="false"
-              round
-              size="small"
-              :color="{
-                color: isDarkMode ? '#fff' : '#d9c36c',
-                textColor: isDarkMode ? '#d9c36c' : '#fff',
-              }"
-            >
-              {{ $t("status.whitelist") }}
-            </n-tag>
-            <n-button
-              @click="copyText(playerInfo?.player_uid)"
-              type="info"
-              size="small"
-              icon-placement="right"
-              v-if="isLogin"
-              ghost
-            >
-              UID: {{ playerInfo?.player_uid }}
-              <template #icon>
-                <n-icon><ContentCopyFilled /></n-icon>
-              </template>
-            </n-button>
-            <n-button
-              @click="copyText(playerInfo?.steam_id)"
-              type="info"
-              size="small"
-              icon-placement="right"
-              v-if="isLogin"
-              ghost
-            >
-              Steam64:
-              {{ playerInfo.steam_id ? playerInfo.steam_id : "--" }}
-              <template #icon>
-                <n-icon><ContentCopyFilled /></n-icon>
-              </template>
-            </n-button>
-            <n-button
-              @click="toGuilds(playerInfo?.player_uid)"
-              size="small"
-              type="warning"
-              icon-placement="right"
-              ghost
-            >
-              {{ $t("button.viewGuild") }}
-              <template #icon>
-                <n-icon><PersonSearchSharp /></n-icon>
-              </template>
-            </n-button>
+            <strong class="status-value">{{ status[1] }}</strong>
           </div>
-          <div class="flex items-center mt-2 space-x-2">
-            <n-tag v-if="playerInfo.ip" :bordered="false" round size="small">
-              IP: {{ playerInfo.ip }}
-            </n-tag>
-            <n-tag v-if="playerInfo.ping" :bordered="false" round size="small">
-              Ping: {{ playerInfo.ping.toFixed(2) }}
-            </n-tag>
-            <n-tag
-              v-if="playerInfo.location_x"
-              :bordered="false"
-              round
-              size="small"
-            >
-              X: {{ playerInfo.location_x }}
-            </n-tag>
-            <n-tag
-              v-if="playerInfo.location_y"
-              :bordered="false"
-              round
-              size="small"
-            >
-              Y: {{ playerInfo.location_y }}
-            </n-tag>
-          </div>
-        </template>
-        <template #avatar>
-          <n-avatar :src="getUserAvatar()" round></n-avatar>
-        </template>
-        <template #extra>
-          <n-space>
-            <n-tag type="primary" size="large" round strong>
-              Lv.{{ playerInfo?.level }}
-              <template #icon>
-                <n-icon :component="CrownFilled" />
-              </template>
-            </n-tag>
-          </n-space>
-        </template>
-        <template #footer>
-          <!-- <n-flex justify="end">Updated at 2022-01-01</n-flex> -->
-        </template>
-      </n-page-header>
+        </div>
+      </section>
       <!-- <n-space vertical>
         <n-progress
           type="line"
@@ -645,7 +673,7 @@ const createPlayerItemsColumns = () => {
           }}</n-progress
         >
       </n-space> -->
-      <div class="mt-2">
+      <div class="detail-tabs">
         <n-tabs type="line" size="large" animated>
           <n-tab-pane :name="$t('item.palList')">
             <div class="w-full mt-5">
@@ -721,8 +749,8 @@ const createPlayerItemsColumns = () => {
     <!-- 加入白名单，封禁，踢出 -->
     <n-flex
       justify="end"
-      class="absolute bottom-3 right-4"
-      v-if="playerInfo != null && isLogin"
+      class="player-actions"
+      v-if="playerInfo?.nickname && isLogin"
     >
       <n-button
         @click="
@@ -888,3 +916,204 @@ const createPlayerItemsColumns = () => {
     </template>
   </n-modal>
 </template>
+
+<style scoped lang="less">
+.player-detail {
+  min-height: 100%;
+}
+
+.player-overview {
+  padding: 22px;
+  border: 1px solid rgba(64, 152, 252, 0.22);
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(64, 152, 252, 0.1),
+    rgba(64, 152, 252, 0.025) 58%,
+    transparent
+  );
+}
+
+.is-dark .player-overview {
+  border-color: rgba(64, 152, 252, 0.28);
+  background: linear-gradient(
+    135deg,
+    rgba(64, 152, 252, 0.16),
+    rgba(64, 152, 252, 0.045) 58%,
+    transparent
+  );
+}
+
+.overview-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.player-identity {
+  min-width: 0;
+}
+
+.player-title-row,
+.identity-tags,
+.runtime-meta,
+.identity-copy-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.player-title-row {
+  gap: 12px;
+}
+
+.player-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(24px, 2.2vw, 30px);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.identity-tags {
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.last-online-text {
+  color: rgba(24, 24, 28, 0.52);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.is-dark .last-online-text {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.identity-copy-list {
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.identity-copy {
+  max-width: min(100%, 420px);
+}
+
+.copy-label {
+  flex: none;
+  font-weight: 650;
+}
+
+.copy-value {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(24, 24, 28, 0.58);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-dark .copy-value {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.runtime-meta {
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.runtime-meta span {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(24, 24, 28, 0.06);
+  color: rgba(24, 24, 28, 0.62);
+  font-size: 12px;
+}
+
+.is-dark .runtime-meta span {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.status-card {
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid rgba(24, 24, 28, 0.06);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.is-dark .status-card {
+  border-color: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.status-label {
+  display: -webkit-box;
+  min-height: 32px;
+  overflow: hidden;
+  color: rgba(24, 24, 28, 0.52);
+  font-size: 12px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.is-dark .status-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.status-value {
+  display: block;
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.detail-tabs {
+  margin-top: 20px;
+}
+
+.player-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  padding: 12px 20px;
+  border-top: 1px solid rgba(24, 24, 28, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+}
+
+.is-dark .player-actions {
+  border-top-color: rgba(255, 255, 255, 0.08);
+  background: rgba(24, 24, 28, 0.94);
+}
+
+@media (max-width: 1100px) {
+  .status-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .overview-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .overview-heading > .n-button {
+    align-self: flex-start;
+  }
+}
+</style>

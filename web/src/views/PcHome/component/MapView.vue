@@ -76,8 +76,8 @@ const rawBaseMarkers = computed(() =>
       guild,
       camp,
       position: toMapPosition([camp.location_x, camp.location_y]),
-    }))
-  )
+    })),
+  ),
 );
 
 const clusteredBaseMarkers = computed(() => {
@@ -93,7 +93,7 @@ const clusteredBaseMarkers = computed(() => {
   const clusters = new Map();
   rawBaseMarkers.value.forEach((marker) => {
     const clusterKey = `${Math.floor(marker.position[0] / cellSize)}:${Math.floor(
-      marker.position[1] / cellSize
+      marker.position[1] / cellSize,
     )}`;
     if (!clusters.has(clusterKey)) clusters.set(clusterKey, []);
     clusters.get(clusterKey).push(marker);
@@ -128,9 +128,12 @@ const focusSearchTarget = (value) => {
   let position;
   if (type === "player") {
     const player = playerList.value[Number(id)];
-    if (player) position = toMapPosition([player.location_x, player.location_y]);
+    if (player)
+      position = toMapPosition([player.location_x, player.location_y]);
   } else {
-    position = rawBaseMarkers.value.find((marker) => marker.key === id)?.position;
+    position = rawBaseMarkers.value.find(
+      (marker) => marker.key === id,
+    )?.position;
   }
   if (position) {
     zoom.value = 5;
@@ -189,7 +192,7 @@ onMounted(async () => {
   playerList.value = Array.isArray(res.data.value) ? res.data.value : [];
   // 接口中玩家location_x和location_y同时为0时，表示玩家不在线，不显示
   playerList.value = playerList.value.filter(
-    (i) => i.location_x !== 0 && i.location_y !== 0
+    (i) => i.location_x !== 0 && i.location_y !== 0,
   );
   res = await api.getGuildList();
   guildList.value = Array.isArray(res.data.value) ? res.data.value : [];
@@ -233,7 +236,9 @@ onUnmounted(async () => {
         :key="`fast-${i[0]}-${i[1]}`"
         :lat-lng="toMapPosition([i[0], i[1]])"
         :options="{ title: $t('map.fastTravel'), alt: $t('map.fastTravel') }"
-        @ready="(marker) => setMarkerAccessibility(marker, $t('map.fastTravel'))"
+        @ready="
+          (marker) => setMarkerAccessibility(marker, $t('map.fastTravel'))
+        "
       >
         <l-icon :icon-url="IconFastTravel" :icon-size="[48, 48]" />
       </l-marker>
@@ -278,14 +283,16 @@ onUnmounted(async () => {
                 ? $t('map.clusterTitle', { count: cluster.markers.length })
                 : $t('map.baseCampTitle', {
                     name:
-                      cluster.markers[0].guild.name || $t('filter.unnamedGuild'),
+                      cluster.markers[0].guild.name ||
+                      $t('filter.unnamedGuild'),
                   }),
             alt:
               cluster.markers.length > 1
                 ? $t('map.clusterTitle', { count: cluster.markers.length })
                 : $t('map.baseCampTitle', {
                     name:
-                      cluster.markers[0].guild.name || $t('filter.unnamedGuild'),
+                      cluster.markers[0].guild.name ||
+                      $t('filter.unnamedGuild'),
                   }),
           }"
           @ready="
@@ -298,50 +305,50 @@ onUnmounted(async () => {
                       name:
                         cluster.markers[0].guild.name ||
                         $t('filter.unnamedGuild'),
-                    })
+                    }),
               )
           "
         >
-            <l-icon
-              :icon-url="IconBase"
-              :icon-size="cluster.markers.length > 1 ? [62, 62] : [55, 55]"
-            />
-            <l-tooltip
-              v-if="cluster.markers.length > 1"
-              :options="{ direction: 'top', permanent: true, offset: [0, -18] }"
+          <l-icon
+            :icon-url="IconBase"
+            :icon-size="cluster.markers.length > 1 ? [62, 62] : [55, 55]"
+          />
+          <l-tooltip
+            v-if="cluster.markers.length > 1"
+            :options="{ direction: 'top', permanent: true, offset: [0, -18] }"
+          >
+            {{ cluster.markers.length }}
+          </l-tooltip>
+          <l-popup :options="{ interactive: true }">
+            <div v-if="cluster.markers.length > 1" class="popup-title">
+              {{ $t("map.clusterTitle", { count: cluster.markers.length }) }}
+            </div>
+            <div
+              v-for="marker in cluster.markers"
+              :key="marker.key"
+              class="base-popup"
             >
-              {{ cluster.markers.length }}
-            </l-tooltip>
-            <l-popup :options="{ interactive: true }">
-              <div v-if="cluster.markers.length > 1" class="popup-title">
-                {{ $t("map.clusterTitle", { count: cluster.markers.length }) }}
+              <div class="popup-title">
+                {{
+                  $t("map.baseCampTitle", {
+                    name: marker.guild.name || $t("filter.unnamedGuild"),
+                  })
+                }}
               </div>
-              <div
-                v-for="marker in cluster.markers"
-                :key="marker.key"
-                class="base-popup"
-              >
-                <div class="popup-title">
-                  {{
-                    $t("map.baseCampTitle", {
-                      name: marker.guild.name || $t("filter.unnamedGuild"),
-                    })
-                  }}
-                </div>
-                <div class="member-list">
-                  {{ $t("map.guildMember") }}
-                  <button
-                    v-for="member in marker.guild.players"
-                    :key="member.player_uid"
-                    type="button"
-                    class="player_name"
-                    @click="ToPlayers(member.player_uid)"
-                  >
-                    {{ member.nickname }}
-                  </button>
-                </div>
+              <div class="member-list">
+                {{ $t("map.guildMember") }}
+                <button
+                  v-for="member in marker.guild.players"
+                  :key="member.player_uid"
+                  type="button"
+                  class="player_name"
+                  @click="ToPlayers(member.player_uid)"
+                >
+                  {{ member.nickname }}
+                </button>
               </div>
-            </l-popup>
+            </div>
+          </l-popup>
         </l-marker>
         <template v-if="zoom >= 5">
           <l-circle
@@ -364,7 +371,9 @@ onUnmounted(async () => {
           color="#fff"
           @click="onAddZoom"
         >
-          <template #icon><n-icon><AddCircle20Filled /></n-icon></template>
+          <template #icon
+            ><n-icon><AddCircle20Filled /></n-icon
+          ></template>
         </n-button>
         <n-slider
           style="height: 100px"
@@ -384,7 +393,9 @@ onUnmounted(async () => {
           color="#fff"
           @click="onSubtractZoom"
         >
-          <template #icon><n-icon><SubtractCircle20Filled /></n-icon></template>
+          <template #icon
+            ><n-icon><SubtractCircle20Filled /></n-icon
+          ></template>
         </n-button>
       </div>
     </div>
@@ -460,10 +471,13 @@ onUnmounted(async () => {
 
 .control {
   width: 260px;
+  max-width: calc(100% - 40px);
   min-height: 230px;
   position: absolute;
   bottom: 20px;
   right: 20px;
+  padding: 10px;
+  box-sizing: border-box;
   color: #fff;
   background-color: rgb(24, 24, 28);
   border-radius: 10px;
@@ -473,15 +487,33 @@ onUnmounted(async () => {
   z-index: 999;
 }
 
+.control > .n-select {
+  width: 100%;
+  min-width: 0;
+  flex: none;
+}
+
 .control > div {
   display: flex;
   justify-content: space-between;
-  margin: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 0;
 }
 
 .visible-summary {
+  justify-content: flex-start !important;
   color: #b8c2cc;
   font-size: 12px;
+}
+
+@media (max-width: 480px) {
+  .control {
+    right: 16px;
+    bottom: 16px;
+    width: min(260px, calc(100% - 32px));
+    max-width: calc(100% - 32px);
+  }
 }
 
 .popup-title {
