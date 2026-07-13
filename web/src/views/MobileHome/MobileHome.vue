@@ -127,6 +127,11 @@ const getChooseGuild = (uid) => {
   getGuildInfo(uid);
 };
 
+const viewPlayerFromGuild = async (uid) => {
+  currentDisplay.value = "players";
+  await getPlayerInfo(uid);
+};
+
 const getPalName = (name) => {
   const lowerName = name.toLowerCase();
   return localeLowerPalMap.value[lowerName]
@@ -605,6 +610,7 @@ onBeforeUnmount(() => {
               <guild-detail
                 v-if="currentDisplay === 'guilds'"
                 :guildInfo="guildInfo"
+                @view-player="viewPlayerFromGuild"
               ></guild-detail>
             </div>
           </n-layout>
