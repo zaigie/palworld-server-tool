@@ -1,5 +1,33 @@
 {
     "en": {
+        "WorldTree_ATK": {
+            "name": "Twin-Edged Holy Blade",
+            "desc": "Attack +50%, Defense -30%, World Tree resources will not vanish when approached."
+        },
+        "WorldTree_DEF": {
+            "name": "Sanctified Meat Shield",
+            "desc": "Defense +50%, Attack -30%, World Tree resources will not vanish when approached."
+        },
+        "WorldTree_CraftSpeed": {
+            "name": "Demon’s Hand",
+            "desc": "Work Speed +90%, SAN dreceases +15.0% faster, World Tree harvestables won't vanish when approached."
+        },
+        "WorldTree_FullStomach": {
+            "name": "World Tree Seedbed",
+            "desc": "Decrease Hunger depletion rate by +50.0%, HP -20%, World Tree resources will not vanish when approached."
+        },
+        "WorldTree_Sanity": {
+            "name": "Hermit Sage",
+            "desc": "SAN depletion rate -50.0%, Work Speed -20%, World Tree resources will not vanish when approached."
+        },
+        "WorldTree_MoveSpeed": {
+            "name": "Dimensional Leap",
+            "desc": "Movement Speed +50%, Increases Hunger depletion rate by +15.0%, World Tree resources will not vanish when approached."
+        },
+        "WorldTree_ATK_DEF": {
+            "name": "God of Destruction",
+            "desc": "Attack +40%, Defense +20%, Max Health -50%, World Tree resources will not vanish when approached."
+        },
         "CraftSpeed_up3": {
             "name": "Remarkable Craftsmanship",
             "desc": "Work Speed +75% (ToSelf)"
@@ -63,6 +91,38 @@
         "Salvation": {
             "name": "Savior",
             "desc": "30% increase in Neutral attack damage. 30% increase in Grass attack damage."
+        },
+        "MutationPal_Babysitter": {
+            "name": "Babysitter",
+            "desc": "While at a base, increases egg production speed by +30% and incubation speed by +30% for Pals assigned to a Breeding Farm."
+        },
+        "MutationPal_Mutant": {
+            "name": "Idiosyncratic",
+            "desc": "Pal and Player Auto Health Regeneration Rate +50%, Defense +{EffectValue4}%, Immune to Poison Damage, Immune to Burn Damage"
+        },
+        "SelfDeathAddItemDrop_up_3": {
+            "name": "Lavish Hospitality",
+            "desc": "Your Dropped Items + 100%"
+        },
+        "WorkSuitabilityAddRank_MonsterFarm_2": {
+            "name": "Ranch Master",
+            "desc": "'s +2"
+        },
+        "MutationPal_Immortal": {
+            "name": "Immortality",
+            "desc": "Life Steal +5%, Pal Auto Health Regeneration Rate +100%, Attack +15%"
+        },
+        "MutationPal_ExplosionResist": {
+            "name": "Heavily Armored",
+            "desc": "Immune to Explosion Damage"
+        },
+        "RideJumpCount_Increase1": {
+            "name": "Lightfooted",
+            "desc": "Mounted Jump Count +1"
+        },
+        "RideJumpCount_Increase2": {
+            "name": "Skymarcher",
+            "desc": "Mounted Jump Count +2"
         },
         "CraftSpeed_up2": {
             "name": "Artisan",
@@ -164,9 +224,33 @@
             "name": "Ace Swimmer",
             "desc": "40% increase movement speed on water."
         },
+        "SelfDeathAddItemDrop_up_2": {
+            "name": "Service-Minded",
+            "desc": "Your Dropped Items + 50%"
+        },
+        "WorkSuitabilityAddRank_MonsterFarm_1": {
+            "name": "Farmhand",
+            "desc": "'s +1"
+        },
+        "PlayerSP_DecreaseRate_Passive": {
+            "name": "Wellness Watcher",
+            "desc": "Player Stamina Consumption -5.0%"
+        },
+        "AutoHPRegeneRate_Passive": {
+            "name": "Healing Coach",
+            "desc": "Player Auto Health Regeneration Rate +5%"
+        },
+        "ReloadSpeedUp_Passive": {
+            "name": "Reload Master",
+            "desc": "Player Reload Speed +4%"
+        },
         "Noukin": {
             "name": "Musclehead",
             "desc": "Attack +30% (ToSelf), Work Speed -50% (ToSelf)"
+        },
+        "Deffence_up2_2": {
+            "name": "Heavyweight",
+            "desc": "Defense +20%, Immune to Knockback"
         },
         "CraftSpeed_up1": {
             "name": "Serious",
@@ -289,7 +373,7 @@
             "desc": "10% increase to movement speed."
         },
         "Nocturnal": {
-            "name": "Nocturnal",
+            "name": "Insomnia",
             "desc": "Does not sleep and continues to work even at night."
         },
         "CoolTimeReduction_Up_2": {
@@ -347,6 +431,10 @@
         "SalePrice_Down_1": {
             "name": "Shabby",
             "desc": "Decrease the value of items when sold by -10%"
+        },
+        "NightOwl": {
+            "name": "Night Owl",
+            "desc": "Tends to nap through the day, due to being nocturnal."
         },
         "PAL_FullStomach_Up_2": {
             "name": "Bottomless Stomach",
@@ -766,6 +854,10 @@
             "name": "悠然泳姿",
             "desc": "水上移动速度提升30%"
         },
+        "SelfDeathAddItemDrop_up_1": {
+            "name": "小小心意",
+            "desc": "自身道具掉落量+15%"
+        },
         "CraftSpeed_down1": {
             "name": "笨手笨脚",
             "desc": "工作速度-10% (对帕鲁生效)"
@@ -828,6 +920,34 @@
         }
     },
     "ja": {
+        "WorldTree_ATK": {
+            "name": "諸刃の聖剣",
+            "desc": "攻撃+50%, 防御-30%, 世界樹の木・岩に近づいても消滅しない"
+        },
+        "WorldTree_DEF": {
+            "name": "聖域の肉壁",
+            "desc": "防御+50%, 攻撃-30%, 世界樹の木・岩に近づいても消滅しない"
+        },
+        "WorldTree_CraftSpeed": {
+            "name": "悪魔の手",
+            "desc": "作業速度 +90%, SAN値が減りやすい +15.0%, 世界樹の木・岩に近づいても消滅しない"
+        },
+        "WorldTree_FullStomach": {
+            "name": "神樹の苗床",
+            "desc": "満腹度が減りにくい +50.0%, HP -20%, 世界樹の木・岩に近づいても消滅しない"
+        },
+        "WorldTree_Sanity": {
+            "name": "仙人",
+            "desc": "SAN値が減りにくい +50.0%, 作業速度 -20%, 世界樹の木・岩に近づいても消滅しない"
+        },
+        "WorldTree_MoveSpeed": {
+            "name": "次元跳躍",
+            "desc": "移動速度上昇 +50%, 満腹度が減りやすい +15.0%, 世界樹の木・岩に近づいても消滅しない"
+        },
+        "WorldTree_ATK_DEF": {
+            "name": "破壊神",
+            "desc": "攻撃+40%, 防御+20%, 最大HP-50%, 世界樹の木・岩に近づいても消滅しない"
+        },
         "CraftSpeed_up3": {
             "name": "超絶技巧",
             "desc": "作業速度 +75% (ToSelf)"
@@ -891,6 +1011,38 @@
         "Salvation": {
             "name": "救世主",
             "desc": "無属性攻撃ダメージ増加30%、草属性攻撃ダメージ増加30%"
+        },
+        "MutationPal_Babysitter": {
+            "name": "ベビーシッター",
+            "desc": "拠点にいる間、配合牧場にアサインしたパルの, タマゴ生成速度+30%、孵化速度+30%"
+        },
+        "MutationPal_Mutant": {
+            "name": "特異体質",
+            "desc": "パルとプレイヤーのHP自然回復量+50%, 防御+{EffectValue4}%, 毒状態異常ダメージ無効, 炎上状態異常ダメージ無効"
+        },
+        "SelfDeathAddItemDrop_up_3": {
+            "name": "大盤振る舞い",
+            "desc": "自身のドロップアイテム+100%"
+        },
+        "WorkSuitabilityAddRank_MonsterFarm_2": {
+            "name": "牧場の主",
+            "desc": "の+2"
+        },
+        "MutationPal_Immortal": {
+            "name": "不死身",
+            "desc": "与えたダメージの5%を吸収し、HPを回復する。, パルのHP自然回復量+100%, 攻撃+15%"
+        },
+        "MutationPal_ExplosionResist": {
+            "name": "重装甲",
+            "desc": "爆破ダメージ無効"
+        },
+        "RideJumpCount_Increase1": {
+            "name": "軽身",
+            "desc": "ライド中のジャンプ回数+1"
+        },
+        "RideJumpCount_Increase2": {
+            "name": "空渡り",
+            "desc": "ライド中のジャンプ回数+2"
         },
         "CraftSpeed_up2": {
             "name": "職人気質",
@@ -992,9 +1144,33 @@
             "name": "泳ぐのが得意",
             "desc": "水上の移動速度上昇40%"
         },
+        "SelfDeathAddItemDrop_up_2": {
+            "name": "サービス精神",
+            "desc": "自身のドロップアイテム+50%"
+        },
+        "WorkSuitabilityAddRank_MonsterFarm_1": {
+            "name": "牧場っ子",
+            "desc": "の+1"
+        },
+        "PlayerSP_DecreaseRate_Passive": {
+            "name": "バテ防止係",
+            "desc": "プレイヤーのスタミナ消耗量減少+5.0%"
+        },
+        "AutoHPRegeneRate_Passive": {
+            "name": "ヒーリングコーチ",
+            "desc": "プレイヤーのHP自然回復量+5%"
+        },
+        "ReloadSpeedUp_Passive": {
+            "name": "リロードマスター",
+            "desc": "プレイヤーのリロード速度上昇+4%"
+        },
         "Noukin": {
             "name": "脳筋",
             "desc": "攻撃 +30% (ToSelf)、作業速度 -50% (ToSelf)"
+        },
+        "Deffence_up2_2": {
+            "name": "ヘビー級",
+            "desc": "防御+20%, 吹き飛び無効"
         },
         "CraftSpeed_up1": {
             "name": "まじめ",
@@ -1106,7 +1282,7 @@
         },
         "PAL_FullStomach_Down_1": {
             "name": "小食",
-            "desc": "満腹度が減りにくい +10.0%   "
+            "desc": "満腹度が減りにくい +10.0%"
         },
         "PAL_Sanity_Down_1": {
             "name": "ポジティブ思考",
@@ -1117,7 +1293,7 @@
             "desc": "移動速度上昇10%"
         },
         "Nocturnal": {
-            "name": "夜行性",
+            "name": "不眠",
             "desc": "夜になっても眠らず、働き続ける。"
         },
         "CoolTimeReduction_Up_2": {
@@ -1175,6 +1351,10 @@
         "SalePrice_Down_1": {
             "name": "みすぼらしい",
             "desc": "取引価格が悪化-10%"
+        },
+        "NightOwl": {
+            "name": "夜更かし",
+            "desc": "夜中まで起きているせいか、昼寝をしがち。"
         },
         "PAL_FullStomach_Up_2": {
             "name": "無限の胃袋",
