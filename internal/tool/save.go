@@ -73,11 +73,11 @@ func Decode(file string) error {
 	cmd.Stderr = os.Stderr
 	err = cmd.Start()
 	if err != nil {
-		return errors.New("error starting command: " + err.Error())
+		return fmt.Errorf("failed to start sav_cli: %w", err)
 	}
 	err = cmd.Wait()
 	if err != nil {
-		return errors.New("error waiting for command: " + err.Error())
+		return fmt.Errorf("sav_cli exited with error: %w", err)
 	}
 
 	return nil

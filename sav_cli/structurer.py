@@ -13,7 +13,6 @@ Level.sav completes in a couple of seconds on the validated fixtures.
 """
 
 import os
-import sys
 
 from palsav.core import decompress_sav_to_gvas
 from palsav.gvas import GvasFile
@@ -45,7 +44,6 @@ def _read_gvas(path):
 def convert_sav(file):
     """Decode Level.sav into the module-global ``wsd`` (worldSaveData)."""
     global gvas_file, wsd
-    log("Converting...")
     gvas_file = _read_gvas(file)
     wsd = gvas_file.properties["worldSaveData"]["value"]
     return wsd
@@ -58,7 +56,6 @@ def _save_parameter(character_entry):
 
 
 def structure_player(dir_path, filetime: int = -1):
-    log("Structuring players...")
     if not wsd.get("CharacterSaveParameterMap"):
         return []
 
@@ -157,7 +154,6 @@ def getPlayerItems(player_uid, dir_path, item_containers):
 
 
 def structure_base_camp():
-    log("Structuring base camps...")
     if not wsd.get("BaseCampSaveData"):
         return []
     return [
@@ -167,7 +163,6 @@ def structure_base_camp():
 
 
 def structure_guild(filetime: int = -1):
-    log("Structuring guilds...")
     if not wsd.get("GroupSaveDataMap"):
         return []
     base_camps = structure_base_camp()

@@ -153,12 +153,12 @@ func CheckAndKickPlayers(db *bbolt.DB, players []database.OnlinePlayer) {
 }
 
 func SavSync() {
-	logger.Info("Scheduling Sav sync...\n")
+	logger.Info("Save sync started\n")
 	err := tool.Decode(config.Current().Save.Path)
 	if err != nil {
-		logger.Errorf("%v\n", err)
+		logger.Errorf("Save sync failed: %v\n", err)
+		return
 	}
-	logger.Info("Sav sync done\n")
 }
 
 func Schedule(db *bbolt.DB) {
