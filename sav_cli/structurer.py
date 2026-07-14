@@ -13,7 +13,6 @@ Level.sav completes in a couple of seconds on the validated fixtures.
 """
 
 import os
-import sys
 
 from palsav.core import decompress_sav_to_gvas
 from palsav.gvas import GvasFile
@@ -45,7 +44,6 @@ def _read_gvas(path):
 def convert_sav(file):
     """Decode Level.sav into the module-global ``wsd`` (worldSaveData)."""
     global gvas_file, wsd
-    log("Converting...")
     gvas_file = _read_gvas(file)
     wsd = gvas_file.properties["worldSaveData"]["value"]
     return wsd
@@ -58,20 +56,23 @@ def _save_parameter(character_entry):
 
 
 def structure_player(dir_path, filetime: int = -1):
-    log("Structuring players...")
     if not wsd.get("CharacterSaveParameterMap"):
-        return []
+        return [], 0
 
     ticks = wsd["GameTimeSaveData"]["value"]["RealDateTimeTicks"]["value"]
     item_containers = _index_item_containers()
 
     players = []
     pals = []
+    player_save_warnings = 0
     for c in wsd["CharacterSaveParameterMap"]["value"]:
         uid = c["key"]["PlayerUId"]["value"]
         sp = _save_parameter(c)
         if sp.get("IsPlayer") and sp["IsPlayer"]["value"]:
-            sp["Items"] = getPlayerItems(uid, dir_path, item_containers)
+            sp["Items"], has_warning = getPlayerItems(
+                uid, dir_path, item_containers
+            )
+            player_save_warnings += int(has_warning)
             players.append(Player(uid, sp).to_dict())
         else:
             if not sp.get("OwnerPlayerUId"):
@@ -93,7 +94,10 @@ def structure_player(dir_path, filetime: int = -1):
                 player["pals"].append(pal)
                 break
 
-    return sorted(unique_players, key=lambda p: p["level"], reverse=True)
+    return (
+        sorted(unique_players, key=lambda p: p["level"], reverse=True),
+        player_save_warnings,
+    )
 
 
 def _index_item_containers():
@@ -114,20 +118,21 @@ def getPlayerItems(player_uid, dir_path, item_containers):
         dir_path, str(player_uid).upper().replace("-", "") + ".sav"
     )
     if not os.path.exists(player_sav_file):
-        return containers_data
+        return containers_data, True
 
     try:
         player_gvas = _read_gvas(player_sav_file).properties["SaveData"]["value"]
     except Exception as e:
         log(
-            f"Player Sav file is corrupted: {os.path.basename(player_sav_file)}: {e}",
-            "ERROR",
+            f"Skipped corrupted player save: {os.path.basename(player_sav_file)}: "
+            f"{type(e).__name__}: {e}",
+            "WARNING",
         )
-        return containers_data
+        return containers_data, True
 
     inv = player_gvas.get("InventoryInfo")
     if inv is None:
-        return containers_data
+        return containers_data, False
 
     for key in PLAYER_CONTAINER_KEYS:
         ref = inv["value"].get(key)
@@ -153,11 +158,10 @@ def getPlayerItems(player_uid, dir_path, item_containers):
                 }
             )
         containers_data[key] = items
-    return containers_data
+    return containers_data, False
 
 
 def structure_base_camp():
-    log("Structuring base camps...")
     if not wsd.get("BaseCampSaveData"):
         return []
     return [
@@ -167,7 +171,6 @@ def structure_base_camp():
 
 
 def structure_guild(filetime: int = -1):
-    log("Structuring guilds...")
     if not wsd.get("GroupSaveDataMap"):
         return []
     base_camps = structure_base_camp()

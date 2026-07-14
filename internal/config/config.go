@@ -25,12 +25,21 @@ var (
 )
 
 type WebConfig struct {
-	Port      int    `json:"port"`
-	TLS       bool   `json:"tls"`
-	CertPath  string `json:"cert_path"`
-	KeyPath   string `json:"key_path"`
-	PublicURL string `json:"public_url"`
+	Port       int                   `json:"port"`
+	PortSource WebPortOverrideSource `json:"port_source"`
+	TLS        bool                  `json:"tls"`
+	CertPath   string                `json:"cert_path"`
+	KeyPath    string                `json:"key_path"`
+	PublicURL  string                `json:"public_url"`
 }
+
+type WebPortOverrideSource string
+
+const (
+	WebPortOverrideNone        WebPortOverrideSource = ""
+	WebPortOverrideEnvironment WebPortOverrideSource = "environment"
+	WebPortOverrideCommandLine WebPortOverrideSource = "command_line"
+)
 
 type TaskConfig struct {
 	SyncInterval        int    `json:"sync_interval"`
@@ -199,8 +208,11 @@ func (s *Store) Update(value Config, newPassword string) error {
 }
 
 func Validate(value Config) error {
-	if value.Web.Port < 1 || value.Web.Port > 65535 {
-		return errors.New("web port must be between 1 and 65535")
+	if err := ValidateWebPort(value.Web.Port); err != nil {
+		return err
+	}
+	if value.Web.PortSource != WebPortOverrideNone && value.Web.PortSource != WebPortOverrideEnvironment && value.Web.PortSource != WebPortOverrideCommandLine {
+		return fmt.Errorf("invalid web port override source %q", value.Web.PortSource)
 	}
 	if value.Save.SourceMode != "directory" && value.Save.SourceMode != "agent" {
 		return errors.New("save source mode must be directory or agent")
@@ -210,6 +222,13 @@ func Validate(value Config) error {
 	}
 	if value.Rcon.Timeout < 0 || value.Rest.Timeout < 0 || value.Save.BackupKeepDays < 0 {
 		return errors.New("timeouts and backup retention cannot be negative")
+	}
+	return nil
+}
+
+func ValidateWebPort(port int) error {
+	if port < 1 || port > 65535 {
+		return errors.New("web port must be between 1 and 65535")
 	}
 	return nil
 }

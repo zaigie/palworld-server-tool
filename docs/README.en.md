@@ -73,10 +73,34 @@ Parsing `Level.sav` briefly uses about 1–3 GB of memory. Make sure the runtime
 2. On Linux/macOS, make `pst` and `sav_cli` executable and run `./pst`. On Windows, run `start.bat` or `.\pst.exe` from PowerShell.
 3. Open `http://127.0.0.1:8080` or `http://server-address:8080`, create the PST dashboard administrator, and complete setup in the Web dialog.
 
-The first start listens on port `8080`. After changing the port, TLS, or other startup settings in the Web interface, save the settings and restart PST.
+The first start listens on port `8080`. If that port is already in use, override it with a command-line argument or environment variable:
+
+```bash
+# Linux/macOS: command-line argument
+./pst --port 18080
+
+# Linux/macOS: environment variable
+PST_PORT=18080 ./pst
+```
+
+On Windows, you can temporarily select a port in PowerShell:
+
+```powershell
+.\pst.exe --port 18080
+```
+
+To make a different port the default when starting PST by double-clicking, edit `start.bat` in the extracted directory as follows:
+
+```bat
+start cmd /k .\pst.exe --port 18080
+```
+
+The precedence is `--port` > `PST_PORT` > `config.db` > the default `8080`. When a command-line or environment override is used, the effective port and its `port_source` are written to `config.db` so internal services such as `sav_cli` read the same port that PST actually listens on. While an override is active, PST Settings shows the effective port and source, disables the port input, and the configuration API rejects port changes. The source is recalculated on every start; after the override is removed, `config.db` retains the last overridden port, clears `port_source`, and allows the port to be changed from the Web interface again.
+
+After changing the port, TLS, or other startup settings in the Web interface, save the settings and restart PST.
 
 > [!IMPORTANT]
-> PST no longer reads `config.yaml`, the `-config` argument, or PST configuration environment variables. Upgrading users must copy old values into the Web settings dialog and then remove the old file and variables.
+> Except for the `--port` and `PST_PORT` startup-port overrides, PST no longer reads `config.yaml`, the `-config` argument, or other PST configuration environment variables. Upgrading users must copy old values into the Web settings dialog and then remove the old file and variables.
 
 ### All-in-one Docker deployment
 
@@ -91,6 +115,19 @@ Run the container and mount the game save directory inside it:
 ```bash
 docker run -d --name pst \
   -p 8080:8080 \
+  -v /path/to/your/Pal/Saved:/game \
+  -v ./backups:/app/backups \
+  -v ./pst.db:/app/pst.db \
+  -v ./config.db:/app/config.db \
+  jokerwho/palworld-server-tool:latest
+```
+
+To override the port inside the container, update the port mapping and pass `PST_PORT` together, for example:
+
+```bash
+docker run -d --name pst \
+  -p 18080:18080 \
+  -e PST_PORT=18080 \
   -v /path/to/your/Pal/Saved:/game \
   -v ./backups:/app/backups \
   -v ./pst.db:/app/pst.db \
@@ -127,7 +164,7 @@ Then start PST as shown above without passing PST configuration environment vari
 5. Configure and save the RCON, REST API, synchronization, backup, and automation options. Save source, RCON, REST, messaging, management, and administrator-password changes apply immediately. Only Web listener/TLS and scheduled-task interval changes require a restart; the page lists the affected fields.
 6. To edit settings later, open “PST Settings” in administrator mode. Changing the administrator password immediately invalidates existing login tokens.
 
-All settings are stored in `config.db` in the current working directory. These legacy configuration paths have been removed and are not read for compatibility:
+All persistent settings are stored in `config.db` in the current working directory. The effective port selected by `--port` or `PST_PORT` at startup and its override source are also written to this database. These legacy configuration paths have been removed and are not read for compatibility:
 
 - `config.yaml`
 - the `-config` command-line argument

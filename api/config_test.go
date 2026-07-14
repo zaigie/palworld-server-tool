@@ -76,6 +76,78 @@ func TestFirstVisitorInitializesAdministratorAndReadsSettings(t *testing.T) {
 	}
 }
 
+func TestConfigPortOverrideIsReportedAndCannotBeChanged(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	store, err := config.Open(filepath.Join(t.TempDir(), "config.db"))
+	if err != nil {
+		t.Fatalf("open config store: %v", err)
+	}
+	defer store.Close()
+	config.SetCurrent(store)
+	if err := store.Initialize("admin-password"); err != nil {
+		t.Fatalf("initialize administrator: %v", err)
+	}
+	token, err := auth.GenerateToken()
+	if err != nil {
+		t.Fatalf("generate token: %v", err)
+	}
+
+	overridden := store.Config()
+	overridden.Web.Port = 18080
+	overridden.Web.PortSource = config.WebPortOverrideEnvironment
+	if err := store.Update(overridden, ""); err != nil {
+		t.Fatalf("persist overridden web port: %v", err)
+	}
+
+	router := gin.New()
+	RegisterRouter(router, nil)
+	response := performJSONRequest(router, http.MethodGet, "/api/config", nil, token)
+	if response.Code != http.StatusOK {
+		t.Fatalf("settings code = %d, want 200: %s", response.Code, response.Body.String())
+	}
+	var body struct {
+		Web config.WebConfig `json:"web"`
+	}
+	if err := json.Unmarshal(response.Body.Bytes(), &body); err != nil {
+		t.Fatalf("decode settings response: %v", err)
+	}
+	if body.Web.Port != 18080 {
+		t.Fatalf("persisted web port = %d, want 18080", body.Web.Port)
+	}
+	if body.Web.PortSource != config.WebPortOverrideEnvironment {
+		t.Fatalf("web port source = %q, want %q", body.Web.PortSource, config.WebPortOverrideEnvironment)
+	}
+
+	attemptedUpdate := store.Config()
+	attemptedUpdate.Web.Port = 28080
+	response = performJSONRequest(router, http.MethodPut, "/api/config", map[string]any{
+		"settings": attemptedUpdate,
+	}, token)
+	if response.Code != http.StatusConflict {
+		t.Fatalf("settings update code = %d, want 409: %s", response.Code, response.Body.String())
+	}
+	if got := store.Config().Web.Port; got != 18080 {
+		t.Fatalf("persisted web port after overridden update = %d, want 18080", got)
+	}
+
+	allowedUpdate := store.Config()
+	allowedUpdate.Web.PortSource = config.WebPortOverrideNone
+	allowedUpdate.Rcon.Address = "game-host:25575"
+	response = performJSONRequest(router, http.MethodPut, "/api/config", map[string]any{
+		"settings": allowedUpdate,
+	}, token)
+	if response.Code != http.StatusOK {
+		t.Fatalf("non-port settings update code = %d, want 200: %s", response.Code, response.Body.String())
+	}
+	persisted := store.Config()
+	if persisted.Web.PortSource != config.WebPortOverrideEnvironment {
+		t.Fatalf("persisted web port source = %q, want %q", persisted.Web.PortSource, config.WebPortOverrideEnvironment)
+	}
+	if persisted.Rcon.Address != "game-host:25575" {
+		t.Fatalf("persisted RCON address = %q, want game-host:25575", persisted.Rcon.Address)
+	}
+}
+
 func TestChangingAdministratorPasswordInvalidatesExistingToken(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	store, err := config.Open(filepath.Join(t.TempDir(), "config.db"))
