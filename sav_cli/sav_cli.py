@@ -25,6 +25,16 @@ from structurer import convert_sav, structure_player, structure_guild
 from logger import log
 
 
+def _http_error_details(response):
+    reason = str(response.reason).strip() if response.reason else ""
+    status = f"HTTP {response.status_code}"
+    if reason:
+        status = f"{status} {reason}"
+
+    body = response.text.strip() or "<empty response body>"
+    return f"{status}; response body: {body}"
+
+
 def main():
     start = time.time()
     parser = argparse.ArgumentParser()
@@ -80,7 +90,10 @@ def main():
             timeout=10,
         )
         if player_res.status_code != 200:
-            log(f"Put Players data error: {player_res.text}", "ERROR")
+            log(
+                f"Put Players data error: {_http_error_details(player_res)}",
+                "ERROR",
+            )
 
         log(f"Put guilds to {guild_url} with Guilds: {len(guilds)}")
         guild_res = requests.put(
@@ -90,7 +103,10 @@ def main():
             timeout=10,
         )
         if guild_res.status_code != 200:
-            log(f"Put Guilds data error: {guild_res.text}", "ERROR")
+            log(
+                f"Put Guilds data error: {_http_error_details(guild_res)}",
+                "ERROR",
+            )
 
     try:
         if args.clear:
