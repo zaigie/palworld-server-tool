@@ -30,27 +30,19 @@
 
 業務データは `pst.db`、PST 設定と管理者認証情報は別の `config.db` に保存されます。設定をリセットしても、プレイヤー、ギルド、RCON、バックアップ記録には影響しません。
 
-> [!NOTE]
-> Palworld サーバーや本ツールの構築について相談したい場合、または有償のクローズドソース機能開発が必要な場合は、Palworld サーバー管理交流グループにご参加ください。
-
-![QQ グループに参加](./img/add_group.jpg)
-
 ## スクリーンショット
-
-https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491d-9c1f-1eb82e8060a1
 
 ### デスクトップ
 
-|                           |                           |
-| :-----------------------: | :-----------------------: |
+|                         |                         |
+| :---------------------: | :---------------------: |
 | ![](./img/pst-ja-2.png) | ![](./img/pst-ja-3.png) |
-
-![](./img/pst-ja-4.png)
+| ![](./img/pst-ja-4.png) | ![](./img/pst-ja-5.png) |
 
 ### モバイル
 
 <p align="center">
-<img src="./img/pst-ja-m-1.png" width="30%" /><img src="./img/pst-ja-m-2.png" width="30%" /><img src="./img/pst-ja-m-3.png" width="30%" />
+<img src="./img/pst-ja-m-1.png" width="24%" /><img src="./img/pst-ja-m-2.png" width="24%" /><img src="./img/pst-ja-m-3.png" width="24%" /><img src="./img/pst-ja-m-4.png" width="24%" />
 </p>
 
 ## 公式 REST API と RCON の有効化

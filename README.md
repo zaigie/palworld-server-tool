@@ -37,20 +37,17 @@
 
 ## 功能截图
 
-https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491d-9c1f-1eb82e8060a1
-
 ### 桌面端
 
 |                              |                              |
 | :--------------------------: | :--------------------------: |
 | ![](./docs/img/pst-zh-2.png) | ![](./docs/img/pst-zh-3.png) |
-
-![](./docs/img/pst-zh-4.png)
+| ![](./docs/img/pst-zh-4.png) | ![](./docs/img/pst-zh-5.png) |
 
 ### 移动端
 
 <p align="center">
-<img src="./docs/img/pst-zh-m-1.png" width="30%" /><img src="./docs/img/pst-zh-m-2.png" width="30%" /><img src="./docs/img/pst-zh-m-3.png" width="30%" />
+<img src="./docs/img/pst-zh-m-1.png" width="24%" /><img src="./docs/img/pst-zh-m-2.png" width="24%" /><img src="./docs/img/pst-zh-m-3.png" width="24%" /><img src="./docs/img/pst-zh-m-4.png" width="24%" />
 </p>
 
 ## 开启 REST API 与 RCON

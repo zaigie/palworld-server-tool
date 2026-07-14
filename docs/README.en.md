@@ -30,27 +30,19 @@
 
 Application data is stored in `pst.db`. PST settings and administrator credentials are stored separately in `config.db`, so resetting settings does not remove player, guild, RCON, or backup records.
 
-> [!NOTE]
-> For help with setting up a Palworld server or this tool, or for paid closed-source custom development, join the Palworld server management discussion group.
-
-![Join the QQ group](./img/add_group.jpg)
-
 ## Screenshots
-
-https://github.com/zaigie/palworld-server-tool/assets/17232619/afdf485c-4b34-491d-9c1f-1eb82e8060a1
 
 ### Desktop
 
-|                           |                           |
-| :-----------------------: | :-----------------------: |
+|                         |                         |
+| :---------------------: | :---------------------: |
 | ![](./img/pst-en-2.png) | ![](./img/pst-en-3.png) |
-
-![](./img/pst-en-4.png)
+| ![](./img/pst-en-4.png) | ![](./img/pst-en-5.png) |
 
 ### Mobile
 
 <p align="center">
-<img src="./img/pst-en-m-1.png" width="30%" /><img src="./img/pst-en-m-2.png" width="30%" /><img src="./img/pst-en-m-3.png" width="30%" />
+<img src="./img/pst-en-m-1.png" width="24%" /><img src="./img/pst-en-m-2.png" width="24%" /><img src="./img/pst-en-m-3.png" width="24%" /><img src="./img/pst-en-m-4.png" width="24%" />
 </p>
 
 ## Enable the official REST API and RCON
