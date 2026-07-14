@@ -86,6 +86,13 @@ func putConfig(c *gin.Context) {
 		return
 	}
 	previous := config.Current()
+	if previous.Web.PortSource != config.WebPortOverrideNone && request.Settings.Web.Port != previous.Web.Port {
+		c.JSON(http.StatusConflict, gin.H{
+			"error": "web port is controlled by the active " + string(previous.Web.PortSource) + " override",
+		})
+		return
+	}
+	request.Settings.Web.PortSource = previous.Web.PortSource
 	if err := config.CurrentStore().Update(request.Settings, request.NewPassword); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

@@ -18,7 +18,7 @@ const messages = {
       initializeFailed: "Administrator setup failed.",
       initialized: "Administrator created.",
       migrationWarning:
-        "config.yaml and PST environment variables are no longer read. Manually copy their values here, then delete the old file and variables.",
+        "Except for the PST_PORT startup override, config.yaml and legacy PST environment variables are no longer read. Manually copy their values here, then delete the old file and variables.",
       restartWarning:
         "Most settings apply immediately after saving. Web listener/TLS settings and task intervals apply after restarting PST.",
       saveSection: "Save source and backups",
@@ -47,6 +47,12 @@ const messages = {
       kickNonWhitelist: "Automatically kick players outside the whitelist",
       webSection: "Web service",
       webPort: "Web port",
+      webPortOverrideWarning:
+        "The active Web port is {port}, overridden by {source} and synchronized to config.db. The port cannot be changed here while that override is active.",
+      webPortOverrideSource: {
+        environment: "the PST_PORT environment variable",
+        command_line: "the --port command-line argument",
+      },
       certPath: "TLS certificate path",
       keyPath: "TLS private key path",
       publicUrl: "Public URL",
@@ -470,7 +476,7 @@ const messages = {
       initializeFailed: "管理员初始化失败。",
       initialized: "管理员创建成功。",
       migrationWarning:
-        "PST 已不再读取 config.yaml 和环境变量。请将旧配置中的值手动复制到这里，完成后删除旧文件和相关变量。",
+        "除启动端口覆盖变量 PST_PORT 外，PST 已不再读取 config.yaml 和旧配置环境变量。请将旧配置中的值手动复制到这里，完成后删除旧文件和相关变量。",
       restartWarning:
         "配置保存后大部分设置会立即生效；Web 监听/TLS 设置和定时任务周期需要重启 PST 后生效。",
       saveSection: "存档来源与备份",
@@ -499,6 +505,12 @@ const messages = {
       kickNonWhitelist: "自动踢出不在白名单中的玩家",
       webSection: "Web 服务",
       webPort: "Web 端口",
+      webPortOverrideWarning:
+        "当前实际监听端口为 {port}，由{source}覆盖并已同步到 config.db。覆盖生效期间不能从配置中心修改端口。",
+      webPortOverrideSource: {
+        environment: "环境变量 PST_PORT",
+        command_line: "命令行参数 --port",
+      },
       certPath: "TLS 证书路径",
       keyPath: "TLS 私钥路径",
       publicUrl: "公网访问地址",
@@ -911,7 +923,7 @@ const messages = {
       initializeFailed: "管理者の初期化に失敗しました。",
       initialized: "管理者を作成しました。",
       migrationWarning:
-        "config.yaml と PST の環境変数は読み込まれません。以前の値をここへ手動でコピーし、古いファイルと変数を削除してください。",
+        "起動ポートを上書きする PST_PORT を除き、config.yaml と旧 PST 環境変数は読み込まれません。以前の値をここへ手動でコピーし、古いファイルと変数を削除してください。",
       restartWarning:
         "ほとんどの設定は保存後すぐに反映されます。Web/TLS とタスク間隔は PST の再起動後に反映されます。",
       saveSection: "セーブ元とバックアップ",
@@ -940,6 +952,12 @@ const messages = {
       kickNonWhitelist: "ホワイトリスト外のプレイヤーを自動キック",
       webSection: "Web サービス",
       webPort: "Web ポート",
+      webPortOverrideWarning:
+        "現在の Web ポートは {port} で、{source} により上書きされ config.db に同期されています。上書きが有効な間、この画面からポートを変更することはできません。",
+      webPortOverrideSource: {
+        environment: "環境変数 PST_PORT",
+        command_line: "コマンドライン引数 --port",
+      },
       certPath: "TLS 証明書パス",
       keyPath: "TLS 秘密鍵パス",
       publicUrl: "公開 URL",

@@ -1,8 +1,11 @@
 package config
 
 import (
+	"encoding/json"
 	"path/filepath"
 	"testing"
+
+	"go.etcd.io/bbolt"
 )
 
 func TestStoreFirstRunInitializationAndPersistence(t *testing.T) {
@@ -74,5 +77,42 @@ func TestStoreUpdatesSettingsAndAdministratorPasswordTogether(t *testing.T) {
 	}
 	if !store.Authenticate("new-password") {
 		t.Fatal("new administrator password must authenticate")
+	}
+}
+
+func TestStorePreservesLegacyWebPortWithoutPortSource(t *testing.T) {
+	store, err := Open(filepath.Join(t.TempDir(), "config.db"))
+	if err != nil {
+		t.Fatalf("open config store: %v", err)
+	}
+	defer store.Close()
+
+	legacy := store.Config()
+	legacy.Web.Port = 19090
+	data, err := json.Marshal(legacy)
+	if err != nil {
+		t.Fatalf("encode legacy settings: %v", err)
+	}
+	var raw map[string]any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		t.Fatalf("decode legacy settings map: %v", err)
+	}
+	delete(raw["web"].(map[string]any), "port_source")
+	data, err = json.Marshal(raw)
+	if err != nil {
+		t.Fatalf("encode settings without port_source: %v", err)
+	}
+	if err := store.db.Update(func(tx *bbolt.Tx) error {
+		return tx.Bucket(configBucket).Put(configKey, data)
+	}); err != nil {
+		t.Fatalf("write legacy settings: %v", err)
+	}
+
+	loaded := store.Config()
+	if loaded.Web.Port != 19090 {
+		t.Fatalf("legacy web port = %d, want 19090", loaded.Web.Port)
+	}
+	if loaded.Web.PortSource != WebPortOverrideNone {
+		t.Fatalf("legacy web port source = %q, want empty", loaded.Web.PortSource)
 	}
 }

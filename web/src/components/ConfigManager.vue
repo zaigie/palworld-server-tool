@@ -39,7 +39,14 @@ const restartFieldLabel = (field) =>
   })[field] || field;
 
 const emptySettings = () => ({
-  web: { port: 8080, tls: false, cert_path: "", key_path: "", public_url: "" },
+  web: {
+    port: 8080,
+    port_source: "",
+    tls: false,
+    cert_path: "",
+    key_path: "",
+    public_url: "",
+  },
   task: {
     sync_interval: 60,
     player_logging: false,
@@ -409,6 +416,21 @@ watch(
           </n-collapse-item>
 
           <n-collapse-item :title="$t('configuration.webSection')" name="web">
+            <n-alert
+              v-if="settings.web.port_source"
+              type="warning"
+              :bordered="false"
+              class="mb-3"
+            >
+              {{
+                $t("configuration.webPortOverrideWarning", {
+                  port: settings.web.port,
+                  source: $t(
+                    `configuration.webPortOverrideSource.${settings.web.port_source}`,
+                  ),
+                })
+              }}
+            </n-alert>
             <n-form label-placement="top">
               <div class="form-grid">
                 <n-form-item :label="$t('configuration.webPort')">
@@ -416,6 +438,7 @@ watch(
                     v-model:value="settings.web.port"
                     :min="1"
                     :max="65535"
+                    :disabled="Boolean(settings.web.port_source)"
                     class="full-width"
                   />
                 </n-form-item>

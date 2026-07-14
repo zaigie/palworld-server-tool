@@ -2,11 +2,16 @@ package main
 
 import (
 	"embed"
+	"errors"
+	"flag"
 	"fmt"
+	"io"
 	"io/fs"
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
+	"strings"
 	"syscall"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +27,13 @@ import (
 var (
 	version string = "Develop"
 )
+
+const startupPortEnvironment = "PST_PORT"
+
+type startupPort struct {
+	Port   int
+	Source config.WebPortOverrideSource
+}
 
 //go:embed assets/*
 var assets embed.FS
@@ -42,13 +54,24 @@ var mapTiles embed.FS
 // @license.name	Apache 2.0
 // @license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
+	portOverride, err := startupPortOverride(os.Args[1:], os.LookupEnv, os.Stderr)
+	if err != nil {
+		if errors.Is(err, flag.ErrHelp) {
+			return
+		}
+		logger.Panic(err)
+	}
+
 	configStore, err := config.Open(config.DefaultDatabasePath)
 	if err != nil {
 		logger.Panic(err)
 	}
 	defer configStore.Close()
 	config.SetCurrent(configStore)
-	settings := config.Current()
+	settings, err := applyStartupPortOverride(configStore, portOverride)
+	if err != nil {
+		logger.Panic(err)
+	}
 	config.SetRuntimeWeb(settings.Web)
 
 	db := database.GetDB()
@@ -122,4 +145,56 @@ func main() {
 	<-sigChan
 
 	logger.Info("Server gracefully stopped\n")
+}
+
+func startupPortOverride(args []string, lookupEnv func(string) (string, bool), output io.Writer) (*startupPort, error) {
+	flags := flag.NewFlagSet("pst", flag.ContinueOnError)
+	flags.SetOutput(output)
+	port := 0
+	flags.IntVar(&port, "port", 0, "Web listening port (overrides PST_PORT and persists to config.db)")
+	if err := flags.Parse(args); err != nil {
+		return nil, err
+	}
+	if flags.NArg() > 0 {
+		return nil, fmt.Errorf("unexpected argument: %s", strings.Join(flags.Args(), " "))
+	}
+
+	portSet := false
+	flags.Visit(func(current *flag.Flag) {
+		if current.Name == "port" {
+			portSet = true
+		}
+	})
+	if portSet {
+		if err := config.ValidateWebPort(port); err != nil {
+			return nil, fmt.Errorf("invalid --port: %w", err)
+		}
+		return &startupPort{Port: port, Source: config.WebPortOverrideCommandLine}, nil
+	}
+
+	rawPort, ok := lookupEnv(startupPortEnvironment)
+	if !ok {
+		return nil, nil
+	}
+	port, err := strconv.Atoi(strings.TrimSpace(rawPort))
+	if err != nil {
+		return nil, fmt.Errorf("invalid %s value %q: must be an integer", startupPortEnvironment, rawPort)
+	}
+	if err := config.ValidateWebPort(port); err != nil {
+		return nil, fmt.Errorf("invalid %s value %q: %w", startupPortEnvironment, rawPort, err)
+	}
+	return &startupPort{Port: port, Source: config.WebPortOverrideEnvironment}, nil
+}
+
+func applyStartupPortOverride(store *config.Store, override *startupPort) (config.Config, error) {
+	settings := store.Config()
+	settings.Web.PortSource = config.WebPortOverrideNone
+	if override != nil {
+		settings.Web.Port = override.Port
+		settings.Web.PortSource = override.Source
+	}
+	if err := store.Update(settings, ""); err != nil {
+		return config.Config{}, fmt.Errorf("persist startup web port: %w", err)
+	}
+	return store.Config(), nil
 }
