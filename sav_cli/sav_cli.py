@@ -35,10 +35,7 @@ def _compact_error_text(text):
 
 
 def _http_error_details(response):
-    reason = str(response.reason).strip() if response.reason else ""
-    status = f"HTTP {response.status_code}"
-    if reason:
-        status = f"{status} {reason}"
+    status = _http_status(response)
 
     try:
         payload = json.loads(response.text)
@@ -126,7 +123,7 @@ def main():
 
     log("Structuring save data")
     phase_start = time.perf_counter()
-    players = structure_player(dir_path, filetime=filetime)
+    players, player_save_warnings = structure_player(dir_path, filetime=filetime)
     guilds = structure_guild(filetime)
 
     # Fill save_last_online from the player's guild membership record.
@@ -139,10 +136,15 @@ def main():
 
     pal_count = sum(len(player.get("pals", [])) for player in players)
     base_camp_count = sum(len(guild.get("base_camp", [])) for guild in guilds)
+    warning_summary = (
+        f", player_save_warnings={player_save_warnings}"
+        if player_save_warnings
+        else ""
+    )
     log(
         "Structured save: "
         f"players={len(players)}, pals={pal_count}, guilds={len(guilds)}, "
-        f"base_camps={base_camp_count} ({_elapsed(phase_start)})"
+        f"base_camps={base_camp_count}{warning_summary} ({_elapsed(phase_start)})"
     )
 
     if args.request == "":
@@ -176,8 +178,12 @@ def main():
             failed_requests += 1
 
     if failed_requests:
+        warning_summary = (
+            f", warnings={player_save_warnings}" if player_save_warnings else ""
+        )
         log(
-            f"Save sync failed: requests_failed={failed_requests} ({_elapsed(start)})",
+            f"Save sync failed: requests_failed={failed_requests}{warning_summary} "
+            f"({_elapsed(start)})",
             "ERROR",
         )
         return 1
@@ -191,7 +197,10 @@ def main():
         pass
 
     operation = "Save sync" if args.request else "Save export"
-    log(f"{operation} completed ({_elapsed(start)})")
+    warning_summary = (
+        f" with warnings={player_save_warnings}" if player_save_warnings else ""
+    )
+    log(f"{operation} completed{warning_summary} ({_elapsed(start)})")
     return 0
 
 

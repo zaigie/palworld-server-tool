@@ -26,6 +26,46 @@ with mock.patch.dict(
 
 
 class RequestLoggingTests(unittest.TestCase):
+    def test_partial_player_save_parse_is_reported_as_a_warning(self):
+        response = SimpleNamespace(status_code=200, reason="OK", text="")
+        requests = SimpleNamespace(put=mock.Mock(return_value=response))
+
+        with tempfile.NamedTemporaryFile() as save_file:
+            with (
+                mock.patch.object(
+                    sys,
+                    "argv",
+                    [
+                        "sav_cli.py",
+                        "--file",
+                        save_file.name,
+                        "--request",
+                        "http://127.0.0.1:8080/api/",
+                    ],
+                ),
+                mock.patch.dict(sys.modules, {"requests": requests}),
+                mock.patch.object(sav_cli, "convert_sav"),
+                mock.patch.object(
+                    sav_cli,
+                    "structure_player",
+                    return_value=([], 1),
+                ),
+                mock.patch.object(sav_cli, "structure_guild", return_value=[]),
+                mock.patch.object(sav_cli, "log") as log,
+            ):
+                exit_code = sav_cli.main()
+
+        self.assertEqual(exit_code, 0)
+        messages = "\n".join(call.args[0] for call in log.call_args_list)
+        self.assertRegex(
+            messages,
+            r"Structured save: .*player_save_warnings=1 \(\d+\.\d{2}s\)",
+        )
+        self.assertRegex(
+            messages,
+            r"Save sync completed with warnings=1 \(\d+\.\d{2}s\)",
+        )
+
     def test_json_error_response_logs_only_the_server_reason(self):
         response = SimpleNamespace(
             status_code=401,
@@ -49,7 +89,7 @@ class RequestLoggingTests(unittest.TestCase):
                 ),
                 mock.patch.dict(sys.modules, {"requests": requests}),
                 mock.patch.object(sav_cli, "convert_sav"),
-                mock.patch.object(sav_cli, "structure_player", return_value=[]),
+                mock.patch.object(sav_cli, "structure_player", return_value=([], 0)),
                 mock.patch.object(sav_cli, "structure_guild", return_value=[]),
                 mock.patch.object(sav_cli, "log") as log,
             ):
@@ -72,7 +112,7 @@ class RequestLoggingTests(unittest.TestCase):
                     ["sav_cli.py", "--file", save_file.name, "--verbose"],
                 ),
                 mock.patch.object(sav_cli, "convert_sav"),
-                mock.patch.object(sav_cli, "structure_player", return_value=[]),
+                mock.patch.object(sav_cli, "structure_player", return_value=([], 0)),
                 mock.patch.object(sav_cli, "structure_guild", return_value=[]),
                 mock.patch.object(sav_cli, "configure_logging") as configure_logging,
                 mock.patch.object(sav_cli, "log"),
@@ -105,7 +145,7 @@ class RequestLoggingTests(unittest.TestCase):
                 ),
                 mock.patch.dict(sys.modules, {"requests": requests}),
                 mock.patch.object(sav_cli, "convert_sav"),
-                mock.patch.object(sav_cli, "structure_player", return_value=[]),
+                mock.patch.object(sav_cli, "structure_player", return_value=([], 0)),
                 mock.patch.object(sav_cli, "structure_guild", return_value=[]),
                 mock.patch.object(sav_cli, "log") as log,
             ):
@@ -146,7 +186,7 @@ class RequestLoggingTests(unittest.TestCase):
                 ),
                 mock.patch.dict(sys.modules, {"requests": requests}),
                 mock.patch.object(sav_cli, "convert_sav"),
-                mock.patch.object(sav_cli, "structure_player", return_value=[]),
+                mock.patch.object(sav_cli, "structure_player", return_value=([], 0)),
                 mock.patch.object(sav_cli, "structure_guild", return_value=[]),
                 mock.patch.object(sav_cli, "log") as log,
             ):
@@ -195,7 +235,9 @@ class RequestLoggingTests(unittest.TestCase):
                 ),
                 mock.patch.dict(sys.modules, {"requests": requests}),
                 mock.patch.object(sav_cli, "convert_sav"),
-                mock.patch.object(sav_cli, "structure_player", return_value=players),
+                mock.patch.object(
+                    sav_cli, "structure_player", return_value=(players, 0)
+                ),
                 mock.patch.object(sav_cli, "structure_guild", return_value=guilds),
                 mock.patch.object(sav_cli, "log") as log,
             ):
@@ -240,7 +282,7 @@ class RequestLoggingTests(unittest.TestCase):
                 ),
                 mock.patch.dict(sys.modules, {"requests": requests}),
                 mock.patch.object(sav_cli, "convert_sav"),
-                mock.patch.object(sav_cli, "structure_player", return_value=[]),
+                mock.patch.object(sav_cli, "structure_player", return_value=([], 0)),
                 mock.patch.object(sav_cli, "structure_guild", return_value=[]),
                 mock.patch.object(sav_cli, "log") as log,
             ):
