@@ -5,7 +5,7 @@ import {
 } from "@vicons/material";
 import { ChevronsLeft } from "@vicons/tabler";
 import { GameController, LanguageSharp } from "@vicons/ionicons5";
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useMessage } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/service/api";
@@ -22,6 +22,7 @@ import RconManager from "@/components/RconManager.vue";
 import ShutdownDialog from "@/components/ShutdownDialog.vue";
 import WhitelistManager from "@/components/WhitelistManager.vue";
 import MapView from "@/views/PcHome/component/MapView.vue";
+import playerToGuildStore from "@/stores/model/playerToGuild";
 
 const emit = defineEmits(["open-config"]);
 
@@ -103,8 +104,10 @@ const getGuildList = async () => {
 
 const getPlayerInfo = async (player_uid) => {
   const { data } = await new ApiService().getPlayer({ playerUid: player_uid });
-  playerInfo.value = data.value;
-  playerPalsList.value = JSON.parse(JSON.stringify(playerInfo.value.pals));
+  playerInfo.value = data.value || {};
+  playerPalsList.value = Array.isArray(playerInfo.value.pals)
+    ? JSON.parse(JSON.stringify(playerInfo.value.pals))
+    : [];
   currentPlayerPalsList.value = playerPalsList.value.slice(0, pageSize.value);
   isShowDetail.value = true;
   contentRef.value.scrollTo(0, 0);
@@ -330,7 +333,26 @@ const toOverview = () => {
 const toMap = () => {
   currentDisplay.value = "map";
   isShowDetail.value = false;
+  playerToGuildStore().setUpdateStatus("map");
 };
+
+watch(
+  () => playerToGuildStore().getUpdateStatus(),
+  async (status) => {
+    if (currentDisplay.value !== "map" || status === "map") return;
+    const uid = playerToGuildStore().getCurrentUid();
+    if (!uid) return;
+
+    if (status === "players") {
+      currentDisplay.value = "players";
+      await getPlayerInfo(uid);
+    } else if (status === "guilds") {
+      currentDisplay.value = "guilds";
+      await getGuildInfo(uid);
+    }
+    playerToGuildStore().setCurrentUid(null);
+  },
+);
 const returnList = () => {
   isShowDetail.value = false;
 
