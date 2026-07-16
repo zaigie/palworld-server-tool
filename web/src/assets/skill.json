@@ -1,1380 +1,1380 @@
 {
-    "en": {
-        "WorldTree_ATK": {
-            "name": "Twin-Edged Holy Blade",
-            "desc": "Attack +50%, Defense -30%, World Tree resources will not vanish when approached."
-        },
-        "WorldTree_DEF": {
-            "name": "Sanctified Meat Shield",
-            "desc": "Defense +50%, Attack -30%, World Tree resources will not vanish when approached."
-        },
-        "WorldTree_CraftSpeed": {
-            "name": "Demon’s Hand",
-            "desc": "Work Speed +90%, SAN dreceases +15.0% faster, World Tree harvestables won't vanish when approached."
-        },
-        "WorldTree_FullStomach": {
-            "name": "World Tree Seedbed",
-            "desc": "Decrease Hunger depletion rate by +50.0%, HP -20%, World Tree resources will not vanish when approached."
-        },
-        "WorldTree_Sanity": {
-            "name": "Hermit Sage",
-            "desc": "SAN depletion rate -50.0%, Work Speed -20%, World Tree resources will not vanish when approached."
-        },
-        "WorldTree_MoveSpeed": {
-            "name": "Dimensional Leap",
-            "desc": "Movement Speed +50%, Increases Hunger depletion rate by +15.0%, World Tree resources will not vanish when approached."
-        },
-        "WorldTree_ATK_DEF": {
-            "name": "God of Destruction",
-            "desc": "Attack +40%, Defense +20%, Max Health -50%, World Tree resources will not vanish when approached."
-        },
-        "CraftSpeed_up3": {
-            "name": "Remarkable Craftsmanship",
-            "desc": "Work Speed +75% (ToSelf)"
-        },
-        "Deffence_up3": {
-            "name": "Diamond Body",
-            "desc": "Defense +30% (ToSelf)"
-        },
-        "Rare": {
-            "name": "Lucky",
-            "desc": "Work Speed +15% (ToSelf), Attack +15% (ToSelf)"
-        },
-        "Legend": {
-            "name": "Legend",
-            "desc": "Attack +20%, Defense +20%, Movement Speed increases 15%"
-        },
-        "Witch": {
-            "name": "Siren of the Void",
-            "desc": "30% increase in Dark attack damage. 30% increase in Ice attack damage."
-        },
-        "EternalFlame": {
-            "name": "Eternal Flame",
-            "desc": "30% increase to Fire attack damage. 30% increase to Lightning attack damage."
-        },
-        "Invader": {
-            "name": "Invader",
-            "desc": "30% increase in Dark attack damage. 30% increase in Dragon attack damage."
-        },
-        "PAL_ALLAttack_up3": {
-            "name": "Demon God",
-            "desc": "Attack +30% (ToSelf), Defense +5% (ToSelf)"
-        },
-        "PAL_FullStomach_Down_3": {
-            "name": "Mastery of Fasting",
-            "desc": "Hunger decreases +20.0% slower."
-        },
-        "PAL_Sanity_Down_3": {
-            "name": "Heart of the Immovable King",
-            "desc": "SAN drops +20.0% slower."
-        },
-        "MoveSpeed_up_3": {
-            "name": "Swift",
-            "desc": "30% increase to movement speed."
-        },
-        "Stamina_Up_3": {
-            "name": "Eternal Engine",
-            "desc": "Max stamina +75% *This effect is only valid for rideable pals."
-        },
-        "Vampire": {
-            "name": "Vampiric",
-            "desc": "Absorbs a portion of the damage dealt to restore Health. Does not sleep at night and continues to work."
-        },
-        "Nushi": {
-            "name": "Lunker",
-            "desc": "20% increase to Water attack damage, 20% increase to Ice attack damage, 20% increase to defense."
-        },
-        "SwimSpeed_up_3": {
-            "name": "King of the Waves",
-            "desc": "50% increase movement speed on water."
-        },
-        "Salvation": {
-            "name": "Savior",
-            "desc": "30% increase in Neutral attack damage. 30% increase in Grass attack damage."
-        },
-        "MutationPal_Babysitter": {
-            "name": "Babysitter",
-            "desc": "While at a base, increases egg production speed by +30% and incubation speed by +30% for Pals assigned to a Breeding Farm."
-        },
-        "MutationPal_Mutant": {
-            "name": "Idiosyncratic",
-            "desc": "Pal and Player Auto Health Regeneration Rate +50%, Defense +{EffectValue4}%, Immune to Poison Damage, Immune to Burn Damage"
-        },
-        "SelfDeathAddItemDrop_up_3": {
-            "name": "Lavish Hospitality",
-            "desc": "Your Dropped Items + 100%"
-        },
-        "WorkSuitabilityAddRank_MonsterFarm_2": {
-            "name": "Ranch Master",
-            "desc": "'s +2"
-        },
-        "MutationPal_Immortal": {
-            "name": "Immortality",
-            "desc": "Life Steal +5%, Pal Auto Health Regeneration Rate +100%, Attack +15%"
-        },
-        "MutationPal_ExplosionResist": {
-            "name": "Heavily Armored",
-            "desc": "Immune to Explosion Damage"
-        },
-        "RideJumpCount_Increase1": {
-            "name": "Lightfooted",
-            "desc": "Mounted Jump Count +1"
-        },
-        "RideJumpCount_Increase2": {
-            "name": "Skymarcher",
-            "desc": "Mounted Jump Count +2"
-        },
-        "CraftSpeed_up2": {
-            "name": "Artisan",
-            "desc": "Work Speed +50% (ToSelf)"
-        },
-        "Deffence_up2": {
-            "name": "Burly Body",
-            "desc": "Defense +20% (ToSelf)"
-        },
-        "PAL_ALLAttack_up2": {
-            "name": "Ferocious",
-            "desc": "Attack +20% (ToSelf)"
-        },
-        "TrainerATK_UP_1": {
-            "name": "Vanguard",
-            "desc": "10% increase in Player Attack."
-        },
-        "TrainerDEF_UP_1": {
-            "name": "Stronghold Strategist",
-            "desc": "10% increase in Player Defense."
-        },
-        "TrainerWorkSpeed_UP_1": {
-            "name": "Motivational Leader",
-            "desc": "25% increase in Player Work Speed."
-        },
-        "TrainerMining_up1": {
-            "name": "Mine Foreman",
-            "desc": "25% increase in Player Mining Efficiency."
-        },
-        "TrainerLogging_up1": {
-            "name": "Logging Foreman",
-            "desc": "25% increase in Player Logging Efficiency."
-        },
-        "PAL_FullStomach_Down_2": {
-            "name": "Diet Lover",
-            "desc": "Hunger decreases +15.0% slower."
-        },
-        "PAL_Sanity_Down_2": {
-            "name": "Workaholic",
-            "desc": "SAN drops +15.0% slower."
-        },
-        "ElementBoost_Normal_2_PAL": {
-            "name": "Celestial Emperor",
-            "desc": "20% increase in Neutral attack damage."
-        },
-        "ElementBoost_Fire_2_PAL": {
-            "name": "Flame Emperor",
-            "desc": "20% increase in Fire attack damage."
-        },
-        "ElementBoost_Aqua_2_PAL": {
-            "name": "Lord of the Sea",
-            "desc": "20% increase in Water attack damage."
-        },
-        "ElementBoost_Thunder_2_PAL": {
-            "name": "Lord of Lightning",
-            "desc": "20% increase in Lightning attack damage."
-        },
-        "ElementBoost_Leaf_2_PAL": {
-            "name": "Spirit Emperor",
-            "desc": "20% increase in Grass attack damage."
-        },
-        "ElementBoost_Ice_2_PAL": {
-            "name": "Ice Emperor",
-            "desc": "20% increase in Ice attack damage."
-        },
-        "ElementBoost_Earth_2_PAL": {
-            "name": "Earth Emperor",
-            "desc": "20% increase in Earth attack damage."
-        },
-        "ElementBoost_Dark_2_PAL": {
-            "name": "Lord of the Underworld",
-            "desc": "20% increase in Dark attack damage."
-        },
-        "ElementBoost_Dragon_2_PAL": {
-            "name": "Divine Dragon",
-            "desc": "20% increase in Dragon attack damage."
-        },
-        "MoveSpeed_up_2": {
-            "name": "Runner",
-            "desc": "20% increase to movement speed."
-        },
-        "Test_PalEgg_HatchingSpeed_Up": {
-            "name": "Philanthropist",
-            "desc": "When assigned to a Breeding Farm, breeding speed is increased by 100%."
-        },
-        "CoolTimeReduction_Up_1": {
-            "name": "Serenity",
-            "desc": "Active skill cooldown reduction 30%, Attack +10%"
-        },
-        "Stamina_Up_1": {
-            "name": "Infinite Stamina",
-            "desc": "Max stamina +50% *This effect is only valid for rideable pals."
-        },
-        "SalePrice_Up_1": {
-            "name": "Noble",
-            "desc": "Increases the value of items when sold by +5%"
-        },
-        "SwimSpeed_up_2": {
-            "name": "Ace Swimmer",
-            "desc": "40% increase movement speed on water."
-        },
-        "SelfDeathAddItemDrop_up_2": {
-            "name": "Service-Minded",
-            "desc": "Your Dropped Items + 50%"
-        },
-        "WorkSuitabilityAddRank_MonsterFarm_1": {
-            "name": "Farmhand",
-            "desc": "'s +1"
-        },
-        "PlayerSP_DecreaseRate_Passive": {
-            "name": "Wellness Watcher",
-            "desc": "Player Stamina Consumption -5.0%"
-        },
-        "AutoHPRegeneRate_Passive": {
-            "name": "Healing Coach",
-            "desc": "Player Auto Health Regeneration Rate +5%"
-        },
-        "ReloadSpeedUp_Passive": {
-            "name": "Reload Master",
-            "desc": "Player Reload Speed +4%"
-        },
-        "Noukin": {
-            "name": "Musclehead",
-            "desc": "Attack +30% (ToSelf), Work Speed -50% (ToSelf)"
-        },
-        "Deffence_up2_2": {
-            "name": "Heavyweight",
-            "desc": "Defense +20%, Immune to Knockback"
-        },
-        "CraftSpeed_up1": {
-            "name": "Serious",
-            "desc": "Work Speed +20% (ToSelf)"
-        },
-        "Deffence_up1": {
-            "name": "Hard Skin",
-            "desc": "Defense +10% (ToSelf)"
-        },
-        "PAL_ALLAttack_up1": {
-            "name": "Brave",
-            "desc": "Attack +10% (ToSelf)"
-        },
-        "PAL_rude": {
-            "name": "Hooligan",
-            "desc": "Attack +15% (ToSelf), Work Speed -10% (ToSelf)"
-        },
-        "PAL_conceited": {
-            "name": "Conceited",
-            "desc": "Work Speed +10% (ToSelf), Defense -10% (ToSelf)"
-        },
-        "PAL_sadist": {
-            "name": "Sadist",
-            "desc": "Attack +15% (ToSelf), Defense -15% (ToSelf)"
-        },
-        "PAL_masochist": {
-            "name": "Masochist",
-            "desc": "Defense +15% (ToSelf), Attack -15% (ToSelf)"
-        },
-        "PAL_CorporateSlave": {
-            "name": "Work Slave",
-            "desc": "Work Speed +30% (ToSelf), Attack -30% (ToSelf)"
-        },
-        "PAL_oraora": {
-            "name": "Aggressive",
-            "desc": "Attack +10% (ToSelf), Defense -10% (ToSelf)"
-        },
-        "ElementResist_Normal_1_PAL": {
-            "name": "Abnormal",
-            "desc": "10% decrease in incoming Neutral damage."
-        },
-        "ElementResist_Fire_1_PAL": {
-            "name": "Suntan Lover",
-            "desc": "10% decrease in incoming Fire damage."
-        },
-        "ElementResist_Aqua_1_PAL": {
-            "name": "Waterproof",
-            "desc": "10% decrease in incoming Water damage."
-        },
-        "ElementResist_Thunder_1_PAL": {
-            "name": "Insulated Body",
-            "desc": "10% decrease in incoming Lightning damage."
-        },
-        "ElementResist_Leaf_1_PAL": {
-            "name": "Botanical Barrier",
-            "desc": "10% decrease in incoming Grass damage."
-        },
-        "ElementResist_Ice_1_PAL": {
-            "name": "Heated Body",
-            "desc": "10% decrease in incoming Ice damage."
-        },
-        "ElementResist_Earth_1_PAL": {
-            "name": "Earthquake Resistant",
-            "desc": "10% decrease in incoming Earth damage."
-        },
-        "ElementResist_Dark_1_PAL": {
-            "name": "Cheery",
-            "desc": "10% decrease in incoming Dark damage."
-        },
-        "ElementResist_Dragon_1_PAL": {
-            "name": "Dragonkiller",
-            "desc": "10% decrease in incoming Dragon damage."
-        },
-        "ElementBoost_Normal_1_PAL": {
-            "name": "Zen Mind",
-            "desc": "10% increase in Neutral attack damage."
-        },
-        "ElementBoost_Fire_1_PAL": {
-            "name": "Pyromaniac",
-            "desc": "10% increase in Fire attack damage."
-        },
-        "ElementBoost_Aqua_1_PAL": {
-            "name": "Hydromaniac",
-            "desc": "10% increase in Water attack damage."
-        },
-        "ElementBoost_Thunder_1_PAL": {
-            "name": "Capacitor",
-            "desc": "10% increase in Lightning attack damage."
-        },
-        "ElementBoost_Leaf_1_PAL": {
-            "name": "Fragrant Foliage",
-            "desc": "10% increase in Grass attack damage."
-        },
-        "ElementBoost_Ice_1_PAL": {
-            "name": "Coldblooded",
-            "desc": "10% increase in Ice attack damage."
-        },
-        "ElementBoost_Earth_1_PAL": {
-            "name": "Power of Gaia",
-            "desc": "10% increase in Earth attack damage."
-        },
-        "ElementBoost_Dark_1_PAL": {
-            "name": "Veil of Darkness",
-            "desc": "10% increase in Dark attack damage."
-        },
-        "ElementBoost_Dragon_1_PAL": {
-            "name": "Blood of the Dragon",
-            "desc": "10% increase in Dragon attack damage."
-        },
-        "PAL_FullStomach_Down_1": {
-            "name": "Dainty Eater",
-            "desc": "Hunger decreases +10.0% slower."
-        },
-        "PAL_Sanity_Down_1": {
-            "name": "Positive Thinker",
-            "desc": "SAN drops +10.0% slower."
-        },
-        "MoveSpeed_up_1": {
-            "name": "Nimble",
-            "desc": "10% increase to movement speed."
-        },
-        "Nocturnal": {
-            "name": "Insomnia",
-            "desc": "Does not sleep and continues to work even at night."
-        },
-        "CoolTimeReduction_Up_2": {
-            "name": "Impatient",
-            "desc": "Active skill cooldown reduction 15%"
-        },
-        "Stamina_Up_2": {
-            "name": "Fit as a Fiddle",
-            "desc": "Max stamina +25% *This effect is only valid for rideable pals."
-        },
-        "SalePrice_Up_2": {
-            "name": "Fine Furs",
-            "desc": "Increases the value of items when sold by +3%"
-        },
-        "Alien": {
-            "name": "Otherworldly Cells",
-            "desc": "Attack +10%, Fire damage reduction 15%, Lightning damage reduction 15%"
-        },
-        "SwimSpeed_up_1": {
-            "name": "Sleek Stroke",
-            "desc": "30% increase movement speed on water."
-        },
-        "CraftSpeed_down1": {
-            "name": "Clumsy",
-            "desc": "Work Speed -10% (ToSelf)"
-        },
-        "Deffence_down1": {
-            "name": "Downtrodden",
-            "desc": "Defense -10% (ToSelf)"
-        },
-        "PAL_ALLAttack_down1": {
-            "name": "Coward",
-            "desc": "Attack -10% (ToSelf)"
-        },
-        "PAL_FullStomach_Up_1": {
-            "name": "Glutton",
-            "desc": "Hunger decreases +10.0% faster."
-        },
-        "PAL_Sanity_Up_1": {
-            "name": "Unstable",
-            "desc": "SAN drops +10.0% faster."
-        },
-        "NonKilling": {
-            "name": "Mercy Hit",
-            "desc": "Pacifist. Will not reduce the target's Health below 1."
-        },
-        "CoolTimeReduction_Down_1": {
-            "name": "Easygoing",
-            "desc": "Active skill cooldown extension -15%"
-        },
-        "Stamina_Down_1": {
-            "name": "Sickly",
-            "desc": "Max Stamina -25% *This effect is only valid for rideable pals."
-        },
-        "SalePrice_Down_1": {
-            "name": "Shabby",
-            "desc": "Decrease the value of items when sold by -10%"
-        },
-        "NightOwl": {
-            "name": "Night Owl",
-            "desc": "Tends to nap through the day, due to being nocturnal."
-        },
-        "PAL_FullStomach_Up_2": {
-            "name": "Bottomless Stomach",
-            "desc": "Hunger decreases +15.0% faster."
-        },
-        "PAL_Sanity_Up_2": {
-            "name": "Destructive",
-            "desc": "SAN drops +15.0% faster."
-        },
-        "CraftSpeed_down2": {
-            "name": "Slacker",
-            "desc": "Work Speed -30% (ToSelf)"
-        },
-        "Deffence_down2": {
-            "name": "Brittle",
-            "desc": "Defense -20% (ToSelf)"
-        },
-        "PAL_ALLAttack_down2": {
-            "name": "Pacifist",
-            "desc": "Attack -20% (ToSelf)"
-        }
+  "en": {
+    "WorldTree_ATK": {
+      "name": "Twin-Edged Holy Blade",
+      "desc": "Attack +50%, Defense -30%, World Tree resources will not vanish when approached."
     },
-    "zh": {
-        "WorldTree_ATK": {
-            "name": "双刃圣剑",
-            "desc": "攻击+50% (对帕鲁生效)，防御-30% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
-        },
-        "WorldTree_DEF": {
-            "name": "守护圣盾",
-            "desc": "防御+50% (对帕鲁生效)，攻击-30% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
-        },
-        "WorldTree_CraftSpeed": {
-            "name": "恶魔之手",
-            "desc": "工作速度+90% (对帕鲁生效)，SAN值下降速度加快+15.0% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
-        },
-        "WorldTree_FullStomach": {
-            "name": "神树苗床",
-            "desc": "减少饱腹度下降速度+50.0% (对帕鲁生效)，生命值-20% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
-        },
-        "WorldTree_Sanity": {
-            "name": "仙人",
-            "desc": "减少SAN值下降速度+50.0% (对帕鲁生效)，工作速度-20% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
-        },
-        "WorldTree_MoveSpeed": {
-            "name": "次元跳跃",
-            "desc": "移动速度提升+50% (对帕鲁生效)，饱腹度下降速度加快+15.0% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
-        },
-        "WorldTree_ATK_DEF": {
-            "name": "破坏神",
-            "desc": "攻击+40% (对帕鲁生效)，防御+20% (对帕鲁生效)，最大HP-50% (对帕鲁生效)，世界树区域的树木/矿石不会因接近而消失"
-        },
-        "CraftSpeed_up3": {
-            "name": "卓绝技艺",
-            "desc": "工作速度+75% (对帕鲁生效)"
-        },
-        "Deffence_up3": {
-            "name": "金刚之躯",
-            "desc": "防御+30% (对帕鲁生效)"
-        },
-        "Rare": {
-            "name": "稀有",
-            "desc": "工作速度+15% (对帕鲁生效)，攻击+15% (对帕鲁生效)"
-        },
-        "Legend": {
-            "name": "传说",
-            "desc": "攻击+20%，防御+20%，移动速度提升15%"
-        },
-        "Witch": {
-            "name": "魔女",
-            "desc": "暗属性攻击伤害增加30%，冰属性攻击伤害增加30%"
-        },
-        "EternalFlame": {
-            "name": "永炎",
-            "desc": "火属性攻击伤害增加30%，雷属性攻击伤害增加30%"
-        },
-        "Invader": {
-            "name": "侵略者",
-            "desc": "暗属性攻击伤害增加30%，龙属性攻击伤害增加30%"
-        },
-        "PAL_ALLAttack_up3": {
-            "name": "鬼神",
-            "desc": "攻击+30% (对帕鲁生效)，防御+5% (对帕鲁生效)"
-        },
-        "PAL_FullStomach_Down_3": {
-            "name": "极限绝食",
-            "desc": "减少饱腹度下降速度+20.0%"
-        },
-        "PAL_Sanity_Down_3": {
-            "name": "明镜止水",
-            "desc": "减少SAN值下降速度+20.0%"
-        },
-        "MoveSpeed_up_3": {
-            "name": "神速",
-            "desc": "移动速度提升30%"
-        },
-        "Stamina_Up_3": {
-            "name": "永动机",
-            "desc": "最大耐力+75% ※此效果仅对可骑乘的帕鲁有效。"
-        },
-        "Vampire": {
-            "name": "吸血鬼",
-            "desc": "会吸收造成伤害的一部分恢复自身的。即使到夜晚也不会睡觉，可以一直工作。"
-        },
-        "Nushi": {
-            "name": "湖之主",
-            "desc": "水属性攻击伤害增加20%，冰属性攻击伤害增加20%，防御+20%"
-        },
-        "SwimSpeed_up_3": {
-            "name": "破浪王者",
-            "desc": "水上移动速度提升50%"
-        },
-        "Salvation": {
-            "name": "救世主",
-            "desc": "无属性攻击伤害增加30%，草属性攻击伤害增加30%"
-        },
-        "MutationPal_Babysitter": {
-            "name": "育婴师",
-            "desc": "在据点内时，分派到配种牧场的帕鲁的产蛋速度+30%，孵化速度+30%"
-        },
-        "MutationPal_Mutant": {
-            "name": "特殊体质",
-            "desc": "帕鲁和玩家的生命值自然恢复量+50%，防御力+{EffectValue4}%，免疫中毒伤害，免疫灼烧伤害"
-        },
-        "SelfDeathAddItemDrop_up_3": {
-            "name": "慷慨就义",
-            "desc": "自身道具掉落量+100%"
-        },
-        "WorkSuitabilityAddRank_MonsterFarm_2": {
-            "name": "牧场之主",
-            "desc": "牧场的工作适应性+2"
-        },
-        "MutationPal_Immortal": {
-            "name": "不死之身",
-            "desc": "窃取生命+5%，帕鲁生命值自然恢复量+100%，攻击力+15%"
-        },
-        "MutationPal_ExplosionResist": {
-            "name": "重装甲",
-            "desc": "免疫爆破伤害"
-        },
-        "RideJumpCount_Increase1": {
-            "name": "身轻如燕",
-            "desc": "骑乘期间连续跳跃次数+1"
-        },
-        "RideJumpCount_Increase2": {
-            "name": "凌空微步",
-            "desc": "骑乘期间连续跳跃次数+2"
-        },
-        "CraftSpeed_up2": {
-            "name": "工匠精神",
-            "desc": "工作速度+50% (对帕鲁生效)"
-        },
-        "Deffence_up2": {
-            "name": "顽强肉体",
-            "desc": "防御+20% (对帕鲁生效)"
-        },
-        "PAL_ALLAttack_up2": {
-            "name": "凶猛",
-            "desc": "攻击+20% (对帕鲁生效)"
-        },
-        "TrainerATK_UP_1": {
-            "name": "突袭指挥官",
-            "desc": "玩家的攻击提升10%"
-        },
-        "TrainerDEF_UP_1": {
-            "name": "铁壁军师",
-            "desc": "玩家的防御提升10%"
-        },
-        "TrainerWorkSpeed_UP_1": {
-            "name": "啦啦队",
-            "desc": "玩家的工作速度提升25%"
-        },
-        "TrainerMining_up1": {
-            "name": "矿山首领",
-            "desc": "玩家的挖掘速度提升25%"
-        },
-        "TrainerLogging_up1": {
-            "name": "采伐领袖",
-            "desc": "玩家的采伐速度提升25%"
-        },
-        "PAL_FullStomach_Down_2": {
-            "name": "节食大师",
-            "desc": "减少饱腹度下降速度+15.0%"
-        },
-        "PAL_Sanity_Down_2": {
-            "name": "工作狂",
-            "desc": "减少SAN值下降速度+15.0%"
-        },
-        "ElementBoost_Normal_2_PAL": {
-            "name": "圣天",
-            "desc": "无属性攻击伤害增加20%"
-        },
-        "ElementBoost_Fire_2_PAL": {
-            "name": "炎帝",
-            "desc": "火属性攻击伤害增加20%"
-        },
-        "ElementBoost_Aqua_2_PAL": {
-            "name": "海皇",
-            "desc": "水属性攻击伤害增加20%"
-        },
-        "ElementBoost_Thunder_2_PAL": {
-            "name": "雷帝",
-            "desc": "雷属性攻击伤害增加20%"
-        },
-        "ElementBoost_Leaf_2_PAL": {
-            "name": "精灵王",
-            "desc": "草属性攻击伤害增加20%"
-        },
-        "ElementBoost_Ice_2_PAL": {
-            "name": "冰帝",
-            "desc": "冰属性攻击伤害增加20%"
-        },
-        "ElementBoost_Earth_2_PAL": {
-            "name": "岩帝",
-            "desc": "地属性攻击伤害增加20%"
-        },
-        "ElementBoost_Dark_2_PAL": {
-            "name": "冥王",
-            "desc": "暗属性攻击伤害增加20%"
-        },
-        "ElementBoost_Dragon_2_PAL": {
-            "name": "神龙",
-            "desc": "龙属性攻击伤害增加20%"
-        },
-        "MoveSpeed_up_2": {
-            "name": "运动健将",
-            "desc": "移动速度提升20%"
-        },
-        "Test_PalEgg_HatchingSpeed_Up": {
-            "name": "博爱主义者",
-            "desc": "当分配到配种牧场时，产出蛋的速度将加快100%。"
-        },
-        "CoolTimeReduction_Up_1": {
-            "name": "沉着冷静",
-            "desc": "主动技能的冷却时间缩短30%，攻击+10%"
-        },
-        "Stamina_Up_1": {
-            "name": "无限精力",
-            "desc": "最大耐力+50%，此效果仅对可骑乘的帕鲁有效。"
-        },
-        "SalePrice_Up_1": {
-            "name": "高贵",
-            "desc": "改善交易价格+5%"
-        },
-        "SwimSpeed_up_2": {
-            "name": "游泳健将",
-            "desc": "水上移动速度提升40%"
-        },
-        "SelfDeathAddItemDrop_up_2": {
-            "name": "奉献精神",
-            "desc": "自身道具掉落量+50%"
-        },
-        "WorkSuitabilityAddRank_MonsterFarm_1": {
-            "name": "牧场之子",
-            "desc": "牧场的工作适应性+1"
-        },
-        "PlayerSP_DecreaseRate_Passive": {
-            "name": "防过劳帮手",
-            "desc": "玩家的耐力消耗量减缓+5.0%"
-        },
-        "AutoHPRegeneRate_Passive": {
-            "name": "疗愈教练",
-            "desc": "玩家的生命值自然恢复量+5%"
-        },
-        "ReloadSpeedUp_Passive": {
-            "name": "装填大师",
-            "desc": "玩家的装填速度提升+4%"
-        },
-        "Noukin": {
-            "name": "脑筋",
-            "desc": "攻击+30% (对帕鲁生效)，工作速度-50% (对帕鲁生效)"
-        },
-        "Deffence_up2_2": {
-            "name": "重量级",
-            "desc": "防御力+20% (对帕鲁生效)，免疫击退"
-        },
-        "CraftSpeed_up1": {
-            "name": "认真",
-            "desc": "工作速度+20% (对帕鲁生效)"
-        },
-        "Deffence_up1": {
-            "name": "坚硬皮肤",
-            "desc": "防御+10% (对帕鲁生效)"
-        },
-        "PAL_ALLAttack_up1": {
-            "name": "勇敢",
-            "desc": "攻击+10% (对帕鲁生效)"
-        },
-        "PAL_rude": {
-            "name": "粗暴",
-            "desc": "攻击+15% (对帕鲁生效)，工作速度-10% (对帕鲁生效)"
-        },
-        "PAL_conceited": {
-            "name": "自恋狂",
-            "desc": "工作速度+10% (对帕鲁生效)，防御-10% (对帕鲁生效)"
-        },
-        "PAL_sadist": {
-            "name": "虐待狂",
-            "desc": "攻击+15% (对帕鲁生效)，防御-15% (对帕鲁生效)"
-        },
-        "PAL_masochist": {
-            "name": "受虐狂",
-            "desc": "防御+15% (对帕鲁生效)，攻击-15% (对帕鲁生效)"
-        },
-        "PAL_CorporateSlave": {
-            "name": "社畜",
-            "desc": "工作速度+30% (对帕鲁生效)，攻击-30% (对帕鲁生效)"
-        },
-        "PAL_oraora": {
-            "name": "强势",
-            "desc": "攻击+10% (对帕鲁生效)，防御-10% (对帕鲁生效)"
-        },
-        "ElementResist_Normal_1_PAL": {
-            "name": "一反常态",
-            "desc": "无属性伤害减少10%"
-        },
-        "ElementResist_Fire_1_PAL": {
-            "name": "拥抱烈日",
-            "desc": "火属性伤害减少10%"
-        },
-        "ElementResist_Aqua_1_PAL": {
-            "name": "防水性能",
-            "desc": "水属性伤害减少10%"
-        },
-        "ElementResist_Thunder_1_PAL": {
-            "name": "绝缘体",
-            "desc": "雷属性伤害减少10%"
-        },
-        "ElementResist_Leaf_1_PAL": {
-            "name": "除草效果",
-            "desc": "草属性伤害减少10%"
-        },
-        "ElementResist_Ice_1_PAL": {
-            "name": "高温体质",
-            "desc": "冰属性伤害减少10%"
-        },
-        "ElementResist_Earth_1_PAL": {
-            "name": "抗震结构",
-            "desc": "地属性伤害减少10%"
-        },
-        "ElementResist_Dark_1_PAL": {
-            "name": "阳光开朗",
-            "desc": "暗属性伤害减少10%"
-        },
-        "ElementResist_Dragon_1_PAL": {
-            "name": "屠龙者",
-            "desc": "龙属性伤害减少10%"
-        },
-        "ElementBoost_Normal_1_PAL": {
-            "name": "禅境",
-            "desc": "无属性攻击伤害增加10%"
-        },
-        "ElementBoost_Fire_1_PAL": {
-            "name": "喜欢玩火",
-            "desc": "火属性攻击伤害增加10%"
-        },
-        "ElementBoost_Aqua_1_PAL": {
-            "name": "喜欢戏水",
-            "desc": "水属性攻击伤害增加10%"
-        },
-        "ElementBoost_Thunder_1_PAL": {
-            "name": "电容",
-            "desc": "雷属性攻击伤害增加10%"
-        },
-        "ElementBoost_Leaf_1_PAL": {
-            "name": "草木馨香",
-            "desc": "草属性攻击伤害增加10%"
-        },
-        "ElementBoost_Ice_1_PAL": {
-            "name": "冷血",
-            "desc": "冰属性攻击伤害增加10%"
-        },
-        "ElementBoost_Earth_1_PAL": {
-            "name": "大地之力",
-            "desc": "地属性攻击伤害增加10%"
-        },
-        "ElementBoost_Dark_1_PAL": {
-            "name": "夜幕",
-            "desc": "暗属性攻击伤害增加10%"
-        },
-        "ElementBoost_Dragon_1_PAL": {
-            "name": "龙之血脉",
-            "desc": "龙属性攻击伤害增加10%"
-        },
-        "PAL_FullStomach_Down_1": {
-            "name": "小胃",
-            "desc": "减少饱腹度下降速度+10.0%"
-        },
-        "PAL_Sanity_Down_1": {
-            "name": "积极思维",
-            "desc": "减少SAN值下降速度+10.0%"
-        },
-        "MoveSpeed_up_1": {
-            "name": "灵活",
-            "desc": "移动速度提升10%"
-        },
-        "Nocturnal": {
-            "name": "不眠",
-            "desc": "即使到夜晚也不会睡觉，会一直工作。"
-        },
-        "CoolTimeReduction_Up_2": {
-            "name": "急性子",
-            "desc": "主动技能的冷却时间缩短15%"
-        },
-        "Stamina_Up_2": {
-            "name": "健康宝宝",
-            "desc": "最大耐力+25% ※此效果仅对可骑乘的帕鲁有效。"
-        },
-        "SalePrice_Up_2": {
-            "name": "贵族",
-            "desc": "改善交易价格+3%"
-        },
-        "Alien": {
-            "name": "未知生物细胞",
-            "desc": "攻击力+10%，火属性伤害减免15%，雷属性伤害减免15%"
-        },
-        "SwimSpeed_up_1": {
-            "name": "悠然泳姿",
-            "desc": "水上移动速度提升30%"
-        },
-        "SelfDeathAddItemDrop_up_1": {
-            "name": "小小心意",
-            "desc": "自身道具掉落量+15%"
-        },
-        "CraftSpeed_down1": {
-            "name": "笨手笨脚",
-            "desc": "工作速度-10% (对帕鲁生效)"
-        },
-        "Deffence_down1": {
-            "name": "弱不禁风",
-            "desc": "防御-10% (对帕鲁生效)"
-        },
-        "PAL_ALLAttack_down1": {
-            "name": "胆小",
-            "desc": "攻击-10% (对帕鲁生效)"
-        },
-        "PAL_FullStomach_Up_1": {
-            "name": "贪吃",
-            "desc": "增加饱腹度下降速度+10.0%"
-        },
-        "PAL_Sanity_Up_1": {
-            "name": "情绪不稳",
-            "desc": "增加SAN值下降速度+10.0%"
-        },
-        "NonKilling": {
-            "name": "手下留情",
-            "desc": "和平主义者。使攻击目标的生命值不会小于1。"
-        },
-        "CoolTimeReduction_Down_1": {
-            "name": "慢性子",
-            "desc": "主动技能的冷却时间延长-15%"
-        },
-        "Stamina_Down_1": {
-            "name": "家里蹲",
-            "desc": "最大耐力-25% ※此效果仅对可骑乘的帕鲁有效。"
-        },
-        "SalePrice_Down_1": {
-            "name": "寒酸",
-            "desc": "交易价格恶化-10%"
-        },
-        "NightOwl": {
-            "name": "夜猫子",
-            "desc": "因为总是熬夜，白天常常睡午觉。"
-        },
-        "PAL_FullStomach_Up_2": {
-            "name": "无底之胃",
-            "desc": "增加饱腹度下降速度+15.0%"
-        },
-        "PAL_Sanity_Up_2": {
-            "name": "毁灭欲望",
-            "desc": "增加SAN值下降速度+15.0%"
-        },
-        "CraftSpeed_down2": {
-            "name": "偷懒成瘾",
-            "desc": "工作速度-30% (对帕鲁生效)"
-        },
-        "Deffence_down2": {
-            "name": "骨质疏松",
-            "desc": "防御-20% (对帕鲁生效)"
-        },
-        "PAL_ALLAttack_down2": {
-            "name": "消极主义者",
-            "desc": "攻击-20% (对帕鲁生效)"
-        }
+    "WorldTree_DEF": {
+      "name": "Sanctified Meat Shield",
+      "desc": "Defense +50%, Attack -30%, World Tree resources will not vanish when approached."
     },
-    "ja": {
-        "WorldTree_ATK": {
-            "name": "諸刃の聖剣",
-            "desc": "攻撃+50%, 防御-30%, 世界樹の木・岩に近づいても消滅しない"
-        },
-        "WorldTree_DEF": {
-            "name": "聖域の肉壁",
-            "desc": "防御+50%, 攻撃-30%, 世界樹の木・岩に近づいても消滅しない"
-        },
-        "WorldTree_CraftSpeed": {
-            "name": "悪魔の手",
-            "desc": "作業速度 +90%, SAN値が減りやすい +15.0%, 世界樹の木・岩に近づいても消滅しない"
-        },
-        "WorldTree_FullStomach": {
-            "name": "神樹の苗床",
-            "desc": "満腹度が減りにくい +50.0%, HP -20%, 世界樹の木・岩に近づいても消滅しない"
-        },
-        "WorldTree_Sanity": {
-            "name": "仙人",
-            "desc": "SAN値が減りにくい +50.0%, 作業速度 -20%, 世界樹の木・岩に近づいても消滅しない"
-        },
-        "WorldTree_MoveSpeed": {
-            "name": "次元跳躍",
-            "desc": "移動速度上昇 +50%, 満腹度が減りやすい +15.0%, 世界樹の木・岩に近づいても消滅しない"
-        },
-        "WorldTree_ATK_DEF": {
-            "name": "破壊神",
-            "desc": "攻撃+40%, 防御+20%, 最大HP-50%, 世界樹の木・岩に近づいても消滅しない"
-        },
-        "CraftSpeed_up3": {
-            "name": "超絶技巧",
-            "desc": "作業速度 +75% (ToSelf)"
-        },
-        "Deffence_up3": {
-            "name": "ダイヤモンドボディ",
-            "desc": "防御 +30% (ToSelf)"
-        },
-        "Rare": {
-            "name": "希少",
-            "desc": "作業速度 +15% (ToSelf)、攻撃 +15% (ToSelf)"
-        },
-        "Legend": {
-            "name": "伝说",
-            "desc": "攻撃+20%、防御+20%、移動速度上昇15%"
-        },
-        "Witch": {
-            "name": "魔女",
-            "desc": "闇属性攻撃ダメージ増加30%、氷属性攻撃ダメージ増加30%"
-        },
-        "EternalFlame": {
-            "name": "永炎",
-            "desc": "炎属性攻撃ダメージ増加30%、雷属性攻撃ダメージ増加30%"
-        },
-        "Invader": {
-            "name": "侵略者",
-            "desc": "闇属性攻撃ダメージ増加30%、竜属性攻撃ダメージ増加30%"
-        },
-        "PAL_ALLAttack_up3": {
-            "name": "鬼神",
-            "desc": "攻撃 +30% (ToSelf)、防御 +5% (ToSelf)"
-        },
-        "PAL_FullStomach_Down_3": {
-            "name": "絶食の極み",
-            "desc": "満腹度が減りにくい +20.0%"
-        },
-        "PAL_Sanity_Down_3": {
-            "name": "不動明王の心",
-            "desc": "SAN値が減りにくい +20.0%"
-        },
-        "MoveSpeed_up_3": {
-            "name": "神速",
-            "desc": "移動速度上昇30%"
-        },
-        "Stamina_Up_3": {
-            "name": "永久機関",
-            "desc": "最大スタミナ+75% ※ライド可能なパルのみ有効"
-        },
-        "Vampire": {
-            "name": "吸血鬼",
-            "desc": "ダメージを与えるとその一部を、吸収しHPを回復する。夜になっても眠らず、働き続ける。"
-        },
-        "Nushi": {
-            "name": "ヌシ",
-            "desc": "水属性攻撃ダメージ増加20%、氷属性攻撃ダメージ増加20%、防御+20%"
-        },
-        "SwimSpeed_up_3": {
-            "name": "波乗り王",
-            "desc": "水上の移動速度上昇50%"
-        },
-        "Salvation": {
-            "name": "救世主",
-            "desc": "無属性攻撃ダメージ増加30%、草属性攻撃ダメージ増加30%"
-        },
-        "MutationPal_Babysitter": {
-            "name": "ベビーシッター",
-            "desc": "拠点にいる間、配合牧場にアサインしたパルの, タマゴ生成速度+30%、孵化速度+30%"
-        },
-        "MutationPal_Mutant": {
-            "name": "特異体質",
-            "desc": "パルとプレイヤーのHP自然回復量+50%, 防御+{EffectValue4}%, 毒状態異常ダメージ無効, 炎上状態異常ダメージ無効"
-        },
-        "SelfDeathAddItemDrop_up_3": {
-            "name": "大盤振る舞い",
-            "desc": "自身のドロップアイテム+100%"
-        },
-        "WorkSuitabilityAddRank_MonsterFarm_2": {
-            "name": "牧場の主",
-            "desc": "の+2"
-        },
-        "MutationPal_Immortal": {
-            "name": "不死身",
-            "desc": "与えたダメージの5%を吸収し、HPを回復する。, パルのHP自然回復量+100%, 攻撃+15%"
-        },
-        "MutationPal_ExplosionResist": {
-            "name": "重装甲",
-            "desc": "爆破ダメージ無効"
-        },
-        "RideJumpCount_Increase1": {
-            "name": "軽身",
-            "desc": "ライド中のジャンプ回数+1"
-        },
-        "RideJumpCount_Increase2": {
-            "name": "空渡り",
-            "desc": "ライド中のジャンプ回数+2"
-        },
-        "CraftSpeed_up2": {
-            "name": "職人気質",
-            "desc": "作業速度 +50% (ToSelf)"
-        },
-        "Deffence_up2": {
-            "name": "屈强な肉体",
-            "desc": "防御 +20% (ToSelf)"
-        },
-        "PAL_ALLAttack_up2": {
-            "name": "獰猛",
-            "desc": "攻撃 +20% (ToSelf)"
-        },
-        "TrainerATK_UP_1": {
-            "name": "突撃指揮者",
-            "desc": "プレイヤーの攻撃増加10%"
-        },
-        "TrainerDEF_UP_1": {
-            "name": "堅城の軍師",
-            "desc": "プレイヤーの防御増加10%"
-        },
-        "TrainerWorkSpeed_UP_1": {
-            "name": "モチベーター",
-            "desc": "プレイヤーの作業速度増加25%"
-        },
-        "TrainerMining_up1": {
-            "name": "鉱山のチーフ",
-            "desc": "プレイヤーの採掘効率増加25%"
-        },
-        "TrainerLogging_up1": {
-            "name": "伐採リーダー",
-            "desc": "プレイヤーの伐採効率増加25%"
-        },
-        "PAL_FullStomach_Down_2": {
-            "name": "ダイエットマスター",
-            "desc": "満腹度が減りにくい +15.0%"
-        },
-        "PAL_Sanity_Down_2": {
-            "name": "ワーカーホリック",
-            "desc": "SAN値が減りにくい +15.0%"
-        },
-        "ElementBoost_Normal_2_PAL": {
-            "name": "聖天",
-            "desc": "無属性攻撃ダメージ増加20%"
-        },
-        "ElementBoost_Fire_2_PAL": {
-            "name": "炎帝",
-            "desc": "炎属性攻撃ダメージ増加20%"
-        },
-        "ElementBoost_Aqua_2_PAL": {
-            "name": "海皇",
-            "desc": "水属性攻撃ダメージ増加20%"
-        },
-        "ElementBoost_Thunder_2_PAL": {
-            "name": "雷帝",
-            "desc": "雷属性攻撃ダメージ増加20%"
-        },
-        "ElementBoost_Leaf_2_PAL": {
-            "name": "精霊王",
-            "desc": "草属性攻撃ダメージ増加20%"
-        },
-        "ElementBoost_Ice_2_PAL": {
-            "name": "氷帝",
-            "desc": "氷属性攻撃ダメージ増加20%"
-        },
-        "ElementBoost_Earth_2_PAL": {
-            "name": "地帝",
-            "desc": "地属性攻撃ダメージ増加20%"
-        },
-        "ElementBoost_Dark_2_PAL": {
-            "name": "冥王",
-            "desc": "闇属性攻撃ダメージ増加20%"
-        },
-        "ElementBoost_Dragon_2_PAL": {
-            "name": "神龍",
-            "desc": "竜属性攻撃ダメージ増加20%"
-        },
-        "MoveSpeed_up_2": {
-            "name": "走るのが得意",
-            "desc": "移動速度上昇20%"
-        },
-        "Test_PalEgg_HatchingSpeed_Up": {
-            "name": "博愛主義者",
-            "desc": "配合牧場にアサインされてる間、タマゴ生成速度が100%増加する"
-        },
-        "CoolTimeReduction_Up_1": {
-            "name": "冷静沈着",
-            "desc": "アクティブスキルのクールタイム短縮30%、攻撃+10%"
-        },
-        "Stamina_Up_1": {
-            "name": "無限のスタミナ",
-            "desc": "最大スタミナ+50% ※ライド可能なパルのみ有効"
-        },
-        "SalePrice_Up_1": {
-            "name": "高貴",
-            "desc": "取引価格が改善+5%"
-        },
-        "SwimSpeed_up_2": {
-            "name": "泳ぐのが得意",
-            "desc": "水上の移動速度上昇40%"
-        },
-        "SelfDeathAddItemDrop_up_2": {
-            "name": "サービス精神",
-            "desc": "自身のドロップアイテム+50%"
-        },
-        "WorkSuitabilityAddRank_MonsterFarm_1": {
-            "name": "牧場っ子",
-            "desc": "の+1"
-        },
-        "PlayerSP_DecreaseRate_Passive": {
-            "name": "バテ防止係",
-            "desc": "プレイヤーのスタミナ消耗量減少+5.0%"
-        },
-        "AutoHPRegeneRate_Passive": {
-            "name": "ヒーリングコーチ",
-            "desc": "プレイヤーのHP自然回復量+5%"
-        },
-        "ReloadSpeedUp_Passive": {
-            "name": "リロードマスター",
-            "desc": "プレイヤーのリロード速度上昇+4%"
-        },
-        "Noukin": {
-            "name": "脳筋",
-            "desc": "攻撃 +30% (ToSelf)、作業速度 -50% (ToSelf)"
-        },
-        "Deffence_up2_2": {
-            "name": "ヘビー級",
-            "desc": "防御+20%, 吹き飛び無効"
-        },
-        "CraftSpeed_up1": {
-            "name": "まじめ",
-            "desc": "作業速度 +20% (ToSelf)"
-        },
-        "Deffence_up1": {
-            "name": "硬い皮膚",
-            "desc": "防御 +10% (ToSelf)"
-        },
-        "PAL_ALLAttack_up1": {
-            "name": "勇敢",
-            "desc": "攻撃 +10% (ToSelf)"
-        },
-        "PAL_rude": {
-            "name": "粗暴",
-            "desc": "攻撃 +15% (ToSelf)、作業速度 -10% (ToSelf)"
-        },
-        "PAL_conceited": {
-            "name": "うぬぼれ屋",
-            "desc": "作業速度 +10% (ToSelf)、防御 -10% (ToSelf)"
-        },
-        "PAL_sadist": {
-            "name": "サディスト",
-            "desc": "攻撃 +15% (ToSelf)、防御 -15% (ToSelf)"
-        },
-        "PAL_masochist": {
-            "name": "マゾヒスト",
-            "desc": "防御 +15% (ToSelf)、攻撃 -15% (ToSelf)"
-        },
-        "PAL_CorporateSlave": {
-            "name": "社畜",
-            "desc": "作業速度 +30% (ToSelf)、攻撃 -30% (ToSelf)"
-        },
-        "PAL_oraora": {
-            "name": "オラオラ系",
-            "desc": "攻撃 +10% (ToSelf)、防御 -10% (ToSelf)"
-        },
-        "ElementResist_Normal_1_PAL": {
-            "name": "アブノーマル",
-            "desc": "無属性ダメージ軽減10%"
-        },
-        "ElementResist_Fire_1_PAL": {
-            "name": "日焼け好き",
-            "desc": "炎属性ダメージ軽减10%"
-        },
-        "ElementResist_Aqua_1_PAL": {
-            "name": "防水加工",
-            "desc": "水属性ダメージ軽减10%"
-        },
-        "ElementResist_Thunder_1_PAL": {
-            "name": "絶縁体",
-            "desc": "雷属性ダメージ軽减10%"
-        },
-        "ElementResist_Leaf_1_PAL": {
-            "name": "防草効果",
-            "desc": "草属性ダメージ軽减10%"
-        },
-        "ElementResist_Ice_1_PAL": {
-            "name": "高温体質",
-            "desc": "氷属性ダメージ軽减10%"
-        },
-        "ElementResist_Earth_1_PAL": {
-            "name": "耐震構造",
-            "desc": "地属性ダメージ軽减10%"
-        },
-        "ElementResist_Dark_1_PAL": {
-            "name": "陽キャラ",
-            "desc": "闇属性ダメージ軽減10%"
-        },
-        "ElementResist_Dragon_1_PAL": {
-            "name": "ドラゴンキラー",
-            "desc": "竜属性ダメージ軽减10%"
-        },
-        "ElementBoost_Normal_1_PAL": {
-            "name": "無の境地",
-            "desc": "無属性攻撃ダメージ増加10%"
-        },
-        "ElementBoost_Fire_1_PAL": {
-            "name": "火遊び好き",
-            "desc": "炎属性攻撃ダメージ増加10%"
-        },
-        "ElementBoost_Aqua_1_PAL": {
-            "name": "水遊び好き",
-            "desc": "水属性攻撃ダメージ増加10%"
-        },
-        "ElementBoost_Thunder_1_PAL": {
-            "name": "コンデンサ",
-            "desc": "雷属性攻撃ダメージ増加10%"
-        },
-        "ElementBoost_Leaf_1_PAL": {
-            "name": "草木の香り",
-            "desc": "草属性攻撃ダメージ増加10%"
-        },
-        "ElementBoost_Ice_1_PAL": {
-            "name": "冷血",
-            "desc": "氷属性攻撃ダメージ増加10%"
-        },
-        "ElementBoost_Earth_1_PAL": {
-            "name": "大地の力",
-            "desc": "地属性攻撃ダメージ増加10%"
-        },
-        "ElementBoost_Dark_1_PAL": {
-            "name": "夜の帳",
-            "desc": "闇属性攻撃ダメージ増加10%"
-        },
-        "ElementBoost_Dragon_1_PAL": {
-            "name": "竜の血族",
-            "desc": "竜属性攻撃ダメージ増加10%"
-        },
-        "PAL_FullStomach_Down_1": {
-            "name": "小食",
-            "desc": "満腹度が減りにくい +10.0%"
-        },
-        "PAL_Sanity_Down_1": {
-            "name": "ポジティブ思考",
-            "desc": "SAN値が減りにくい +10.0%"
-        },
-        "MoveSpeed_up_1": {
-            "name": "すばしこい",
-            "desc": "移動速度上昇10%"
-        },
-        "Nocturnal": {
-            "name": "不眠",
-            "desc": "夜になっても眠らず、働き続ける。"
-        },
-        "CoolTimeReduction_Up_2": {
-            "name": "せっかち",
-            "desc": "アクティブスキルのクールタイム短缩15%"
-        },
-        "Stamina_Up_2": {
-            "name": "健康優良児",
-            "desc": "最大スタミナ+25% ※ライド可能なパルのみ有効"
-        },
-        "SalePrice_Up_2": {
-            "name": "良い毛並み",
-            "desc": "取引価格が改善+3%"
-        },
-        "Alien": {
-            "name": "未知の生体細胞",
-            "desc": "攻撃+10%、炎属性ダメージ軽减15%、雷属性ダメージ軽减15%"
-        },
-        "SwimSpeed_up_1": {
-            "name": "しなやかスイム",
-            "desc": "水上の移動速度上昇30%"
-        },
-        "CraftSpeed_down1": {
-            "name": "不器用",
-            "desc": "作業速度 -10% (ToSelf)"
-        },
-        "Deffence_down1": {
-            "name": "うたれ弱い",
-            "desc": "防御 -10% (ToSelf)"
-        },
-        "PAL_ALLAttack_down1": {
-            "name": "ビビり",
-            "desc": "攻撃 -10% (ToSelf)"
-        },
-        "PAL_FullStomach_Up_1": {
-            "name": "食いしんぼ",
-            "desc": "満腹度が减りやすい +10.0%"
-        },
-        "PAL_Sanity_Up_1": {
-            "name": "精神が不安定",
-            "desc": "SAN値が减りやすい +10.0%"
-        },
-        "NonKilling": {
-            "name": "手加減",
-            "desc": "平和主義者。攻撃対象のHPを1未満にできない。"
-        },
-        "CoolTimeReduction_Down_1": {
-            "name": "のんびり屋さん",
-            "desc": "アクティブスキルのクールタイム延長-15%"
-        },
-        "Stamina_Down_1": {
-            "name": "引きこもり",
-            "desc": "最大スタミナ-25% ※ライド可能なパルのみ有効"
-        },
-        "SalePrice_Down_1": {
-            "name": "みすぼらしい",
-            "desc": "取引価格が悪化-10%"
-        },
-        "NightOwl": {
-            "name": "夜更かし",
-            "desc": "夜中まで起きているせいか、昼寝をしがち。"
-        },
-        "PAL_FullStomach_Up_2": {
-            "name": "無限の胃袋",
-            "desc": "満腹度が減りやすい +15.0%"
-        },
-        "PAL_Sanity_Up_2": {
-            "name": "破滅願望",
-            "desc": "SAN値が减りやすい +15.0%"
-        },
-        "CraftSpeed_down2": {
-            "name": "サボり癖",
-            "desc": "作業速度 -30% (ToSelf)"
-        },
-        "Deffence_down2": {
-            "name": "すぐ骨折する",
-            "desc": "防御 -20% (ToSelf)"
-        },
-        "PAL_ALLAttack_down2": {
-            "name": "ことなかれ主義者",
-            "desc": "攻撃 -20% (ToSelf)"
-        }
+    "WorldTree_CraftSpeed": {
+      "name": "Demon’s Hand",
+      "desc": "Work Speed +90%, SAN dreceases +15% faster, World Tree harvestables won't vanish when approached."
+    },
+    "WorldTree_FullStomach": {
+      "name": "World Tree Seedbed",
+      "desc": "Decrease Hunger depletion rate by +50%, HP -20%, World Tree resources will not vanish when approached."
+    },
+    "WorldTree_Sanity": {
+      "name": "Hermit Sage",
+      "desc": "SAN depletion rate -50%, Work Speed -20%, World Tree resources will not vanish when approached."
+    },
+    "WorldTree_MoveSpeed": {
+      "name": "Dimensional Leap",
+      "desc": "Movement Speed +50%, Increases Hunger depletion rate by +15%, World Tree resources will not vanish when approached."
+    },
+    "WorldTree_ATK_DEF": {
+      "name": "God of Destruction",
+      "desc": "Attack +40%, Defense +20%, Max Health -50%, World Tree resources will not vanish when approached."
+    },
+    "CraftSpeed_up3": {
+      "name": "Remarkable Craftsmanship",
+      "desc": "Work Speed +75% (ToSelf)"
+    },
+    "Deffence_up3": {
+      "name": "Diamond Body",
+      "desc": "Defense +30%, Immune to Flinch, Immune to Knockback"
+    },
+    "Rare": {
+      "name": "Lucky",
+      "desc": "Attack +15% (ToSelf), Defense +15% (None), Work Speed +20% (ToSelf)"
+    },
+    "Legend": {
+      "name": "Legend",
+      "desc": "Attack +20%, Defense +20%, Movement Speed increases 20%"
+    },
+    "Witch": {
+      "name": "Siren of the Void",
+      "desc": "30% increase in Dark attack damage. 30% increase in Ice attack damage."
+    },
+    "EternalFlame": {
+      "name": "Eternal Flame",
+      "desc": "30% increase to Fire attack damage. 30% increase to Lightning attack damage."
+    },
+    "Invader": {
+      "name": "Invader",
+      "desc": "30% increase in Dark attack damage. 30% increase in Dragon attack damage."
+    },
+    "PAL_ALLAttack_up3": {
+      "name": "Demon God",
+      "desc": "Attack +30% (ToSelf), Defense +5% (ToSelf)"
+    },
+    "PAL_FullStomach_Down_3": {
+      "name": "Mastery of Fasting",
+      "desc": "Hunger decreases +20% slower."
+    },
+    "PAL_Sanity_Down_3": {
+      "name": "Heart of the Immovable King",
+      "desc": "SAN drops +20% slower."
+    },
+    "MoveSpeed_up_3": {
+      "name": "Swift",
+      "desc": "30% increase to movement speed."
+    },
+    "Stamina_Up_3": {
+      "name": "Eternal Engine",
+      "desc": "Max stamina +75% *This effect is only valid for rideable pals."
+    },
+    "Vampire": {
+      "name": "Vampiric",
+      "desc": "Absorbs a portion of the damage dealt to restore Health. Does not sleep at night and continues to work."
+    },
+    "Nushi": {
+      "name": "Lunker",
+      "desc": "20% increase to Water attack damage, 20% increase to Ice attack damage, 20% increase to defense."
+    },
+    "SwimSpeed_up_3": {
+      "name": "King of the Waves",
+      "desc": "50% increase movement speed on water."
+    },
+    "Salvation": {
+      "name": "Savior",
+      "desc": "30% increase in Neutral attack damage. 30% increase in Grass attack damage."
+    },
+    "MutationPal_Babysitter": {
+      "name": "Babysitter",
+      "desc": "While at a base, increases egg production speed by +30% and incubation speed by +30% for Pals assigned to a Breeding Farm."
+    },
+    "MutationPal_Mutant": {
+      "name": "Idiosyncratic",
+      "desc": "Pal and Player Auto Health Regeneration Rate +50%, Defense +25%, Immune to Poison Damage, Immune to Burn Damage"
+    },
+    "SelfDeathAddItemDrop_up_3": {
+      "name": "Lavish Hospitality",
+      "desc": "Your Dropped Items +100%"
+    },
+    "WorkSuitabilityAddRank_MonsterFarm_2": {
+      "name": "Ranch Master",
+      "desc": "Farming's Work Suitability +2"
+    },
+    "MutationPal_Immortal": {
+      "name": "Immortality",
+      "desc": "Life Steal +5%, Pal Auto Health Regeneration Rate +100%, Attack +15%"
+    },
+    "MutationPal_ExplosionResist": {
+      "name": "Heavily Armored",
+      "desc": "Immune to Explosion Damage"
+    },
+    "RideJumpCount_Increase1": {
+      "name": "Lightfooted",
+      "desc": "Mounted Jump Count +1"
+    },
+    "RideJumpCount_Increase2": {
+      "name": "Skymarcher",
+      "desc": "Mounted Jump Count +2"
+    },
+    "CraftSpeed_up2": {
+      "name": "Artisan",
+      "desc": "Work Speed +50% (ToSelf)"
+    },
+    "Deffence_up2": {
+      "name": "Burly Body",
+      "desc": "Defense +20%, Immune to Flinch"
+    },
+    "PAL_ALLAttack_up2": {
+      "name": "Ferocious",
+      "desc": "Attack +20% (ToSelf)"
+    },
+    "TrainerATK_UP_1": {
+      "name": "Vanguard",
+      "desc": "10% increase in Player Attack."
+    },
+    "TrainerDEF_UP_1": {
+      "name": "Stronghold Strategist",
+      "desc": "10% increase in Player Defense."
+    },
+    "TrainerWorkSpeed_UP_1": {
+      "name": "Motivational Leader",
+      "desc": "25% increase in Player Work Speed."
+    },
+    "TrainerMining_up1": {
+      "name": "Mine Foreman",
+      "desc": "25% increase in Player Mining Efficiency."
+    },
+    "TrainerLogging_up1": {
+      "name": "Logging Foreman",
+      "desc": "25% increase in Player Logging Efficiency."
+    },
+    "PAL_FullStomach_Down_2": {
+      "name": "Diet Lover",
+      "desc": "Hunger decreases +15% slower."
+    },
+    "PAL_Sanity_Down_2": {
+      "name": "Workaholic",
+      "desc": "SAN drops +15% slower."
+    },
+    "ElementBoost_Normal_2_PAL": {
+      "name": "Celestial Emperor",
+      "desc": "30% increase in Neutral attack damage."
+    },
+    "ElementBoost_Fire_2_PAL": {
+      "name": "Flame Emperor",
+      "desc": "30% increase in Fire attack damage."
+    },
+    "ElementBoost_Aqua_2_PAL": {
+      "name": "Lord of the Sea",
+      "desc": "30% increase in Water attack damage."
+    },
+    "ElementBoost_Thunder_2_PAL": {
+      "name": "Lord of Lightning",
+      "desc": "30% increase in Lightning attack damage."
+    },
+    "ElementBoost_Leaf_2_PAL": {
+      "name": "Spirit Emperor",
+      "desc": "30% increase in Grass attack damage."
+    },
+    "ElementBoost_Ice_2_PAL": {
+      "name": "Ice Emperor",
+      "desc": "30% increase in Ice attack damage."
+    },
+    "ElementBoost_Earth_2_PAL": {
+      "name": "Earth Emperor",
+      "desc": "30% increase in Earth attack damage."
+    },
+    "ElementBoost_Dark_2_PAL": {
+      "name": "Lord of the Underworld",
+      "desc": "30% increase in Dark attack damage."
+    },
+    "ElementBoost_Dragon_2_PAL": {
+      "name": "Divine Dragon",
+      "desc": "30% increase in Dragon attack damage."
+    },
+    "MoveSpeed_up_2": {
+      "name": "Runner",
+      "desc": "20% increase to movement speed."
+    },
+    "Test_PalEgg_HatchingSpeed_Up": {
+      "name": "Philanthropist",
+      "desc": "When assigned to a Breeding Farm, breeding speed is increased by 100%."
+    },
+    "CoolTimeReduction_Up_1": {
+      "name": "Serenity",
+      "desc": "Active skill cooldown reduction 30%, Attack +10%"
+    },
+    "Stamina_Up_1": {
+      "name": "Infinite Stamina",
+      "desc": "Max stamina +50% *This effect is only valid for rideable pals."
+    },
+    "SalePrice_Up_1": {
+      "name": "Noble",
+      "desc": "Increases the value of items when sold by +5%"
+    },
+    "SwimSpeed_up_2": {
+      "name": "Ace Swimmer",
+      "desc": "40% increase movement speed on water."
+    },
+    "SelfDeathAddItemDrop_up_2": {
+      "name": "Service-Minded",
+      "desc": "Your Dropped Items +50%"
+    },
+    "WorkSuitabilityAddRank_MonsterFarm_1": {
+      "name": "Farmhand",
+      "desc": "Farming's Work Suitability +1"
+    },
+    "PlayerSP_DecreaseRate_Passive": {
+      "name": "Wellness Watcher",
+      "desc": "Player Stamina Consumption -5%"
+    },
+    "AutoHPRegeneRate_Passive": {
+      "name": "Healing Coach",
+      "desc": "Player Auto Health Regeneration Rate +5%"
+    },
+    "ReloadSpeedUp_Passive": {
+      "name": "Reload Master",
+      "desc": "Player Reload Speed +4%"
+    },
+    "Noukin": {
+      "name": "Musclehead",
+      "desc": "Attack +30% (ToSelf), Work Speed -50% (ToSelf)"
+    },
+    "Deffence_up2_2": {
+      "name": "Heavyweight",
+      "desc": "Defense +20%, Immune to Knockback"
+    },
+    "CraftSpeed_up1": {
+      "name": "Serious",
+      "desc": "Work Speed +20% (ToSelf)"
+    },
+    "Deffence_up1": {
+      "name": "Hard Skin",
+      "desc": "Defense +10% (ToSelf)"
+    },
+    "PAL_ALLAttack_up1": {
+      "name": "Brave",
+      "desc": "Attack +10% (ToSelf)"
+    },
+    "PAL_rude": {
+      "name": "Hooligan",
+      "desc": "Attack +15% (ToSelf), Work Speed -10% (ToSelf)"
+    },
+    "PAL_conceited": {
+      "name": "Conceited",
+      "desc": "Work Speed +10% (ToSelf), Defense -10% (ToSelf)"
+    },
+    "PAL_sadist": {
+      "name": "Sadist",
+      "desc": "Attack +15% (ToSelf), Defense -15% (ToSelf)"
+    },
+    "PAL_masochist": {
+      "name": "Masochist",
+      "desc": "Defense +15% (ToSelf), Attack -15% (ToSelf)"
+    },
+    "PAL_CorporateSlave": {
+      "name": "Work Slave",
+      "desc": "Work Speed +30% (ToSelf), Attack -30% (ToSelf)"
+    },
+    "PAL_oraora": {
+      "name": "Aggressive",
+      "desc": "Attack +10% (ToSelf), Defense -10% (ToSelf)"
+    },
+    "ElementResist_Normal_1_PAL": {
+      "name": "Abnormal",
+      "desc": "10% decrease in incoming Neutral damage."
+    },
+    "ElementResist_Fire_1_PAL": {
+      "name": "Suntan Lover",
+      "desc": "10% decrease in incoming Fire damage."
+    },
+    "ElementResist_Aqua_1_PAL": {
+      "name": "Waterproof",
+      "desc": "10% decrease in incoming Water damage."
+    },
+    "ElementResist_Thunder_1_PAL": {
+      "name": "Insulated Body",
+      "desc": "10% decrease in incoming Lightning damage."
+    },
+    "ElementResist_Leaf_1_PAL": {
+      "name": "Botanical Barrier",
+      "desc": "10% decrease in incoming Grass damage."
+    },
+    "ElementResist_Ice_1_PAL": {
+      "name": "Heated Body",
+      "desc": "10% decrease in incoming Ice damage."
+    },
+    "ElementResist_Earth_1_PAL": {
+      "name": "Earthquake Resistant",
+      "desc": "10% decrease in incoming Earth damage."
+    },
+    "ElementResist_Dark_1_PAL": {
+      "name": "Cheery",
+      "desc": "10% decrease in incoming Dark damage."
+    },
+    "ElementResist_Dragon_1_PAL": {
+      "name": "Dragonkiller",
+      "desc": "10% decrease in incoming Dragon damage."
+    },
+    "ElementBoost_Normal_1_PAL": {
+      "name": "Spirit of Zen",
+      "desc": "10% increase in Neutral attack damage."
+    },
+    "ElementBoost_Fire_1_PAL": {
+      "name": "Pyromaniac",
+      "desc": "10% increase in Fire attack damage."
+    },
+    "ElementBoost_Aqua_1_PAL": {
+      "name": "Hydromaniac",
+      "desc": "10% increase in Water attack damage."
+    },
+    "ElementBoost_Thunder_1_PAL": {
+      "name": "Capacitor",
+      "desc": "10% increase in Lightning attack damage."
+    },
+    "ElementBoost_Leaf_1_PAL": {
+      "name": "Fragrant Foliage",
+      "desc": "10% increase in Grass attack damage."
+    },
+    "ElementBoost_Ice_1_PAL": {
+      "name": "Coldblooded",
+      "desc": "10% increase in Ice attack damage."
+    },
+    "ElementBoost_Earth_1_PAL": {
+      "name": "Power of Gaia",
+      "desc": "10% increase in Earth attack damage."
+    },
+    "ElementBoost_Dark_1_PAL": {
+      "name": "Veil of Darkness",
+      "desc": "10% increase in Dark attack damage."
+    },
+    "ElementBoost_Dragon_1_PAL": {
+      "name": "Blood of the Dragon",
+      "desc": "10% increase in Dragon attack damage."
+    },
+    "PAL_FullStomach_Down_1": {
+      "name": "Dainty Eater",
+      "desc": "Hunger decreases +10% slower."
+    },
+    "PAL_Sanity_Down_1": {
+      "name": "Positive Thinker",
+      "desc": "SAN drops +10% slower."
+    },
+    "MoveSpeed_up_1": {
+      "name": "Nimble",
+      "desc": "10% increase to movement speed."
+    },
+    "Nocturnal": {
+      "name": "Insomnia",
+      "desc": "Does not sleep and continues to work even at night."
+    },
+    "CoolTimeReduction_Up_2": {
+      "name": "Impatient",
+      "desc": "Active skill cooldown reduction 15%"
+    },
+    "Stamina_Up_2": {
+      "name": "Fit as a Fiddle",
+      "desc": "Max stamina +25% *This effect is only valid for rideable pals."
+    },
+    "SalePrice_Up_2": {
+      "name": "Fine Furs",
+      "desc": "Increases the value of items when sold by +3%"
+    },
+    "Alien": {
+      "name": "Otherworldly Cells",
+      "desc": "Attack +10%, Fire damage reduction 15%, Lightning damage reduction 15%"
+    },
+    "SwimSpeed_up_1": {
+      "name": "Sleek Stroke",
+      "desc": "30% increase movement speed on water."
+    },
+    "CraftSpeed_down1": {
+      "name": "Clumsy",
+      "desc": "Work Speed -10% (ToSelf)"
+    },
+    "Deffence_down1": {
+      "name": "Downtrodden",
+      "desc": "Defense -10% (ToSelf)"
+    },
+    "PAL_ALLAttack_down1": {
+      "name": "Coward",
+      "desc": "Attack -10% (ToSelf)"
+    },
+    "PAL_FullStomach_Up_1": {
+      "name": "Glutton",
+      "desc": "Hunger decreases +10% faster."
+    },
+    "PAL_Sanity_Up_1": {
+      "name": "Unstable",
+      "desc": "SAN drops +10% faster."
+    },
+    "NonKilling": {
+      "name": "Mercy Hit",
+      "desc": "Pacifist. Will not reduce the target's Health below 1."
+    },
+    "CoolTimeReduction_Down_1": {
+      "name": "Easygoing",
+      "desc": "Active skill cooldown extension -15%"
+    },
+    "Stamina_Down_1": {
+      "name": "Sickly",
+      "desc": "Max Stamina -25% *This effect is only valid for rideable pals."
+    },
+    "SalePrice_Down_1": {
+      "name": "Shabby",
+      "desc": "Decrease the value of items when sold by -10%"
+    },
+    "NightOwl": {
+      "name": "Night Owl",
+      "desc": "Tends to nap through the day, due to being nocturnal."
+    },
+    "PAL_FullStomach_Up_2": {
+      "name": "Bottomless Stomach",
+      "desc": "Hunger decreases +15% faster."
+    },
+    "PAL_Sanity_Up_2": {
+      "name": "Destructive",
+      "desc": "SAN drops +15% faster."
+    },
+    "CraftSpeed_down2": {
+      "name": "Slacker",
+      "desc": "Work Speed -30% (ToSelf)"
+    },
+    "Deffence_down2": {
+      "name": "Brittle",
+      "desc": "Defense -20% (ToSelf)"
+    },
+    "PAL_ALLAttack_down2": {
+      "name": "Pacifist",
+      "desc": "Attack -20% (ToSelf)"
     }
+  },
+  "zh": {
+    "WorldTree_ATK": {
+      "name": "双刃圣剑",
+      "desc": "攻击 +50%，防御 -30%，世界树区域的树木/矿石不会因接近而消失"
+    },
+    "WorldTree_DEF": {
+      "name": "守护圣盾",
+      "desc": "防御 +50%，攻击 -30%，世界树区域的树木/矿石不会因接近而消失"
+    },
+    "WorldTree_CraftSpeed": {
+      "name": "恶魔之手",
+      "desc": "工作速度 +90%，SAN值下降速度加快 +15%，世界树区域的树木/矿石不会因接近而消失"
+    },
+    "WorldTree_FullStomach": {
+      "name": "神树苗床",
+      "desc": "减少饱腹度下降速度 +50%，生命值 -20%，世界树区域的树木/矿石不会因接近而消失"
+    },
+    "WorldTree_Sanity": {
+      "name": "仙人",
+      "desc": "减少SAN值下降速度 +50%，工作速度 -20%，世界树区域的树木/矿石不会因接近而消失"
+    },
+    "WorldTree_MoveSpeed": {
+      "name": "次元跳跃",
+      "desc": "移动速度提升 +50%，饱腹度下降速度加快 +15%，世界树区域的树木/矿石不会因接近而消失"
+    },
+    "WorldTree_ATK_DEF": {
+      "name": "破坏神",
+      "desc": "攻击 +40%，防御 +20%，最大HP -50%，世界树区域的树木/矿石不会因接近而消失"
+    },
+    "CraftSpeed_up3": {
+      "name": "卓绝技艺",
+      "desc": "工作速度 +75% (ToSelf)"
+    },
+    "Deffence_up3": {
+      "name": "金刚之躯",
+      "desc": "防御力 +30%，免疫硬直，免疫击退"
+    },
+    "Rare": {
+      "name": "稀有",
+      "desc": "攻击 +15% (ToSelf)，防御 +15% (None)，工作速度 +20% (ToSelf)"
+    },
+    "Legend": {
+      "name": "传说",
+      "desc": "攻击 +20%，防御 +20%，移动速度提升20%"
+    },
+    "Witch": {
+      "name": "魔女",
+      "desc": "暗属性攻击伤害增加30%，冰属性攻击伤害增加30%"
+    },
+    "EternalFlame": {
+      "name": "永炎",
+      "desc": "火属性攻击伤害增加30%，雷属性攻击伤害增加30%"
+    },
+    "Invader": {
+      "name": "侵略者",
+      "desc": "暗属性攻击伤害增加30%，龙属性攻击伤害增加30%"
+    },
+    "PAL_ALLAttack_up3": {
+      "name": "鬼神",
+      "desc": "攻击 +30% (ToSelf)，防御 +5% (ToSelf)"
+    },
+    "PAL_FullStomach_Down_3": {
+      "name": "极限绝食",
+      "desc": "减少饱腹度下降速度 +20%"
+    },
+    "PAL_Sanity_Down_3": {
+      "name": "明镜止水",
+      "desc": "减少SAN值下降速度 +20%"
+    },
+    "MoveSpeed_up_3": {
+      "name": "神速",
+      "desc": "移动速度提升30%"
+    },
+    "Stamina_Up_3": {
+      "name": "永动机",
+      "desc": "最大耐力 +75% ※此效果仅对可骑乘的帕鲁有效。"
+    },
+    "Vampire": {
+      "name": "吸血鬼",
+      "desc": "会吸收造成伤害的一部分恢复自身的HP。 即使到夜晚也不会睡觉，可以一直工作。"
+    },
+    "Nushi": {
+      "name": "湖之主",
+      "desc": "水属性攻击伤害增加20%，冰属性攻击伤害增加20%，防御 +20%"
+    },
+    "SwimSpeed_up_3": {
+      "name": "破浪王者",
+      "desc": "水上移动速度提升50%"
+    },
+    "Salvation": {
+      "name": "救世主",
+      "desc": "无属性攻击伤害增加30%，草属性攻击伤害增加30%"
+    },
+    "MutationPal_Babysitter": {
+      "name": "育婴师",
+      "desc": "在据点内时，分派到配种牧场的帕鲁的，产蛋速度 +30%，孵化速度 +30%"
+    },
+    "MutationPal_Mutant": {
+      "name": "特殊体质",
+      "desc": "帕鲁和玩家的生命值自然恢复量 +50%，防御力 +25%，免疫中毒伤害，免疫灼烧伤害"
+    },
+    "SelfDeathAddItemDrop_up_3": {
+      "name": "慷慨就义",
+      "desc": "自身道具掉落量 +100%"
+    },
+    "WorkSuitabilityAddRank_MonsterFarm_2": {
+      "name": "牧场之主",
+      "desc": "牧场的工作适应性 +2"
+    },
+    "MutationPal_Immortal": {
+      "name": "不死之身",
+      "desc": "窃取生命 +5%，帕鲁生命值自然恢复量 +100%，攻击力 +15%"
+    },
+    "MutationPal_ExplosionResist": {
+      "name": "重装甲",
+      "desc": "免疫爆破伤害"
+    },
+    "RideJumpCount_Increase1": {
+      "name": "身轻如燕",
+      "desc": "骑乘期间连续跳跃次数 +1"
+    },
+    "RideJumpCount_Increase2": {
+      "name": "凌空微步",
+      "desc": "骑乘期间连续跳跃次数 +2"
+    },
+    "CraftSpeed_up2": {
+      "name": "工匠精神",
+      "desc": "工作速度 +50% (ToSelf)"
+    },
+    "Deffence_up2": {
+      "name": "顽强肉体",
+      "desc": "防御力 +20%，免疫硬直"
+    },
+    "PAL_ALLAttack_up2": {
+      "name": "凶猛",
+      "desc": "攻击 +20% (ToSelf)"
+    },
+    "TrainerATK_UP_1": {
+      "name": "突袭指挥官",
+      "desc": "玩家的攻击提升10%"
+    },
+    "TrainerDEF_UP_1": {
+      "name": "铁壁军师",
+      "desc": "玩家的防御提升10%"
+    },
+    "TrainerWorkSpeed_UP_1": {
+      "name": "啦啦队",
+      "desc": "玩家的工作速度提升25%"
+    },
+    "TrainerMining_up1": {
+      "name": "矿山首领",
+      "desc": "玩家的挖掘速度提升25%"
+    },
+    "TrainerLogging_up1": {
+      "name": "采伐领袖",
+      "desc": "玩家的采伐速度提升25%"
+    },
+    "PAL_FullStomach_Down_2": {
+      "name": "节食大师",
+      "desc": "减少饱腹度下降速度 +15%"
+    },
+    "PAL_Sanity_Down_2": {
+      "name": "工作狂",
+      "desc": "减少SAN值下降速度 +15%"
+    },
+    "ElementBoost_Normal_2_PAL": {
+      "name": "圣天",
+      "desc": "无属性攻击伤害增加30%"
+    },
+    "ElementBoost_Fire_2_PAL": {
+      "name": "炎帝",
+      "desc": "火属性攻击伤害增加30%"
+    },
+    "ElementBoost_Aqua_2_PAL": {
+      "name": "海皇",
+      "desc": "水属性攻击伤害增加30%"
+    },
+    "ElementBoost_Thunder_2_PAL": {
+      "name": "雷帝",
+      "desc": "雷属性攻击伤害增加30%"
+    },
+    "ElementBoost_Leaf_2_PAL": {
+      "name": "精灵王",
+      "desc": "草属性攻击伤害增加30%"
+    },
+    "ElementBoost_Ice_2_PAL": {
+      "name": "冰帝",
+      "desc": "冰属性攻击伤害增加30%"
+    },
+    "ElementBoost_Earth_2_PAL": {
+      "name": "岩帝",
+      "desc": "地属性攻击伤害增加30%"
+    },
+    "ElementBoost_Dark_2_PAL": {
+      "name": "冥王",
+      "desc": "暗属性攻击伤害增加30%"
+    },
+    "ElementBoost_Dragon_2_PAL": {
+      "name": "神龙",
+      "desc": "龙属性攻击伤害增加30%"
+    },
+    "MoveSpeed_up_2": {
+      "name": "运动健将",
+      "desc": "移动速度提升20%"
+    },
+    "Test_PalEgg_HatchingSpeed_Up": {
+      "name": "博爱主义者",
+      "desc": "当分配到配种牧场时，产出蛋的速度将加快100%。"
+    },
+    "CoolTimeReduction_Up_1": {
+      "name": "沉着冷静",
+      "desc": "主动技能的冷却时间缩短30%，攻击 +10%"
+    },
+    "Stamina_Up_1": {
+      "name": "无限精力",
+      "desc": "最大耐力 +50% ※此效果仅对可骑乘的帕鲁有效。"
+    },
+    "SalePrice_Up_1": {
+      "name": "高贵",
+      "desc": "改善交易价格 +5%"
+    },
+    "SwimSpeed_up_2": {
+      "name": "游泳健将",
+      "desc": "水上移动速度提升40%"
+    },
+    "SelfDeathAddItemDrop_up_2": {
+      "name": "奉献精神",
+      "desc": "自身道具掉落量 +50%"
+    },
+    "WorkSuitabilityAddRank_MonsterFarm_1": {
+      "name": "牧场之子",
+      "desc": "牧场的工作适应性 +1"
+    },
+    "PlayerSP_DecreaseRate_Passive": {
+      "name": "防过劳帮手",
+      "desc": "玩家的耐力消耗量减缓 +5%"
+    },
+    "AutoHPRegeneRate_Passive": {
+      "name": "疗愈教练",
+      "desc": "玩家的生命值自然恢复量 +5%"
+    },
+    "ReloadSpeedUp_Passive": {
+      "name": "装填大师",
+      "desc": "玩家的装填速度提升 +4%"
+    },
+    "Noukin": {
+      "name": "脑筋",
+      "desc": "攻击 +30% (ToSelf)，工作速度 -50% (ToSelf)"
+    },
+    "Deffence_up2_2": {
+      "name": "重量级",
+      "desc": "防御力 +20%，免疫击退"
+    },
+    "CraftSpeed_up1": {
+      "name": "认真",
+      "desc": "工作速度 +20% (ToSelf)"
+    },
+    "Deffence_up1": {
+      "name": "坚硬皮肤",
+      "desc": "防御 +10% (ToSelf)"
+    },
+    "PAL_ALLAttack_up1": {
+      "name": "勇敢",
+      "desc": "攻击 +10% (ToSelf)"
+    },
+    "PAL_rude": {
+      "name": "粗暴",
+      "desc": "攻击 +15% (ToSelf)，工作速度 -10% (ToSelf)"
+    },
+    "PAL_conceited": {
+      "name": "自恋狂",
+      "desc": "工作速度 +10% (ToSelf)，防御 -10% (ToSelf)"
+    },
+    "PAL_sadist": {
+      "name": "虐待狂",
+      "desc": "攻击 +15% (ToSelf)，防御 -15% (ToSelf)"
+    },
+    "PAL_masochist": {
+      "name": "受虐狂",
+      "desc": "防御 +15% (ToSelf)，攻击 -15% (ToSelf)"
+    },
+    "PAL_CorporateSlave": {
+      "name": "社畜",
+      "desc": "工作速度 +30% (ToSelf)，攻击 -30% (ToSelf)"
+    },
+    "PAL_oraora": {
+      "name": "强势",
+      "desc": "攻击 +10% (ToSelf)，防御 -10% (ToSelf)"
+    },
+    "ElementResist_Normal_1_PAL": {
+      "name": "一反常态",
+      "desc": "无属性伤害减少10%"
+    },
+    "ElementResist_Fire_1_PAL": {
+      "name": "拥抱烈日",
+      "desc": "火属性伤害减少10%"
+    },
+    "ElementResist_Aqua_1_PAL": {
+      "name": "防水性能",
+      "desc": "水属性伤害减少10%"
+    },
+    "ElementResist_Thunder_1_PAL": {
+      "name": "绝缘体",
+      "desc": "雷属性伤害减少10%"
+    },
+    "ElementResist_Leaf_1_PAL": {
+      "name": "除草效果",
+      "desc": "草属性伤害减少10%"
+    },
+    "ElementResist_Ice_1_PAL": {
+      "name": "高温体质",
+      "desc": "冰属性伤害减少10%"
+    },
+    "ElementResist_Earth_1_PAL": {
+      "name": "抗震结构",
+      "desc": "地属性伤害减少10%"
+    },
+    "ElementResist_Dark_1_PAL": {
+      "name": "阳光开朗",
+      "desc": "暗属性伤害减少10%"
+    },
+    "ElementResist_Dragon_1_PAL": {
+      "name": "屠龙者",
+      "desc": "龙属性伤害减少10%"
+    },
+    "ElementBoost_Normal_1_PAL": {
+      "name": "禅境",
+      "desc": "无属性攻击伤害增加10%"
+    },
+    "ElementBoost_Fire_1_PAL": {
+      "name": "喜欢玩火",
+      "desc": "火属性攻击伤害增加10%"
+    },
+    "ElementBoost_Aqua_1_PAL": {
+      "name": "喜欢戏水",
+      "desc": "水属性攻击伤害增加10%"
+    },
+    "ElementBoost_Thunder_1_PAL": {
+      "name": "电容",
+      "desc": "雷属性攻击伤害增加10%"
+    },
+    "ElementBoost_Leaf_1_PAL": {
+      "name": "草木馨香",
+      "desc": "草属性攻击伤害增加10%"
+    },
+    "ElementBoost_Ice_1_PAL": {
+      "name": "冷血",
+      "desc": "冰属性攻击伤害增加10%"
+    },
+    "ElementBoost_Earth_1_PAL": {
+      "name": "大地之力",
+      "desc": "地属性攻击伤害增加10%"
+    },
+    "ElementBoost_Dark_1_PAL": {
+      "name": "夜幕",
+      "desc": "暗属性攻击伤害增加10%"
+    },
+    "ElementBoost_Dragon_1_PAL": {
+      "name": "龙之血脉",
+      "desc": "龙属性攻击伤害增加10%"
+    },
+    "PAL_FullStomach_Down_1": {
+      "name": "小胃",
+      "desc": "减少饱腹度下降速度 +10%"
+    },
+    "PAL_Sanity_Down_1": {
+      "name": "积极思维",
+      "desc": "减少SAN值下降速度 +10%"
+    },
+    "MoveSpeed_up_1": {
+      "name": "灵活",
+      "desc": "移动速度提升10%"
+    },
+    "Nocturnal": {
+      "name": "不眠",
+      "desc": "即使到夜晚也不会睡觉，会一直工作。"
+    },
+    "CoolTimeReduction_Up_2": {
+      "name": "急性子",
+      "desc": "主动技能的冷却时间缩短15%"
+    },
+    "Stamina_Up_2": {
+      "name": "健康宝宝",
+      "desc": "最大耐力 +25% ※此效果仅对可骑乘的帕鲁有效。"
+    },
+    "SalePrice_Up_2": {
+      "name": "贵族",
+      "desc": "改善交易价格 +3%"
+    },
+    "Alien": {
+      "name": "未知生物细胞",
+      "desc": "攻击力 +10%，火属性伤害减免15%，雷属性伤害减免15%"
+    },
+    "SwimSpeed_up_1": {
+      "name": "悠然泳姿",
+      "desc": "水上移动速度提升30%"
+    },
+    "SelfDeathAddItemDrop_up_1": {
+      "name": "小小心意",
+      "desc": "自身道具掉落量 +15%"
+    },
+    "CraftSpeed_down1": {
+      "name": "笨手笨脚",
+      "desc": "工作速度 -10% (ToSelf)"
+    },
+    "Deffence_down1": {
+      "name": "弱不禁风",
+      "desc": "防御 -10% (ToSelf)"
+    },
+    "PAL_ALLAttack_down1": {
+      "name": "胆小",
+      "desc": "攻击 -10% (ToSelf)"
+    },
+    "PAL_FullStomach_Up_1": {
+      "name": "贪吃",
+      "desc": "增加饱腹度下降速度 +10%"
+    },
+    "PAL_Sanity_Up_1": {
+      "name": "情绪不稳",
+      "desc": "增加SAN值下降速度 +10%"
+    },
+    "NonKilling": {
+      "name": "手下留情",
+      "desc": "和平主义者。 使攻击目标的生命值不会小于1。"
+    },
+    "CoolTimeReduction_Down_1": {
+      "name": "慢性子",
+      "desc": "主动技能的冷却时间延长 -15%"
+    },
+    "Stamina_Down_1": {
+      "name": "家里蹲",
+      "desc": "最大耐力 -25% ※此效果仅对可骑乘的帕鲁有效。"
+    },
+    "SalePrice_Down_1": {
+      "name": "寒酸",
+      "desc": "交易价格恶化 -10%"
+    },
+    "NightOwl": {
+      "name": "夜猫子",
+      "desc": "因为总是熬夜，白天常常睡午觉。"
+    },
+    "PAL_FullStomach_Up_2": {
+      "name": "无底之胃",
+      "desc": "增加饱腹度下降速度 +15%"
+    },
+    "PAL_Sanity_Up_2": {
+      "name": "毁灭欲望",
+      "desc": "增加SAN值下降速度 +15%"
+    },
+    "CraftSpeed_down2": {
+      "name": "偷懒成瘾",
+      "desc": "工作速度 -30% (ToSelf)"
+    },
+    "Deffence_down2": {
+      "name": "骨质疏松",
+      "desc": "防御 -20% (ToSelf)"
+    },
+    "PAL_ALLAttack_down2": {
+      "name": "消极主义者",
+      "desc": "攻击 -20% (ToSelf)"
+    }
+  },
+  "ja": {
+    "WorldTree_ATK": {
+      "name": "諸刃の聖剣",
+      "desc": "攻撃 +50%，防御 -30%，世界樹の木・岩に近づいても消滅しない"
+    },
+    "WorldTree_DEF": {
+      "name": "聖域の肉壁",
+      "desc": "防御 +50%，攻撃 -30%，世界樹の木・岩に近づいても消滅しない"
+    },
+    "WorldTree_CraftSpeed": {
+      "name": "悪魔の手",
+      "desc": "作業速度 +90%，SAN値が減りやすい +15%，世界樹の木・岩に近づいても消滅しない"
+    },
+    "WorldTree_FullStomach": {
+      "name": "神樹の苗床",
+      "desc": "満腹度が減りにくい +50%，HP -20%，世界樹の木・岩に近づいても消滅しない"
+    },
+    "WorldTree_Sanity": {
+      "name": "仙人",
+      "desc": "SAN値が減りにくい +50%，作業速度 -20%，世界樹の木・岩に近づいても消滅しない"
+    },
+    "WorldTree_MoveSpeed": {
+      "name": "次元跳躍",
+      "desc": "移動速度上昇 +50%，満腹度が減りやすい +15%，世界樹の木・岩に近づいても消滅しない"
+    },
+    "WorldTree_ATK_DEF": {
+      "name": "破壊神",
+      "desc": "攻撃 +40%，防御 +20%，最大HP -50%，世界樹の木・岩に近づいても消滅しない"
+    },
+    "CraftSpeed_up3": {
+      "name": "超絶技巧",
+      "desc": "作業速度 +75% (ToSelf)"
+    },
+    "Deffence_up3": {
+      "name": "ダイヤモンドボディ",
+      "desc": "防御 +30%，ひるみ無効，吹き飛び無効"
+    },
+    "Rare": {
+      "name": "希少",
+      "desc": "攻撃 +15% (ToSelf)，防御 +15% (None)，作業速度 +20% (ToSelf)"
+    },
+    "Legend": {
+      "name": "伝説",
+      "desc": "攻撃 +20%，防御 +20%，移動速度上昇20%"
+    },
+    "Witch": {
+      "name": "魔女",
+      "desc": "闇属性攻撃ダメージ増加30%，氷属性攻撃ダメージ増加30%"
+    },
+    "EternalFlame": {
+      "name": "永炎",
+      "desc": "炎属性攻撃ダメージ増加30%，雷属性攻撃ダメージ増加30%"
+    },
+    "Invader": {
+      "name": "侵略者",
+      "desc": "闇属性攻撃ダメージ増加30%，竜属性攻撃ダメージ増加30%"
+    },
+    "PAL_ALLAttack_up3": {
+      "name": "鬼神",
+      "desc": "攻撃 +30% (ToSelf)，防御 +5% (ToSelf)"
+    },
+    "PAL_FullStomach_Down_3": {
+      "name": "絶食の極み",
+      "desc": "満腹度が減りにくい +20%"
+    },
+    "PAL_Sanity_Down_3": {
+      "name": "不動明王の心",
+      "desc": "SAN値が減りにくい +20%"
+    },
+    "MoveSpeed_up_3": {
+      "name": "神速",
+      "desc": "移動速度上昇30%"
+    },
+    "Stamina_Up_3": {
+      "name": "永久機関",
+      "desc": "最大スタミナ +75% ※ライド可能なパルのみ有効"
+    },
+    "Vampire": {
+      "name": "吸血鬼",
+      "desc": "与えたダメージの5%を吸収し、HPを回復する。 夜になっても眠らず、働き続ける。"
+    },
+    "Nushi": {
+      "name": "ヌシ",
+      "desc": "水属性攻撃ダメージ増加20%，氷属性攻撃ダメージ増加20%，防御 +20%"
+    },
+    "SwimSpeed_up_3": {
+      "name": "波乗り王",
+      "desc": "水上の移動速度上昇50%"
+    },
+    "Salvation": {
+      "name": "救世主",
+      "desc": "無属性攻撃ダメージ増加30%，草属性攻撃ダメージ増加30%"
+    },
+    "MutationPal_Babysitter": {
+      "name": "ベビーシッター",
+      "desc": "拠点にいる間、配合牧場にアサインしたパルの，タマゴ生成速度 +30%、孵化速度 +30%"
+    },
+    "MutationPal_Mutant": {
+      "name": "特異体質",
+      "desc": "パルとプレイヤーのHP自然回復量 +50%，防御+{EffectValue4}%，毒状態異常ダメージ無効，炎上状態異常ダメージ無効"
+    },
+    "SelfDeathAddItemDrop_up_3": {
+      "name": "大盤振る舞い",
+      "desc": "自身のドロップアイテム +100%"
+    },
+    "WorkSuitabilityAddRank_MonsterFarm_2": {
+      "name": "牧場の主",
+      "desc": "牧場の作業適性 +2"
+    },
+    "MutationPal_Immortal": {
+      "name": "不死身",
+      "desc": "与えたダメージの5%を吸収し、HPを回復する。，パルのHP自然回復量 +100%，攻撃 +15%"
+    },
+    "MutationPal_ExplosionResist": {
+      "name": "重装甲",
+      "desc": "爆破ダメージ無効"
+    },
+    "RideJumpCount_Increase1": {
+      "name": "軽身",
+      "desc": "ライド中のジャンプ回数 +1"
+    },
+    "RideJumpCount_Increase2": {
+      "name": "空渡り",
+      "desc": "ライド中のジャンプ回数 +2"
+    },
+    "CraftSpeed_up2": {
+      "name": "職人気質",
+      "desc": "作業速度 +50% (ToSelf)"
+    },
+    "Deffence_up2": {
+      "name": "屈強な肉体",
+      "desc": "防御 +20%，ひるみ無効"
+    },
+    "PAL_ALLAttack_up2": {
+      "name": "獰猛",
+      "desc": "攻撃 +20% (ToSelf)"
+    },
+    "TrainerATK_UP_1": {
+      "name": "突撃指揮者",
+      "desc": "プレイヤーの攻撃増加10%"
+    },
+    "TrainerDEF_UP_1": {
+      "name": "堅城の軍師",
+      "desc": "プレイヤーの防御増加10%"
+    },
+    "TrainerWorkSpeed_UP_1": {
+      "name": "モチベーター",
+      "desc": "プレイヤーの作業速度増加25%"
+    },
+    "TrainerMining_up1": {
+      "name": "鉱山のチーフ",
+      "desc": "プレイヤーの採掘効率増加25%"
+    },
+    "TrainerLogging_up1": {
+      "name": "伐採リーダー",
+      "desc": "プレイヤーの伐採効率増加25%"
+    },
+    "PAL_FullStomach_Down_2": {
+      "name": "ダイエットマスター",
+      "desc": "満腹度が減りにくい +15%"
+    },
+    "PAL_Sanity_Down_2": {
+      "name": "ワーカーホリック",
+      "desc": "SAN値が減りにくい +15%"
+    },
+    "ElementBoost_Normal_2_PAL": {
+      "name": "聖天",
+      "desc": "無属性攻撃ダメージ増加30%"
+    },
+    "ElementBoost_Fire_2_PAL": {
+      "name": "炎帝",
+      "desc": "炎属性攻撃ダメージ増加30%"
+    },
+    "ElementBoost_Aqua_2_PAL": {
+      "name": "海皇",
+      "desc": "水属性攻撃ダメージ増加30%"
+    },
+    "ElementBoost_Thunder_2_PAL": {
+      "name": "雷帝",
+      "desc": "雷属性攻撃ダメージ増加30%"
+    },
+    "ElementBoost_Leaf_2_PAL": {
+      "name": "精霊王",
+      "desc": "草属性攻撃ダメージ増加30%"
+    },
+    "ElementBoost_Ice_2_PAL": {
+      "name": "氷帝",
+      "desc": "氷属性攻撃ダメージ増加30%"
+    },
+    "ElementBoost_Earth_2_PAL": {
+      "name": "地帝",
+      "desc": "地属性攻撃ダメージ増加30%"
+    },
+    "ElementBoost_Dark_2_PAL": {
+      "name": "冥王",
+      "desc": "闇属性攻撃ダメージ増加30%"
+    },
+    "ElementBoost_Dragon_2_PAL": {
+      "name": "神龍",
+      "desc": "竜属性攻撃ダメージ増加30%"
+    },
+    "MoveSpeed_up_2": {
+      "name": "走るのが得意",
+      "desc": "移動速度上昇20%"
+    },
+    "Test_PalEgg_HatchingSpeed_Up": {
+      "name": "博愛主義者",
+      "desc": "配合牧場にアサインされてる間、タマゴ生成速度が100%増加する"
+    },
+    "CoolTimeReduction_Up_1": {
+      "name": "冷静沈着",
+      "desc": "アクティブスキルのクールタイム短縮30%，攻撃 +10%"
+    },
+    "Stamina_Up_1": {
+      "name": "無限のスタミナ",
+      "desc": "最大スタミナ +50% ※ライド可能なパルのみ有効"
+    },
+    "SalePrice_Up_1": {
+      "name": "高貴",
+      "desc": "取引価格が改善 +5%"
+    },
+    "SwimSpeed_up_2": {
+      "name": "泳ぐのが得意",
+      "desc": "水上の移動速度上昇40%"
+    },
+    "SelfDeathAddItemDrop_up_2": {
+      "name": "サービス精神",
+      "desc": "自身のドロップアイテム +50%"
+    },
+    "WorkSuitabilityAddRank_MonsterFarm_1": {
+      "name": "牧場っ子",
+      "desc": "牧場の作業適性 +1"
+    },
+    "PlayerSP_DecreaseRate_Passive": {
+      "name": "バテ防止係",
+      "desc": "プレイヤーのスタミナ消費量軽減 +5%"
+    },
+    "AutoHPRegeneRate_Passive": {
+      "name": "ヒーリングコーチ",
+      "desc": "プレイヤーのHP自然回復量 +5%"
+    },
+    "ReloadSpeedUp_Passive": {
+      "name": "リロードマスター",
+      "desc": "プレイヤーのリロード速度上昇 +4%"
+    },
+    "Noukin": {
+      "name": "脳筋",
+      "desc": "攻撃 +30% (ToSelf)，作業速度 -50% (ToSelf)"
+    },
+    "Deffence_up2_2": {
+      "name": "ヘビー級",
+      "desc": "防御 +20%，吹き飛び無効"
+    },
+    "CraftSpeed_up1": {
+      "name": "まじめ",
+      "desc": "作業速度 +20% (ToSelf)"
+    },
+    "Deffence_up1": {
+      "name": "硬い皮膚",
+      "desc": "防御 +10% (ToSelf)"
+    },
+    "PAL_ALLAttack_up1": {
+      "name": "勇敢",
+      "desc": "攻撃 +10% (ToSelf)"
+    },
+    "PAL_rude": {
+      "name": "粗暴",
+      "desc": "攻撃 +15% (ToSelf)，作業速度 -10% (ToSelf)"
+    },
+    "PAL_conceited": {
+      "name": "うぬぼれ屋",
+      "desc": "作業速度 +10% (ToSelf)，防御 -10% (ToSelf)"
+    },
+    "PAL_sadist": {
+      "name": "サディスト",
+      "desc": "攻撃 +15% (ToSelf)，防御 -15% (ToSelf)"
+    },
+    "PAL_masochist": {
+      "name": "マゾヒスト",
+      "desc": "防御 +15% (ToSelf)，攻撃 -15% (ToSelf)"
+    },
+    "PAL_CorporateSlave": {
+      "name": "社畜",
+      "desc": "作業速度 +30% (ToSelf)，攻撃 -30% (ToSelf)"
+    },
+    "PAL_oraora": {
+      "name": "オラオラ系",
+      "desc": "攻撃 +10% (ToSelf)，防御 -10% (ToSelf)"
+    },
+    "ElementResist_Normal_1_PAL": {
+      "name": "アブノーマル",
+      "desc": "無属性ダメージ軽減10%"
+    },
+    "ElementResist_Fire_1_PAL": {
+      "name": "日焼け好き",
+      "desc": "炎属性ダメージ軽減10%"
+    },
+    "ElementResist_Aqua_1_PAL": {
+      "name": "防水加工",
+      "desc": "水属性ダメージ軽減10%"
+    },
+    "ElementResist_Thunder_1_PAL": {
+      "name": "絶縁体",
+      "desc": "雷属性ダメージ軽減10%"
+    },
+    "ElementResist_Leaf_1_PAL": {
+      "name": "防草効果",
+      "desc": "草属性ダメージ軽減10%"
+    },
+    "ElementResist_Ice_1_PAL": {
+      "name": "高温体質",
+      "desc": "氷属性ダメージ軽減10%"
+    },
+    "ElementResist_Earth_1_PAL": {
+      "name": "耐震構造",
+      "desc": "地属性ダメージ軽減10%"
+    },
+    "ElementResist_Dark_1_PAL": {
+      "name": "陽キャラ",
+      "desc": "闇属性ダメージ軽減10%"
+    },
+    "ElementResist_Dragon_1_PAL": {
+      "name": "ドラゴンキラー",
+      "desc": "竜属性ダメージ軽減10%"
+    },
+    "ElementBoost_Normal_1_PAL": {
+      "name": "無の境地",
+      "desc": "無属性攻撃ダメージ増加10%"
+    },
+    "ElementBoost_Fire_1_PAL": {
+      "name": "火遊び好き",
+      "desc": "炎属性攻撃ダメージ増加10%"
+    },
+    "ElementBoost_Aqua_1_PAL": {
+      "name": "水遊び好き",
+      "desc": "水属性攻撃ダメージ増加10%"
+    },
+    "ElementBoost_Thunder_1_PAL": {
+      "name": "コンデンサ",
+      "desc": "雷属性攻撃ダメージ増加10%"
+    },
+    "ElementBoost_Leaf_1_PAL": {
+      "name": "草木の香り",
+      "desc": "草属性攻撃ダメージ増加10%"
+    },
+    "ElementBoost_Ice_1_PAL": {
+      "name": "冷血",
+      "desc": "氷属性攻撃ダメージ増加10%"
+    },
+    "ElementBoost_Earth_1_PAL": {
+      "name": "大地の力",
+      "desc": "地属性攻撃ダメージ増加10%"
+    },
+    "ElementBoost_Dark_1_PAL": {
+      "name": "夜の帳",
+      "desc": "闇属性攻撃ダメージ増加10%"
+    },
+    "ElementBoost_Dragon_1_PAL": {
+      "name": "竜の血族",
+      "desc": "竜属性攻撃ダメージ増加10%"
+    },
+    "PAL_FullStomach_Down_1": {
+      "name": "小食",
+      "desc": "満腹度が減りにくい +10%"
+    },
+    "PAL_Sanity_Down_1": {
+      "name": "ポジティブ思考",
+      "desc": "SAN値が減りにくい +10%"
+    },
+    "MoveSpeed_up_1": {
+      "name": "すばしこい",
+      "desc": "移動速度上昇10%"
+    },
+    "Nocturnal": {
+      "name": "不眠",
+      "desc": "夜になっても眠らず、働き続ける。"
+    },
+    "CoolTimeReduction_Up_2": {
+      "name": "せっかち",
+      "desc": "アクティブスキルのクールタイム短縮15%"
+    },
+    "Stamina_Up_2": {
+      "name": "健康優良児",
+      "desc": "最大スタミナ +25% ※ライド可能なパルのみ有効"
+    },
+    "SalePrice_Up_2": {
+      "name": "良い毛並み",
+      "desc": "取引価格が改善 +3%"
+    },
+    "Alien": {
+      "name": "未知の生体細胞",
+      "desc": "攻撃 +10%，炎属性ダメージ軽減15%，雷属性ダメージ軽減15%"
+    },
+    "SwimSpeed_up_1": {
+      "name": "しなやかスイム",
+      "desc": "水上の移動速度上昇30%"
+    },
+    "CraftSpeed_down1": {
+      "name": "不器用",
+      "desc": "作業速度 -10% (ToSelf)"
+    },
+    "Deffence_down1": {
+      "name": "うたれ弱い",
+      "desc": "防御 -10% (ToSelf)"
+    },
+    "PAL_ALLAttack_down1": {
+      "name": "ビビり",
+      "desc": "攻撃 -10% (ToSelf)"
+    },
+    "PAL_FullStomach_Up_1": {
+      "name": "食いしんぼ",
+      "desc": "満腹度が減りやすい +10%"
+    },
+    "PAL_Sanity_Up_1": {
+      "name": "精神が不安定",
+      "desc": "SAN値が減りやすい +10%"
+    },
+    "NonKilling": {
+      "name": "手加減",
+      "desc": "平和主義者。 攻撃対象のHPを1未満にできない。"
+    },
+    "CoolTimeReduction_Down_1": {
+      "name": "のんびり屋さん",
+      "desc": "アクティブスキルのクールタイム延長 -15%"
+    },
+    "Stamina_Down_1": {
+      "name": "引きこもり",
+      "desc": "最大スタミナ -25% ※ライド可能なパルのみ有効"
+    },
+    "SalePrice_Down_1": {
+      "name": "みすぼらしい",
+      "desc": "取引価格が悪化 -10%"
+    },
+    "NightOwl": {
+      "name": "夜更かし",
+      "desc": "夜中まで起きているせいか、昼寝をしがち。"
+    },
+    "PAL_FullStomach_Up_2": {
+      "name": "無限の胃袋",
+      "desc": "満腹度が減りやすい +15%"
+    },
+    "PAL_Sanity_Up_2": {
+      "name": "破滅願望",
+      "desc": "SAN値が減りやすい +15%"
+    },
+    "CraftSpeed_down2": {
+      "name": "サボり癖",
+      "desc": "作業速度 -30% (ToSelf)"
+    },
+    "Deffence_down2": {
+      "name": "すぐ骨折する",
+      "desc": "防御 -20% (ToSelf)"
+    },
+    "PAL_ALLAttack_down2": {
+      "name": "ことなかれ主義者",
+      "desc": "攻撃 -20% (ToSelf)"
+    }
+  }
 }
